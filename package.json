@@ -1,0 +1,21 @@
+{
+  "name": "raycaster-game",
+  "version": "1.0.0",
+  "description": "The client frontend for the multiplayer raycaster game.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.zhaw.ch:raycasters/game.git"
+  },
+  "author": "",
+  "license": "AGPL-3.0",
+  "devDependencies": {
+    "ts-loader": "^8.0.17",
+    "typescript": "^4.2.3",
+    "webpack": "^5.24.4",
+    "webpack-cli": "^4.5.0"
+  }
+}
