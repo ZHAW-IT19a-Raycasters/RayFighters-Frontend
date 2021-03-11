@@ -1,7 +1,15 @@
-import * as example from './example_module';
-// can also import npm stuff here btw
+import { GameLoop, FrameCallback } from './gameloop';
+import { Camera } from './camera';
 
-let node = document.createElement("LI");
-let textnode = document.createTextNode(example.hi('chad'));
-node.appendChild(textnode);
-document.body.appendChild(node);
+function runGame(canvasName: string): void {
+  // The element that contains the 
+  let canvas = document.getElementById(canvasName);
+  let camera = new Camera(canvas, 320, 0.8);
+  let loop = new GameLoop();
+
+  loop.begin(function(time: number) {
+    camera.render();
+  });
+}
+
+runGame("game-canvas");
