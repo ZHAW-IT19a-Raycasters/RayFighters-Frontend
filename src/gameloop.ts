@@ -1,7 +1,3 @@
-interface FrameCallback {
-  frame(time: number): void;
-}
-
 class GameLoop {
   private lastTime: number;
   private callback: any;
@@ -27,4 +23,4 @@ class GameLoop {
   }
 }
 
-export { GameLoop, FrameCallback };
+export { GameLoop };

@@ -1,4 +1,4 @@
-class Camera {
+class Renderer {
   /**
     * Canvas DOM element to draw in
     */
@@ -20,8 +20,9 @@ class Camera {
   render(): void {
     this.ctx.save();
     this.ctx.fillRect(20, 20, 300, 100);
+    // TODO: Render the entirety of the game here
     this.ctx.restore();
   }
 }
 
-export { Camera };
+export { Renderer };

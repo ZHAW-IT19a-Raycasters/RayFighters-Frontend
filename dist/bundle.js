@@ -10,23 +10,13 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/camera.ts":
-/*!***********************!*\
-  !*** ./src/camera.ts ***!
-  \***********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Camera\": () => (/* binding */ Camera)\n/* harmony export */ });\nvar Camera = /** @class */ (function () {\n    /**\n      * @constructor\n      * @param {DOM} canv - Canvas element to draw game in\n      * @param {number} res - Resolution to render the game in (pixels). Canvas sizes may differ.\n      * @param {number} focal - focal length of our viewport, the field of view.\n      */\n    function Camera(canv, res, focal) {\n        this.canvas = canv;\n        this.ctx = canv.getContext('2d');\n    }\n    Camera.prototype.render = function () {\n        this.ctx.save();\n        this.ctx.fillRect(20, 20, 300, 100);\n        this.ctx.restore();\n    };\n    return Camera;\n}());\n\n\n\n//# sourceURL=webpack://raycaster-game/./src/camera.ts?");
-
-/***/ }),
-
 /***/ "./src/game.ts":
 /*!*********************!*\
   !*** ./src/game.ts ***!
   \*********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _gameloop__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gameloop */ \"./src/gameloop.ts\");\n/* harmony import */ var _camera__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./camera */ \"./src/camera.ts\");\n\n\nfunction runGame(canvasName) {\n    // The element that contains the \n    var canvas = document.getElementById(canvasName);\n    var camera = new _camera__WEBPACK_IMPORTED_MODULE_1__.Camera(canvas, 320, 0.8);\n    var loop = new _gameloop__WEBPACK_IMPORTED_MODULE_0__.GameLoop();\n    loop.begin(function (time) {\n        camera.render();\n    });\n}\nrunGame(\"game-canvas\");\n\n\n//# sourceURL=webpack://raycaster-game/./src/game.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _gameloop__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gameloop */ \"./src/gameloop.ts\");\n/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./renderer */ \"./src/renderer.ts\");\n\n\nfunction runGame(canvasName) {\n    // The element that contains the canvas element to drawn in\n    var canvas = document.getElementById(canvasName);\n    var renderer = new _renderer__WEBPACK_IMPORTED_MODULE_1__.Renderer(canvas, 320, 0.8);\n    var loop = new _gameloop__WEBPACK_IMPORTED_MODULE_0__.GameLoop();\n    loop.begin(function (time) {\n        // Begin gameloop using this frame handler\n        renderer.render();\n    });\n}\nrunGame(/*on*/ \"game-canvas\");\n\n\n//# sourceURL=webpack://raycaster-game/./src/game.ts?");
 
 /***/ }),
 
@@ -37,6 +27,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _gam
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"GameLoop\": () => (/* binding */ GameLoop)\n/* harmony export */ });\nvar GameLoop = /** @class */ (function () {\n    function GameLoop() {\n        var _this = this;\n        this.frame = function (currTime) {\n            // How many seconds have passed, is probably a small fraction:\n            var secs = (currTime - _this.lastTime) / 1E3;\n            _this.lastTime = currTime;\n            if (secs <= 1) {\n                _this.callback(secs);\n            }\n            requestAnimationFrame(_this.frame);\n        };\n        this.frame.bind(this);\n        this.lastTime = 0;\n    }\n    GameLoop.prototype.begin = function (callb) {\n        this.callback = callb;\n        requestAnimationFrame(this.frame);\n    };\n    return GameLoop;\n}());\n\n\n\n//# sourceURL=webpack://raycaster-game/./src/gameloop.ts?");
+
+/***/ }),
+
+/***/ "./src/renderer.ts":
+/*!*************************!*\
+  !*** ./src/renderer.ts ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Renderer\": () => (/* binding */ Renderer)\n/* harmony export */ });\nvar Renderer = /** @class */ (function () {\n    /**\n      * @constructor\n      * @param {DOM} canv - Canvas element to draw game in\n      * @param {number} res - Resolution to render the game in (pixels). Canvas sizes may differ.\n      * @param {number} focal - focal length of our viewport, the field of view.\n      */\n    function Renderer(canv, res, focal) {\n        this.canvas = canv;\n        this.ctx = canv.getContext('2d');\n    }\n    Renderer.prototype.render = function () {\n        this.ctx.save();\n        this.ctx.fillRect(20, 20, 300, 100);\n        // TODO: Render the entirety of the game here\n        this.ctx.restore();\n    };\n    return Renderer;\n}());\n\n\n\n//# sourceURL=webpack://raycaster-game/./src/renderer.ts?");
 
 /***/ })
 
