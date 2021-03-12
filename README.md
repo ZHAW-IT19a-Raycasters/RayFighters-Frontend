@@ -1,5 +1,7 @@
 # game
 
+[![Build status](https://ci.cloudlab.zhaw.ch/api/projects/status/82fopwb0u5be64tg?svg=true)](https://ci.cloudlab.zhaw.ch/project/fuerbsev/game)
+
 game client
 
 ## Development
