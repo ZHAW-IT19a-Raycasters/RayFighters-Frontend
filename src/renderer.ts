@@ -1,9 +1,12 @@
+import { Room } from './room';
+
 class Renderer {
   /**
     * Canvas DOM element to draw in
     */
   canvas: any; 
   ctx: any;
+  room: Room;
 
   /**
     * @constructor
@@ -14,7 +17,7 @@ class Renderer {
   constructor(canv: any, res: number, focal: number) {
     this.canvas = canv;
     this.ctx = canv.getContext('2d');
-    
+    this.room = new Room(123);
   }
 
   render(): void {
