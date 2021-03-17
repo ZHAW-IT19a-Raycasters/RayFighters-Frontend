@@ -1,22 +1,20 @@
+import { Map2D, MapElement, MapElementType } from './map2d';
+
+
 /**
- * Contains the map players play in along with useful methods for rendering
- * (raycasting!)
+ * Managing class of a map, adds functionality used for the game such as
+ * raycasting.
  */
 class Room {
-    private size: number;
-    /**
-     * An array describing the map (whether a cell has a wall or
-     * not): wall = 1, no wall = 0
-     * 
-     * Note that the world is basically 2D, but saved as 1D in the array.
-     */
-    private map: Uint8Array;
+    private map: Map2D;
 
-    constructor(size: number, ) {
-        this.size = size;
-        this.map = new Uint8Array(size * size);
+    constructor(mapSize: number) {
+        this.map = new Map2D(mapSize);
+
+        // randomize map by default for now:
+        this.map.randomize();
     }
-
 }
+
 
 export { Room };

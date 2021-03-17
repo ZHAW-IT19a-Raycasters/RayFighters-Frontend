@@ -18,15 +18,28 @@ class Map2D {
         this.map = new Array<MapElement>(size * size);
     }
 
+    public getSize(): number {
+        return this.size;
+    }
+
+    /**
+     * Used for testing for now.
+     * 
+     * @returns Number of elements (walls, floors) in the map
+     */
+    public getElementCount(): number {
+        return this.map.length;
+    }
+
     /**
      * Queries the element of a map at clamped coordinate (x,y), could be wall,
      * floor, etc..
      * 
      * @param x horizontal coordinate of the map
      * @param y vertical coordinate of the map
-     * @returns The type of map at (x,y)
+     * @returns The ELEMENT of map at (x,y) ONLY if it's inside the map, othertype MapElementType.NONE (!)
      */
-    public getElemTypeAt(x: number, y: number): MapElementType {
+    public getElem(x: number, y: number): MapElement | MapElementType {
         x = Math.floor(x);
         y = Math.floor(y);
         if (x < 0 || x > this.size - 1 || y < 0 || y > this.size - 1) {
@@ -34,7 +47,31 @@ class Map2D {
             // non-existant map element type:
             return MapElementType.NONE;
         }
-        return this.map[y * this.size + x].getType();
+        return this.map[y * this.size + x];
+    }
+
+    public setElem(x: number, y: number, newElem: MapElement): void {
+        x = Math.floor(x);
+        y = Math.floor(y);
+        if(x >= 0 && x <= this.size - 1 && y >= 0 && y <= this.size - 1) {
+            this.map[y * this.size + x] = newElem;
+        }
+    }
+
+    /**
+     * Generate random MapElements in the map. Completely overrides existing
+     * elements.
+     */
+    public randomize(): void {
+        const WALL_THRESH = 0.25; // Probability for spawning a wall
+        for (var i = 0; i < this.getElementCount(); i++) {
+            const rand = Math.random();
+            if (rand < WALL_THRESH) {
+                this.map[i] = new MapElement(MapElementType.WALL);
+            } else {
+                this.map[i] = new MapElement(MapElementType.FLOOR);
+            }
+        }
     }
 }
 
