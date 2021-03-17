@@ -2,7 +2,7 @@
  * Control class, handling all user inputs, both touch and via keyboard.
  * To read user input, poll the 'states' map to see if any key is pressed currently.
  */
- class Controls {
+class Controls {
     public states = new Map([
         [KeyCodes.FORWARD, false],
         [KeyCodes.BACKWARD, false],
@@ -21,6 +21,12 @@
         document.addEventListener('touchend', this.onTouchEnd.bind(this), false);
     }
 
+    /**
+     * 
+     * @param val 
+     * @param event 
+     * @returns 
+     */
     private onKey(val: any, event: any): void {
         var state = this.states.get(event.keyCode);
         if (typeof state === 'undefined') {
@@ -31,6 +37,10 @@
         event.preventDefault && event.preventDefault();
     }
 
+    /**
+     * 
+     * @param event 
+     */
     private onTouch(event: any): void {
         var touch = event.touches[0];
         this.onTouchEnd(event);
@@ -39,6 +49,10 @@
         else if (touch.pageY > window.innerWidth * 0.5) this.onKey(true, { keyCode: KeyCodes.TURN_RIGHT });
     }
 
+    /**
+     * 
+     * @param event 
+     */
     private onTouchEnd(event: any): void {
         for (let key of Array.from(this.states)) {
             this.states.set(key[0], false)
