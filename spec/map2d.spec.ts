@@ -28,28 +28,20 @@ describe('Testing Map2D methods', () => {
     let el10 = map.getElem(1, 0);
     let el11 = map.getElem(1, 1);
 
-    if(el00 instanceof MapElement &&
-      el01 instanceof MapElement &&
-      el10 instanceof MapElement &&
-      el11 instanceof MapElement) {
+    try {
       // Test map getters of existing walls/floors
       expect(el00.getType()).toBe(MapElementType.FLOOR);
       expect(el01.getType()).toBe(MapElementType.FLOOR);
       expect(el10.getType()).toBe(MapElementType.WALL);
       expect(el11.getType()).toBe(MapElementType.WALL);
-    } else {
+    } catch (error) {
       fail("Map2D.getElem() is unable to correctly return MapElements.");
     }
 
     // Test map getters of elements outside of the map
-    let elemOutsideMap = map.getElem(-1, 1);
-    expect(elemOutsideMap).toBe(MapElementType.NONE);
-    let elemOutsideMap2 = map.getElem(-1, -3);
-    expect(elemOutsideMap2).toBe(MapElementType.NONE);
-
-    if(elemOutsideMap instanceof MapElement || elemOutsideMap2 instanceof MapElement) {
-      fail("Map2D.getElem() erronously returns an element at coordinates where there is none. Should return MapElementType.NONE.");
-    }
+    expect(function() {map.getElem(-1, 1)}).toThrowError("No MapElement at (-1,1).");
+    expect(function() {map.getElem(-1, -3)}).toThrowError("No MapElement at (-1,-3).");
+    // btw: function() {} is a workaround to get toThrowError working with jasmine
   });
 
   it('should correctly handle getting elements at fractional coordinates', () => {
@@ -57,9 +49,9 @@ describe('Testing Map2D methods', () => {
     map.setElem(0.55123, 8 + 1E-6, new MapElement(MapElementType.FLOOR));
 
     let elem = map.getElem(0, 8);
-    if(elem instanceof MapElement) {
+    try {
       expect(elem.getType()).toBe(MapElementType.FLOOR);
-    } else {
+    } catch (error) {
       fail("Map2D doesn't correctly handle fractional x, y coordinates (like x=3.14 or y = 0.88).");
     }
   });
