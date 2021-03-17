@@ -51,4 +51,16 @@ describe('Testing Map2D methods', () => {
       fail("Map2D.getElem() erronously returns an element at coordinates where there is none. Should return MapElementType.NONE.");
     }
   });
+
+  it('should correctly handle getting elements at fractional coordinates', () => {
+    let map = new Map2D(16);
+    map.setElem(0.55123, 8 + 1E-6, new MapElement(MapElementType.FLOOR));
+
+    let elem = map.getElem(0, 8);
+    if(elem instanceof MapElement) {
+      expect(elem.getType()).toBe(MapElementType.FLOOR);
+    } else {
+      fail("Map2D doesn't correctly handle fractional x, y coordinates (like x=3.14 or y = 0.88).");
+    }
+  });
 });
