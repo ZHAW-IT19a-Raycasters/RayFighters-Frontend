@@ -12,7 +12,9 @@
     TURN_RIGHT = 69, // E
     STRAFE_LEFT = 65, // S
     STRAFE_RIGHT = 68, // D
-    SHOOT = 17 // CTRL
+    SHOOT = 17, // CTRL
+    MOUSE_TURN_LEFT, 
+    MOUSE_TURN_RIGHT 
 }
 
 export { KeyCodes };

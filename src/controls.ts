@@ -8,7 +8,6 @@ class Controls {
     /** 
      * Margin (minus and plus from center of screen) in the middle of the screen, where no turning should happen while using mouse looking.
      */
-    private SCREEN_DIVIDE_VERTICAL: number = 0.2
 
     public states = new Map([
         [KeyCodes.FORWARD, false],
@@ -31,12 +30,7 @@ class Controls {
         document.addEventListener('touchend', this.touchReleaseHandler.bind(this), false);
         document.addEventListener('mousemove', this.mouseMoveHandler.bind(this), false);
         document.addEventListener('onclick', this.mouseClickHandler.bind(this), false);
-
-        // Locking of mouse cursor, enabling of continuous vertical movement
-        document.body.onclick =
-            document.body.requestPointerLock //||
-            //document.body.mozRequestPointerLock || // TODO: Throws error
-            //document.body.webkitRequestPointerLock;
+        document.body.onclick = document.body.requestPointerLock
     }
 
     /**
@@ -103,22 +97,16 @@ class Controls {
      */
     private mouseMoveHandler(event: any) {
         var mousePositionX = (event.movementX || event.mozMovementX || event.webkitMovementX || 0);
-
-        // No turning (mouse in middle of screen)
-        if (mousePositionX < this.SCREEN_DIVIDE_VERTICAL && mousePositionX > -this.SCREEN_DIVIDE_VERTICAL) {
-            this.keyHandler(false, { keyCode: KeyCodes.TURN_LEFT });
-            this.keyHandler(false, { keyCode: KeyCodes.TURN_RIGHT });
-            return;
-        }
-
         // Right turn
-        if (mousePositionX > this.SCREEN_DIVIDE_VERTICAL) {
-            this.keyHandler(true, { keyCode: KeyCodes.TURN_RIGHT });
+        if (mousePositionX > 0) {
+            this.keyHandler(true, { keyCode: KeyCodes.MOUSE_TURN_RIGHT });
+            this.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
         }
 
         // Left turn
-        if (mousePositionX < -this.SCREEN_DIVIDE_VERTICAL) {
-            this.keyHandler(true, { keyCode: KeyCodes.TURN_LEFT });
+        if (mousePositionX < 0) {
+            this.keyHandler(true, { keyCode: KeyCodes.MOUSE_TURN_LEFT });
+            this.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
         }
     }
 
