@@ -1,3 +1,5 @@
+import { KeyCodes } from "../src/keycodes";
+
 /**
  * Control class, handling all user inputs, both touch and via keyboard.
  * To read user input, poll the 'states' map to see if any key is pressed currently.
@@ -32,15 +34,15 @@ class Controls {
 
         // Locking of mouse cursor, enabling of continuous vertical movement
         document.body.onclick =
-            document.body.requestPointerLock ||
-            document.body.mozRequestPointerLock ||
-            document.body.webkitRequestPointerLock;
+            document.body.requestPointerLock //||
+            //document.body.mozRequestPointerLock || // TODO: Throws error
+            //document.body.webkitRequestPointerLock;
     }
 
     /**
      * Clears all currently active keys.
      */
-    private clearInputs() {
+    public clearInputs() {
         for (let key of Array.from(this.states)) {
             this.states.set(key[0], false)
         }
@@ -90,7 +92,7 @@ class Controls {
      * @param event Event that gets passed from the listener. 
      */
     private touchReleaseHandler(event: any): void {
-
+        this.clearInputs();
         event.preventDefault();
         event.stopPropagation();
     }
@@ -104,7 +106,8 @@ class Controls {
 
         // No turning (mouse in middle of screen)
         if (mousePositionX < this.SCREEN_DIVIDE_VERTICAL && mousePositionX > -this.SCREEN_DIVIDE_VERTICAL) {
-            this.clearInputs();
+            this.keyHandler(false, { keyCode: KeyCodes.TURN_LEFT });
+            this.keyHandler(false, { keyCode: KeyCodes.TURN_RIGHT });
             return;
         }
 
@@ -126,24 +129,6 @@ class Controls {
     private mouseClickHandler(event: any) {
         this.states.set(KeyCodes.SHOOT, true); // Bang!
     }
-
-}
-
-/**
- * Key codes and their direction.
- * Moving forwards and backwards with W, S
- * Strafing left and right with A, D
- * Turning left and right with Q, E
- * Shooting with CTRL
- */
-enum KeyCodes {
-    FORWARD = 87, // W
-    BACKWARD = 83, // A
-    TURN_LEFT = 81, // Q
-    TURN_RIGHT = 69, // E
-    STRAFE_LEFT = 65, // S
-    STRAFE_RIGHT = 68, // D
-    SHOOT = 17 // CTRL
 }
 
 export { Controls };
