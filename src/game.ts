@@ -1,6 +1,6 @@
 import { Controls } from './controls';
 import { GameLoop } from './gameloop';
-import { KeyCodes } from './keycodes';
+import { KeyCodes } from './controls';
 import { Renderer } from './renderer';
 
 function runGame(canvasName: string): void {
@@ -17,16 +17,16 @@ function runGame(canvasName: string): void {
     // Begin gameloop using this frame handler
     renderer.render();
     let text = document.getElementById("controlstest")
-    offset = time*500;
+    offset = time * 500;
 
     if (controls.states.get(KeyCodes.FORWARD)) {
-      y += offset;
+      y -= offset;
     }
     if (controls.states.get(KeyCodes.BACKWARD)) {
-      y += -offset;
+      y += offset;
     }
     if (controls.states.get(KeyCodes.STRAFE_LEFT)) {
-      x += -offset;
+      x -= offset;
     }
     if (controls.states.get(KeyCodes.STRAFE_RIGHT)) {
       x += offset;
@@ -41,18 +41,16 @@ function runGame(canvasName: string): void {
     }
     if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
       x += -offset;
-      y -= offset;
       controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
     }
     if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
       x += offset;
-      y -= offset;
       controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
     }
     if (controls.states.get(KeyCodes.SHOOT)) {
-      text.innerText += ' BANG'
+      text.innerText += ' BANG';
     }
-    renderer.move(x, y)
+    renderer.move(x, y);
   });
 }
 

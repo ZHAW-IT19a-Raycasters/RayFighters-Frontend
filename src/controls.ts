@@ -1,4 +1,21 @@
-import { KeyCodes } from "../src/keycodes";
+/**
+ * Key codes and their direction.
+ * Moving forwards and backwards with W, S
+ * Strafing left and right with A, D
+ * Turning left and right with Q, E and mouse left/right
+ * Shooting with Space bar
+ */
+enum KeyCodes {
+    FORWARD = 87, // W
+    BACKWARD = 83, // A
+    TURN_LEFT = 81, // Q
+    TURN_RIGHT = 69, // E
+    STRAFE_LEFT = 65, // S
+    STRAFE_RIGHT = 68, // D
+    SHOOT = 32, // SPACE
+    MOUSE_TURN_LEFT, // No code
+    MOUSE_TURN_RIGHT // No code
+}
 
 /**
  * Control class, handling all user inputs, both touch and via keyboard.
@@ -16,7 +33,9 @@ class Controls {
         [KeyCodes.TURN_RIGHT, false],
         [KeyCodes.STRAFE_LEFT, false],
         [KeyCodes.STRAFE_RIGHT, false],
-        [KeyCodes.SHOOT, false]
+        [KeyCodes.SHOOT, false],
+        [KeyCodes.MOUSE_TURN_LEFT, false],
+        [KeyCodes.MOUSE_TURN_RIGHT, false]
     ]);
 
     /**
@@ -29,7 +48,9 @@ class Controls {
         document.addEventListener('touchmove', this.touchHandler.bind(this), false);
         document.addEventListener('touchend', this.touchReleaseHandler.bind(this), false);
         document.addEventListener('mousemove', this.mouseMoveHandler.bind(this), false);
-        document.addEventListener('onclick', this.mouseClickHandler.bind(this), false);
+        document.addEventListener('mousedown', this.mouseDownHandler.bind(this), false);
+        document.addEventListener('mouseup', this.mouseUpHandler.bind(this), false);
+
         document.body.onclick = document.body.requestPointerLock
     }
 
@@ -114,9 +135,18 @@ class Controls {
      * Handles mouse clicks.
      * @param event Event that gets passed from the listener. 
      */
-    private mouseClickHandler(event: any) {
-        this.states.set(KeyCodes.SHOOT, true); // Bang!
+    private mouseDownHandler(event: any) {
+        this.keyHandler(true, { keyCode: KeyCodes.SHOOT });
+    }
+
+    /**
+     * Handles mouse clicks.
+     * @param event Event that gets passed from the listener. 
+     */
+    private mouseUpHandler(event: any) {
+        this.keyHandler(false, { keyCode: KeyCodes.SHOOT });
     }
 }
 
+export { KeyCodes };
 export { Controls };
