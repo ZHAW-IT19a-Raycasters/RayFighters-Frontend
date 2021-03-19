@@ -17,6 +17,7 @@ enum KeyCodes {
     MOUSE_TURN_RIGHT // No code
 }
 
+
 /**
  * Control class, handling all user inputs, both touch and via keyboard.
  * To read user input, poll the 'states' map to see if any key is pressed currently.
@@ -38,6 +39,8 @@ class Controls {
         [KeyCodes.MOUSE_TURN_RIGHT, false]
     ]);
 
+    private shootbutton : any = document.getElementById('shootbutton');
+
     /**
      * Constructor of control class. Registers all event handlers.
      */
@@ -50,7 +53,10 @@ class Controls {
         document.addEventListener('mousemove', this.mouseMoveHandler.bind(this), false);
         document.addEventListener('mousedown', this.mouseDownHandler.bind(this), false);
         document.addEventListener('mouseup', this.mouseUpHandler.bind(this), false);
-
+        this.shootbutton.onclick = function () { 
+            alert("bang!"); 
+            this.keyHandler(false, { keyCode: KeyCodes.SHOOT }); 
+        }
         document.body.onclick = document.body.requestPointerLock
     }
 

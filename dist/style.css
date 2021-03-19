@@ -1,5 +1,29 @@
 body {
+  font-family: 'Comic Sans MS';
+}
 
+#shootbutton {
+  height: 100px;
+  width: 100px;
+  
+  position: fixed;
+  overflow: hidden;
+  right: 30px;
+  top: 30px;
+
+  text-align: center;
+
+  background-color: red;
+  color: white;
+  font-size: x-large;
+
+  border: 5px solid;
+  border-color: white;
+  border-radius: 80px;
+
+  box-shadow: 0px 10px 18px red;
+
+  transform: rotate(10deg);
 }
 
 canvas#game-canvas {
