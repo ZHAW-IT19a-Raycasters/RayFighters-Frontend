@@ -10,7 +10,7 @@ class Player {
   private position_x: number;
   private position_y: number;
   private direction: number;
-  private currWeapon: any;
+  private currWeapon: HTMLImageElement;
   private paces: any;
 
   public getPosition(): [number, number] {
@@ -19,6 +19,10 @@ class Player {
 
   public getDirection(): number {
     return this.direction;
+  }
+
+  public getcurrWeapon(): HTMLImageElement {
+    return this.currWeapon;
   }
 
   /***
@@ -31,19 +35,20 @@ class Player {
     this.position_x = x;
     this.position_y = y;
     this.direction = direction;
-    // TODO: this.weapon = default;
+    this.setWeapon('assets/plug_hand.png', 319, 320);
     this.paces = 0;
   }
-
-  /*
-  TODO: BitMAP
-    function Bitmap(src, width, height) {
-      this.image = new Image();
-      this.image.src = src;
-      this.width = width;
-      this.height = height;
-    }
-*/
+  /***
+   * Sets the Image of the weapon the Player is yielding
+   *
+   * @param src path to the image
+   * @param width width of the image
+   * @param height height of the image
+   */
+  public setWeapon(src: string, width: number, height: number): void {
+    this.currWeapon = new Image(width, height);
+    this.currWeapon.src = src;
+  }
 
   /***
    * Rotates Player: Simulates head turning.
@@ -84,8 +89,8 @@ class Player {
     if (controls.states.get(KeyCodes.TURN_RIGHT)) this.rotate(Math.PI * seconds);
     if (controls.states.get(KeyCodes.FORWARD)) this.walk(3 * seconds, map, this.direction);
     if (controls.states.get(KeyCodes.BACKWARD)) this.walk(-3 * seconds, map, this.direction);
-    if (controls.states.get(KeyCodes.STRAFE_LEFT)) this.walk(3 * seconds, map, this.direction - Math.PI/2);
-    if (controls.states.get(KeyCodes.STRAFE_RIGHT)) this.walk(-3 * seconds, map, this.direction - Math.PI/2);
+    if (controls.states.get(KeyCodes.STRAFE_LEFT)) this.walk(3 * seconds, map, this.direction - Math.PI / 2);
+    if (controls.states.get(KeyCodes.STRAFE_RIGHT)) this.walk(-3 * seconds, map, this.direction - Math.PI / 2);
   }
 }
 
