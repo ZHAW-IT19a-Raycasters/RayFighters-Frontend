@@ -1,5 +1,8 @@
 body {
   font-family: 'Comic Sans MS';
+  margin: 0; /* disable scrolling */
+  height: 100%; /* disable scrolling */
+  overflow: hidden; /* disable scrolling */
 }
 
 #shootbutton {

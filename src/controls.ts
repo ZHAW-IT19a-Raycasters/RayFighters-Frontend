@@ -39,7 +39,8 @@ class Controls {
         [KeyCodes.MOUSE_TURN_RIGHT, false]
     ]);
 
-    private shootbutton : any = document.getElementById('shootbutton');
+    private shootButton: any = document.getElementById('shootbutton');
+    private shootButtonRect : any;
 
     /**
      * Constructor of control class. Registers all event handlers.
@@ -53,10 +54,6 @@ class Controls {
         document.addEventListener('mousemove', this.mouseMoveHandler.bind(this), false);
         document.addEventListener('mousedown', this.mouseDownHandler.bind(this), false);
         document.addEventListener('mouseup', this.mouseUpHandler.bind(this), false);
-        this.shootbutton.onclick = function () { 
-            alert("bang!"); 
-            this.keyHandler(false, { keyCode: KeyCodes.SHOOT }); 
-        }
         document.body.onclick = document.body.requestPointerLock
     }
 
@@ -94,17 +91,28 @@ class Controls {
     private touchHandler(event: any): void {
         var touch = event.touches[0];
         this.touchReleaseHandler(event);
+        this.shootButtonRect = this.shootButton.getBoundingClientRect() // Update position of shoot button in case the device was rotated
 
-        // TODO poll on-screen shoot button that is used exclusively on mobile and do early return to skip movement handling
-
+        if (touch.pageY >= this.shootButtonRect.y && touch.pageY <= this.shootButtonRect.y + this.shootButtonRect.height && 
+            touch.pageX >= this.shootButtonRect.x && touch.pageX <= this.shootButtonRect.x + this.shootButtonRect.width) {
+            this.keyHandler(true, { keyCode: KeyCodes.SHOOT });
+            return;
+        }
+        
         if (touch.pageY < window.innerHeight * 0.5) {
             this.keyHandler(true, { keyCode: KeyCodes.FORWARD });
         }
-        else if (touch.pageX < window.innerWidth * 0.5) {
+
+        else if (touch.pageX < window.innerWidth * 0.3) {
             this.keyHandler(true, { keyCode: KeyCodes.TURN_LEFT });
         }
-        else if (touch.pageY > window.innerWidth * 0.5) {
+
+        else if (touch.pageX > window.innerWidth * 0.7) {
             this.keyHandler(true, { keyCode: KeyCodes.TURN_RIGHT });
+        }
+
+        else if (touch.pageY > window.innerHeight * 0.5) {
+            this.keyHandler(true, { keyCode: KeyCodes.BACKWARD }); 
         }
     }
 
@@ -114,7 +122,7 @@ class Controls {
      */
     private touchReleaseHandler(event: any): void {
         this.clearInputs();
-        event.preventDefault();
+        // event.preventDefault(); // TODO Throws error on console - Only test with a real mobile can tell if this line can be removed
         event.stopPropagation();
     }
 

@@ -33,11 +33,9 @@ function runGame(canvasName: string): void {
     }
     if (controls.states.get(KeyCodes.TURN_LEFT)) { // WARNING! Possible speed exploit by pressing STRAFE + TURN together! May need to be handled in Player class
       x += -offset;
-      y -= offset;
     }
     if (controls.states.get(KeyCodes.TURN_RIGHT)) {
       x += offset;
-      y -= offset;
     }
     if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
       x += -offset;
