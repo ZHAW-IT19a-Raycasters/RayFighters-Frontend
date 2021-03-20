@@ -32,6 +32,11 @@ class Renderer {
     this.ctx.restore();
   }
 
+  /**
+   * Image move method, just used for controls demo.
+   * @param x coordinate
+   * @param y coordinate
+   */
   public move(x: number, y: number){
     this.ctx.drawImage(this.image, 100 + x, 100 + y, 500, 500);
   }
