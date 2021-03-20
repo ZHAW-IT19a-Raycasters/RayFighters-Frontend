@@ -13,4 +13,8 @@ export class Vec2D {
         this.x = Math.floor(this.x);
         this.y = Math.floor(this.y);
     }
+
+    public toString(): string {
+        return `(${this.x}, ${this.y})`;
+    }
 }

@@ -40,9 +40,8 @@ describe('Testing Map2D methods', () => {
     }
 
     // Test map getters of elements outside of the map
-    expect(function() {map.getElem(new Vec2D(-1, 1))}).toThrowError("No MapElement at (-1,1).");
-    expect(function() {map.getElem(new Vec2D(-1, -3))}).toThrowError("No MapElement at (-1,-3).");
-    // btw: function() {} is a workaround to get toThrowError working with jasmine
+    expect(map.getElem(new Vec2D(-1, 1)).getType()).toBe(MapElementType.NONE);
+    expect(map.getElem(new Vec2D(-1, -3)).getType()).toBe(MapElementType.NONE);
   });
 
   it('should correctly handle getting elements at fractional coordinates', () => {

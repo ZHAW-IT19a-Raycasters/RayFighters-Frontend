@@ -49,7 +49,7 @@ class Map2D {
         if (pos.x < 0 || pos.x > this.size - 1 || pos.y < 0 || pos.y > this.size - 1) {
             // If the coordinate x or y is outside of the map, then return the
             // non-existant map element type:
-            throw new Error(`No MapElement at (${pos.x},${pos.y}).`);
+            return new MapElement(MapElementType.NONE);
         }
         return this.map[pos.y * this.size + pos.x];
     }
@@ -59,6 +59,26 @@ class Map2D {
         if(pos.x >= 0 && pos.x <= this.size - 1 && pos.y >= 0 && pos.y <= this.size - 1) {
             this.map[pos.y * this.size + pos.x] = newElem;
         }
+    }
+
+    public toString(): string {
+        let str: string = '   '
+        for(let i = 0; i < this.getSize(); i++) { str += `${i} ` }
+        str += '\n';
+
+        for(let i = 0, row = 0; i < this.map.length; i++) {
+            const colIndex = i % this.getSize();
+            const elem = this.map[i].getType();
+            if(colIndex === 0) {
+                str += `${row} [${elem} `;
+                ++row;
+            } else if(colIndex === this.getSize() - 1) {
+                str += `${elem}]\n`
+            } else {
+                str += `${elem} `
+            }
+        }
+        return str;
     }
 
     /**
@@ -78,7 +98,21 @@ class Map2D {
     }
 
     /**
-     * name
+     * Fill map with floors
+     */
+    public initialize(): void {
+        for (var i = 0; i < this.getElementCount(); i++) {
+            this.map[i] = new MapElement(MapElementType.FLOOR);
+        }
+    }
+
+    /**
+     * Cast a ray from an origin point in a certain direction with a range cutoff.
+     * 
+     * @param origin Origin position. The player's standing position.
+     * @param angle Ray shooting angle in radians. The player's direction.
+     * @param range Maximum drawing distance. 1 unit = 1 MapElement.
+     * @returns Array of steps composing the ray casted.
      */
     public rayCast(origin: Vec2D, angle: number, range: number): Step[] {
         // x: length of the opposite in the triangle

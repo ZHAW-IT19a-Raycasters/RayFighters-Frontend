@@ -8,11 +8,14 @@ import { Map2D, MapElement, MapElementType } from './map2d';
 class Room {
     private map: Map2D;
 
-    constructor(mapSize: number) {
+    constructor(mapSize: number, isRandomized: boolean = false) {
         this.map = new Map2D(mapSize);
 
-        // randomize map by default for now:
-        this.map.randomize();
+        if(isRandomized) {
+            this.map.randomize();
+        } else {
+            this.map.initialize();
+        }
     }
 
     public get getMap() : Map2D {
