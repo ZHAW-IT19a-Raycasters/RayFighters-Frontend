@@ -14,6 +14,11 @@ class Room {
         // randomize map by default for now:
         this.map.randomize();
     }
+
+    public get getMap() : Map2D {
+        return this.map;
+    }
+    
 }
 
 

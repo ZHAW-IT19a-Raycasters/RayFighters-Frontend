@@ -1,3 +1,5 @@
+import { Point2D } from "../src/point2d";
+
 class Map2D {
     /**
      * width = height of the map.
@@ -15,7 +17,7 @@ class Map2D {
 
     constructor(size: number) {
         this.size = size;
-        this.map = new Array<MapElement>(size * size);
+        this.map = new Array<MapElement>(size**2);
     }
 
     public getSize(): number {
@@ -39,22 +41,20 @@ class Map2D {
      * @param y vertical coordinate of the map
      * @returns The ELEMENT of map at (x,y) ONLY if it's inside the map, othertype MapElementType.NONE (!)
      */
-    public getElem(x: number, y: number): MapElement {
-        x = Math.floor(x);
-        y = Math.floor(y);
-        if (x < 0 || x > this.size - 1 || y < 0 || y > this.size - 1) {
+    public getElem(pos: Point2D): MapElement {
+        pos.floor();
+        if (pos.x < 0 || pos.x > this.size - 1 || pos.y < 0 || pos.y > this.size - 1) {
             // If the coordinate x or y is outside of the map, then return the
             // non-existant map element type:
-            throw new Error(`No MapElement at (${x},${y}).`);
+            throw new Error(`No MapElement at (${pos.x},${pos.y}).`);
         }
-        return this.map[y * this.size + x];
+        return this.map[pos.y * this.size + pos.x];
     }
 
-    public setElem(x: number, y: number, newElem: MapElement): void {
-        x = Math.floor(x);
-        y = Math.floor(y);
-        if(x >= 0 && x <= this.size - 1 && y >= 0 && y <= this.size - 1) {
-            this.map[y * this.size + x] = newElem;
+    public setElem(pos: Point2D, newElem: MapElement): void {
+        pos.floor();
+        if(pos.x >= 0 && pos.x <= this.size - 1 && pos.y >= 0 && pos.y <= this.size - 1) {
+            this.map[pos.y * this.size + pos.x] = newElem;
         }
     }
 
@@ -72,6 +72,12 @@ class Map2D {
                 this.map[i] = new MapElement(MapElementType.FLOOR);
             }
         }
+    }
+
+    /**
+     * name
+     */
+    public rayCast(origin: Point2D) {
     }
 }
 
