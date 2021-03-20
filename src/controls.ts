@@ -60,7 +60,7 @@ class Controls {
     /**
      * Clears all currently active keys.
      */
-    public clearInputs() {
+    public clearInputs(): void {
         for (let key of Array.from(this.states)) {
             this.states.set(key[0], false)
         }
@@ -130,7 +130,7 @@ class Controls {
      * Handles mouse look.
      * @param event Event that gets passed from the listener. 
      */
-    private mouseMoveHandler(event: any) {
+    private mouseMoveHandler(event: any): void {
         var mousePositionX = (event.movementX || event.mozMovementX || event.webkitMovementX || 0);
         // Right turn
         if (mousePositionX > 0) {
@@ -149,7 +149,7 @@ class Controls {
      * Handles mouse clicks.
      * @param event Event that gets passed from the listener. 
      */
-    private mouseDownHandler(event: any) {
+    private mouseDownHandler(event: any): void {
         this.keyHandler(true, { keyCode: KeyCodes.SHOOT });
     }
 
@@ -157,7 +157,7 @@ class Controls {
      * Handles mouse clicks.
      * @param event Event that gets passed from the listener. 
      */
-    private mouseUpHandler(event: any) {
+    private mouseUpHandler(event: any): void {
         this.keyHandler(false, { keyCode: KeyCodes.SHOOT });
     }
 }
