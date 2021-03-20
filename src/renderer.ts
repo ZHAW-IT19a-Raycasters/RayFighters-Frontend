@@ -4,6 +4,7 @@ class Renderer {
     */
   canvas: any; 
   ctx: any;
+  image: any;
 
   /**
     * @constructor
@@ -14,14 +15,23 @@ class Renderer {
   constructor(canv: any, res: number, focal: number) {
     this.canvas = canv;
     this.ctx = canv.getContext('2d');
+    this.canvas.width = window.innerWidth
+    this.canvas.height = window.innerHeight
+    this.image = new Image(1000, 1000); // Using optional size for image
+    this.image.src = 'https://static.wikia.nocookie.net/virgin-vs-chad/images/7/79/Chad.png';
+    
     
   }
 
   render(): void {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.save();
-    this.ctx.fillRect(20, 20, 300, 100);
     // TODO: Render the entirety of the game here
     this.ctx.restore();
+  }
+
+  public move(x: number, y: number){
+    this.ctx.drawImage(this.image, 100 + x, 100 + y, 500, 500);
   }
 }
 
