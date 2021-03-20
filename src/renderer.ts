@@ -1,9 +1,12 @@
+import { Room } from './room';
+
 class Renderer {
   /**
     * Canvas DOM element to draw in
     */
   canvas: any; 
   ctx: any;
+  room: Room;
   image: any;
 
   /**
@@ -15,12 +18,11 @@ class Renderer {
   constructor(canv: any, res: number, focal: number) {
     this.canvas = canv;
     this.ctx = canv.getContext('2d');
+    this.room = new Room(123);
     this.canvas.width = window.innerWidth
     this.canvas.height = window.innerHeight
     this.image = new Image(1000, 1000); // Using optional size for image
     this.image.src = 'https://static.wikia.nocookie.net/virgin-vs-chad/images/7/79/Chad.png';
-    
-    
   }
 
   render(): void {

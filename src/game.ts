@@ -1,11 +1,14 @@
-import { Controls } from './controls';
+import { Controls, KeyCodes } from './controls';
 import { GameLoop } from './gameloop';
-import { KeyCodes } from './controls';
+import { Map2D, MapElement, MapElementType } from './map2d';
 import { Renderer } from './renderer';
+import { Room } from './room';
+import { Vec2D } from './vec2d';
 
 function runGame(canvasName: string): void {
   // The element that contains the canvas element to drawn in
   let canvas = document.getElementById(canvasName);
+  let room = new Room(4, true)
   let renderer = new Renderer(canvas, canvas.clientWidth, 0.8);
   let loop = new GameLoop();
   let controls = new Controls();
