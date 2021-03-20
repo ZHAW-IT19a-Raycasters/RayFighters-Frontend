@@ -1,12 +1,7 @@
-import { Point2D } from "../src/point2d";
+import { Vec2D } from "./vec2d";
+import { Raycaster, Step } from "../src/raycaster";
 
 class Map2D {
-    /**
-     * width = height of the map.
-     * It's a square for now.
-     */
-    private size: number;
-
     /**
      * An array describing the map (whether a cell has a wall or
      * not): wall = 1, floor = 0
@@ -15,9 +10,17 @@ class Map2D {
      */
     private map: Array<MapElement>;
 
-    constructor(size: number) {
-        this.size = size;
+    /**
+     * To shoot rays and find out where they hit on (this) map.
+     */
+    private raycaster: Raycaster;
+
+    /**
+     * size refers to the height and width of the map (it's square)
+     */
+    constructor(private size: number) {
         this.map = new Array<MapElement>(size**2);
+        this.raycaster = new Raycaster(this);
     }
 
     public getSize(): number {
@@ -41,7 +44,7 @@ class Map2D {
      * @param y vertical coordinate of the map
      * @returns The ELEMENT of map at (x,y) ONLY if it's inside the map, othertype MapElementType.NONE (!)
      */
-    public getElem(pos: Point2D): MapElement {
+    public getElem(pos: Vec2D): MapElement {
         pos.floor();
         if (pos.x < 0 || pos.x > this.size - 1 || pos.y < 0 || pos.y > this.size - 1) {
             // If the coordinate x or y is outside of the map, then return the
@@ -51,7 +54,7 @@ class Map2D {
         return this.map[pos.y * this.size + pos.x];
     }
 
-    public setElem(pos: Point2D, newElem: MapElement): void {
+    public setElem(pos: Vec2D, newElem: MapElement): void {
         pos.floor();
         if(pos.x >= 0 && pos.x <= this.size - 1 && pos.y >= 0 && pos.y <= this.size - 1) {
             this.map[pos.y * this.size + pos.x] = newElem;
@@ -77,7 +80,18 @@ class Map2D {
     /**
      * name
      */
-    public rayCast(origin: Point2D) {
+    public rayCast(origin: Vec2D, angle: number, range: number): Step[] {
+        // x: length of the opposite in the triangle
+        // y: length of the adjacent in the trangle
+        const direction = new Vec2D(Math.cos(angle), Math.sin(angle))
+        const initialStep = new Step(origin, 0, new MapElement(MapElementType.NONE), 0);
+
+        // Update raycaster parameters:
+        this.raycaster.dir = direction;
+        this.raycaster.range = range;
+
+        // Recursively build up steps until ray hits something:
+        return this.raycaster.ray(initialStep);
     }
 }
 
