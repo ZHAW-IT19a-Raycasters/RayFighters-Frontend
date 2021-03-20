@@ -55,4 +55,46 @@ describe('Testing Map2D methods', () => {
       fail("Map2D doesn't correctly handle fractional x, y coordinates (like x=3.14 or y = 0.88).");
     }
   });
+
+  it('should be able to raycast outside of the map', () => {
+    const maxSteps = 4;
+    const rayOrigin = new Vec2D(1.5, 1.5);
+    const rayAngle = -0.5 * Math.PI; // looking straight up
+    const map = new Map2D(4); // 4x4 map
+    map.initialize(); // Map with no walls
+    const steps = map.rayCast(rayOrigin, rayAngle, maxSteps);
+
+    expect(steps.length).toBe(maxSteps + 1);
+    expect(steps[0].pos).toEqual(rayOrigin);
+    expect(steps[0].height.getType()).toBe(MapElementType.NONE);
+    expect(steps[1].pos).toEqual(new Vec2D(rayOrigin.x, 1));
+    expect(steps[1].height.getType()).toBe(MapElementType.FLOOR);
+    expect(steps[2].pos).toEqual(new Vec2D(rayOrigin.x, 0));
+    expect(steps[2].height.getType()).toBe(MapElementType.NONE);
+    expect(steps[3].pos).toEqual(new Vec2D(rayOrigin.x, -1));
+    expect(steps[3].height.getType()).toBe(MapElementType.NONE);
+    expect(steps[4].pos).toEqual(new Vec2D(rayOrigin.x, -2));
+    expect(steps[4].height.getType()).toBe(MapElementType.NONE);
+  });
+
+  it('should raycast and hit a wall', () => {
+    const maxSteps = 4;
+    const rayOrigin = new Vec2D(3.5, 3.5); // we're on the bottom right of the map
+    const rayAngle = -0.75 * Math.PI; // looking up-left (135°)
+    const map = new Map2D(4); // 4x4 map
+    map.initialize(); // Map with no walls
+    // Put a wall at the top left:
+    map.setElem(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
+    const steps = map.rayCast(rayOrigin, rayAngle, maxSteps);
+
+    expect(steps.length <= maxSteps + 1).toBeTruthy();
+    expect(steps[0].pos).toEqual(rayOrigin);
+    expect(steps[0].height.getType()).toBe(MapElementType.NONE);
+    expect(steps[1].pos).toEqual(new Vec2D(3, 3));
+    expect(steps[1].height.getType()).toBe(MapElementType.FLOOR);
+    expect(steps[2].pos).toEqual(new Vec2D(2, 2));
+    expect(steps[2].height.getType()).toBe(MapElementType.FLOOR);
+    expect(steps[3].pos).toEqual(new Vec2D(1, 1));
+    expect(steps[3].height.getType()).toBe(MapElementType.WALL);
+  });
 });
