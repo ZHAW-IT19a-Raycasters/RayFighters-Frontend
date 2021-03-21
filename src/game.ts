@@ -1,7 +1,8 @@
 import { Controls, KeyCodes } from './controls';
 import { GameLoop } from './gameloop';
 import { Map2D, MapElement, MapElementType } from './map2d';
-import { Renderer } from './renderer';
+import { Player } from './player';
+import { Image2D, Renderer } from './renderer';
 import { Room } from './room';
 import { Vec2D } from './vec2d';
 
@@ -15,10 +16,14 @@ function runGame(canvasName: string): void {
   let offset = 0;
   let x: number = 0;
   let y: number = 0;
+  let player = new Player(0,0,0);
+
+  room.setSkyBox(new Image2D("./assets/desert.jpg", 3510, 1440))
 
   loop.begin(function (time: number) {
     // Begin gameloop using this frame handler
-    renderer.render();
+    renderer.render(room, player);
+
     let text = document.getElementById("controlstest")
     offset = time * 500;
 
@@ -35,17 +40,17 @@ function runGame(canvasName: string): void {
       x += offset;
     }
     if (controls.states.get(KeyCodes.TURN_LEFT)) { // WARNING! Possible speed exploit by pressing STRAFE + TURN together! May need to be handled in Player class
-      x += -offset;
+      player.rotate(-Math.PI*time);
     }
     if (controls.states.get(KeyCodes.TURN_RIGHT)) {
-      x += offset;
+      player.rotate(Math.PI*time);
     }
     if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
-      x += -offset;
+      player.rotate(-Math.PI*time);
       controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
     }
     if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
-      x += offset;
+      player.rotate(Math.PI*time);
       controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
     }
     if (controls.states.get(KeyCodes.SHOOT)) {

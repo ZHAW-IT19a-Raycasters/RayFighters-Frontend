@@ -1,6 +1,8 @@
-import { Map } from "./map";
-import { KeyCodes } from "./keycodes";
+import { Map2D } from "./map2D";
+import { KeyCodes } from "./controls";
 import { Controls } from "./controls";
+import { Vec2D } from "./vec2d";
+import { Renderer } from "./renderer";
 
 /**
  * Player class, handling all the Player actions.
@@ -56,8 +58,7 @@ class Player {
    * @param angle angle by how much the player rotates
    */
   public rotate(angle: number): void {
-    const CIRCLE = Math.PI * 2;
-    this.direction = (this.direction + angle + CIRCLE) % CIRCLE;
+    this.direction = (this.direction + angle + Renderer.CIRCLE) % Renderer.CIRCLE;
   }
 
   /***
@@ -67,12 +68,12 @@ class Player {
    * @param map {@link Map}
    * @param direction which direction to walk
    */
-  public walk(distance: number, map: Map, direction: number): void {
+  public walk(distance: number, map: Map2D, direction: number): void {
     const dx = Math.cos(direction) * distance;
     const dy = Math.sin(direction) * distance;
-    if (map.get(this.position_x + dx, this.position_y) <= 0)
+    if (map.getElem(new Vec2D(this.position_x + dx, this.position_y)).getType() <= 0)
       this.position_x += dx;
-    if (map.get(this.position_x, this.position_y + dy) <= 0)
+    if (map.getElem(new Vec2D(this.position_x, this.position_y + dy)).getType() <= 0)
       this.position_y += dy;
     this.paces += distance;
   }
@@ -84,7 +85,7 @@ class Player {
    * @param map {@link Map}
    * @param seconds
    */
-  public update(controls: Controls, map: Map, seconds: number): void {
+  public update(controls: Controls, map: Map2D, seconds: number): void {
     if (controls.states.get(KeyCodes.TURN_LEFT)) this.rotate(-Math.PI * seconds);
     if (controls.states.get(KeyCodes.TURN_RIGHT)) this.rotate(Math.PI * seconds);
     if (controls.states.get(KeyCodes.FORWARD)) this.walk(3 * seconds, map, this.direction);

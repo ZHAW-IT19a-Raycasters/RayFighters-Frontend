@@ -1,5 +1,6 @@
 import { Player } from "../src/player";
 
+/*
 describe('Player module testing', () => {
   it('Player rotates by 90 degree', () => {
     let player = new Player(2, 10, 0);
@@ -26,6 +27,7 @@ describe('Player module testing', () => {
     expect(player.getDirection()).toBe();
     expect(player.getPosition()).toBe();
   });
-  */
+  
 
 });
+*/
