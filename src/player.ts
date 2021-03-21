@@ -1,4 +1,4 @@
-import { Map2D } from "./map2D";
+import { Map2D } from "./map2d";
 import { KeyCodes } from "./controls";
 import { Controls } from "./controls";
 import { Vec2D } from "./vec2d";
