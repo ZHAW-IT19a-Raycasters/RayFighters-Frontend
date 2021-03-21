@@ -88,6 +88,14 @@ class Player {
   public update(controls: Controls, map: Map2D, seconds: number): void {
     if (controls.states.get(KeyCodes.TURN_LEFT)) this.rotate(-Math.PI * seconds);
     if (controls.states.get(KeyCodes.TURN_RIGHT)) this.rotate(Math.PI * seconds);
+    if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
+      this.rotate(-Math.PI * (seconds * 0.75));
+      controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false) // TODO Changed this, sowwy
+    }
+    if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
+      this.rotate(Math.PI *  (seconds * 0.75));
+      controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false) // TODO Changed this, sowwy
+    }
     if (controls.states.get(KeyCodes.FORWARD)) this.walk(3 * seconds, map, this.direction);
     if (controls.states.get(KeyCodes.BACKWARD)) this.walk(-3 * seconds, map, this.direction);
     if (controls.states.get(KeyCodes.STRAFE_LEFT)) this.walk(3 * seconds, map, this.direction - Math.PI / 2);

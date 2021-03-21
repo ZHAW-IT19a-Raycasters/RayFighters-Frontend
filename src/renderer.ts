@@ -38,6 +38,7 @@ class Renderer {
    */
   private focalLength: number;
 
+
   /**
     * @constructor
     * @param {DOM} canv - Canvas element to draw game in
@@ -53,12 +54,19 @@ class Renderer {
     this.spacing = canvas.width / resolution;
     this.drawDistance = drawDistance || Renderer.STANDARD_DRAWDISTANCE;
     this.focalLength = focal || Renderer.STANDARD_FOCAL;
+
+
+    let gradient = this.context.createLinearGradient(canvas.width / 2, canvas.height / 2, canvas.width / 2, canvas.height);
+    gradient.addColorStop(1, '#666666');
+    gradient.addColorStop(0, '#000000');
+    this.context.fillStyle = gradient;
   }
 
   render(room: Room, player: Player): void {
     this.context.save();
     //this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.drawSkyBox(room.getSkyBox, player.getDirection())
+    this.context.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2)
     this.drawWalls(room, player)
     // TODO: Render the entirety of the game here
     this.context.restore();
