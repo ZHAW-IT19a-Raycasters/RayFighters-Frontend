@@ -9,54 +9,21 @@ import { Vec2D } from './vec2d';
 function runGame(canvasName: string): void {
   // The element that contains the canvas element to drawn in
   let canvas = document.getElementById(canvasName);
-  let room = new Room(4, true)
-  let renderer = new Renderer(canvas, canvas.clientWidth, 0.8);
+  let room = new Room(32, true)
+  console.log(room.getMap.toString())
+  let renderer = new Renderer(canvas, 300, 32, 0.6);
   let loop = new GameLoop();
   let controls = new Controls();
-  let offset = 0;
-  let x: number = 0;
-  let y: number = 0;
-  let player = new Player(0,0,0);
+  let player = new Player(1,1,0.3*Math.PI);
 
-  room.setSkyBox(new Image2D("./assets/desert.jpg", 3510, 1440))
+  room.setSkyBox(new Image2D("./assets/sceneries/desert.jpg", 3510, 1440))
+  room.getWallImages.push(new Image2D("./assets/walls/concrete_neon_blue.jpg", 2048, 2048))
 
   loop.begin(function (time: number) {
     // Begin gameloop using this frame handler
+    player.update(controls, room.getMap, time)    
     renderer.render(room, player);
 
-    let text = document.getElementById("controlstest")
-    offset = time * 500;
-
-    if (controls.states.get(KeyCodes.FORWARD)) {
-      y -= offset;
-    }
-    if (controls.states.get(KeyCodes.BACKWARD)) {
-      y += offset;
-    }
-    if (controls.states.get(KeyCodes.STRAFE_LEFT)) {
-      x -= offset;
-    }
-    if (controls.states.get(KeyCodes.STRAFE_RIGHT)) {
-      x += offset;
-    }
-    if (controls.states.get(KeyCodes.TURN_LEFT)) { // WARNING! Possible speed exploit by pressing STRAFE + TURN together! May need to be handled in Player class
-      player.rotate(-Math.PI*time);
-    }
-    if (controls.states.get(KeyCodes.TURN_RIGHT)) {
-      player.rotate(Math.PI*time);
-    }
-    if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
-      player.rotate(-Math.PI*time);
-      controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
-    }
-    if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
-      player.rotate(Math.PI*time);
-      controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
-    }
-    if (controls.states.get(KeyCodes.SHOOT)) {
-      text.innerText += ' BANG';
-    }
-    renderer.move(x, y);
   });
 }
 

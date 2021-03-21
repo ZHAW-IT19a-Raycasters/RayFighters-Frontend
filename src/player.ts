@@ -15,8 +15,8 @@ class Player {
   private currWeapon: HTMLImageElement;
   private paces: any;
 
-  public getPosition(): [number, number] {
-    return [this.position_x, this.position_y];
+  public getPosition(): Vec2D {
+    return new Vec2D(this.position_x, this.position_y); // TODO Changed this, sowwy
   }
 
   public getDirection(): number {
@@ -37,7 +37,7 @@ class Player {
     this.position_x = x;
     this.position_y = y;
     this.direction = direction;
-    this.setWeapon('assets/plug_hand.png', 319, 320);
+    //this.setWeapon('assets/plug_hand.png', 319, 320);
     this.paces = 0;
   }
   /***
@@ -71,9 +71,9 @@ class Player {
   public walk(distance: number, map: Map2D, direction: number): void {
     const dx = Math.cos(direction) * distance;
     const dy = Math.sin(direction) * distance;
-    if (map.getElem(new Vec2D(this.position_x + dx, this.position_y)).getType() <= 0)
+    if (map.getElem(new Vec2D(this.position_x + dx, this.position_y)).getType() <= 0) // TODO Changed this, sowwy
       this.position_x += dx;
-    if (map.getElem(new Vec2D(this.position_x, this.position_y + dy)).getType() <= 0)
+    if (map.getElem(new Vec2D(this.position_x, this.position_y + dy)).getType() <= 0) // TODO Changed this, sowwy
       this.position_y += dy;
     this.paces += distance;
   }
