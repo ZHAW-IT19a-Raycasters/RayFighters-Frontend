@@ -112,8 +112,14 @@ class Renderer {
       if (s === hit) {
         let textureX = Math.floor(texture.width * step.offset);
         let wall = this.calculateWall(step.mapElement.getType(), rayAngle, step.distance);
-        //this.context.globalAlpha = 1;
+
+        this.context.globalAlpha = 1;
         this.context.drawImage(texture.image, textureX, 0, 1, texture.height, left, wall.top, width, wall.height);
+
+        // Make walls drawn further back darker for basic shading:
+        this.context.fillStyle = '#000000';
+        this.context.globalAlpha = Math.max((step.distance) / (this.drawDistance * 0.75), 0);
+        this.context.fillRect(left, wall.top, width, wall.height);
       }
     }
   }
