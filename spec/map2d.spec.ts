@@ -66,15 +66,15 @@ describe('Testing Map2D methods', () => {
 
     expect(steps.length).toBe(maxSteps + 1);
     expect(steps[0].pos).toEqual(rayOrigin);
-    expect(steps[0].height.getType()).toBe(MapElementType.NONE);
+    expect(steps[0].mapElement.getType()).toBe(MapElementType.NONE);
     expect(steps[1].pos).toEqual(new Vec2D(rayOrigin.x, 1));
-    expect(steps[1].height.getType()).toBe(MapElementType.FLOOR);
+    expect(steps[1].mapElement.getType()).toBe(MapElementType.FLOOR);
     expect(steps[2].pos).toEqual(new Vec2D(rayOrigin.x, 0));
-    expect(steps[2].height.getType()).toBe(MapElementType.NONE);
+    expect(steps[2].mapElement.getType()).toBe(MapElementType.NONE);
     expect(steps[3].pos).toEqual(new Vec2D(rayOrigin.x, -1));
-    expect(steps[3].height.getType()).toBe(MapElementType.NONE);
+    expect(steps[3].mapElement.getType()).toBe(MapElementType.NONE);
     expect(steps[4].pos).toEqual(new Vec2D(rayOrigin.x, -2));
-    expect(steps[4].height.getType()).toBe(MapElementType.NONE);
+    expect(steps[4].mapElement.getType()).toBe(MapElementType.NONE);
   });
 
   it('should raycast and hit a wall', () => {
@@ -89,12 +89,12 @@ describe('Testing Map2D methods', () => {
 
     expect(steps.length <= maxSteps + 1).toBeTruthy();
     expect(steps[0].pos).toEqual(rayOrigin);
-    expect(steps[0].height.getType()).toBe(MapElementType.NONE);
+    expect(steps[0].mapElement.getType()).toBe(MapElementType.NONE);
     expect(steps[1].pos).toEqual(new Vec2D(3, 3));
-    expect(steps[1].height.getType()).toBe(MapElementType.FLOOR);
+    expect(steps[1].mapElement.getType()).toBe(MapElementType.FLOOR);
     expect(steps[2].pos).toEqual(new Vec2D(2, 2));
-    expect(steps[2].height.getType()).toBe(MapElementType.FLOOR);
+    expect(steps[2].mapElement.getType()).toBe(MapElementType.FLOOR);
     expect(steps[3].pos).toEqual(new Vec2D(1, 1));
-    expect(steps[3].height.getType()).toBe(MapElementType.WALL);
+    expect(steps[3].mapElement.getType()).toBe(MapElementType.WALL);
   });
 });

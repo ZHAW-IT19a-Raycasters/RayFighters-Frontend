@@ -107,7 +107,7 @@ export class Raycaster {
     public inspect(step: Step, shiftX: number, shiftY: number, distance: number, offset: number) {
         const dx = this.currentDir.x < 0 ? shiftX : 0;
         const dy = this.currentDir.y < 0 ? shiftY : 0;
-        step.height = this.map.getElem(new Vec2D(step.pos.x - dx, step.pos.y - dy));
+        step.mapElement = this.map.getElem(new Vec2D(step.pos.x - dx, step.pos.y - dy));
         step.distance = distance + Math.sqrt(step.length);
         // TODO shading determined by looking angle?
         step.offset = offset - Math.floor(offset);
@@ -123,9 +123,9 @@ export class Step {
      * TODO comment
      * @param pos 
      * @param length 
-     * @param height 
+     * @param mapElement 
      * @param distance 
      * @param offset 
      */
-    constructor(public pos: Vec2D, public length: number, public height?: MapElement, public distance?: number, public offset?: number) { }
+    constructor(public pos: Vec2D, public length: number, public mapElement?: MapElement, public distance?: number, public offset?: number) { }
 }
