@@ -1,4 +1,4 @@
-import { Map2D, MapElement, MapElementType } from './map2d';
+import { Map2D } from './map2d';
 import { Image2D } from './renderer';
 
 
@@ -6,7 +6,7 @@ import { Image2D } from './renderer';
  * Managing class of a map, adds functionality used for the game such as
  * raycasting.
  */
-class Room {
+export class Room {
     private map: Map2D;
     private skyBox: Image2D;
     private wallImages: Image2D[];
@@ -40,6 +40,3 @@ class Room {
     }
     
 }
-
-
-export { Room };

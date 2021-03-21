@@ -5,7 +5,7 @@
  * Turning left and right with Q, E and mouse left/right
  * Shooting with Space bar
  */
-enum KeyCodes {
+export enum KeyCodes {
     FORWARD = 87, // W
     BACKWARD = 83, // A
     TURN_LEFT = 81, // Q
@@ -22,7 +22,7 @@ enum KeyCodes {
  * Control class, handling all user inputs, both touch and via keyboard.
  * To read user input, poll the 'states' map to see if any key is pressed currently.
  */
-class Controls {
+export class Controls {
     /** 
      * Margin (minus and plus from center of screen) in the middle of the screen, where no turning should happen while using mouse looking.
      */
@@ -162,5 +162,3 @@ class Controls {
     }
 }
 
-export { KeyCodes };
-export { Controls };

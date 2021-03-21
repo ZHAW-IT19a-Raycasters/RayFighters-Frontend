@@ -1,10 +1,8 @@
-import { Controls, KeyCodes } from './controls';
+import { Controls } from './controls';
 import { GameLoop } from './gameloop';
-import { Map2D, MapElement, MapElementType } from './map2d';
 import { Player } from './player';
 import { Image2D, Renderer } from './renderer';
 import { Room } from './room';
-import { Vec2D } from './vec2d';
 
 function runGame(canvasName: string): void {
   // The element that contains the canvas element to drawn in

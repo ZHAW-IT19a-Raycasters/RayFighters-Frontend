@@ -1,7 +1,7 @@
 import { Vec2D } from "./vec2d";
 import { Raycaster, Step } from "../src/raycaster";
 
-class Map2D {
+export class Map2D {
     /**
      * An array describing the map (whether a cell has a wall or
      * not): wall = 1, floor = 0
@@ -23,7 +23,7 @@ class Map2D {
         this.raycaster = new Raycaster(this);
     }
 
-    public getSize(): number {
+    public get getSize(): number {
         return this.size;
     }
 
@@ -32,7 +32,7 @@ class Map2D {
      * 
      * @returns Number of elements (walls, floors) in the map
      */
-    public getElementCount(): number {
+    public get getElementCount(): number {
         return this.map.length;
     }
 
@@ -63,16 +63,16 @@ class Map2D {
 
     public toString(): string {
         let str: string = '   '
-        for(let i = 0; i < this.getSize(); i++) { str += `${i} ` }
+        for(let i = 0; i < this.getSize; i++) { str += `${i} ` }
         str += '\n';
 
         for(let i = 0, row = 0; i < this.map.length; i++) {
-            const colIndex = i % this.getSize();
+            const colIndex = i % this.getSize;
             const elem = this.map[i].getType();
             if(colIndex === 0) {
                 str += `${row} [${elem} `;
                 ++row;
-            } else if(colIndex === this.getSize() - 1) {
+            } else if(colIndex === this.getSize - 1) {
                 str += `${elem}]\n`
             } else {
                 str += `${elem} `
@@ -87,7 +87,7 @@ class Map2D {
      */
     public randomize(): void {
         const WALL_THRESH = 0.25; // Probability for spawning a wall
-        for (var i = 0; i < this.getElementCount(); i++) {
+        for (var i = 0; i < this.getElementCount; i++) {
             const rand = Math.random();
             if (rand < WALL_THRESH) {
                 this.map[i] = new MapElement(MapElementType.WALL);
@@ -101,7 +101,7 @@ class Map2D {
      * Fill map with floors
      */
     public initialize(): void {
-        for (var i = 0; i < this.getElementCount(); i++) {
+        for (var i = 0; i < this.getElementCount; i++) {
             this.map[i] = new MapElement(MapElementType.FLOOR);
         }
     }
@@ -134,7 +134,7 @@ class Map2D {
  * TODO: If there's enough time, expand this into a class to make the map more
  * interactive.
  */
-enum MapElementType {
+export enum MapElementType {
     NONE    =  -1,  //< Outside of the map
     FLOOR   =   0,  //< Floor, inside of the map
     WALL    =   1   //< Wall
@@ -143,7 +143,7 @@ enum MapElementType {
 /**
  * 
  */
-class MapElement {
+export class MapElement {
     private type: MapElementType;
     // TODO: plenty of room to add more interesting properties to walls or
     // floors!!
@@ -156,6 +156,3 @@ class MapElement {
         return this.type;
     }
 }
-
-
-export { Map2D, MapElement, MapElementType };

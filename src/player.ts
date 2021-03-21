@@ -7,23 +7,22 @@ import { Renderer } from "./renderer";
 /**
  * Player class, handling all the Player actions.
  */
-class Player {
+export class Player {
   private playerId: string;
-  private position_x: number;
-  private position_y: number;
+  private position: Vec2D;
   private direction: number;
   private currWeapon: HTMLImageElement;
   private paces: any;
 
-  public getPosition(): Vec2D {
-    return new Vec2D(this.position_x, this.position_y); // TODO Changed this, sowwy
+  public get getPosition(): Vec2D {
+    return this.position;
   }
 
-  public getDirection(): number {
+  public get getDirection(): number {
     return this.direction;
   }
 
-  public getcurrWeapon(): HTMLImageElement {
+  public get getcurrWeapon(): HTMLImageElement {
     return this.currWeapon;
   }
 
@@ -34,8 +33,7 @@ class Player {
    * @param direction Starting angle/direction
    */
   constructor(x: number, y: number, direction: number) {
-    this.position_x = x;
-    this.position_y = y;
+    this.position = new Vec2D(x, y);
     this.direction = direction;
     //this.setWeapon('assets/plug_hand.png', 319, 320);
     this.paces = 0;
@@ -71,10 +69,12 @@ class Player {
   public walk(distance: number, map: Map2D, direction: number): void {
     const dx = Math.cos(direction) * distance;
     const dy = Math.sin(direction) * distance;
-    if (map.getElem(new Vec2D(this.position_x + dx, this.position_y)).getType() <= 0) // TODO Changed this, sowwy
-      this.position_x += dx;
-    if (map.getElem(new Vec2D(this.position_x, this.position_y + dy)).getType() <= 0) // TODO Changed this, sowwy
-      this.position_y += dy;
+    if (map.getElem(new Vec2D(this.position.x + dx, this.position.y)).getType() <= 0) {
+      this.position.x += dx;
+    }
+    if (map.getElem(new Vec2D(this.position.x, this.position.y + dy)).getType() <= 0) {
+      this.position.y += dy;
+    }
     this.paces += distance;
   }
 
@@ -88,11 +88,17 @@ class Player {
   public update(controls: Controls, map: Map2D, seconds: number): void {
     if (controls.states.get(KeyCodes.TURN_LEFT)) this.rotate(-Math.PI * seconds);
     if (controls.states.get(KeyCodes.TURN_RIGHT)) this.rotate(Math.PI * seconds);
+    if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
+      this.rotate(-Math.PI * (seconds * 0.75));
+      controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
+    }
+    if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
+      this.rotate(Math.PI *  (seconds * 0.75));
+      controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
+    }
     if (controls.states.get(KeyCodes.FORWARD)) this.walk(3 * seconds, map, this.direction);
     if (controls.states.get(KeyCodes.BACKWARD)) this.walk(-3 * seconds, map, this.direction);
     if (controls.states.get(KeyCodes.STRAFE_LEFT)) this.walk(3 * seconds, map, this.direction - Math.PI / 2);
     if (controls.states.get(KeyCodes.STRAFE_RIGHT)) this.walk(-3 * seconds, map, this.direction - Math.PI / 2);
   }
 }
-
-export { Player };
