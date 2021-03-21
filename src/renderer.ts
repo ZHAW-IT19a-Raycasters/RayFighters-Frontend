@@ -90,7 +90,7 @@ export class Renderer {
    */
   public render(room: Room, player: Player): void {
     this.context.save();
-    this.drawSkyBox(room.getSkyBox, player.getDirection())
+    this.drawSkyBox(room.getSkyBox, player.getDirection)
     this.drawFloor();
     this.drawWalls(room, player)
     this.context.restore();
@@ -122,7 +122,7 @@ export class Renderer {
       // Use this along with the focal length as y-axis to calculate the angle of the ray that will be casted:
       let rayAngle = Math.atan2(xAxisPosition, this.focalLength);
       // Cast rays and get back the steps it too until it ran out of draw distance:
-      let steps = room.getMap.rayCast(player.getPosition(), player.getDirection() + rayAngle, this.drawDistance);
+      let steps = room.getMap.rayCast(player.getPosition, player.getDirection + rayAngle, this.drawDistance);
       // Finally, draw the bar corresponding to the ray, ofcourse only if it hit MapElementType.WALL or above:
       this.drawBar(room, bar, steps, rayAngle);
     }

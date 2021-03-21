@@ -1,4 +1,4 @@
-class GameLoop {
+export class GameLoop {
   private lastTime: number;
   private callback: any;
 
@@ -22,5 +22,3 @@ class GameLoop {
     requestAnimationFrame(this.frame);
   }
 }
-
-export { GameLoop };

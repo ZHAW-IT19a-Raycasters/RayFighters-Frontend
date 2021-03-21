@@ -9,7 +9,7 @@ describe('Testing Map2D methods', () => {
      *    map size = size * size
      * => size = sqrt(map size)
      */
-    expect(Math.sqrt(map.getElementCount())).toBe(size);
+    expect(Math.sqrt(map.getElementCount)).toBe(size);
   });
 
   it('should correctly set and get map elements', () => {
