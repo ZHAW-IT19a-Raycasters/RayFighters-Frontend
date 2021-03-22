@@ -29,6 +29,18 @@ body {
   transform: rotate(10deg);
 }
 
+#fps-container {
+  position: fixed;
+  overflow: hidden;
+  left: 30px;
+  top: 30px;
+  padding: 5px;
+
+  font-size: x-large;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
 canvas#game-canvas {
   width: 100%;
   height: 100%;
