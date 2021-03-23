@@ -1,8 +1,16 @@
 body {
-  font-family: 'Comic Sans MS';
-  margin: 0; /* disable scrolling */
-  height: 100%; /* disable scrolling */
-  overflow: hidden; /* disable scrolling */
+  /* disable scrolling */
+  margin: 0; 
+  height: 100%; 
+  overflow: hidden; 
+  position: fixed;
+
+  /* disable select, copy + paste */
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #shootbutton {
