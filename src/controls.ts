@@ -1,32 +1,35 @@
 /**
  * Key codes and their direction.
+ * 
  * Moving forwards and backwards with W, S
  * Strafing left and right with A, D
  * Turning left and right with Q, E and mouse left/right
  * Shooting with Space bar
+ * See scoreboard with Tab
  */
 export enum KeyCodes {
-    FORWARD = 87, // W
-    BACKWARD = 83, // A
-    TURN_LEFT = 81, // Q
-    TURN_RIGHT = 69, // E
-    STRAFE_LEFT = 65, // S
-    STRAFE_RIGHT = 68, // D
-    SHOOT = 32, // SPACE
-    MOUSE_TURN_LEFT, // No code
-    MOUSE_TURN_RIGHT // No code
+    FORWARD = 87,       // W
+    BACKWARD = 83,      // A
+    TURN_LEFT = 81,     // Q
+    TURN_RIGHT = 69,    // E
+    STRAFE_LEFT = 65,   // S
+    STRAFE_RIGHT = 68,  // D
+    SHOOT = 32,         // SPACE
+    MOUSE_TURN_LEFT,
+    MOUSE_TURN_RIGHT,
+    SCOREBOARD = 9      // TAB
 }
 
 
 /**
- * Control class, handling all user inputs, both touch and via keyboard.
- * To read user input, poll the 'states' map to see if any key is pressed currently.
+ * Control class, handling all user inputs, both touch and via keyboard, as well as handling mouse movement.
  */
 export class Controls {
-    /** 
-     * Margin (minus and plus from center of screen) in the middle of the screen, where no turning should happen while using mouse looking.
-     */
 
+    /**
+     * States map. Records which key or action is activated at any given moment. Can be polled and updated.
+     * Clearing all values, ergo changing all values to false can be done using the clearInputs() method.
+     */
     public states = new Map([
         [KeyCodes.FORWARD, false],
         [KeyCodes.BACKWARD, false],
@@ -36,11 +39,19 @@ export class Controls {
         [KeyCodes.STRAFE_RIGHT, false],
         [KeyCodes.SHOOT, false],
         [KeyCodes.MOUSE_TURN_LEFT, false],
-        [KeyCodes.MOUSE_TURN_RIGHT, false]
+        [KeyCodes.MOUSE_TURN_RIGHT, false],
+        [KeyCodes.SCOREBOARD, false]
     ]);
 
+    /**
+     * Shoot button on the html page.
+     */
     private shootButton: any = document.getElementById('shootbutton');
-    private shootButtonRect : any;
+
+    /**
+     * Vessel for location and dimensions of the shoot button on the html page.
+     */
+    private shootButtonRect: any;
 
     /**
      * Constructor of control class. Registers all event handlers.
@@ -93,12 +104,12 @@ export class Controls {
         this.touchReleaseHandler(event);
         this.shootButtonRect = this.shootButton.getBoundingClientRect() // Update position of shoot button in case the device was rotated
 
-        if (touch.pageY >= this.shootButtonRect.y && touch.pageY <= this.shootButtonRect.y + this.shootButtonRect.height && 
+        if (touch.pageY >= this.shootButtonRect.y && touch.pageY <= this.shootButtonRect.y + this.shootButtonRect.height &&
             touch.pageX >= this.shootButtonRect.x && touch.pageX <= this.shootButtonRect.x + this.shootButtonRect.width) {
             this.keyHandler(true, { keyCode: KeyCodes.SHOOT });
             return;
         }
-        
+
         if (touch.pageY < window.innerHeight * 0.5) {
             this.keyHandler(true, { keyCode: KeyCodes.FORWARD });
         }
@@ -112,7 +123,7 @@ export class Controls {
         }
 
         else if (touch.pageY > window.innerHeight * 0.5) {
-            this.keyHandler(true, { keyCode: KeyCodes.BACKWARD }); 
+            this.keyHandler(true, { keyCode: KeyCodes.BACKWARD });
         }
     }
 
@@ -146,7 +157,7 @@ export class Controls {
     }
 
     /**
-     * Handles mouse clicks.
+     * Handles mouse clicks in case the mouse button gets pressed down.
      * @param event Event that gets passed from the listener. 
      */
     private mouseDownHandler(event: any): void {
@@ -154,7 +165,7 @@ export class Controls {
     }
 
     /**
-     * Handles mouse clicks.
+     * Handles mouse clicks in case the mouse button gets released.
      * @param event Event that gets passed from the listener. 
      */
     private mouseUpHandler(event: any): void {
