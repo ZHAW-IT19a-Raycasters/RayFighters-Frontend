@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "The client frontend for the multiplayer raycaster game.",
   "scripts": {
-    "test": "jasmine-ts --config=jasmine.json",
+    "test": "nyc jasmine-ts --config=jasmine.json",
+    "report": "nyc report --reporter=lcov --reporter=text --report-dir=.nyc_output",
     "build": "webpack --mode=development",
     "build-prod": "webpack --mode=production",
     "prepare": "husky install"
@@ -22,11 +23,17 @@
     "jasmine-spec-reporter": "^6.0.0",
     "jasmine-ts": "^0.3.0",
     "jsdom": "^16.5.1",
+    "nyc": "^15.1.0",
     "ts-loader": "^8.0.17",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3",
     "webpack": "^5.24.4",
     "webpack-cli": "^4.5.0"
   },
-  "dependencies": {}
+  "dependencies": {
+
+  },
+  "reporter": [
+    "html"
+  ]
 }
