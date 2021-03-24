@@ -2,7 +2,7 @@ import { Map2D } from "./map2d";
 import { KeyCodes } from "./controls";
 import { Controls } from "./controls";
 import { Vec2D } from "./vec2d";
-import { Renderer } from "./renderer";
+import { Image2D, Renderer } from "./renderer";
 
 /**
  * Player class, handling all the Player actions.
@@ -11,7 +11,7 @@ export class Player {
   private playerId: string;
   private position: Vec2D;
   private direction: number;
-  private currWeapon: HTMLImageElement;
+  private currWeapon: Image2D;
   private paces: any;
 
   public get getPosition(): Vec2D {
@@ -22,7 +22,7 @@ export class Player {
     return this.direction;
   }
 
-  public get getcurrWeapon(): HTMLImageElement {
+  public get getcurrWeapon(): Image2D {
     return this.currWeapon;
   }
 
@@ -35,7 +35,7 @@ export class Player {
   constructor(x: number, y: number, direction: number) {
     this.position = new Vec2D(x, y);
     this.direction = direction;
-    //this.setWeapon('assets/plug_hand.png', 319, 320);
+    //this.setWeapon(new Image2D('./assets/weapons/knife_hand.png', 319, 320));
     this.paces = 0;
   }
   /***
@@ -46,8 +46,7 @@ export class Player {
    * @param height height of the image
    */
   public setWeapon(src: string, width: number, height: number): void {
-    this.currWeapon = new Image(width, height);
-    this.currWeapon.src = src;
+    this.currWeapon = new Image2D(src, width, height);
   }
 
   /***
