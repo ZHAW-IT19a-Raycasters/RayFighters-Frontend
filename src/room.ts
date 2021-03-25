@@ -11,10 +11,12 @@ export class Room {
     private skyBox: Image2D;
     private wallImages: Image2D[];
 
-    constructor(mapSize: number, isRandomized: boolean = false) {
+    constructor({ mapSize, isRandomized = false, loadMap }: { mapSize: number; isRandomized?: boolean; loadMap?: string; }) {
         this.map = new Map2D(mapSize);
 
-        if(isRandomized) {
+        if (loadMap) {
+            this.map.fromText(loadMap);
+        } else if (isRandomized) {
             this.map.randomize();
         } else {
             this.map.initialize();

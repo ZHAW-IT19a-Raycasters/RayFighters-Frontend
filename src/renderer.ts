@@ -7,7 +7,7 @@ import { Room } from './room';
  * 2D image object class for easier graphics handling.
  */
 export class Image2D {
-  image: any;
+  image: HTMLImageElement;
   source: string;
 
   constructor(source: string, public width: number, public height: number) {
