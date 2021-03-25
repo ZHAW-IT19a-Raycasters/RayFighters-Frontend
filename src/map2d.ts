@@ -81,6 +81,9 @@ export class Map2D {
         return str;
     }
 
+    /**
+     * First simple demo map to test the map loader.
+     */
     private map1 =
 `00000000000000000000000000000000
 01111111111111111111111111111110
@@ -115,13 +118,15 @@ export class Map2D {
 00000000000000000000000000000000
 00000000000000000000000000000000`;
 
+    /**
+     * Still a prototype. Loads map1 into the map.
+     */
     public fromText(filename: string): void {
         const file = this.map1.replace(/\n/g,'');
-        console.log(file);
             let i = 0;
                 for (const char of file) {
                     let num = Number(char);
-                    this.map[i] = new MapElement((Number(char)) as MapElementType);
+                    this.map[i] = new MapElement(num as MapElementType);
                     i++;
                 }
     }
