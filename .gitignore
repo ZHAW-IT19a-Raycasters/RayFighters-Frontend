@@ -4,3 +4,5 @@ node_modules/
 *.swp
 
 dist/bundle.js
+.nyc_output/*.json
+.nyc_output/processinfo/*.json

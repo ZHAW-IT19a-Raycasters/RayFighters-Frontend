@@ -1,0 +1,81 @@
+import { Queue } from 'queue-typescript';
+import { Packet } from './packet';
+
+/**
+ * WebSocket abstraction. Handling all communication with the server.
+ */
+export class Socket {
+    /**
+     * Websocket object.
+     */
+    private socket: WebSocket;
+
+    /**
+     * Queue of all received packets from the server.
+     */
+    private receiveQueue: Queue<Packet>;
+
+    /**
+     * Queue of all packets to be sent to the server.
+     */
+    private sendQueue: Queue<Packet>;
+
+    /**
+     * Creates a new socket connection.
+     * @param url Server address
+     */
+    constructor(url: string) {
+        this.sendQueue = new Queue<Packet>();
+        this.receiveQueue = new Queue<Packet>();
+        this.socket = new WebSocket(url);
+        this.socket.onopen = (e) => {
+            this.socket.send("Connection established.");
+        };
+        this.socket.onmessage = (e) => {
+            this.receiveQueue.enqueue(new Packet(e.data));
+        };
+        this.socket.onclose = (e) => {
+            console.log("Connection from server closed.");
+            // TODO do smarter stuff here when the connection is closed ==> GUI
+        };
+        this.socket.onerror = (e) => {
+            console.log("ERROR! Connection couldn't be established.");
+            // TODO do smarter stuff here when an error occurs ==> GUI
+        };
+    }
+
+    /**
+     * Enqueues a Packet to be sent to the server.
+     * @param packet Packet to be sent to the server.
+     */
+    public send(packet: Packet): void {
+        if (this.socket.readyState == 1) {
+            this.sendQueue.enqueue(packet);
+        }
+    }
+
+    /**
+     * Sends all enqueued Packets heading to the server.
+     */
+    public sendAll() {
+        // Check if socket is ready
+        if (this.socket.readyState == 1) {
+            // Sending messages as long as sendQueue isn't empty
+            while (this.sendQueue.length > 0) {
+                this.socket.send(this.sendQueue.dequeue().serialize());
+            }
+        }
+    }
+
+    /**
+     * Returns all Packets received from the server, waiting to be incorporated into game logic.
+     * @returns Array of received packets.
+     */
+    public getReceived(): Array<Packet> {
+        let receivedPackets = new Array<Packet>(this.receiveQueue.length);
+        for (let i = 0; this.receiveQueue.length > 0; i++) {
+            receivedPackets[i] = this.receiveQueue.dequeue();
+        }
+        return receivedPackets;
+    }
+}
