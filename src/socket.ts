@@ -1,5 +1,5 @@
 import { Queue } from 'queue-typescript';
-import { Packet } from './packet'
+import { Packet } from './packet';
 
 /**
  * WebSocket abstraction. Handling all communication with the server.
