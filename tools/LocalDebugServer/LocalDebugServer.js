@@ -1,7 +1,7 @@
 /**
  * Emulates a server on your machine.
  * 
- * To use type on your terminal:        node WebSocketSpoofer.js
+ * To use type on your terminal:        node LocalDebugServer.js
  * The default address and port is:     ws://localhost:8080
  * 
  * Code example:
@@ -11,13 +11,16 @@
 const WebSocket = require('ws')
  
 const wss = new WebSocket.Server({ port: 8080 })
+console.log("Starting server on port 8080... Listening now!")
 
 let counter = 0
  
 wss.on('connection', ws => {
-// Receive message
+    console.log("Connection established with game client!")
+
+    // Receive message
     ws.on('message', (message) => {
-    console.log(message + " / /// counter: " + counter++)
+    console.log("Message received! " + message + " ||| # of received messages: " + counter++)
         //for each websocket client
         wss
         .clients
