@@ -7,7 +7,7 @@ import { Room } from './room';
 function runGame(canvasName: string, fpsCounterName: string): void {
   // The element that contains the canvas element to drawn in
   let canvas = document.getElementById(canvasName);
-  let room = new Room(32, true)
+  let room = new Room({ mapSize: 32, loadMap: 'map1.txt' });
   console.log(room.getMap.toString())
   let renderer = new Renderer(canvas, 300, 32, 0.6);
   let loop = new GameLoop(fpsCounterName);
