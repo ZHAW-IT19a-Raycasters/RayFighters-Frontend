@@ -34,6 +34,14 @@ export class Socket {
         this.socket.onmessage = (e) => {
             this.receiveQueue.enqueue(new Packet(e.data));
         };
+        this.socket.onclose = (e) => {
+            console.log("Connection from server closed.");
+            // TODO do smarter stuff here when the connection is closed ==> GUI
+        };
+        this.socket.onerror = (e) => {
+            console.log("ERROR! Connection couldn't be established.");
+            // TODO do smarter stuff here when an error occurs ==> GUI
+        };
     }
 
     /**
@@ -41,7 +49,9 @@ export class Socket {
      * @param packet Packet to be sent to the server.
      */
     public send(packet: Packet): void {
-        this.sendQueue.enqueue(packet);
+        if (this.socket.readyState == 1) {
+            this.sendQueue.enqueue(packet);
+        }
     }
 
     /**
