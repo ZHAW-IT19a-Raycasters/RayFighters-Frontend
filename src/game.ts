@@ -10,7 +10,7 @@ function runGame(canvasName: string, fpsCounterName: string): void {
   let canvas = document.getElementById(canvasName);
   let room = new Room({ mapSize: 32, loadMap: 'map1.txt' });
   console.log(room.getMap.toString());
-  let renderer = new Renderer(canvas, 300, 32, 0.6);
+  let renderer = new Renderer(canvas, 300, 32, 0.6, Renderer.STANDARD_CEILING_GRADIENT/*, Renderer.STANDARD_FLOOR_GRADIENT*/);
   let loop = new GameLoop(fpsCounterName);
   let controls = new Controls();
   let player = new Player(1, 1, 0.3 * Math.PI);

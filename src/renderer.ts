@@ -24,7 +24,8 @@ export class Renderer {
   static CIRCLE = Math.PI * 2;
   static STANDARD_DRAWDISTANCE = 16;
   static STANDARD_FOCAL = 0.75;
-  static STANDARD_FLOOR_GRADIENT = new ColorGradient('#666666', '#000000');
+  static STANDARD_FLOOR_GRADIENT = new ColorGradient('#777777', '#111111');
+  static STANDARD_CEILING_GRADIENT = new ColorGradient('#777777', '#111111');
 
   /**
     * Canvas DOM element to draw in
@@ -64,6 +65,16 @@ export class Renderer {
   private focalLength: number;
 
   /**
+   * 
+   */
+  private floorGradient: ColorGradient;
+
+  /**
+   * 
+   */
+  private ceilingGradient: ColorGradient;
+
+  /**
     * @constructor
     * @param {DOM} canv - Canvas element to draw game in
     * @param {number} resolution - Resolution to render the game in (pixels). Canvas sizes may differ.
@@ -71,7 +82,7 @@ export class Renderer {
     * @param {number} focalLen - focal length for our drawing calls
     * @param {ColorGradient} floorGradient - What color (gradient) the floor should be drawn in
     */
-  constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient) {
+  constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient, ceilGradient?: ColorGradient) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
     this.canvas.width = window.innerWidth;
@@ -80,7 +91,8 @@ export class Renderer {
     this.spacing = canvas.width / resolution;
     this.drawDistance = drawDistance || Renderer.STANDARD_DRAWDISTANCE;
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
-    this.setUpFloorGradient(floorGradient || Renderer.STANDARD_FLOOR_GRADIENT);
+    this.floorGradient = floorGradient;
+    this.ceilingGradient = ceilGradient;
   }
 
   /**
@@ -92,18 +104,30 @@ export class Renderer {
     this.context.save();
     this.drawSkyBox(room.getSkyBox, player.getDirection)
     this.drawFloor();
+    this.drawCeiling();
     this.drawWalls(room, player)
     this.context.restore();
   }
 
   /**
    * Sets up the color gradient on the graphics context for drawing
-   * @param {ColorGradient} colGradient - Coloring of the floor from close to far away
+   * @param {ColorGradient} colFloorGradient - Coloring of the floor from close to far away
    */
-  private setUpFloorGradient(colGradient: ColorGradient): void {
+  private setUpFloorGradient(colFloorGradient: ColorGradient): void {
     let gradient = this.context.createLinearGradient(this.canvas.width / 2, this.canvas.height / 2, this.canvas.width / 2, this.canvas.height);
-    gradient.addColorStop(1, colGradient.near);
-    gradient.addColorStop(0, colGradient.far);
+    gradient.addColorStop(1, colFloorGradient.near);
+    gradient.addColorStop(0, colFloorGradient.far);
+    this.context.fillStyle = gradient;
+  }
+
+  /**
+   * Sets up the color gradient on the graphics context for drawing
+   * @param {ColorGradient} colFloorGradient - Coloring of the floor from close to far away
+   */
+  private setUpCeilingGradient(colFloorGradient: ColorGradient): void {
+    let gradient = this.context.createLinearGradient(this.canvas.width / 2, 0, this.canvas.width / 2, this.canvas.height / 2);
+    gradient.addColorStop(0, colFloorGradient.near);
+    gradient.addColorStop(1, colFloorGradient.far);
     this.context.fillStyle = gradient;
   }
 
@@ -134,7 +158,19 @@ export class Renderer {
    * Rendering order is between skybox and walls for desired effect.
    */
   private drawFloor(): void {
+    if(!this.floorGradient) {
+      return;
+    }
+    this.setUpFloorGradient(this.floorGradient);
     this.context.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2)
+  }
+
+  private drawCeiling(): void {
+    if(!this.ceilingGradient) {
+      return;
+    }
+    this.setUpCeilingGradient(this.ceilingGradient);
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height / 2);
   }
 
   /**
@@ -172,7 +208,7 @@ export class Renderer {
         this.context.drawImage(texture.image, textureX, 0, 1, texture.height, left, wall.top, width, wall.height);
 
         // Make walls drawn further back darker for basic shading:
-        this.context.fillStyle = '#000000';
+        this.context.fillStyle = '#111111';
         // The farther the step that hit is, the lower the alpha for drawing should be:
         this.context.globalAlpha = Math.max((step.distance) / (this.drawDistance * 0.75), 0);
         // Draw rectangle identical to the drawImage above just to shade it in darker:
