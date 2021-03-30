@@ -29,4 +29,16 @@ export class Packet {
     public serialize() {
         return this.opcode.toString() + " " + this.parameter;
     }
+
+    
+    public get getOpcode() : number {
+        return this.opcode;
+    }
+
+    public get getParameter(): string {
+        return this.parameter;
+    }
+    
+
+
 }
