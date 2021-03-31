@@ -24,10 +24,15 @@ export class Socket {
      * Creates a new socket connection.
      * @param url Server address
      */
-    constructor(url: string) {
+    constructor(url: string, webSocket?: any) {
         this.sendQueue = new Queue<Packet>();
         this.receiveQueue = new Queue<Packet>();
-        this.socket = new WebSocket(url);
+        if (webSocket) {
+            this.socket = new webSocket(url);
+        } else {
+            this.socket = new WebSocket(url);
+        }
+        
         this.socket.onopen = (e) => {
             this.socket.send("Connection established.");
         };
