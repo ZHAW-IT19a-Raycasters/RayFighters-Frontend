@@ -2,6 +2,16 @@ import { Queue } from 'queue-typescript';
 import { Packet } from './packet';
 
 /**
+ * State of socket connection to server.
+ */
+export enum SocketState{
+    CLOSED,
+    CONNECTED,
+    ERROR
+    // TODO: Maybe add TIMEOUT
+}
+
+/**
  * WebSocket abstraction. Handling all communication with the server.
  */
 export class Socket {
@@ -21,31 +31,38 @@ export class Socket {
     private sendQueue: Queue<Packet>;
 
     /**
+     * State of socket.
+     */
+    public socketState: SocketState = SocketState.CLOSED;
+
+    /**
      * Creates a new socket connection.
      * @param url Server address
      */
     constructor(url: string, webSocket?: any) {
         this.sendQueue = new Queue<Packet>();
         this.receiveQueue = new Queue<Packet>();
+        
         if (webSocket) {
-            this.socket = new webSocket(url);
+            this.socket = webSocket;
         } else {
             this.socket = new WebSocket(url);
         }
         
         this.socket.onopen = (e) => {
             this.socket.send("Connection established.");
+            this.socketState = SocketState.CONNECTED;
         };
         this.socket.onmessage = (e) => {
             this.receiveQueue.enqueue(new Packet(e.data));
         };
         this.socket.onclose = (e) => {
             console.log("Connection from server closed.");
-            // TODO do smarter stuff here when the connection is closed ==> GUI
+            this.socketState = SocketState.CLOSED;
         };
         this.socket.onerror = (e) => {
             console.log("ERROR! Connection couldn't be established.");
-            // TODO do smarter stuff here when an error occurs ==> GUI
+            this.socketState = SocketState.ERROR;
         };
     }
 
