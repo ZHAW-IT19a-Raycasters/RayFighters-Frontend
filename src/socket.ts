@@ -50,7 +50,7 @@ export class Socket {
         }
         
         this.socket.onopen = (e) => {
-            this.socket.send("Connection established.");
+            console.log("Connection established.");
             this.socketState = SocketState.CONNECTED;
         };
         this.socket.onmessage = (e) => {
