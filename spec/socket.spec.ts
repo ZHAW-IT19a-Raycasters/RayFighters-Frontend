@@ -11,7 +11,7 @@ let testPacket1 = new Packet(testMessage1);
 let testPacket2 = new Packet(testMessage2);
 
 
-describe('Player module testing', () => {
+describe('Socket method testing', () => {
 
     it('should recognize a closed connection.', () => {
       webSocket.triggerOnClose();

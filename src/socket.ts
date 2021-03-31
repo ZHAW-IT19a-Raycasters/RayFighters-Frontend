@@ -50,18 +50,18 @@ export class Socket {
         }
         
         this.socket.onopen = (e) => {
-            console.log("Connection established.");
+            // console.log("Connection established.");
             this.socketState = SocketState.CONNECTED;
         };
         this.socket.onmessage = (e) => {
             this.receiveQueue.enqueue(new Packet(e.data));
         };
         this.socket.onclose = (e) => {
-            console.log("Connection from server closed.");
+            // console.log("Connection from server closed.");
             this.socketState = SocketState.CLOSED;
         };
         this.socket.onerror = (e) => {
-            console.log("ERROR! Connection couldn't be established.");
+            // console.log("ERROR! Connection couldn't be established.");
             this.socketState = SocketState.ERROR;
         };
     }
