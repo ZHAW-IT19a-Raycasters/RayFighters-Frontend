@@ -104,10 +104,10 @@ export class Renderer {
     this.context.save();
     // First, if there IS a ceilingGradient, then we do NOT draw a skybox
     // because we wouldn't be able to see it anyways:
-    if(!this.ceilingGradient) {
-      this.drawSkyBox(room.getSkyBox, player.getDirection)
-    } else {
+    if(this.ceilingGradient) {
       this.drawCeiling();
+    } else {
+      this.drawSkyBox(room.getSkyBox, player.getDirection)
     }
 
     if(this.floorGradient) {
