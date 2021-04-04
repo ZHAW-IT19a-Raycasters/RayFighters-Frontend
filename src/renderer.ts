@@ -102,10 +102,19 @@ export class Renderer {
    */
   public render(room: Room, player: Player): void {
     this.context.save();
-    this.drawSkyBox(room.getSkyBox, player.getDirection)
-    this.drawFloor();
-    this.drawCeiling();
+    // First, if there IS a ceilingGradient, then we do NOT draw a skybox
+    // because we wouldn't be able to see it anyways:
+    if(!this.ceilingGradient) {
+      this.drawSkyBox(room.getSkyBox, player.getDirection)
+    } else {
+      this.drawCeiling();
+    }
+
+    if(this.floorGradient) {
+      this.drawFloor();
+    }
     this.drawWalls(room, player)
+
     this.context.restore();
   }
 
@@ -158,17 +167,11 @@ export class Renderer {
    * Rendering order is between skybox and walls for desired effect.
    */
   private drawFloor(): void {
-    if(!this.floorGradient) {
-      return;
-    }
     this.setUpFloorGradient(this.floorGradient);
     this.context.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2)
   }
 
   private drawCeiling(): void {
-    if(!this.ceilingGradient) {
-      return;
-    }
     this.setUpCeilingGradient(this.ceilingGradient);
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height / 2);
   }
