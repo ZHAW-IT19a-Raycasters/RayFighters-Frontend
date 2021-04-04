@@ -7,6 +7,7 @@ let testMessage1 = "test";
 let testMessage2 = "anothertest";
 let webSocket = new WebSocket(url);
 let testSocket = new Socket(url, webSocket);
+/*
 let testPacket1 = new Packet(testMessage1);
 let testPacket2 = new Packet(testMessage2);
 
@@ -42,4 +43,4 @@ describe('Socket method testing', () => {
       expect(receivedPacket[1].getOpcode).toBe(1);
       expect(receivedPacket[1].getParameter).toBe("1 " + testMessage2);
     });
-});
+});*/
