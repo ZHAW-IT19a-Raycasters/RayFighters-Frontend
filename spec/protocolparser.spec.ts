@@ -64,9 +64,9 @@ describe('Server side protocol parser unit test', () => {
 
     it('should parse all player info correctly', () => {
         const playerInfo: Array<PlayerInfo> = new Array<PlayerInfo>(3);
-        playerInfo[0] = new PlayerInfo({userID: 1, userName: "Hans"});
-        playerInfo[1] = new PlayerInfo({userID: 4, userName: "Peter"});
-        playerInfo[2] = new PlayerInfo({userID: 52, userName: "Meier"});
+        playerInfo[0] = new PlayerInfo({ userID: 1, userName: "Hans" });
+        playerInfo[1] = new PlayerInfo({ userID: 4, userName: "Peter" });
+        playerInfo[2] = new PlayerInfo({ userID: 52, userName: "Meier" });
         serverMessage = new Uint8Array([OpCode.SERVER_SENDALLPLAYERINFO, 0x3, 0x1, 0x4, 0x0, 0x48, 0x61, 0x6E, 0x73, 0x4, 0x5, 0x0, 0x50, 0x65, 0x74, 0x65, 0x72, 0x34, 0x5, 0x0, 0x4D, 0x65, 0x69, 0x65, 0x72]);
         expectedPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERINFO, playerCount: 3, playerInfoList: playerInfo });
         expect(protocolParser.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
@@ -74,6 +74,19 @@ describe('Server side protocol parser unit test', () => {
         expect(protocolParser.parse(serverMessage).playerInfoList[0]).toEqual(expectedPacket.playerInfoList[0]);
         expect(protocolParser.parse(serverMessage).playerInfoList[1]).toEqual(expectedPacket.playerInfoList[1]);
         expect(protocolParser.parse(serverMessage).playerInfoList[2]).toEqual(expectedPacket.playerInfoList[2]);
+    })
 
+    it('should parse all player kill/death data correctly', () => {
+        const playerKD = new Array<PlayerInfo>(3);
+        playerKD[0] = new PlayerInfo({ userID: 1, killCount: 11, deathCount: 12 });
+        playerKD[1] = new PlayerInfo({ userID: 4, killCount: 12, deathCount: 13 });
+        playerKD[2] = new PlayerInfo({ userID: 52, killCount: 66, deathCount: 101 });
+        serverMessage = new Uint8Array([OpCode.SERVER_SENDALLPLAYERKD, 0x3, 0x1, 0xB, 0x0, 0xC, 0x0, 0x4, 0xC, 0x0, 0xD, 0x0, 0x34, 0x42, 0x0, 0x65, 0x0]);
+        expectedPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERKD, playerCount: 3, playerKillDeathList: playerKD });
+        expect(protocolParser.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
+        expect(protocolParser.parse(serverMessage).playerCount).toBe(expectedPacket.playerCount);
+        expect(protocolParser.parse(serverMessage).playerKillDeathList[0]).toEqual(expectedPacket.playerKillDeathList[0]);
+        expect(protocolParser.parse(serverMessage).playerKillDeathList[1]).toEqual(expectedPacket.playerKillDeathList[1]);
+        expect(protocolParser.parse(serverMessage).playerKillDeathList[2]).toEqual(expectedPacket.playerKillDeathList[2]);
     })
 })
