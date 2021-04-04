@@ -17,4 +17,16 @@ export class WebSocket{
         this.onmessage({ data: message });
     }
 
+    public triggerOnClose() {
+        this.onclose();
+    }
+
+    public triggerOnError() {
+        this.onerror();
+    }
+
+    public triggerOnOpen() {
+        this.onopen();
+    }
+
 }

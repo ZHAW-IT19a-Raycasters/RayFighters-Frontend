@@ -57,14 +57,14 @@ export class Controls {
      * Constructor of control class. Registers all event handlers.
      */
     constructor() {
-        document.addEventListener('keydown', this.keyHandler.bind(this, true), false);
-        document.addEventListener('keyup', this.keyHandler.bind(this, false), false);
-        document.addEventListener('touchstart', this.touchHandler.bind(this), false);
-        document.addEventListener('touchmove', this.touchHandler.bind(this), false);
-        document.addEventListener('touchend', this.touchReleaseHandler.bind(this), false);
-        document.addEventListener('mousemove', this.mouseMoveHandler.bind(this), false);
-        document.addEventListener('mousedown', this.mouseDownHandler.bind(this), false);
-        document.addEventListener('mouseup', this.mouseUpHandler.bind(this), false);
+        document.addEventListener('keydown',        (event) => this.keyHandler(true, event), false);
+        document.addEventListener('keyup',          (event) => this.keyHandler(false, event), false);
+        document.addEventListener('touchstart',     (event) => this.touchHandler(event), false);
+        document.addEventListener('touchmove',      (event) => this.touchHandler(event), false);
+        document.addEventListener('touchend',       (event) => this.touchReleaseHandler(event), false);
+        document.addEventListener('mousemove',      (event) => this.mouseMoveHandler(event), false);
+        document.addEventListener('mousedown',      (event) => this.mouseDownHandler(event), false);
+        document.addEventListener('mouseup',        (event) => this.mouseUpHandler(event), false);
         document.body.onclick = document.body.requestPointerLock
     }
 
