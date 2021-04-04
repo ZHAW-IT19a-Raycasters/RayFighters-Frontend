@@ -58,8 +58,8 @@ export class Packet {
     public killerID?: number;       // MurderID
     public name?: string;           // Name
     public playerCount?: number;    // PlCount
-    public playerInfoList?: any;
-    public playerKillDeathList?: any;
+    public playerInfoList?: PlayerInfo[];
+    public playerKillDeathList?: PlayerInfo[];
 
     constructor
         (
@@ -85,8 +85,8 @@ export class Packet {
                 killerID?: number,
                 name?: string,
                 playerCount?: number,
-                playerInfoList?: any,
-                playerKillDeathList?: any
+                playerInfoList?: PlayerInfo[],
+                playerKillDeathList?: PlayerInfo[]
             }
         ) {
         this.opCode = opCode;

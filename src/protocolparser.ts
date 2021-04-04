@@ -1,4 +1,4 @@
-import { OpCode, Packet } from "./packet";
+import { OpCode, Packet, PlayerInfo } from "./packet";
 
 const { TextDecoder } = require("fastestsmallesttextencoderdecoder");
 /**
@@ -33,7 +33,7 @@ export class ProtocolParser {
                 packet = new Packet({ opCode: opCode, userID: message[1] });
                 break;
             case OpCode.SERVER_SENDALLPLAYERINFO:
-                packet = new Packet({ opCode: opCode, playerCount: message[1] });
+                packet = new Packet({ opCode: opCode, playerCount: message[1], playerInfoList: this.assemblePlayerList(opCode, message.slice(2), message[1]) });
                 break;
             case OpCode.SERVER_SENDALLPLAYERKD:
                 break;
@@ -48,8 +48,8 @@ export class ProtocolParser {
      * @returns a fully assembled string.
      */
     private assembleString(byteData: Uint8Array, startIndex: number): string {
-        let numberOfChars = byteData[startIndex + 1] | byteData[startIndex] << 8;
-        return new TextDecoder('utf8').decode(byteData.slice(startIndex, startIndex + numberOfChars));
+        let numberOfChars = this.parseU16(byteData, startIndex);
+        return new TextDecoder('utf8').decode(byteData.slice(startIndex + 2, startIndex + numberOfChars + 2));
     }
 
     /**
@@ -74,12 +74,48 @@ export class ProtocolParser {
     }
 
     /**
+     * Helper method to convert an unsigned 16-bit value from the byte stream to numbers.
+     * @param byteData raw byte data from server.
+     * @param byteOffset starting index from byte array message.
+     * @returns a converter number type value.
+     */
+    private parseU16(byteData: Uint8Array, byteOffset: number): number {
+        let data = new DataView(new ArrayBuffer(2));
+        data.setUint8(0, byteData[byteOffset]);
+        data.setUint8(1, byteData[byteOffset + 1]);
+        return data.getUint16(0, true);
+    }
+
+    private assemblePlayerList(opCode: OpCode, byteData: Uint8Array, playerCount: number): PlayerInfo[] {
+        let playerInfos = new Array<PlayerInfo>(playerCount);
+        let byteOffset: number = 0;
+        switch (opCode) {
+            case OpCode.SERVER_SENDALLPLAYERINFO:
+                let stringLength: number = 0;
+                for (let index = 0; index < playerCount; index++) {
+                    stringLength = this.parseU16(byteData, byteOffset + 1);
+                    playerInfos[index] = new PlayerInfo({ userID: byteData[byteOffset], userName: this.assembleString(byteData, byteOffset + 1) });
+                    byteOffset += 3 + stringLength;
+                }
+                break;
+            case OpCode.SERVER_SENDALLPLAYERKD:
+                for (let index = 0; index < playerCount; index++) {
+                    playerInfos[index] = new PlayerInfo({ userID: byteData[byteOffset], killCount: this.parseU16(byteData, byteOffset + 1), deathCount: this.parseU16(byteData, byteOffset + 3) });
+                    byteOffset += 5;
+                }
+                break;
+        }
+        return playerInfos;
+    }
+
+    /**
      * 
      * @param packet 
      * @returns 
      */
     public serialize(packet: Packet): Uint8Array {
-
-        return new Uint8Array;
+        let byteData = new Uint8Array(1);
+        byteData[0] = packet.opCode;
+        return byteData;
     }
 }
