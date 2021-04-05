@@ -1,16 +1,32 @@
+import { Controls } from './controls';
 import { GameLoop } from './gameloop';
-import { Renderer } from './renderer';
+import { OpCode, Packet } from './packet';
+import { Player } from './player';
+import { Image2D, Renderer } from './renderer';
+import { Room } from './room';
 
-function runGame(canvasName: string): void {
+function runGame(canvasName: string, fpsCounterName: string): void {
   // The element that contains the canvas element to drawn in
   let canvas = document.getElementById(canvasName);
-  let renderer = new Renderer(canvas, 320, 0.8);
-  let loop = new GameLoop();
+  let room = new Room({ mapSize: 32, loadMap: 'map1.txt' });
+  console.log(room.getMap.toString());
+  let renderer = new Renderer(canvas, 300, 32, 0.6, Renderer.STANDARD_CEILING_GRADIENT/*, Renderer.STANDARD_FLOOR_GRADIENT*/);
+  let loop = new GameLoop(fpsCounterName);
+  let controls = new Controls();
+  let player = new Player(1, 1, 0.3 * Math.PI);
 
-  loop.begin(function(time: number) {
+  room.setSkyBox(new Image2D("./assets/sceneries/desert.jpg", 3510, 1440));
+  room.getWallImages.push(new Image2D("./assets/walls/concrete_neon_blue.jpg", 2048, 2048));
+
+  loop.begin(function (time: number, receivedPackets: Array<Packet>, sendCallback: any) {
     // Begin gameloop using this frame handler
-    renderer.render();
+    player.update(controls, room.getMap, time);
+    renderer.render(room, player);
+    sendCallback(new Packet({opCode: OpCode.CLIENT_UNKNOWN}));
+    receivedPackets.forEach(e => {
+      // Do stuff with each received packet (e)
+    })
   });
 }
 
-runGame(/*on*/"game-canvas");
+runGame('game-canvas', 'fps-counter');
