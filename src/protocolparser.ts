@@ -3,11 +3,23 @@ import { OpCode, Packet, PlayerInfo } from "./packet";
 const { TextDecoder } = require("fastestsmallesttextencoderdecoder");
 /**
  * Parses messages from the server and compiles messages to the server.
+ * This parser shall adhere to the latest definition of our network protocol
+ * found here:
+ * 
+ * https://github.zhaw.ch/raycasters/docs/wiki/Protocol#byte-stream
  */
 export class ProtocolParser {
 
+    private textDecoder: TextDecoder;
+
+    constructor() {
+        // Text decoder instance to be used for decoding incoming text:
+        this.textDecoder = new TextDecoder('utf8');
+    }
     /**
-     * Parse a chunk of byte stream received from the server.
+     * Parse a chunk of byte stream received from the server. We'll use this in
+     * our gameloop to make things happen such as show where other players have
+     * moved or who has shot, etc.
      * @param message Array of bytes sent from server.
      * @returns a new Packet object containing the opcode and optional parameters.
      */
@@ -50,7 +62,7 @@ export class ProtocolParser {
      */
     private assembleString(byteData: Uint8Array, startIndex: number): string {
         let numberOfChars = this.parseU16(byteData, startIndex);
-        return new TextDecoder('utf8').decode(byteData.slice(startIndex + 2, startIndex + numberOfChars + 2));
+        return this.textDecoder.decode(byteData.slice(startIndex + 2, startIndex + numberOfChars + 2));
     }
 
     /**
@@ -60,18 +72,17 @@ export class ProtocolParser {
      * @returns a fully assembled float number.
      */
     private parseFloat(byteData: Uint8Array, startIndex: number): number {
-        const float = new Float64Array(
-            new Uint8Array([
-                byteData[startIndex + 0],
-                byteData[startIndex + 1],
-                byteData[startIndex + 2],
-                byteData[startIndex + 3],
-                byteData[startIndex + 4],
-                byteData[startIndex + 5],
-                byteData[startIndex + 6],
-                byteData[startIndex + 7]
-            ]).buffer)[0]
-        return float;
+        return new Float64Array(
+          new Uint8Array([
+            byteData[startIndex + 0],
+            byteData[startIndex + 1],
+            byteData[startIndex + 2],
+            byteData[startIndex + 3],
+            byteData[startIndex + 4],
+            byteData[startIndex + 5],
+            byteData[startIndex + 6],
+            byteData[startIndex + 7]
+          ]).buffer)[0];
     }
 
     /**
@@ -110,11 +121,13 @@ export class ProtocolParser {
     }
 
     /**
+     * Convert a packet to a binary array compatible with our protocl
      * 
-     * @param packet 
-     * @returns 
+     * @param packet The packet we want to send over to the server
+     * @returns Byte Array of protocol data to be sent to the server
      */
     public serialize(packet: Packet): Uint8Array {
+        // TODO 
         let byteData = new Uint8Array(1);
         byteData[0] = packet.opCode;
         return byteData;
