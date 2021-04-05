@@ -1,6 +1,6 @@
 import { Controls } from './controls';
 import { GameLoop } from './gameloop';
-import { Packet } from './packet';
+import { OpCode, Packet } from './packet';
 import { Player } from './player';
 import { Image2D, Renderer } from './renderer';
 import { Room } from './room';
@@ -22,7 +22,7 @@ function runGame(canvasName: string, fpsCounterName: string): void {
     // Begin gameloop using this frame handler
     player.update(controls, room.getMap, time);
     renderer.render(room, player);
-    sendCallback(new Packet("Message to server: Hello! Here could be position / other cool + nice stuff"));
+    sendCallback(new Packet({opCode: OpCode.CLIENT_UNKNOWN}));
     receivedPackets.forEach(e => {
       // Do stuff with each received packet (e)
     })

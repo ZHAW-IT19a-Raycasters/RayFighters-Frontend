@@ -1,5 +1,5 @@
 import { Queue } from 'queue-typescript';
-import { Packet } from './packet';
+import { OpCode, Packet } from './packet';
 
 /**
  * State of socket connection to server.
