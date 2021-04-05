@@ -38,11 +38,11 @@ describe('Server side protocol parser unit test', () => {
     })
 
     it('should parse player joined correctly', () => {
-        const textEncoder = new TextEncoder()
+        const textEncoder = new TextEncoder();
         const playerName: any = textEncoder.encode("ATotalyRandomName🤬");
         serverMessage = new Uint8Array([OpCode.SERVER_PLAYERJOINED, 0x42, playerName.length, 0x00, 0x41, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x79, 0x52, 0x61, 0x6e, 0x64, 0x6f, 0x6d, 0x4e, 0x61, 0x6d, 0x65, 0xf0, 0x9f, 0xa4, 0xac]);
         expectedPacket = new Packet({ opCode: OpCode.SERVER_PLAYERJOINED, userID: 0x42, name: playerName.toString() });
-        expect(protocolParser.parse(serverMessage).name.length).toBe(playerName.toString().length)
+        expect(protocolParser.parse(serverMessage).name.length).toBe(playerName.toString().length);
         expect(protocolParser.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
         expect(protocolParser.parse(serverMessage).userID).toBe(expectedPacket.userID);
         expect(protocolParser.parse(serverMessage).name).toBe(expectedPacket.name);

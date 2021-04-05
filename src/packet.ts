@@ -1,5 +1,7 @@
 /**
  * All Opcodes from client and server.
+ * See https://github.zhaw.ch/raycasters/docs/wiki/Protocol#frontend
+ * and https://github.zhaw.ch/raycasters/docs/wiki/Protocol#server
  */
 export enum OpCode {
     // Frontend
@@ -25,6 +27,8 @@ export enum OpCode {
 
 /**
  * Container class for player info.
+ * This is especially used for the SendAllPlayerInfo and SendAllPlayerKD
+ * OpCodes as a pure data container class.
  */
 export class PlayerInfo {
     public userID: number;
