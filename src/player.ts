@@ -9,7 +9,7 @@ import { Weapon } from "./weapon";
  * Player class, handling all the Player actions.
  */
 export class Player {
-  private static readonly DEFAULT_WALK_SPEED = 2;
+  public static readonly DEFAULT_WALK_SPEED = 2;
   private playerId: string;
   private position: Vec2D;
   private paces: number;
