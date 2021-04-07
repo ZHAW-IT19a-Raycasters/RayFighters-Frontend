@@ -2,6 +2,7 @@ import { MapElementType } from './map2d';
 import { Player } from './player';
 import { Step } from './raycaster';
 import { Room } from './room';
+import { Weapon } from './weapon';
 
 /**
  * 2D image object class for easier graphics handling.
@@ -100,7 +101,7 @@ export class Renderer {
    * @param room Room to be drawn with it's skybox, etc
    * @param player 
    */
-  public render(room: Room, player: Player): void {
+  public render(room: Room, player: Player, time: number): void {
     this.context.save();
     // First, if there IS a ceilingGradient, then we do NOT draw a skybox
     // because we wouldn't be able to see it anyways:
@@ -115,7 +116,30 @@ export class Renderer {
     }
     this.drawWalls(room, player)
 
+    if(player.getWeapon) {
+      this.drawWeapon(player, time);
+    }
+
     this.context.restore();
+  }
+
+  /**
+   * Draw the player's weapon with a bobbing animation.
+   * 
+   * @param player Pass the player to get his weapon
+   * @param time Needed for time synchronization of the bobbing animation
+   */
+  private drawWeapon(player: Player, time: number) {
+    const weapon = player.getWeapon;
+    const bobSway = 20; //<-- How much the weapon sways from left ot right
+    const bobSpeed = 3; //<-- How fast the weapon sways
+
+    // Positioning. We want the weapon to be on the bottom, middle.
+    let wx = this.canvas.width - weapon.getImage2D.width;
+    let wy = this.canvas.height - weapon.getImage2D.height;
+    wx = wx * 0.5 + (Math.sin(bobSpeed * time * player.getPaces * (1/time)) * bobSway);
+    wy = wy + Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1/time)) * bobSway);
+    this.context.drawImage(weapon.getImage2D.image, wx, wy, weapon.getImage2D.width, weapon.getImage2D.height);
   }
 
   /**
