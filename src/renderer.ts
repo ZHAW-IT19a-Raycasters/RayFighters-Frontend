@@ -216,7 +216,7 @@ export class Renderer {
       // Cast rays and get back the steps it too until it ran out of draw distance:
       let steps = room.getMap.rayCast(player.getPosition, player.getDirection + rayAngle, this.drawDistance);
       // Finally, draw the bar corresponding to the ray, ofcourse only if it hit MapElementType.WALL or above:
-      this.drawBar(room, bar, steps, rayAngle);
+      this.drawBar(room, bar, steps, rayAngle, player);
     }
     this.context.restore();
   }
@@ -242,7 +242,7 @@ export class Renderer {
    * @param {Step[]} steps - The individual steps the ray took
    * @param {number} rayAngle - In radians, what the ray is angled from the player
    */
-  private drawBar(room: Room, bar: number, steps: Step[], rayAngle: number): void {
+  private drawBar(room: Room, bar: number, steps: Step[], rayAngle: number, player: Player): void {
     // Texture to use to paint the wall:
     const texture = room.getWallImages[0];
     // where the left side of the wall will be drawn:
@@ -275,6 +275,12 @@ export class Renderer {
         this.context.globalAlpha = Math.max((step.distance) / (this.drawDistance * 0.75), 0);
         // Draw rectangle identical to the drawImage above just to shade it in darker:
         this.context.fillRect(left, wall.top, width, wall.height);
+
+        if(player.getWeapon.isMuzzleFlashOngoing) {
+          this.context.fillStyle = player.getWeapon.getMuzzleFlashColor;
+          this.context.globalAlpha = (1 / (1 + step.distance));
+          this.context.fillRect(left, wall.top, width, wall.height);
+        }
       }
     }
   }
