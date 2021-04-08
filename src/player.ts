@@ -127,5 +127,13 @@ export class Player {
     if(hasWalkedX == 1 || hasWalkedY == 1) {
       this.paces += walkDelta;
     }
+
+    if(this.weapon) {
+      if (controls.states.get(KeyCodes.SHOOT)) {
+        this.weapon.shoot();
+      }
+
+      this.weapon.update(seconds);
+    }
   }
 }

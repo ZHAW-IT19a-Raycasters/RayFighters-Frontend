@@ -135,11 +135,11 @@ export class Renderer {
     const bobSpeed = 3; //<-- How fast the weapon sways
 
     // Positioning. We want the weapon to be on the bottom, middle.
-    let wx = this.canvas.width - weapon.getImage2D.width;
-    let wy = this.canvas.height - weapon.getImage2D.height;
+    let wx = this.canvas.width - weapon.getCurrentImage2D.width;
+    let wy = this.canvas.height - weapon.getCurrentImage2D.height;
     wx = wx * 0.5 + (Math.sin(bobSpeed * time * player.getPaces * (1/time)) * bobSway);
     wy = wy + Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1/time)) * bobSway);
-    this.context.drawImage(weapon.getImage2D.image, wx, wy, weapon.getImage2D.width, weapon.getImage2D.height);
+    this.context.drawImage(weapon.getCurrentImage2D.image, wx, wy, weapon.getCurrentImage2D.width, weapon.getCurrentImage2D.height);
   }
 
   /**

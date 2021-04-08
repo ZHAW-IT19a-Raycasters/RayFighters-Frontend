@@ -14,7 +14,7 @@ function runGame(canvasName: string, fpsCounterName: string): void {
   let renderer = new Renderer(canvas, 300, 32, 0.6, Renderer.STANDARD_CEILING_GRADIENT/*, Renderer.STANDARD_FLOOR_GRADIENT*/);
   let loop = new GameLoop(fpsCounterName);
   let controls = new Controls();
-  let player = new Player(1, 1, 0.3 * Math.PI, new Weapon('./assets/weapon.png', 160 * 2, 140 * 2));
+  let player = new Player(1, 1, 0.3 * Math.PI, new Weapon('./assets/weapon.png', ['./assets/weapon_shoot_1.png', './assets/weapon_shoot_2.png'], 160, 180));
 
   room.setSkyBox(new Image2D("./assets/sceneries/desert.jpg", 3510, 1440));
   room.getWallImages.push(new Image2D("./assets/walls/concrete_neon_blue.jpg", 2048, 2048));
