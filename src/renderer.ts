@@ -75,6 +75,9 @@ export class Renderer {
    */
   private ceilingGradient: ColorGradient;
 
+  private originalCeilingNearColor: string;
+  private originalFloorNearColor: string;
+
   /**
     * @constructor
     * @param {DOM} canv - Canvas element to draw game in
@@ -94,6 +97,12 @@ export class Renderer {
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
     this.floorGradient = floorGradient;
     this.ceilingGradient = ceilGradient;
+    if(ceilGradient) {
+      this.originalCeilingNearColor = ceilGradient.near;
+    }
+    if(floorGradient) {
+      this.originalFloorNearColor = floorGradient.near;
+    }
   }
 
   /**
@@ -103,6 +112,9 @@ export class Renderer {
    */
   public render(room: Room, player: Player, time: number): void {
     this.context.save();
+
+    this.muzzleFlashGradientCheck(player.getWeapon);
+
     // First, if there IS a ceilingGradient, then we do NOT draw a skybox
     // because we wouldn't be able to see it anyways:
     if(this.ceilingGradient) {
@@ -114,6 +126,7 @@ export class Renderer {
     if(this.floorGradient) {
       this.drawFloor();
     }
+
     this.drawWalls(room, player)
 
     if(player.getWeapon) {
@@ -121,6 +134,28 @@ export class Renderer {
     }
 
     this.context.restore();
+  }
+
+  /**
+   * See if the player shot his gun and overwrite the floor and ceiling gradient
+   */
+  private muzzleFlashGradientCheck(weapon: Weapon) {
+    console.log(weapon.isMuzzleFlashOngoing);
+    if(weapon.isMuzzleFlashOngoing) {
+      if(this.ceilingGradient) {
+        this.ceilingGradient.near = weapon.getMuzzleFlashColor;
+      }
+      if(this.floorGradient) {
+        this.floorGradient.near = weapon.getMuzzleFlashColor;
+      }
+    } else {
+      if(this.ceilingGradient) {
+        this.ceilingGradient.near = this.originalCeilingNearColor;
+      }
+      if(this.floorGradient) {
+        this.floorGradient.near = this.originalFloorNearColor;
+      }
+    }
   }
 
   /**

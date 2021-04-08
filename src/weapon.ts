@@ -7,6 +7,8 @@ enum WeaponState {
 export class Weapon {
     private static readonly WEAPON_ZOOM = 2.5; // magnification of weapon images
     private static readonly SHOOT_ANIM_DURATION = 0.2; // seconds
+    private static readonly MUZZLE_FLASH_DURATION = 0.1; // seconds
+    public static readonly DEFAULT_MUZZLE_FLASH_COLOR = '#baba82';
 
     /**
      * Image shown when the gun's not being shot
@@ -19,11 +21,17 @@ export class Weapon {
     private currentShootImage: number;
 
     private weaponState: WeaponState;
-    private timeSinceTriggered: number;
+    private timeSinceLastShootImg: number;
 
     private shootAnimDuration: number;
 
-    constructor(private imgPath: string, shootImgPaths: string[], width: number, height: number) {
+    private muzzleFlashOngoing: boolean;
+
+    private muzzleFlashColor: string;
+
+    private shootAudio: HTMLAudioElement;
+
+    constructor(private imgPath: string, shootImgPaths: string[], width: number, height: number, shootSoundEffect?: string, muzzFlashCol?: string) {
         width *= Weapon.WEAPON_ZOOM;
         height *= Weapon.WEAPON_ZOOM;
         this.idleImage = new Image2D(imgPath, width, height);
@@ -36,7 +44,21 @@ export class Weapon {
         // Example for 1s with 2 images: would mean that each image gets 0.5s of time.
         this.shootAnimDuration = Weapon.SHOOT_ANIM_DURATION / this.shootImages.length;
         this.currentShootImage = 0;
-        this.timeSinceTriggered = 0;
+        this.timeSinceLastShootImg = 0;
+        this.muzzleFlashOngoing = false;
+        if(muzzFlashCol) {
+            this.muzzleFlashColor = muzzFlashCol;
+        } else {
+            this.muzzleFlashColor = Weapon.DEFAULT_MUZZLE_FLASH_COLOR;
+        }
+        if(shootSoundEffect) {
+            this.shootAudio = new Audio(shootSoundEffect);
+            this.shootAudio.volume = 0.5;
+        }
+    }
+
+    public get getMuzzleFlashColor(): string {
+        return this.muzzleFlashColor;
     }
 
     public get getCurrentImage2D() {
@@ -46,23 +68,33 @@ export class Weapon {
         return this.idleImage;
     }
 
+    public get isMuzzleFlashOngoing(): boolean {
+        return this.muzzleFlashOngoing;
+    }
+
     public shoot(): void {
         if(this.weaponState == WeaponState.IDLE){
+            if(this.shootAudio) {
+                this.shootAudio.play();
+            }
             this.weaponState = WeaponState.SHOOTING;
+            this.muzzleFlashOngoing = true;
         }
     }
 
     public update(time: number): void {
         if(this.weaponState == WeaponState.SHOOTING) {
-            this.timeSinceTriggered += time;
-            if(this.timeSinceTriggered >= this.shootAnimDuration) {
+            this.timeSinceLastShootImg += time;
+            if(this.timeSinceLastShootImg >= this.shootAnimDuration) {
                 if(this.currentShootImage == (this.shootImages.length - 1)) {
                     this.weaponState = WeaponState.IDLE;
                     this.currentShootImage = 0;
+                    this.shootAudio.pause();
                 } else {
                     ++this.currentShootImage;
+                    this.muzzleFlashOngoing = false;
                 }
-                this.timeSinceTriggered = 0;
+                this.timeSinceLastShootImg = 0;
             }
         }
     }
