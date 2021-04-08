@@ -131,7 +131,9 @@ export class Renderer {
 
     if(player.getWeapon) {
       this.drawWeapon(player, time);
+      this.drawCrosshair();
     }
+
 
     this.context.restore();
   }
@@ -227,7 +229,7 @@ export class Renderer {
    */
   private drawFloor(): void {
     this.setUpFloorGradient(this.floorGradient);
-    this.context.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2)
+    this.context.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2);
   }
 
   private drawCeiling(): void {
@@ -341,6 +343,22 @@ export class Renderer {
       this.context.drawImage(skybox.image, left + width, 0, width, this.canvas.height);
     }
 
+    this.context.restore();
+  }
+
+  private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 2, color: string = '#a714a2'): void {
+    this.context.save();
+    this.context.fillStyle = color;
+    this.context.fillRect(this.canvas.width / 2 - radius - size, this.canvas.height / 2,
+      size, thickness
+    );
+    this.context.fillRect(this.canvas.width / 2 + radius, this.canvas.height / 2,
+      size, thickness
+    );
+
+    this.context.fillRect(this.canvas.width / 2 - (thickness / 2), this.canvas.height / 2 + radius,
+      thickness, size
+    );
     this.context.restore();
   }
 }
