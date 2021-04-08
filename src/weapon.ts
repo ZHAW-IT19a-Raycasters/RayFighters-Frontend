@@ -75,7 +75,7 @@ export class Weapon {
     public shoot(): void {
         if(this.weaponState == WeaponState.IDLE){
             if(this.shootAudio) {
-                this.shootAudio.play();
+                (<HTMLAudioElement>this.shootAudio.cloneNode()).play();
             }
             this.weaponState = WeaponState.SHOOTING;
             this.muzzleFlashOngoing = true;
