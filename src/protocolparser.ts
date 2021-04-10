@@ -32,6 +32,7 @@ export class ProtocolParser {
      */
     public parse(message: Uint8Array): Packet {
         let packet;
+        console.assert(message != undefined);
         const opCode = message[0] as OpCode;
         switch (opCode) {
             case OpCode.SERVER_DISCONNECT:
@@ -175,7 +176,6 @@ export class ProtocolParser {
                 }
                 break;
         }
-
         return byteData;
     }
 
