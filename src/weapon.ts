@@ -5,7 +5,7 @@ enum WeaponState {
 }
 
 export class Weapon {
-    private static readonly WEAPON_ZOOM = 2.5; // magnification of weapon images
+    private static readonly WEAPON_ZOOM = 4.2; // magnification of weapon images
     private static readonly SHOOT_ANIM_DURATION = 0.2; // seconds
     private static readonly MUZZLE_FLASH_DURATION = 0.1; // seconds
     public static readonly DEFAULT_MUZZLE_FLASH_COLOR = '#baba82';
