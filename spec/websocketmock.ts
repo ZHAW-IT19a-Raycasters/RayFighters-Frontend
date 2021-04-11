@@ -6,17 +6,18 @@ export class WebSocket{
     public onclose: any;
     public onerror: any;
     public readyState: number = 1;
-    public sendMessages: Queue<Blob> = new Queue<Blob>();
+    public sendMessages: Queue<ArrayBuffer> = new Queue<ArrayBuffer>();
+    public binaryType: string;
 
     constructor(url: string) {
         // deliberately empty
     }
 
-    public send(message: Blob) {
+    public send(message: ArrayBuffer) {
         this.sendMessages.enqueue(message);
     }
 
-    public triggerOnMessage(message: Blob) {
+    public triggerOnMessage(message: ArrayBuffer) {
         this.onmessage({ data: message });
     }
 

@@ -1,5 +1,5 @@
 import { Queue } from 'queue-typescript';
-import { OpCode, Packet } from './packet';
+import { Packet } from './packet';
 import { ProtocolParser } from './protocolparser';
 
 /**
@@ -49,6 +49,8 @@ export class Socket {
         } else {
             this.socket = new WebSocket(url);
         }
+
+        this.socket.binaryType = "arraybuffer";
         
         this.socket.onopen = (e) => {
             // console.log("Connection established.");
@@ -108,7 +110,7 @@ export class Socket {
         }
         // Sending messages as long as sendQueue isn't empty
         while (this.sendQueue.length > 0) {
-            let serializedData: Uint8Array = ProtocolParser.get.serialize(this.sendQueue.dequeue());
+            let serializedData: ArrayBuffer = ProtocolParser.get.serialize(this.sendQueue.dequeue()).buffer;
             this.socket.send(serializedData);
         }
     }

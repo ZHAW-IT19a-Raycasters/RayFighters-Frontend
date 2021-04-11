@@ -2,14 +2,12 @@ import { WebSocket } from './websocketmock'
 import { Socket, SocketState } from '../src/socket'
 import { OpCode, Packet } from '../src/packet'
 import { ProtocolParser } from '../src/protocolparser';
-var Blob = require('blob');
-
 
 const url = "ws://fakeurl.ch";
 const webSocket = new WebSocket(url);
 const testSocket = new Socket(url, webSocket);
-const testPacket = new Packet({ opCode: OpCode.SERVER_DISCONNECT });
-const expectedContent = new Uint8Array([OpCode.SERVER_DISCONNECT]);
+const testPacket = new Packet({ opCode: OpCode.CLIENT_DISCONNECT });
+const expectedContent = new Uint8Array([OpCode.CLIENT_DISCONNECT]);
 
 describe('Socket method testing', () => {
 
@@ -29,7 +27,7 @@ describe('Socket method testing', () => {
   });
 
   it('should send messages', () => {
-    /** 
+    
     let innerWebSocket = new WebSocket(url);
     let innerSocket = new Socket(url, innerWebSocket);
 
@@ -40,14 +38,14 @@ describe('Socket method testing', () => {
     expect(innerSocket.socketState).toBe(SocketState.CONNECTED);
     expect(innerSocket.socketState).not.toBe(SocketState.ERROR);
 
-    let receivedData: Blob = innerWebSocket.sendMessages.dequeue();
+    let receivedData: ArrayBuffer = innerWebSocket.sendMessages.dequeue();
 
     expect(receivedData).not.toEqual(null);
     expect(receivedData).not.toBeUndefined();
 
-    let innerExpectedContent = new Blob([ProtocolParser.get.serialize(testPacket)])
-    expect(receivedData).toBe(innerExpectedContent);
-    */
+    let innerExpectedContent = ProtocolParser.get.serialize(testPacket).buffer
+    expect(receivedData).toEqual(innerExpectedContent);
+    
   });
 
   it('should receive messages', () => {

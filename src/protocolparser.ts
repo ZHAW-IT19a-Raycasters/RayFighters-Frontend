@@ -58,6 +58,8 @@ export class ProtocolParser {
             case OpCode.SERVER_SENDALLPLAYERKD:
                 packet = new Packet({ opCode: opCode, playerCount: message[1], playerKillDeathList: this.assemblePlayerList(opCode, message.slice(2), message[1]) });
                 break;
+            default:
+                throw Error("Opcode not recognized! Can't parse!");
         }
         return packet;
     }
@@ -175,6 +177,8 @@ export class ProtocolParser {
                     byteData[index + 1] = convertedFloat[index];
                 }
                 break;
+            default:
+                throw Error("Opcode not recognized! Can't serialize!");
         }
         return byteData;
     }
