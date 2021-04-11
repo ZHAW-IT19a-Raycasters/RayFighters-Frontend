@@ -27,19 +27,23 @@ describe('Socket method testing', () => {
   });
 
   it('should send messages', () => {
-    
+    // Prepare new WebSocket and Socket
     let innerWebSocket = new WebSocket(url);
     let innerSocket = new Socket(url, innerWebSocket);
 
+    // Set up Socket
     innerWebSocket.triggerOnOpen();
     innerSocket.send(testPacket);
     innerSocket.sendAll();
 
+    // Check for status
     expect(innerSocket.socketState).toBe(SocketState.CONNECTED);
     expect(innerSocket.socketState).not.toBe(SocketState.ERROR);
 
+    // Extract message from WebSocket
     let receivedData: ArrayBuffer = innerWebSocket.sendMessages.dequeue();
 
+    // Check for defined-ness and for data to not be null
     expect(receivedData).not.toEqual(null);
     expect(receivedData).not.toBeUndefined();
 
@@ -49,8 +53,26 @@ describe('Socket method testing', () => {
   });
 
   it('should receive messages', () => {
-    //let receivedPacket = testSocket.getReceived();
-    //let receivedData = ProtocolParser.get.serialize(receivedPacket);
+    // Prepare new WebSocket and Socket
+    let innerWebSocket = new WebSocket(url);
+    let innerSocket = new Socket(url, innerWebSocket);
 
+    // Define expected packet (SERVER_DISCONNECT message)
+    const expectedPacket = new Packet({ opCode: OpCode.SERVER_DISCONNECT });
+
+    // Prepare SERVER_DISCONNECT message (1-byte array with content 0x64)
+    let message: Uint8Array = new Uint8Array(new ArrayBuffer(1));
+    message.set([0x64]);
+
+    // Receive data from Socket
+    innerWebSocket.triggerOnMessage(message);
+    let receivedData: Packet = innerSocket.getReceived();
+
+    // Check for data to be defined and to not be null
+    expect(receivedData).not.toEqual(null);
+    expect(receivedData).not.toBeUndefined();
+
+    // Trigger socket to send back a message
+    expect(receivedData.opCode).toEqual(expectedPacket.opCode);
   })
 });

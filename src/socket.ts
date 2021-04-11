@@ -58,11 +58,10 @@ export class Socket {
         };
 
         this.socket.onmessage = async (e) => {
-            let messageBlob: Blob = e.data;
-            if (messageBlob == undefined) {
+            let messageBuffer: ArrayBuffer = e.data;
+            if (messageBuffer == undefined) {
                 return;
             }
-            let messageBuffer = await messageBlob.arrayBuffer();
             let messageArray = new Uint8Array(messageBuffer);
             this.receiveQueue.enqueue(ProtocolParser.get.parse(messageArray));
         };
