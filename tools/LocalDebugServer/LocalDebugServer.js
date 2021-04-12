@@ -13,6 +13,12 @@ const WebSocket = require('ws')
 const wss = new WebSocket.Server({ port: 8080 })
 console.log("Starting server on port 8080... Listening now!")
 
+const testMessage = new Uint8Array([0x65]) // Opcode.SERVER_UNKNOWN
+
+let buffer = new ArrayBuffer(1)
+buffer = testMessage.buffer
+
+
 let counter = 0
  
 wss.on('connection', ws => {
@@ -26,11 +32,11 @@ wss.on('connection', ws => {
         .clients
         .forEach( client => {
             //send the client the current message
-            client.send(`{ "Server says hewwo!" }`);
+            client.send(buffer);
         });
     });
 
-  ws.send('Hello! Message From Server!!')
+  ws.send(buffer)
 })
 
 
