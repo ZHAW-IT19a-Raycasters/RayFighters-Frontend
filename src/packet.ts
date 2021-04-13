@@ -105,12 +105,5 @@ export class Packet {
         this.playerInfoList = playerInfoList;
         this.playerKillDeathList = playerKillDeathList;
     }
-
-    /**
-     * Prepares data to be sent to server. 
-     * TODO: solve with switch?
-     */
-    public serialize() {
-        return this.opCode.toString();
-    }
 }
+

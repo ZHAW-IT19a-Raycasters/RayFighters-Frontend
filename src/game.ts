@@ -23,8 +23,8 @@ function runGame(canvasName: string, fpsCounterName: string): void {
     player.update(controls, room.getMap, time);
     renderer.render(room, player);
     sendCallback(new Packet({opCode: OpCode.CLIENT_UNKNOWN}));
-    receivedPackets.forEach(e => {
-      // Do stuff with each received packet (e)
+    receivedPackets.forEach(p => {
+      console.log(p.opCode)
     })
   });
 }

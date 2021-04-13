@@ -1,5 +1,6 @@
 import { Queue } from 'queue-typescript';
-import { OpCode, Packet } from './packet';
+import { Packet } from './packet';
+import { ProtocolParser } from './protocolparser';
 
 /**
  * State of socket connection to server.
@@ -48,18 +49,28 @@ export class Socket {
         } else {
             this.socket = new WebSocket(url);
         }
+
+        this.socket.binaryType = "arraybuffer";
         
         this.socket.onopen = (e) => {
             // console.log("Connection established.");
             this.socketState = SocketState.CONNECTED;
         };
-        this.socket.onmessage = (e) => {
-            this.receiveQueue.enqueue(new Packet(e.data));
+
+        this.socket.onmessage = async (e) => {
+            let messageBuffer: ArrayBuffer = e.data;
+            if (messageBuffer == undefined) {
+                return;
+            }
+            let messageArray = new Uint8Array(messageBuffer);
+            this.receiveQueue.enqueue(ProtocolParser.get.parse(messageArray));
         };
+
         this.socket.onclose = (e) => {
             // console.log("Connection from server closed.");
             this.socketState = SocketState.CLOSED;
         };
+        
         this.socket.onerror = (e) => {
             // console.log("ERROR! Connection couldn't be established.");
             this.socketState = SocketState.ERROR;
@@ -67,25 +78,39 @@ export class Socket {
     }
 
     /**
+     * Check if socket is ready
+     * @returns true if ready
+     */
+    private readyCheck(): boolean {
+        if (this.socket.readyState !== 1) {
+            this.socketState = SocketState.ERROR;
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Enqueues a Packet to be sent to the server.
      * @param packet Packet to be sent to the server.
      */
     public send(packet: Packet): void {
-        if (this.socket.readyState == 1) {
-            this.sendQueue.enqueue(packet);
+        if (!this.readyCheck()){
+            return;
         }
+        this.sendQueue.enqueue(packet);
     }
 
     /**
      * Sends all enqueued Packets heading to the server.
      */
     public sendAll() {
-        // Check if socket is ready
-        if (this.socket.readyState == 1) {
-            // Sending messages as long as sendQueue isn't empty
-            while (this.sendQueue.length > 0) {
-                this.socket.send(this.sendQueue.dequeue().serialize());
-            }
+        if (!this.readyCheck()){
+            return;
+        }
+        // Sending messages as long as sendQueue isn't empty
+        while (this.sendQueue.length > 0) {
+            let serializedData: ArrayBuffer = ProtocolParser.get.serialize(this.sendQueue.dequeue()).buffer;
+            this.socket.send(serializedData);
         }
     }
 

@@ -1,6 +1,6 @@
 import { OpCode, Packet, PlayerInfo } from "./packet";
 
-const { TextDecoder } = require("fastestsmallesttextencoderdecoder");
+
 /**
  * Parses messages from the server and compiles messages to the server.
  * This parser shall adhere to the latest definition of our network protocol
@@ -20,8 +20,13 @@ export class ProtocolParser {
     private textDecoder: TextDecoder;
 
     private constructor() {
-        // Text decoder instance to be used for decoding incoming text:
-        this.textDecoder = new TextDecoder('utf8');
+        // Case if the protocol parser is running in node (for tests)
+        if (typeof window === 'undefined') {
+            const { TextDecoder } = require("fastestsmallesttextencoderdecoder");
+            this.textDecoder = new TextDecoder();
+        } else {
+            this.textDecoder = new TextDecoder();
+        }        
     }
     /**
      * Parse a chunk of byte stream received from the server. We'll use this in
@@ -32,6 +37,7 @@ export class ProtocolParser {
      */
     public parse(message: Uint8Array): Packet {
         let packet;
+        console.assert(message != undefined);
         const opCode = message[0] as OpCode;
         switch (opCode) {
             case OpCode.SERVER_DISCONNECT:
@@ -57,6 +63,8 @@ export class ProtocolParser {
             case OpCode.SERVER_SENDALLPLAYERKD:
                 packet = new Packet({ opCode: opCode, playerCount: message[1], playerKillDeathList: this.assemblePlayerList(opCode, message.slice(2), message[1]) });
                 break;
+            default:
+                throw Error("Opcode not recognized! Can't parse!");
         }
         return packet;
     }
@@ -174,8 +182,9 @@ export class ProtocolParser {
                     byteData[index + 1] = convertedFloat[index];
                 }
                 break;
+            default:
+                throw Error("Opcode not recognized! Can't serialize!");
         }
-
         return byteData;
     }
 
