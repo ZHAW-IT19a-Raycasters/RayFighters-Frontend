@@ -142,7 +142,6 @@ export class Renderer {
    * See if the player shot his gun and overwrite the floor and ceiling gradient
    */
   private muzzleFlashGradientCheck(weapon: Weapon) {
-    console.log(weapon.isMuzzleFlashOngoing);
     if(weapon.isMuzzleFlashOngoing) {
       if(this.ceilingGradient) {
         this.ceilingGradient.near = weapon.getMuzzleFlashColor;
