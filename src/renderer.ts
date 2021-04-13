@@ -123,6 +123,8 @@ export class Renderer {
     }
     this.drawWalls(room, player)
 
+    this.drawSprites(room, player);
+
     this.context.restore();
   }
 
@@ -152,15 +154,12 @@ export class Renderer {
    * TODO: Doc
    */
   private drawSprites(room: Room, player: Player) {
-    this.context.save();
     this.context.globalAlpha = 1;
     // Collect all sprites and iterate through them.
     const sprites = room.getSprites;
     for (let index = 0; index < sprites.length; index++) {
       const sprite = sprites[index];
       // Check if sprite is within the view of the player.
-      // Normalize player position
-      let normalizedPlayerPosition = new Vec2D(0, 0);
       // Offset sprite position with player position.
       let normalizedSpritePosition = new Vec2D(
         sprite.getPosition.x - player.getPosition.x + 0.5,
@@ -181,9 +180,9 @@ export class Renderer {
       // Finally, draw the image
       if (angle >= leftAngle && angle <= rightAngle) {
         let x = this.canvas.width / 2;
-        x += (player.getDirection / angle) * x
-        this.context.drawImage(sprite.getSprite().image, x, this.canvas.height/2);
-        //console.log(sprite.getSprite().source)
+        let d = (angle - player.getDirection)
+        x = x + (d * (this.fieldOfView / 2)) * x
+        this.context.drawImage(sprite.getSprite().image, x, this.canvas.height/2, 100, 100);
       } 
       
       // Debug code
@@ -196,7 +195,6 @@ export class Renderer {
       debugText += "left angle = " + (leftAngle * (180 / Math.PI)).toString() + "\nright angle = " + (rightAngle * (180 / Math.PI)).toString() + "\nFOV = " + (this.fieldOfView * (180 / Math.PI)).toString() + "\nPlayer direction: " + (player.getDirection * (180 / Math.PI)).toString();
       if (index == 0) document.getElementById('debug-window').innerText = debugText;
     }
-    this.context.restore();
   }
 
   /**
@@ -218,7 +216,6 @@ export class Renderer {
       // Finally, draw the bar corresponding to the ray, ofcourse only if it hit MapElementType.WALL or above:
       this.drawBar(room, bar, steps, rayAngle);
     }
-    this.drawSprites(room, player);
     this.context.restore();
   }
 
