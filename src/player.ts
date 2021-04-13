@@ -1,4 +1,4 @@
-import { Map2D } from "./map2d";
+import { Map2D, MapElementType } from "./map2d";
 import { KeyCodes } from "./controls";
 import { Controls } from "./controls";
 import { Vec2D } from "./vec2d";
@@ -68,10 +68,10 @@ export class Player {
   public walk(distance: number, map: Map2D, direction: number): void {
     const dx = Math.cos(direction) * distance;
     const dy = Math.sin(direction) * distance;
-    if (map.getElementByPosition(new Vec2D(this.position.x + dx, this.position.y)).getType() <= 0) {
+    if (map.getElementByPosition(new Vec2D(this.position.x + dx, this.position.y)).getType() !== MapElementType.WALL) {
       this.position.x += dx;
     }
-    if (map.getElementByPosition(new Vec2D(this.position.x, this.position.y + dy)).getType() <= 0) {
+    if (map.getElementByPosition(new Vec2D(this.position.x, this.position.y + dy)).getType() !== MapElementType.WALL) {
       this.position.y += dy;
     }
     this.paces += distance;

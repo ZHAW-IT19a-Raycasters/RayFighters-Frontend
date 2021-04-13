@@ -25,7 +25,7 @@ export class Renderer {
   static CIRCLE = Math.PI * 2;
   static STANDARD_DRAWDISTANCE = 16;
   static STANDARD_FOCAL = 0.75;
-  static SENSORWIDTH = 1;
+  static SENSORWIDTH = 2;
   static STANDARD_FLOOR_GRADIENT = new ColorGradient('#777777', '#111111');
   static STANDARD_CEILING_GRADIENT = new ColorGradient('#777777', '#111111');
 
@@ -251,7 +251,7 @@ export class Renderer {
     let stepIndexHit = -1;
 
     // Skip over the rays that haven't hit a Wall or similar and keep track of the index where they did hit:
-    while (++stepIndexHit < steps.length && steps[stepIndexHit].mapElement.getType() <= MapElementType.FLOOR);
+    while (++stepIndexHit < steps.length && steps[stepIndexHit].mapElement.getType() !== MapElementType.WALL);
 
     // Try from the back down to the ray step nearest to the player to draw the bar that hit a wall:
     for (let s = steps.length - 1; s >= 0; s--) {

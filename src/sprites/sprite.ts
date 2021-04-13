@@ -31,7 +31,7 @@ export class Sprite {
     public get getPosition(): Vec2D {
         return this.position;
     }
-    
+
     public get getDirection(): number {
         return this.direction;
     }
