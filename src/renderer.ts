@@ -173,6 +173,9 @@ export class Renderer {
       let rightAngle = player.getDirection + (this.fieldOfView / 2);
       // Is it in field of view?
       let angle = Math.atan2(normalizedSpritePosition.y, normalizedSpritePosition.x);
+      if (normalizedSpritePosition.y < 0) {
+        angle += 2 * Math.PI;
+      }
 
       let debugText;
       if (angle >= leftAngle && angle <= rightAngle) {
