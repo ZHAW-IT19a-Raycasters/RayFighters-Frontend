@@ -5,7 +5,7 @@ enum WeaponState {
 }
 
 export class Weapon {
-    private static readonly WEAPON_ZOOM = 4.2; // magnification of weapon images
+    private static readonly WEAPON_ZOOM = 3.5; // magnification of weapon images
     private static readonly SHOOT_ANIM_DURATION = 0.2; // seconds
     private static readonly MUZZLE_FLASH_DURATION = 0.1; // seconds
     public static readonly DEFAULT_MUZZLE_FLASH_COLOR = '#baba82';
@@ -31,14 +31,14 @@ export class Weapon {
 
     private shootAudio: HTMLAudioElement;
 
-    constructor(private imgPath: string, shootImgPaths: string[], width: number, height: number, shootSoundEffect?: string, muzzFlashCol?: string) {
+    constructor(private imgPath: string, shootImgPaths: string[], width: number, height: number, shootSoundEffect?: string, muzzFlashCol?: string, testingImage2DClass?: any, testingAudioClass?: any) {
         width *= Weapon.WEAPON_ZOOM;
         height *= Weapon.WEAPON_ZOOM;
-        this.idleImage = new Image2D(imgPath, width, height);
+        this.idleImage = testingImage2DClass ? new testingImage2DClass(imgPath, width, height) : new Image2D(imgPath, width, height);
         this.weaponState = WeaponState.IDLE;
         this.shootImages = new Array<Image2D>(shootImgPaths.length);
         for (let i = 0; i < shootImgPaths.length; i++) {
-            this.shootImages[i] = new Image2D(shootImgPaths[i], width, height);
+            this.shootImages[i] = testingImage2DClass ? new testingImage2DClass(shootImgPaths[i], width, height) : new Image2D(shootImgPaths[i], width, height);
         }
         // How long one shoot animation sprite's displayed for.
         // Example for 1s with 2 images: would mean that each image gets 0.5s of time.
@@ -52,7 +52,7 @@ export class Weapon {
             this.muzzleFlashColor = Weapon.DEFAULT_MUZZLE_FLASH_COLOR;
         }
         if(shootSoundEffect) {
-            this.shootAudio = new Audio(shootSoundEffect);
+            this.shootAudio = testingAudioClass ? new testingAudioClass(shootSoundEffect) : new Audio(shootSoundEffect);
             this.shootAudio.volume = 0.5;
         }
     }
