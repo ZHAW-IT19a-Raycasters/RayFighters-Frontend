@@ -100,30 +100,37 @@ export class Controls {
      * @param event Event that gets passed from the listener. 
      */
     private touchHandler(event: any): void {
-        var touch = event.touches[0];
-        this.touchReleaseHandler(event);
-        this.shootButtonRect = this.shootButton.getBoundingClientRect() // Update position of shoot button in case the device was rotated
 
-        if (touch.pageY >= this.shootButtonRect.y && touch.pageY <= this.shootButtonRect.y + this.shootButtonRect.height &&
-            touch.pageX >= this.shootButtonRect.x && touch.pageX <= this.shootButtonRect.x + this.shootButtonRect.width) {
-            this.keyHandler(true, { keyCode: KeyCodes.SHOOT });
-            return;
-        }
+        if (event.touches.length <= 3) {
 
-        if (touch.pageY < window.innerHeight * 0.5) {
-            this.keyHandler(true, { keyCode: KeyCodes.FORWARD });
-        }
+            for (var i = 0; i < event.touches.length; i++) {
+                
+                var touch = event.touches[i];
 
-        else if (touch.pageX < window.innerWidth * 0.3) {
-            this.keyHandler(true, { keyCode: KeyCodes.TURN_LEFT });
-        }
-
-        else if (touch.pageX > window.innerWidth * 0.7) {
-            this.keyHandler(true, { keyCode: KeyCodes.TURN_RIGHT });
-        }
-
-        else if (touch.pageY > window.innerHeight * 0.5) {
-            this.keyHandler(true, { keyCode: KeyCodes.BACKWARD });
+                this.shootButtonRect = this.shootButton.getBoundingClientRect() // Update position of shoot button in case the device was rotated
+        
+                if (touch.pageY >= this.shootButtonRect.y && touch.pageY <= this.shootButtonRect.y + this.shootButtonRect.height &&
+                    touch.pageX >= this.shootButtonRect.x && touch.pageX <= this.shootButtonRect.x + this.shootButtonRect.width) {
+                    this.keyHandler(true, { keyCode: KeyCodes.SHOOT });
+                    return;
+                }
+        
+                if (touch.pageY < window.innerHeight * 0.5) {
+                    this.keyHandler(true, { keyCode: KeyCodes.FORWARD });
+                }
+        
+                else if (touch.pageX < window.innerWidth * 0.3) {
+                    this.keyHandler(true, { keyCode: KeyCodes.TURN_LEFT });
+                }
+        
+                else if (touch.pageX > window.innerWidth * 0.7) {
+                    this.keyHandler(true, { keyCode: KeyCodes.TURN_RIGHT });
+                }
+        
+                else if (touch.pageY > window.innerHeight * 0.5) {
+                    this.keyHandler(true, { keyCode: KeyCodes.BACKWARD });
+                }
+            }
         }
     }
 
