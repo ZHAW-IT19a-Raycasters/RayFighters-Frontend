@@ -66,7 +66,7 @@ describe('Socket method testing', () => {
 
     // Receive data from Socket
     innerWebSocket.triggerOnMessage(message);
-    let receivedData: Packet = innerSocket.getReceived();
+    let receivedData: Packet = innerSocket.getReceived()[0];
 
     // Check for data to be defined and to not be null
     expect(receivedData).not.toEqual(null);

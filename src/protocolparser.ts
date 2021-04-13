@@ -1,6 +1,6 @@
 import { OpCode, Packet, PlayerInfo } from "./packet";
 
-const { TextDecoder } = require("fastestsmallesttextencoderdecoder");
+
 /**
  * Parses messages from the server and compiles messages to the server.
  * This parser shall adhere to the latest definition of our network protocol
@@ -20,8 +20,13 @@ export class ProtocolParser {
     private textDecoder: TextDecoder;
 
     private constructor() {
-        // Text decoder instance to be used for decoding incoming text:
-        this.textDecoder = new TextDecoder('utf8');
+        // Case if the protocol parser is running in node (for tests)
+        if (typeof window === 'undefined') {
+            const { TextDecoder } = require("fastestsmallesttextencoderdecoder");
+            this.textDecoder = new TextDecoder();
+        } else {
+            this.textDecoder = new TextDecoder();
+        }        
     }
     /**
      * Parse a chunk of byte stream received from the server. We'll use this in

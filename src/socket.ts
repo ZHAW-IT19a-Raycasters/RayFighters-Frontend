@@ -118,19 +118,11 @@ export class Socket {
      * Returns all Packets received from the server, waiting to be incorporated into game logic.
      * @returns Array of received packets.
      */
-    public getReceived(): Packet {
-        /*let receivedPackets = new Array<Packet>(this.receiveQueue.length);
+    public getReceived(): Array<Packet> {
+        let receivedPackets = new Array<Packet>(this.receiveQueue.length);
         for (let i = 0; this.receiveQueue.length > 0; i++) {
             receivedPackets[i] = this.receiveQueue.dequeue();
         }
-        return receivedPackets;*/
-
-        let packet = this.receiveQueue.dequeue();
-
-        if(packet == undefined) {
-            packet = null;
-        }
-
-        return packet;
+        return receivedPackets;
     }
 }
