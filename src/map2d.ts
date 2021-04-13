@@ -1,5 +1,8 @@
 import { Vec2D } from "./vec2d";
 import { Raycaster, Step } from "../src/raycaster";
+import { Sprite } from "./sprites/sprite";
+import { HealthPickup } from "./sprites/healthpickup";
+import { WeaponPickup } from "./sprites/weaponpickup";
 
 export class Map2D {
     /**
@@ -19,7 +22,7 @@ export class Map2D {
      * size refers to the height and width of the map (it's square)
      */
     constructor(private size: number) {
-        this.map = new Array<MapElement>(size**2);
+        this.map = new Array<MapElement>(size ** 2);
         this.raycaster = new Raycaster(this);
     }
 
@@ -44,7 +47,7 @@ export class Map2D {
      * @param y vertical coordinate of the map
      * @returns The ELEMENT of map at (x,y) ONLY if it's inside the map, othertype MapElementType.NONE (!)
      */
-    public getElem(pos: Vec2D): MapElement {
+    public getElementByPosition(pos: Vec2D): MapElement {
         pos.floor();
         if (pos.x < 0 || pos.x > this.size - 1 || pos.y < 0 || pos.y > this.size - 1) {
             // If the coordinate x or y is outside of the map, then return the
@@ -54,25 +57,29 @@ export class Map2D {
         return this.map[pos.y * this.size + pos.x];
     }
 
+    public get getElements() {
+        return this.map;
+    }
+
     public setElem(pos: Vec2D, newElem: MapElement): void {
         pos.floor();
-        if(pos.x >= 0 && pos.x <= this.size - 1 && pos.y >= 0 && pos.y <= this.size - 1) {
+        if (pos.x >= 0 && pos.x <= this.size - 1 && pos.y >= 0 && pos.y <= this.size - 1) {
             this.map[pos.y * this.size + pos.x] = newElem;
         }
     }
 
     public toString(): string {
         let str: string = '   '
-        for(let i = 0; i < this.getSize; i++) { str += `${i} ` }
+        for (let i = 0; i < this.getSize; i++) { str += `${i} ` }
         str += '\n';
 
-        for(let i = 0, row = 0; i < this.map.length; i++) {
+        for (let i = 0, row = 0; i < this.map.length; i++) {
             const colIndex = i % this.getSize;
             const elem = this.map[i].getType();
-            if(colIndex === 0) {
+            if (colIndex === 0) {
                 str += `${row} [${elem} `;
                 ++row;
-            } else if(colIndex === this.getSize - 1) {
+            } else if (colIndex === this.getSize - 1) {
                 str += `${elem}]\n`
             } else {
                 str += `${elem} `
@@ -85,10 +92,10 @@ export class Map2D {
      * First simple demo map to test the map loader.
      */
     private map1 =
-`00000000000000000000000000000000
+        `00000000000000000000000000000000
 01111111111111111111111111111110
 01000000000000000000000000000010
-01000000000000000000000000000010
+0100+000000000000000000000+00010
 01000000000000000000000000000010
 01000000000000000000000000000010
 01000000001111111111111000000010
@@ -96,13 +103,13 @@ export class Map2D {
 01000000000000000000000000000010
 01000000000000000000000000000010
 01000000000000010000000000000010
-01000000000000010000000000000010
+01000000+00000010000000+00000010
 00000000000000010000000000000000
 00000000000000010000000000000000
 00000000000000010000000000000000
 00000000000000010000000000000000
 00000000000000010000000000000000
-00000000000000010000000000000000
+000000+0000000010000000000000000
 00000000000000010000000000000000
 00000000000000010000000000000000
 00000000000000010000000000000000
@@ -122,13 +129,27 @@ export class Map2D {
      * Still a prototype. Loads map1 into the map.
      */
     public fromText(filename: string): void {
-        const file = this.map1.replace(/\n/g,'');
-            let i = 0;
-                for (const char of file) {
+        const file = this.map1.replace(/\n/g, '');
+        let x = 0;
+        let y = 0;
+        for (const char of file) {
+            switch (char) {
+                case '+':
+                    this.map[x] = new MapElement(MapElementType.SPRITE, new HealthPickup(new Vec2D(x % this.size, y)));
+                    break;
+                case '*':
+                    this.map[x] = new MapElement(MapElementType.SPRITE, new WeaponPickup(new Vec2D(x % this.size, y)));
+                    break;
+                default:
                     let num = Number(char);
-                    this.map[i] = new MapElement(num as MapElementType);
-                    i++;
-                }
+                    this.map[x] = new MapElement(num as MapElementType);
+            }
+            x++;
+            // Increment y coordinate if x has reached map width
+            if (x % this.size === this.size - 1) {
+                y++;
+            }
+        }
     }
 
     /**
@@ -185,10 +206,10 @@ export class Map2D {
  * interactive.
  */
 export enum MapElementType {
-    NONE    =  -1,  //< Outside of the map
-    FLOOR   =   0,  //< Floor, inside of the map
-    WALL    =   1,  //< Wall
-    SPRITE  =   2
+    NONE = -1,  //< Outside of the map
+    FLOOR = 0,  //< Floor, inside of the map
+    WALL = 1,   //< Wall
+    SPRITE = 2  //< Sprite of any kind
 }
 
 /**
@@ -198,12 +219,18 @@ export class MapElement {
     private type: MapElementType;
     // TODO: plenty of room to add more interesting properties to walls or
     // floors!!
+    private sprite: Sprite;
 
-    constructor(type: MapElementType) {
+    constructor(type: MapElementType, sprite?: Sprite) {
         this.type = type;
+        this.sprite = sprite;
     }
 
     public getType(): MapElementType {
         return this.type;
+    }
+
+    public get getSprite(): Sprite {
+        return this.sprite;
     }
 }

@@ -119,7 +119,7 @@ export class Raycaster {
         const dy = this.currentDir.y < 0 ? shiftY : 0;
 
         // MapElement that the ray just hit:
-        step.mapElement = this.map.getElem(new Vec2D(step.pos.x - dx, step.pos.y - dy));
+        step.mapElement = this.map.getElementByPosition(new Vec2D(step.pos.x - dx, step.pos.y - dy));
 
         // Distance we've traveled plus the new ray:
         step.distance = distance + Math.sqrt(step.length);

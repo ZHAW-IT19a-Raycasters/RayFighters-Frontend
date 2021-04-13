@@ -68,10 +68,10 @@ export class Player {
   public walk(distance: number, map: Map2D, direction: number): void {
     const dx = Math.cos(direction) * distance;
     const dy = Math.sin(direction) * distance;
-    if (map.getElem(new Vec2D(this.position.x + dx, this.position.y)).getType() <= 0) {
+    if (map.getElementByPosition(new Vec2D(this.position.x + dx, this.position.y)).getType() <= 0) {
       this.position.x += dx;
     }
-    if (map.getElem(new Vec2D(this.position.x, this.position.y + dy)).getType() <= 0) {
+    if (map.getElementByPosition(new Vec2D(this.position.x, this.position.y + dy)).getType() <= 0) {
       this.position.y += dy;
     }
     this.paces += distance;
