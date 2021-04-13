@@ -8,7 +8,7 @@ export class HealthPickup extends Sprite {
 
     constructor(position: Vec2D){
         // TODO: Add static image
-        super(position, new Array<Image2D>(new Image2D('assets/enemies/placeholder.png', 100, 100)), SpriteType.HEALTH_PICKUP);
+        super(position, new Array<Image2D>(new Image2D('assets/enemies/placeholder.png', 500, 500)), SpriteType.HEALTH_PICKUP);
     }
 
     public trigger(player: Player) {

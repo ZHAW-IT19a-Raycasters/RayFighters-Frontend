@@ -82,6 +82,14 @@ export class Renderer {
   private ceilingGradient: ColorGradient;
 
   /**
+    * Buffer to record at what distances the individual bars were drawn from the player.
+    * This is crucial to determine whether we are allowed to draw a Sprite or Enemy.
+    * Is used as a lookup table. Mapping is [x_coor] -> distance_from_player
+    */
+  private depthBuffer: number[];
+
+
+  /**
     * @constructor
     * @param {DOM} canv - Canvas element to draw game in
     * @param {number} resolution - Resolution to render the game in (pixels). Canvas sizes may differ.
@@ -179,10 +187,13 @@ export class Renderer {
       }
       // Finally, draw the image
       if (angle >= leftAngle && angle <= rightAngle) {
-        let x = this.canvas.width / 2;
-        let d = (angle - player.getDirection)
-        x = x + (d * (this.fieldOfView / 2)) * x
-        this.context.drawImage(sprite.getSprite().image, x, this.canvas.height/2, 100, 100);
+        let x = this.canvas.width / 2; //<- Middle of screen
+        let dx = (angle - player.getDirection); //<- How much the object deviates from our center of view on x
+        x = x + (dx * (this.fieldOfView / 2)) * x; //<- Deviation added to center of view
+
+        // Zoom factor 
+        let dy = 1 / Math.sqrt((sprite.getPosition.x - player.getPosition.x)**2 + (sprite.getPosition.y - player.getPosition.y)**2);
+        this.context.drawImage(sprite.getSprite().image, x, this.canvas.height/2, sprite.getSprite().width * dy, sprite.getSprite().height * dy);
       } 
       
       // Debug code
