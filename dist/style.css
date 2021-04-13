@@ -49,6 +49,17 @@ body {
   color: white;
 }
 
+#debug-window {
+  position: fixed;
+  overflow: hidden;
+  left: 30px;
+  top: 100px;
+  padding: 5px;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
 canvas#game-canvas {
   /* disable select, copy + paste */
   width: 100%;

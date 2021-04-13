@@ -2,6 +2,7 @@ import { MapElementType } from './map2d';
 import { Player } from './player';
 import { Step } from './raycaster';
 import { Room } from './room';
+import { Vec2D } from './vec2d';
 
 /**
  * 2D image object class for easier graphics handling.
@@ -17,13 +18,14 @@ export class Image2D {
 }
 
 export class ColorGradient {
-  constructor(public near: string, public far: string) {}
+  constructor(public near: string, public far: string) { }
 }
 
 export class Renderer {
   static CIRCLE = Math.PI * 2;
   static STANDARD_DRAWDISTANCE = 16;
   static STANDARD_FOCAL = 0.75;
+  static SENSORWIDTH = 1;
   static STANDARD_FLOOR_GRADIENT = new ColorGradient('#777777', '#111111');
   static STANDARD_CEILING_GRADIENT = new ColorGradient('#777777', '#111111');
 
@@ -65,6 +67,11 @@ export class Renderer {
   private focalLength: number;
 
   /**
+   * Field of view of the player.
+   */
+  private fieldOfView: number;
+
+  /**
    * 
    */
   private floorGradient: ColorGradient;
@@ -93,6 +100,7 @@ export class Renderer {
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
     this.floorGradient = floorGradient;
     this.ceilingGradient = ceilGradient;
+    this.fieldOfView = 2 * Math.atan(Renderer.SENSORWIDTH / (2 * this.focalLength)) // 2 * ARCTAN (SENSOR WIDTH / (2 X FOCAL LENGTH)) * (180/Π)
   }
 
   /**
@@ -104,13 +112,13 @@ export class Renderer {
     this.context.save();
     // First, if there IS a ceilingGradient, then we do NOT draw a skybox
     // because we wouldn't be able to see it anyways:
-    if(this.ceilingGradient) {
+    if (this.ceilingGradient) {
       this.drawCeiling();
     } else {
       this.drawSkyBox(room.getSkyBox, player.getDirection)
     }
 
-    if(this.floorGradient) {
+    if (this.floorGradient) {
       this.drawFloor();
     }
     this.drawWalls(room, player)
@@ -143,8 +151,38 @@ export class Renderer {
   /**
    * TODO: Doc
    */
-  private drawSprites(room: Room, player: Player){
-    
+  private drawSprites(room: Room, player: Player) {
+    // Collect all sprites and iterate through them.
+    const sprites = room.getSprites;
+    for (let index = 0; index < sprites.length; index++) {
+      const sprite = sprites[index];
+      // Check if sprite is within the view of the player.
+      // Normalize player position
+      let normalizedPlayerPosition = new Vec2D(0, 0);
+      // Offset sprite position with player position.
+      let normalizedSpritePosition = new Vec2D(
+        sprite.getPosition.x - player.getPosition.x,
+        sprite.getPosition.y - player.getPosition.y
+      );
+      // Normalizing vector using linear algebra to facilitate usage in the unit circle.
+      let spriteLength = Math.sqrt(normalizedSpritePosition.x ** 2 + normalizedSpritePosition.y ** 2);
+      normalizedSpritePosition.x /= spriteLength;
+      normalizedSpritePosition.y /= spriteLength;
+      // Calculate angle of player to sprite 
+      let leftAngle = player.getDirection - (this.fieldOfView / 2);
+      let rightAngle = player.getDirection + (this.fieldOfView / 2);
+      // Is it in field of view?
+      let angle = Math.atan2(normalizedSpritePosition.y, normalizedSpritePosition.x);
+
+      let debugText;
+      if (angle >= leftAngle && angle <= rightAngle) {
+        if (index == 0) debugText = "is in view\nAngle = " + (angle * (180 / Math.PI)).toString() + "\n\n";
+      } else {
+        if (index == 0) debugText = "";
+      }
+      debugText += "left angle = " + (leftAngle * (180 / Math.PI)).toString() + "\nright angle = " + (rightAngle * (180 / Math.PI)).toString() + "\nFOV = " + (this.fieldOfView * (180 / Math.PI)).toString() + "\nPlayer direction: " + (player.getDirection * (180 / Math.PI)).toString();
+      if (index == 0) document.getElementById('debug-window').innerText = debugText;
+    }
   }
 
   /**
@@ -158,7 +196,7 @@ export class Renderer {
     // Cast ray for each bar, depending on resolution
     for (let bar = 0; bar < this.resolution; bar++) {
       // On the unit circle, determine the bar's position on the x-axis, ranging from -0.5 to 0.5:
-      let xAxisPosition = bar / this.resolution - 0.5; 
+      let xAxisPosition = bar / this.resolution - 0.5;
       // Use this along with the focal length as y-axis to calculate the angle of the ray that will be casted:
       let rayAngle = Math.atan2(xAxisPosition, this.focalLength);
       // Cast rays and get back the steps it too until it ran out of draw distance:
@@ -166,6 +204,7 @@ export class Renderer {
       // Finally, draw the bar corresponding to the ray, ofcourse only if it hit MapElementType.WALL or above:
       this.drawBar(room, bar, steps, rayAngle);
     }
+    this.drawSprites(room, player);
     this.context.restore();
   }
 
@@ -239,7 +278,7 @@ export class Renderer {
    */
   private calculateWall(height: number, angle: number, distance: number) {
     // Player height relative to the walls:
-    const playerHeight = 1; 
+    const playerHeight = 1;
 
     // Player looks straight, parallel to the floor. This can be adjusted from a range of -1 to 1:
     /* TODO
