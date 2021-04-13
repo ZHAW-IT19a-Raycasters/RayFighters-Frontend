@@ -1,12 +1,20 @@
 import { Image2D } from "../renderer";
 import { Vec2D } from "../vec2d";
 
+export enum SpriteType {
+    ENEMY,
+    WEAPON_PICKUP,
+    HEALTH_PICKUP,
+    DECORATION
+}
+
 export class Sprite {
     private position: Vec2D;
     private direction: number;
     private sprites: Array<Image2D>;
+    private type: SpriteType;
 
-    constructor(position: Vec2D, sprites: Array<Image2D>) {
+    constructor(position: Vec2D, sprites: Array<Image2D>, type: SpriteType) {
         // Currently just using default placeholder sprite. 
         // TODO: Expand with front/side images
         this.sprites = sprites;
@@ -16,6 +24,8 @@ export class Sprite {
         this.position = position;      
 
         this.direction = 0;
+
+        this.type = type;
     }
 
     public get getPosition(): Vec2D {

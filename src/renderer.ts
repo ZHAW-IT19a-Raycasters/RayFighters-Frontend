@@ -141,6 +141,13 @@ export class Renderer {
   }
 
   /**
+   * TODO: Doc
+   */
+  private drawSprites(room: Room, player: Player){
+    
+  }
+
+  /**
    * Draw the walls.
    * 
    * @param {Room} room - Room is the source of walls

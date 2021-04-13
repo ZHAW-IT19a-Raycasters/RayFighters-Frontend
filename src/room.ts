@@ -1,5 +1,6 @@
 import { Map2D } from './map2d';
 import { Image2D } from './renderer';
+import { Sprite } from './sprites/sprite';
 
 
 /**
@@ -10,6 +11,7 @@ export class Room {
     private map: Map2D;
     private skyBox: Image2D;
     private wallImages: Image2D[];
+    private sprites: Sprite[];
 
     constructor({ mapSize, isRandomized = false, loadMap }: { mapSize: number; isRandomized?: boolean; loadMap?: string; }) {
         this.map = new Map2D(mapSize);
@@ -21,7 +23,7 @@ export class Room {
         } else {
             this.map.initialize();
         }
-
+        this.sprites = new Array<Sprite>();
         this.wallImages = new Array<Image2D>();
     }
 

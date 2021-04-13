@@ -187,7 +187,8 @@ export class Map2D {
 export enum MapElementType {
     NONE    =  -1,  //< Outside of the map
     FLOOR   =   0,  //< Floor, inside of the map
-    WALL    =   1   //< Wall
+    WALL    =   1,  //< Wall
+    SPRITE  =   2
 }
 
 /**
