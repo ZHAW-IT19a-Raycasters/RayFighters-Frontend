@@ -167,11 +167,12 @@ export class Renderer {
     const sprites = room.getSprites;
     for (let index = 0; index < sprites.length; index++) {
       const sprite = sprites[index];
+      const distance = Math.sqrt((sprite.getPosition.x - player.getPosition.x)**2 + (sprite.getPosition.y - player.getPosition.y)**2);
       // Check if sprite is within the view of the player.
       // Offset sprite position with player position.
       let normalizedSpritePosition = new Vec2D(
-        sprite.getPosition.x - player.getPosition.x + 0.5,
-        sprite.getPosition.y - player.getPosition.y + 0.5
+        sprite.getPosition.x - player.getPosition.x,
+        sprite.getPosition.y - player.getPosition.y
       );
       // Normalizing vector using linear algebra to facilitate usage in the unit circle.
       let spriteLength = Math.sqrt(normalizedSpritePosition.x ** 2 + normalizedSpritePosition.y ** 2);
@@ -192,7 +193,7 @@ export class Renderer {
         x = x + (dx * (this.fieldOfView / 2)) * x; //<- Deviation added to center of view
 
         // Zoom factor 
-        let dy = 1 / Math.sqrt((sprite.getPosition.x - player.getPosition.x)**2 + (sprite.getPosition.y - player.getPosition.y)**2);
+        let dy = 1 / distance;
         this.context.drawImage(sprite.getSprite().image, x, this.canvas.height/2, sprite.getSprite().width * dy, sprite.getSprite().height * dy);
       } 
       
