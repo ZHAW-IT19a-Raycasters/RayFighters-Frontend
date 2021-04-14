@@ -3,6 +3,7 @@ import { KeyCodes } from "./controls";
 import { Controls } from "./controls";
 import { Vec2D } from "./vec2d";
 import { Image2D, Renderer } from "./renderer";
+import { MathHelper } from "./mathhelper";
 
 /**
  * Player class, handling all the Player actions.
@@ -55,7 +56,7 @@ export class Player {
    * @param angle angle by how much the player rotates
    */
   public rotate(angle: number): void {
-    this.direction = (this.direction + angle + Renderer.CIRCLE) % Renderer.CIRCLE;
+    this.direction = (this.direction + angle + MathHelper.CIRCLE) % MathHelper.CIRCLE;
   }
 
   /***

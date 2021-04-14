@@ -1,7 +1,9 @@
 import { MapElementType } from './map2d';
+import { MathHelper } from './mathhelper';
 import { Player } from './player';
 import { Step } from './raycaster';
 import { Room } from './room';
+import { Sprite } from './sprites/sprite';
 import { Vec2D } from './vec2d';
 
 /**
@@ -22,7 +24,6 @@ export class ColorGradient {
 }
 
 export class Renderer {
-  static CIRCLE = Math.PI * 2;
   static STANDARD_DRAWDISTANCE = 16;
   static STANDARD_FOCAL = 0.75;
   static SENSORWIDTH = 2;
@@ -70,6 +71,7 @@ export class Renderer {
    * Field of view of the player.
    */
   private fieldOfView: number;
+  private halfFieldOfView: number;
 
   /**
    * 
@@ -109,6 +111,7 @@ export class Renderer {
     this.floorGradient = floorGradient;
     this.ceilingGradient = ceilGradient;
     this.fieldOfView = 2 * Math.atan(Renderer.SENSORWIDTH / (2 * this.focalLength)) // 2 * ARCTAN (SENSOR WIDTH / (2 X FOCAL LENGTH)) * (180/Π)
+    this.halfFieldOfView = 0.5 * this.fieldOfView;
   }
 
   /**
@@ -159,53 +162,61 @@ export class Renderer {
   }
 
   /**
-   * TODO: Doc
+   * Draw sprites stored in a room in respect to the players position, direction, and the renderers drawing distance.
+   * TODO: Rendering order with walls
    */
   private drawSprites(room: Room, player: Player) {
-    this.context.globalAlpha = 1;
-    // Collect all sprites and iterate through them.
     const sprites = room.getSprites;
-    for (let index = 0; index < sprites.length; index++) {
-      const sprite = sprites[index];
-      const distance = Math.sqrt((sprite.getPosition.x - player.getPosition.x)**2 + (sprite.getPosition.y - player.getPosition.y)**2);
-      // Check if sprite is within the view of the player.
-      // Offset sprite position with player position.
-      let normalizedSpritePosition = new Vec2D(
-        sprite.getPosition.x - player.getPosition.x,
-        sprite.getPosition.y - player.getPosition.y
-      );
-      // Normalizing vector using linear algebra to facilitate usage in the unit circle.
-      let spriteLength = Math.sqrt(normalizedSpritePosition.x ** 2 + normalizedSpritePosition.y ** 2);
-      normalizedSpritePosition.x /= spriteLength;
-      normalizedSpritePosition.y /= spriteLength;
-      // Calculate angle of player to sprite 
-      let leftAngle = player.getDirection - (this.fieldOfView / 2);
-      let rightAngle = player.getDirection + (this.fieldOfView / 2);
-      // Is it in field of view?
-      let angle = Math.atan2(normalizedSpritePosition.y, normalizedSpritePosition.x);
-      if (normalizedSpritePosition.y < 0) {
-        angle += 2 * Math.PI;
-      }
-      // Finally, draw the image
-      if (angle >= leftAngle && angle <= rightAngle) {
-        let x = this.canvas.width / 2; //<- Middle of screen
-        let dx = (angle - player.getDirection); //<- How much the object deviates from our center of view on x
-        x = x + (dx * (this.fieldOfView / 2)) * x; //<- Deviation added to center of view
+    // Position at which we draw the sprite:
+    const drawPos = new Vec2D(0, this.canvas.height / 2);
+    let sprite: Sprite;
+    // distance between the player and the sprite:
+    let distance: number;
+    // note that the angle may not be set (===false) because sprite is outside our vision:
+    let angle: boolean | number;
+    // the factor with which we scale the size of the sprite (the more far away, the smaller it gets):
+    let distanceSizeScalingFactor: number;
+    // How much the sprite's x coordinate on screen deviates from the middle of the screen:
+    let horizontalDeviationFactor: number;
 
-        // Zoom factor 
-        let dy = 1 / distance;
-        this.context.drawImage(sprite.getSprite().image, x, this.canvas.height/2, sprite.getSprite().width * dy, sprite.getSprite().height * dy);
+    this.context.globalAlpha = 1;
+
+    // Collect all sprites and iterate through them.
+    for (let i = 0; i < sprites.length; i++) {
+      sprite = sprites[i];
+      // Distance sprite<->player:
+      distance = MathHelper.euclideanDistance(sprite.getPosition, player.getPosition);
+      if(distance > this.drawDistance) {
+        // Sprite is beyond the drawing distance, so we totally skip drawing it:
+        continue;
+      }
+
+      if ((angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)) !== false) {
+        // Start out with middle of screen:
+        drawPos.x = this.canvas.width / 2;
+        // How much the object deviates from our center of view on x:
+        horizontalDeviationFactor = (angle as number - player.getDirection); 
+        // Deviation added to center of view:
+        drawPos.x = drawPos.x + (horizontalDeviationFactor * this.halfFieldOfView) * drawPos.x;
+
+        // Zoom factor, the size of the sprite gets smaller the more far away it is:
+        distanceSizeScalingFactor = 1 / distance;
+        // Finally, draw the image with the parameters above:
+        this.context.drawImage(sprite.getSprite().image,
+          drawPos.x, drawPos.y,
+          sprite.getSprite().width * distanceSizeScalingFactor, sprite.getSprite().height * distanceSizeScalingFactor
+        );
       } 
       
       // Debug code
-      let debugText;
-      if (angle >= leftAngle && angle <= rightAngle) {
-        if (index == 0) debugText = "is in view\nAngle = " + (angle * (180 / Math.PI)).toString() + "\n\n";
-      } else {
-        if (index == 0) debugText = "";
-      }
-      debugText += "left angle = " + (leftAngle * (180 / Math.PI)).toString() + "\nright angle = " + (rightAngle * (180 / Math.PI)).toString() + "\nFOV = " + (this.fieldOfView * (180 / Math.PI)).toString() + "\nPlayer direction: " + (player.getDirection * (180 / Math.PI)).toString();
-      if (index == 0) document.getElementById('debug-window').innerText = debugText;
+      //let debugText;
+      //if (angle >= leftAngle && angle <= rightAngle) {
+      //  if (index == 0) debugText = "is in view\nAngle = " + (angle * (180 / Math.PI)).toString() + "\n\n";
+      //} else {
+      //  if (index == 0) debugText = "";
+      //}
+      //debugText += "left angle = " + (leftAngle * (180 / Math.PI)).toString() + "\nright angle = " + (rightAngle * (180 / Math.PI)).toString() + "\nFOV = " + (this.fieldOfView * (180 / Math.PI)).toString() + "\nPlayer direction: " + (player.getDirection * (180 / Math.PI)).toString();
+      //if (index == 0) document.getElementById('debug-window').innerText = debugText;
     }
   }
 
@@ -335,7 +346,7 @@ export class Renderer {
   private drawSkyBox(skybox: Image2D, direction: number): void {
     const width = skybox.width * (this.canvas.height / skybox.height) * 2;
     // Calculate where the skybox texture starts, note that this allows for infinitely repeated skyboxes
-    const left = (direction / Renderer.CIRCLE) * -width;
+    const left = (direction / MathHelper.CIRCLE) * -width;
 
     this.context.save();
     this.context.drawImage(skybox.image, left, 0, width, this.canvas.height);
