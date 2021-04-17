@@ -201,11 +201,14 @@ export class Renderer {
 
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
         distanceSizeScalingFactor = 1 / distance;
+        // Update player viewing angle in sprite to help calculating which image will be sent back.
+        sprite.lastPlayerViewingAngle = angle as number;
         // Finally, draw the image with the parameters above:
         this.context.drawImage(sprite.getSprite().image,
           drawPos.x, drawPos.y,
           sprite.getSprite().width * distanceSizeScalingFactor, sprite.getSprite().height * distanceSizeScalingFactor
         );
+        
       } 
       
       // Debug code
@@ -216,7 +219,7 @@ export class Renderer {
       //  if (index == 0) debugText = "";
       //}
       //debugText += "left angle = " + (leftAngle * (180 / Math.PI)).toString() + "\nright angle = " + (rightAngle * (180 / Math.PI)).toString() + "\nFOV = " + (this.fieldOfView * (180 / Math.PI)).toString() + "\nPlayer direction: " + (player.getDirection * (180 / Math.PI)).toString();
-      //if (index == 0) document.getElementById('debug-window').innerText = debugText;
+      
     }
   }
 

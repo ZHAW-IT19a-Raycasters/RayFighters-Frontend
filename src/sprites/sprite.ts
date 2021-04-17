@@ -1,6 +1,11 @@
+import { MathHelper } from "../mathhelper";
+import { PlayerInfo } from "../packet";
 import { Image2D } from "../renderer";
 import { Vec2D } from "../vec2d";
 
+/**
+ * Determines what type the sprite is, to enable distinguishing different sprites on the logic side.
+ */
 export enum SpriteType {
     ENEMY,
     WEAPON_PICKUP,
@@ -8,12 +13,39 @@ export enum SpriteType {
     DECORATION
 }
 
+/**
+ * Sprite superclass. Does all the important methods for handling 2D graphics on the 3D plane.
+ */
 export class Sprite {
+    /**
+     * Position on the map.
+     */
     private position: Vec2D;
-    private direction: number;
-    private sprites: Array<Image2D>;
-    private type: SpriteType;
 
+    /**
+     * Direction the sprite is facing in radiants.
+     */
+    protected direction: number;
+
+    /**
+     * Last angle this sprite was viewed from the perspective of the player.
+     */
+    public lastPlayerViewingAngle: number;
+
+    /**
+     * Array of 2D sprites. Enables multiple sides (3D-esque view), arranged clock-wise.
+     * 0: Front
+     * 1: Right side
+     * 2: Rear
+     * 3: Left side
+     */
+    protected sprites: Array<Image2D>;
+
+    /**
+     * Type of sprite, see enum above.
+     */
+    private type: SpriteType;
+    
     constructor(position: Vec2D, sprites: Array<Image2D>, type: SpriteType) {
         // Currently just using default placeholder sprite. 
         // TODO: Expand with front/side images
@@ -26,6 +58,8 @@ export class Sprite {
         this.direction = 0;
 
         this.type = type;
+
+        this.lastPlayerViewingAngle = 0;
     }
 
     public get getPosition(): Vec2D {
@@ -40,9 +74,7 @@ export class Sprite {
         this.position = position;
     }
 
-    public getSprite() {
-        // TODO: Calculate 'direction' of sprite and return the correct sprite (front/back/side left/side right)
-        // Currently just returning fixed front sprite.
+    public getSprite(): Image2D {
         return this.sprites[0];
     }
 }

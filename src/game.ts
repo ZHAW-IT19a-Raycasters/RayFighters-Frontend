@@ -15,8 +15,8 @@ function runGame(canvasName: string, fpsCounterName: string): void {
   let controls = new Controls();
   let player = new Player(1, 1, 0.3 * Math.PI);
 
-  room.setSkyBox(new Image2D("./assets/sceneries/desert.jpg", 3510, 1440));
-  room.getWallImages.push(new Image2D("./assets/walls/concrete_neon_blue.jpg", 2048, 2048));
+  room.setSkyBox(new Image2D("./assets/sceneries/skyline.jpg", 3510, 1440));
+  room.getWallImages.push(new Image2D("./assets/walls/concrete.jpg", 2048, 2048));
 
   loop.begin(function (time: number, receivedPackets: Array<Packet>, sendCallback: any) {
     // Begin gameloop using this frame handler

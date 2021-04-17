@@ -7,6 +7,19 @@ export class MathHelper {
     public static readonly CIRCLE = 2 * Math.PI;
 
     /**
+     * Eighth of a circle, helpful for calculating viewing angle
+     */
+     public static readonly EIGHTH_OF_CIRCLE = Math.PI / 4;
+
+    /**
+     * Pre-Calculated NWSE directions in radiants.
+     */
+     public static readonly NORTH = (3 / 2) * Math.PI;
+     public static readonly WEST = Math.PI;
+     public static readonly SOUTH = Math.PI / 2;
+     public static readonly EAST = 0;
+
+    /**
      * 
      * @param pos1 Point A
      * @param pos2 Point B

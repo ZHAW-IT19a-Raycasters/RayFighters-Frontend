@@ -1,6 +1,8 @@
 import { Map2D, MapElementType } from './map2d';
 import { Image2D } from './renderer';
+import { Enemy } from './sprites/enemy';
 import { Sprite } from './sprites/sprite';
+import { Vec2D } from './vec2d';
 
 
 /**
@@ -12,6 +14,7 @@ export class Room {
     private skyBox: Image2D;
     private wallImages: Image2D[];
     private sprites: Sprite[];
+    // private enemies: Enemy[]; TODO Maybe keep?
 
     constructor({ mapSize, isRandomized = false, loadMap }: { mapSize: number; isRandomized?: boolean; loadMap?: string; }) {
         this.map = new Map2D(mapSize);
@@ -24,6 +27,11 @@ export class Room {
         } else {
             this.map.initialize();
         }
+
+        // STATIC DEBUG ENEMY:
+        this.sprites.push(new Enemy(69, new Vec2D(5,5)));
+
+        // TODO remove later
 
         // Add sprites from map to sprite array
         for (let index = 0; index < this.map.getElements.length; index++) {
