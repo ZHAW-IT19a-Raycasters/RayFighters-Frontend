@@ -5,6 +5,7 @@ import { Step } from './raycaster';
 import { Room } from './room';
 import { Sprite } from './sprites/sprite';
 import { Vec2D } from './vec2d';
+import { Weapon } from './weapon';
 
 /**
  * 2D image object class for easier graphics handling.
@@ -83,6 +84,9 @@ export class Renderer {
    */
   private ceilingGradient: ColorGradient;
 
+  private originalCeilingNearColor: string;
+  private originalFloorNearColor: string;
+
   /**
     * Buffer to record at what distances the individual bars were drawn from the player.
     * This is crucial to determine whether we are allowed to draw a Sprite or Enemy.
@@ -110,8 +114,16 @@ export class Renderer {
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
     this.floorGradient = floorGradient;
     this.ceilingGradient = ceilGradient;
+
     this.fieldOfView = 2 * Math.atan(Renderer.SENSORWIDTH / (2 * this.focalLength)) // 2 * ARCTAN (SENSOR WIDTH / (2 X FOCAL LENGTH)) * (180/Π)
     this.halfFieldOfView = 0.5 * this.fieldOfView;
+
+    if(ceilGradient) {
+      this.originalCeilingNearColor = ceilGradient.near;
+    }
+    if(floorGradient) {
+      this.originalFloorNearColor = floorGradient.near;
+    }
   }
 
   /**
@@ -119,8 +131,11 @@ export class Renderer {
    * @param room Room to be drawn with it's skybox, etc
    * @param player 
    */
-  public render(room: Room, player: Player): void {
+  public render(room: Room, player: Player, time: number): void {
     this.context.save();
+
+    this.muzzleFlashGradientCheck(player.getWeapon);
+
     // First, if there IS a ceilingGradient, then we do NOT draw a skybox
     // because we wouldn't be able to see it anyways:
     if (this.ceilingGradient) {
@@ -132,11 +147,58 @@ export class Renderer {
     if (this.floorGradient) {
       this.drawFloor();
     }
+
     this.drawWalls(room, player)
+
 
     this.drawSprites(room, player);
 
+    if(player.getWeapon) {
+      this.drawWeapon(player, time);
+      this.drawCrosshair();
+    }
+
     this.context.restore();
+  }
+
+  /**
+   * See if the player shot his gun and overwrite the floor and ceiling gradient
+   */
+  private muzzleFlashGradientCheck(weapon: Weapon) {
+    if(weapon.isMuzzleFlashOngoing) {
+      if(this.ceilingGradient) {
+        this.ceilingGradient.near = weapon.getMuzzleFlashColor;
+      }
+      if(this.floorGradient) {
+        this.floorGradient.near = weapon.getMuzzleFlashColor;
+      }
+    } else {
+      if(this.ceilingGradient) {
+        this.ceilingGradient.near = this.originalCeilingNearColor;
+      }
+      if(this.floorGradient) {
+        this.floorGradient.near = this.originalFloorNearColor;
+      }
+    }
+  }
+
+  /**
+   * Draw the player's weapon with a bobbing animation.
+   * 
+   * @param player Pass the player to get his weapon
+   * @param time Needed for time synchronization of the bobbing animation
+   */
+  private drawWeapon(player: Player, time: number) {
+    const weapon = player.getWeapon;
+    const bobSway = 20; //<-- How much the weapon sways from left ot right
+    const bobSpeed = 3; //<-- How fast the weapon sways
+
+    // Positioning. We want the weapon to be on the bottom, middle.
+    let wx = this.canvas.width - weapon.getCurrentImage2D.width;
+    let wy = this.canvas.height - weapon.getCurrentImage2D.height;
+    wx = wx * 0.5 + (Math.sin(bobSpeed * time * player.getPaces * (1/time)) * bobSway);
+    wy = wy + Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1/time)) * bobSway);
+    this.context.drawImage(weapon.getCurrentImage2D.image, wx, wy, weapon.getCurrentImage2D.width, weapon.getCurrentImage2D.height);
   }
 
   /**
@@ -240,7 +302,7 @@ export class Renderer {
       // Cast rays and get back the steps it too until it ran out of draw distance:
       let steps = room.getMap.rayCast(player.getPosition, player.getDirection + rayAngle, this.drawDistance);
       // Finally, draw the bar corresponding to the ray, ofcourse only if it hit MapElementType.WALL or above:
-      this.drawBar(room, bar, steps, rayAngle);
+      this.drawBar(room, bar, steps, rayAngle, player);
     }
     this.context.restore();
   }
@@ -251,7 +313,7 @@ export class Renderer {
    */
   private drawFloor(): void {
     this.setUpFloorGradient(this.floorGradient);
-    this.context.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2)
+    this.context.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2);
   }
 
   private drawCeiling(): void {
@@ -266,7 +328,7 @@ export class Renderer {
    * @param {Step[]} steps - The individual steps the ray took
    * @param {number} rayAngle - In radians, what the ray is angled from the player
    */
-  private drawBar(room: Room, bar: number, steps: Step[], rayAngle: number): void {
+  private drawBar(room: Room, bar: number, steps: Step[], rayAngle: number, player: Player): void {
     // Texture to use to paint the wall:
     const texture = room.getWallImages[0];
     // where the left side of the wall will be drawn:
@@ -299,6 +361,12 @@ export class Renderer {
         this.context.globalAlpha = Math.max((step.distance) / (this.drawDistance * 0.75), 0);
         // Draw rectangle identical to the drawImage above just to shade it in darker:
         this.context.fillRect(left, wall.top, width, wall.height);
+
+        if(player.getWeapon.isMuzzleFlashOngoing) {
+          this.context.fillStyle = player.getWeapon.getMuzzleFlashColor;
+          this.context.globalAlpha = (1 / (1 + step.distance));
+          this.context.fillRect(left, wall.top, width, wall.height);
+        }
       }
     }
   }
@@ -359,6 +427,22 @@ export class Renderer {
       this.context.drawImage(skybox.image, left + width, 0, width, this.canvas.height);
     }
 
+    this.context.restore();
+  }
+
+  private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 2, color: string = '#a714a2'): void {
+    this.context.save();
+    this.context.fillStyle = color;
+    this.context.fillRect(this.canvas.width / 2 - radius - size, this.canvas.height / 2,
+      size, thickness
+    );
+    this.context.fillRect(this.canvas.width / 2 + radius, this.canvas.height / 2,
+      size, thickness
+    );
+
+    this.context.fillRect(this.canvas.width / 2 - (thickness / 2), this.canvas.height / 2 + radius,
+      thickness, size
+    );
     this.context.restore();
   }
 }

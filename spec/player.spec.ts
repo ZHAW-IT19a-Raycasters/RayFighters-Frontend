@@ -27,7 +27,7 @@ describe('Player module testing', () => {
     player.update(controls, map, seconds);
 
     expect(player.getDirection).toBeCloseTo(-Math.PI);
-    expect(player.getPosition.x).toBeCloseTo(-9);
+    expect(player.getPosition.x).toBeCloseTo(-seconds * Player.DEFAULT_WALK_SPEED);
     expect(player.getPosition.y).toBeCloseTo(0);
   });
 
