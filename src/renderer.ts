@@ -78,8 +78,6 @@ export class Renderer {
   private originalCeilingNearColor: string;
   private originalFloorNearColor: string;
 
-  private windowInstance: any;
-
   /**
     * @constructor
     * @param {DOM} canv - Canvas element to draw game in
@@ -88,12 +86,11 @@ export class Renderer {
     * @param {number} focalLen - focal length for our drawing calls
     * @param {ColorGradient} floorGradient - What color (gradient) the floor should be drawn in
     */
-  constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient, ceilGradient?: ColorGradient, windowClass?: any) {
+  constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient, ceilGradient?: ColorGradient) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
-    this.windowInstance = windowClass ? windowClass : window;
-    this.canvas.width = this.windowInstance.innerWidth;
-    this.canvas.height = this.windowInstance.innerHeight;
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
     this.resolution = resolution;
     this.spacing = canvas.width / resolution;
     this.drawDistance = drawDistance || Renderer.STANDARD_DRAWDISTANCE;
@@ -341,7 +338,7 @@ export class Renderer {
     this.context.drawImage(skybox.image, left, 0, width, this.canvas.height);
 
     // Check for background scroll repeat
-    if (left < width - this.windowInstance.innerWidth * 0.5) {
+    if (left < width - window.innerWidth * 0.5) {
       this.context.drawImage(skybox.image, left + width, 0, width, this.canvas.height);
     }
 
