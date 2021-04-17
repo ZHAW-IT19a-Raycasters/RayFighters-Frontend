@@ -97,4 +97,28 @@ describe('Testing Map2D methods', () => {
     expect(steps[3].pos).toEqual(new Vec2D(1, 1));
     expect(steps[3].mapElement.getType()).toBe(MapElementType.WALL);
   });
+
+  it('should provide a string through toString', () => {
+    const expected = "   0 1 \n" +  
+                   "0 [1 1]\n" +
+                   "1 [1 0]\n";
+    const map = new Map2D(2);
+    map.setElem(new Vec2D(0, 0), new MapElement(MapElementType.WALL));
+    map.setElem(new Vec2D(0, 1), new MapElement(MapElementType.WALL));
+    map.setElem(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
+    map.setElem(new Vec2D(1, 1), new MapElement(MapElementType.FLOOR));
+    expect(map.toString()).toBe(expected);
+  });
+  it('should read map from a file', () => {
+    const map = new Map2D(2);
+    map.fromText('TODO');
+    let el00 = map.getElem(new Vec2D(0, 0));
+    let el10 = map.getElem(new Vec2D(1, 0));
+    let el01 = map.getElem(new Vec2D(0, 1));
+    let el11 = map.getElem(new Vec2D(1, 1));
+    expect(el00.getType()).toBe(MapElementType.FLOOR);
+    expect(el10.getType()).toBe(MapElementType.FLOOR);
+    expect(el01.getType()).toBe(MapElementType.FLOOR);
+    expect(el11.getType()).toBe(MapElementType.FLOOR);
+  });
 });
