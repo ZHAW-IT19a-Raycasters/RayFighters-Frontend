@@ -1,9 +1,10 @@
-import { Map2D } from "./map2d";
-import { KeyCodes } from "./controls";
-import { Controls } from "./controls";
+import { Map2D, MapElementType } from "./map2d";
+import { KeyCodes, Controls } from "./controls";
 import { Vec2D } from "./vec2d";
 import { Image2D, Renderer } from "./renderer";
+import { MathHelper } from "./mathhelper";
 import { Weapon } from "./weapon";
+
 
 /**
  * Player class, handling all the Player actions.
@@ -62,7 +63,7 @@ export class Player {
    * @param angle angle by how much the player rotates
    */
   public rotate(angle: number): void {
-    this.direction = (this.direction + angle + Renderer.CIRCLE) % Renderer.CIRCLE;
+    this.direction = (this.direction + angle + MathHelper.CIRCLE) % MathHelper.CIRCLE;
   }
 
   /***
@@ -75,10 +76,10 @@ export class Player {
   public walk(distance: number, map: Map2D, direction: number): void {
     const dx = Math.cos(direction) * distance;
     const dy = Math.sin(direction) * distance;
-    if (map.getElem(new Vec2D(this.position.x + dx, this.position.y)).getType() <= 0) {
+    if (map.getElementByPosition(new Vec2D(this.position.x + dx, this.position.y)).getType() !== MapElementType.WALL) {
       this.position.x += dx;
     }
-    if (map.getElem(new Vec2D(this.position.x, this.position.y + dy)).getType() <= 0) {
+    if (map.getElementByPosition(new Vec2D(this.position.x, this.position.y + dy)).getType() !== MapElementType.WALL) {
       this.position.y += dy;
     }
   }

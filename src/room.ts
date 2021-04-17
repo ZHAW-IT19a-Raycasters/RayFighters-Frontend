@@ -1,5 +1,8 @@
-import { Map2D } from './map2d';
+import { Map2D, MapElementType } from './map2d';
 import { Image2D } from './renderer';
+import { Enemy } from './sprites/enemy';
+import { Sprite } from './sprites/sprite';
+import { Vec2D } from './vec2d';
 
 
 /**
@@ -10,9 +13,12 @@ export class Room {
     private map: Map2D;
     private skyBox: Image2D;
     private wallImages: Image2D[];
+    private sprites: Sprite[];
+    // private enemies: Enemy[]; TODO Maybe keep?
 
     constructor({ mapSize, isRandomized = false, loadMap }: { mapSize: number; isRandomized?: boolean; loadMap?: string; }) {
         this.map = new Map2D(mapSize);
+        this.sprites = new Array<Sprite>();
 
         if (loadMap) {
             this.map.fromText(loadMap);
@@ -22,10 +28,23 @@ export class Room {
             this.map.initialize();
         }
 
+        // STATIC DEBUG ENEMY:
+        this.sprites.push(new Enemy(69, new Vec2D(5,5)));
+
+        // TODO remove later
+
+        // Add sprites from map to sprite array
+        for (let index = 0; index < this.map.getElements.length; index++) {
+            if (this.map.getElements[index].getType() === MapElementType.SPRITE) {
+                this.sprites.push(this.map.getElements[index].getSprite);
+                // console.log("Sprite added. Position:" + this.map.getElements[index].getSprite.getPosition.toString())
+            }
+        }
+
         this.wallImages = new Array<Image2D>();
     }
 
-    public get getMap() : Map2D {
+    public get getMap(): Map2D {
         return this.map;
     }
 
@@ -33,12 +52,15 @@ export class Room {
         this.skyBox = skybox;
     }
 
-    public get getSkyBox() : Image2D {
+    public get getSkyBox(): Image2D {
         return this.skyBox;
     }
-    
-    public get getWallImages() : Image2D[] {
+
+    public get getWallImages(): Image2D[] {
         return this.wallImages;
     }
-    
+
+    public get getSprites(): Sprite[] {
+        return this.sprites;
+    }
 }

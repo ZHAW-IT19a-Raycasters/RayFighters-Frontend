@@ -1,7 +1,10 @@
 import { MapElementType } from './map2d';
+import { MathHelper } from './mathhelper';
 import { Player } from './player';
 import { Step } from './raycaster';
 import { Room } from './room';
+import { Sprite } from './sprites/sprite';
+import { Vec2D } from './vec2d';
 import { Weapon } from './weapon';
 
 /**
@@ -18,13 +21,13 @@ export class Image2D {
 }
 
 export class ColorGradient {
-  constructor(public near: string, public far: string) {}
+  constructor(public near: string, public far: string) { }
 }
 
 export class Renderer {
-  static CIRCLE = Math.PI * 2;
   static STANDARD_DRAWDISTANCE = 16;
   static STANDARD_FOCAL = 0.75;
+  static SENSORWIDTH = 2;
   static STANDARD_FLOOR_GRADIENT = new ColorGradient('#777777', '#111111');
   static STANDARD_CEILING_GRADIENT = new ColorGradient('#777777', '#111111');
 
@@ -66,6 +69,12 @@ export class Renderer {
   private focalLength: number;
 
   /**
+   * Field of view of the player.
+   */
+  private fieldOfView: number;
+  private halfFieldOfView: number;
+
+  /**
    * 
    */
   private floorGradient: ColorGradient;
@@ -77,6 +86,14 @@ export class Renderer {
 
   private originalCeilingNearColor: string;
   private originalFloorNearColor: string;
+
+  /**
+    * Buffer to record at what distances the individual bars were drawn from the player.
+    * This is crucial to determine whether we are allowed to draw a Sprite or Enemy.
+    * Is used as a lookup table. Mapping is [x_coor] -> distance_from_player
+    */
+  private depthBuffer: number[];
+
 
   /**
     * @constructor
@@ -97,6 +114,10 @@ export class Renderer {
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
     this.floorGradient = floorGradient;
     this.ceilingGradient = ceilGradient;
+
+    this.fieldOfView = 2 * Math.atan(Renderer.SENSORWIDTH / (2 * this.focalLength)) // 2 * ARCTAN (SENSOR WIDTH / (2 X FOCAL LENGTH)) * (180/Π)
+    this.halfFieldOfView = 0.5 * this.fieldOfView;
+
     if(ceilGradient) {
       this.originalCeilingNearColor = ceilGradient.near;
     }
@@ -117,23 +138,25 @@ export class Renderer {
 
     // First, if there IS a ceilingGradient, then we do NOT draw a skybox
     // because we wouldn't be able to see it anyways:
-    if(this.ceilingGradient) {
+    if (this.ceilingGradient) {
       this.drawCeiling();
     } else {
       this.drawSkyBox(room.getSkyBox, player.getDirection)
     }
 
-    if(this.floorGradient) {
+    if (this.floorGradient) {
       this.drawFloor();
     }
 
     this.drawWalls(room, player)
 
+
+    this.drawSprites(room, player);
+
     if(player.getWeapon) {
       this.drawWeapon(player, time);
       this.drawCrosshair();
     }
-
 
     this.context.restore();
   }
@@ -201,6 +224,68 @@ export class Renderer {
   }
 
   /**
+   * Draw sprites stored in a room in respect to the players position, direction, and the renderers drawing distance.
+   * TODO: Rendering order with walls
+   */
+  private drawSprites(room: Room, player: Player) {
+    const sprites = room.getSprites;
+    // Position at which we draw the sprite:
+    const drawPos = new Vec2D(0, this.canvas.height / 2);
+    let sprite: Sprite;
+    // distance between the player and the sprite:
+    let distance: number;
+    // note that the angle may not be set (===false) because sprite is outside our vision:
+    let angle: boolean | number;
+    // the factor with which we scale the size of the sprite (the more far away, the smaller it gets):
+    let distanceSizeScalingFactor: number;
+    // How much the sprite's x coordinate on screen deviates from the middle of the screen:
+    let horizontalDeviationFactor: number;
+
+    this.context.globalAlpha = 1;
+
+    // Collect all sprites and iterate through them.
+    for (let i = 0; i < sprites.length; i++) {
+      sprite = sprites[i];
+      // Distance sprite<->player:
+      distance = MathHelper.euclideanDistance(sprite.getPosition, player.getPosition);
+      if(distance > this.drawDistance) {
+        // Sprite is beyond the drawing distance, so we totally skip drawing it:
+        continue;
+      }
+
+      if ((angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)) !== false) {
+        // Start out with middle of screen:
+        drawPos.x = this.canvas.width / 2;
+        // How much the object deviates from our center of view on x:
+        horizontalDeviationFactor = (angle as number - player.getDirection); 
+        // Deviation added to center of view:
+        drawPos.x = drawPos.x + (horizontalDeviationFactor * this.halfFieldOfView) * drawPos.x;
+
+        // Zoom factor, the size of the sprite gets smaller the more far away it is:
+        distanceSizeScalingFactor = 1 / distance;
+        // Update player viewing angle in sprite to help calculating which image will be sent back.
+        sprite.lastPlayerViewingAngle = angle as number;
+        // Finally, draw the image with the parameters above:
+        this.context.drawImage(sprite.getSprite().image,
+          drawPos.x, drawPos.y,
+          sprite.getSprite().width * distanceSizeScalingFactor, sprite.getSprite().height * distanceSizeScalingFactor
+        );
+        
+      } 
+      
+      // Debug code
+      //let debugText;
+      //if (angle >= leftAngle && angle <= rightAngle) {
+      //  if (index == 0) debugText = "is in view\nAngle = " + (angle * (180 / Math.PI)).toString() + "\n\n";
+      //} else {
+      //  if (index == 0) debugText = "";
+      //}
+      //debugText += "left angle = " + (leftAngle * (180 / Math.PI)).toString() + "\nright angle = " + (rightAngle * (180 / Math.PI)).toString() + "\nFOV = " + (this.fieldOfView * (180 / Math.PI)).toString() + "\nPlayer direction: " + (player.getDirection * (180 / Math.PI)).toString();
+      
+    }
+  }
+
+  /**
    * Draw the walls.
    * 
    * @param {Room} room - Room is the source of walls
@@ -211,7 +296,7 @@ export class Renderer {
     // Cast ray for each bar, depending on resolution
     for (let bar = 0; bar < this.resolution; bar++) {
       // On the unit circle, determine the bar's position on the x-axis, ranging from -0.5 to 0.5:
-      let xAxisPosition = bar / this.resolution - 0.5; 
+      let xAxisPosition = bar / this.resolution - 0.5;
       // Use this along with the focal length as y-axis to calculate the angle of the ray that will be casted:
       let rayAngle = Math.atan2(xAxisPosition, this.focalLength);
       // Cast rays and get back the steps it too until it ran out of draw distance:
@@ -254,7 +339,7 @@ export class Renderer {
     let stepIndexHit = -1;
 
     // Skip over the rays that haven't hit a Wall or similar and keep track of the index where they did hit:
-    while (++stepIndexHit < steps.length && steps[stepIndexHit].mapElement.getType() <= MapElementType.FLOOR);
+    while (++stepIndexHit < steps.length && steps[stepIndexHit].mapElement.getType() !== MapElementType.WALL);
 
     // Try from the back down to the ray step nearest to the player to draw the bar that hit a wall:
     for (let s = steps.length - 1; s >= 0; s--) {
@@ -298,7 +383,7 @@ export class Renderer {
    */
   private calculateWall(height: number, angle: number, distance: number) {
     // Player height relative to the walls:
-    const playerHeight = 1; 
+    const playerHeight = 1;
 
     // Player looks straight, parallel to the floor. This can be adjusted from a range of -1 to 1:
     /* TODO
@@ -332,7 +417,7 @@ export class Renderer {
   private drawSkyBox(skybox: Image2D, direction: number): void {
     const width = skybox.width * (this.canvas.height / skybox.height) * 2;
     // Calculate where the skybox texture starts, note that this allows for infinitely repeated skyboxes
-    const left = (direction / Renderer.CIRCLE) * -width;
+    const left = (direction / MathHelper.CIRCLE) * -width;
 
     this.context.save();
     this.context.drawImage(skybox.image, left, 0, width, this.canvas.height);
