@@ -112,10 +112,10 @@ describe('Testing Map2D methods', () => {
   it('should read map from a file', () => {
     const map = new Map2D(2);
     map.fromText('TODO');
-    let el00 = map.getElem(new Vec2D(0, 0));
-    let el10 = map.getElem(new Vec2D(1, 0));
-    let el01 = map.getElem(new Vec2D(0, 1));
-    let el11 = map.getElem(new Vec2D(1, 1));
+    let el00 = map.getElementByPosition(new Vec2D(0, 0));
+    let el10 = map.getElementByPosition(new Vec2D(1, 0));
+    let el01 = map.getElementByPosition(new Vec2D(0, 1));
+    let el11 = map.getElementByPosition(new Vec2D(1, 1));
     expect(el00.getType()).toBe(MapElementType.FLOOR);
     expect(el10.getType()).toBe(MapElementType.FLOOR);
     expect(el01.getType()).toBe(MapElementType.FLOOR);
