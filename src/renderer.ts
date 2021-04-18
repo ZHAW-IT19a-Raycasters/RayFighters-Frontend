@@ -330,7 +330,7 @@ export class Renderer {
    */
   private drawBar(room: Room, bar: number, steps: Step[], rayAngle: number, player: Player): void {
     // Texture to use to paint the wall:
-    const texture = room.getWallImages[0];
+    let texture;
     // where the left side of the wall will be drawn:
     const left = Math.floor(bar * this.spacing);
     // how wide the bar will be
@@ -346,6 +346,7 @@ export class Renderer {
       let step = steps[s];
       // wall hit:
       if (s === stepIndexHit) {
+        texture = step.mapElement.getWallImage;
         // x coordinate offset for drawing the texture:
         let textureX = Math.floor(texture.width * step.offset);
         // we want ot know where we start drawing the wall on the y axis and how tall it is:
