@@ -3,6 +3,7 @@ import { Raycaster, Step } from "../src/raycaster";
 import { Sprite } from "./sprites/sprite";
 import { HealthPickup } from "./sprites/healthpickup";
 import { WeaponPickup } from "./sprites/weaponpickup";
+import { ColorGradient } from "./renderer";
 
 export class Map2D {
     /**
@@ -19,24 +20,25 @@ export class Map2D {
     private raycaster: Raycaster;
 
     /**
-     * size refers to the height and width of the map (it's square)
+     * Map data according to wiki, see https://github.zhaw.ch/raycasters/docs/wiki/Map
      */
-    constructor(private size: number) {
-        this.map = new Array<MapElement>(size ** 2);
-        this.raycaster = new Raycaster(this);
-    }
-
-    public get getSize(): number {
-        return this.size;
-    }
+    private mapName: string;
+    private skyBoxFile: string;
+    private ceilingGradient: ColorGradient;
+    private floorGradient: ColorGradient;
+    private mapSize: number;
+    private wallTextures: Map<string, string>;
 
     /**
-     * Used for testing for now.
-     * 
-     * @returns Number of elements (walls, floors) in the map
+     * Size refers to the height and width of the map (it's square)
      */
-    public get getElementCount(): number {
-        return this.map.length;
+    constructor(private size?: number) {
+        if (size) {
+            this.map = new Array<MapElement>(size ** 2);
+        }
+
+        this.raycaster = new Raycaster(this);
+        this.wallTextures = new Map<string, string>();
     }
 
     /**
@@ -57,115 +59,72 @@ export class Map2D {
         return this.map[pos.y * this.size + pos.x];
     }
 
-    public get getElements() {
-        return this.map;
-    }
+    /**
+     * Asynchronous method to read the map file.
+     * @param filename Name of map file
+     * @returns 
+     */
+    private readMap(filename: string): string {
+        var request = new XMLHttpRequest();
+        request.open('GET', filename, false);  // `false` makes the request synchronous
+        request.send(null);
 
-    public setElem(pos: Vec2D, newElem: MapElement): void {
-        pos.floor();
-        if (pos.x >= 0 && pos.x <= this.size - 1 && pos.y >= 0 && pos.y <= this.size - 1) {
-            this.map[pos.y * this.size + pos.x] = newElem;
+        if (request.status === 200) {
+            return request.responseText;
+        } else {
+            return "";
         }
     }
 
-    public toString(): string {
-        let str: string = '   '
-        for (let i = 0; i < this.getSize; i++) { str += `${i} ` }
-        str += '\n';
+    /**
+     * 
+     * @param filename 
+     */
+    public parseMapData(filename: string): void {
+        const map = this.readMap(filename)
+        const lines = map.split('\n');
 
-        for (let i = 0, row = 0; i < this.map.length; i++) {
-            const colIndex = i % this.getSize;
-            const elem = this.map[i].getType();
-            if (colIndex === 0) {
-                str += `${row} [${elem} `;
-                ++row;
-            } else if (colIndex === this.getSize - 1) {
-                str += `${elem}]\n`
-            } else {
-                str += `${elem} `
-            }
+        this.mapName = lines[0];
+        this.skyBoxFile = lines[1];
+        if (lines[2].trim().length > 0) {
+            const ceilingSplit = lines[2].split(";");
+            this.ceilingGradient = new ColorGradient(ceilingSplit[0], ceilingSplit[1]);
         }
-        return str;
-    }
+        const floorSplit = lines[3].split(";");
+        this.floorGradient = new ColorGradient(floorSplit[0], floorSplit[1]);
+        this.mapSize = parseInt(lines[4]);
 
-    /**
-     * First simple demo map to test the map loader.
-     */
-    private map1 =
-        `00000000000000000000000000000000
-01111111111111111111111111111110
-00000000000000000000000000000010
-0100+000000000000000000000+00010
-01000000000000000000000000000010
-01000000000000000000000000000010
-01000000001111111111111000000010
-01000000000000000000000000000010
-01000000000000000000000000000010
-01000000000000000000000000000010
-01000000000000010000000000000010
-01000000+00000010000000+00000010
-00000000000000010000000000000000
-00000000000000010000000000000000
-00000000000000010000000000000000
-00000000000000010000000000000000
-00000000000000010000000000000000
-000000+0000000010000000000000000
-00000000000000010000000000000000
-00000000000000010000000000000000
-00000000000000010000000000000000
-00000000000000010000000000000000
-00000000000000010000000000000000
-00000000000000010000000000000000
-00000000000000000000000000000000
-00000000000000000000000000000000
-00000000000000000000000000000000
-00000000000000000000000000000000
-00000000000000000000000000000000
-00000000000000000000000000000000
-00000000000000000000000000000000
-00000000000000000000000000000000`;
-
-    /**
-     * Still a prototype. Loads map1 into the map.
-     */
-    public fromText(filename: string): void {
-        const file = this.map1.replace(/\n/g, '');
         let x = 0;
         let y = 0;
-        for (const char of file) {
-            switch (char) {
-                case '+':
-                    this.map[x] = new MapElement(MapElementType.SPRITE, new HealthPickup(new Vec2D(x % this.size, y)));
-                    break;
-                case '*':
-                    this.map[x] = new MapElement(MapElementType.SPRITE, new WeaponPickup(new Vec2D(x % this.size, y)));
-                    break;
-                default:
-                    let num = Number(char);
-                    this.map[x] = new MapElement(num as MapElementType);
-            }
-            x++;
-            // Increment y coordinate if x has reached map width
-            if (x % this.size === this.size - 1) {
-                y++;
-            }
-        }
-    }
 
-    /**
-     * Generate random MapElements in the map. Completely overrides existing
-     * elements.
-     */
-    public randomize(): void {
-        const WALL_THRESH = 0.25; // Probability for spawning a wall
-        for (var i = 0; i < this.getElementCount; i++) {
-            const rand = Math.random();
-            if (rand < WALL_THRESH) {
-                this.map[i] = new MapElement(MapElementType.WALL);
-            } else {
-                this.map[i] = new MapElement(MapElementType.FLOOR);
+        this.map = new Array<MapElement>(this.mapSize ** 2);
+
+        for (let index = 5; index < 5 + this.mapSize; index++) {
+            const line = lines[index];
+            for (const char of line) {
+                switch (char) {
+                    case '+':
+                        console.log("monke found druggos")
+                        this.map[x] = new MapElement(MapElementType.SPRITE, new HealthPickup(new Vec2D(x % this.mapSize, y)));
+                        break;
+                    case '*':
+                        this.map[x] = new MapElement(MapElementType.SPRITE, new WeaponPickup(new Vec2D(x % this.mapSize, y)));
+                        break;
+                    default:
+                        let num = Number(char);
+                        this.map[x] = new MapElement(num as MapElementType);
+                }
+                x++;
+                // Increment y coordinate if x has reached map width
+                if (x % this.mapSize === this.mapSize - 1) {
+                    y++;
+                }
             }
+
         }
+        console.log("monke dun readin ")
+
+
     }
 
     /**
@@ -198,6 +157,63 @@ export class Map2D {
         // Recursively build up steps until ray hits something:
         return this.raycaster.ray(initialStep);
     }
+
+
+    /**
+     * Generate random MapElements in the map. Completely overrides existing
+     * elements.
+     */
+    public randomize(): void {
+        const WALL_THRESH = 0.25; // Probability for spawning a wall
+        for (var i = 0; i < this.getElementCount; i++) {
+            const rand = Math.random();
+            if (rand < WALL_THRESH) {
+                this.map[i] = new MapElement(MapElementType.WALL);
+            } else {
+                this.map[i] = new MapElement(MapElementType.FLOOR);
+            }
+        }
+    }
+
+    public toString(): string {
+        let str: string = '   '
+        for (let i = 0; i < this.getSize; i++) { str += `${i} ` }
+        str += '\n';
+
+        for (let i = 0, row = 0; i < this.map.length; i++) {
+            const colIndex = i % this.getSize;
+            const elem = this.map[i].getType();
+            if (colIndex === 0) {
+                str += `${row} [${elem} `;
+                ++row;
+            } else if (colIndex === this.getSize - 1) {
+                str += `${elem}]\n`
+            } else {
+                str += `${elem} `
+            }
+        }
+        return str;
+    }
+
+    public get getElements() {
+        return this.map;
+    }
+
+    public get getElementCount(): number {
+        return this.map.length;
+    }
+
+    public setElement(pos: Vec2D, newElem: MapElement): void {
+        pos.floor();
+        if (pos.x >= 0 && pos.x <= this.size - 1 && pos.y >= 0 && pos.y <= this.size - 1) {
+            this.map[pos.y * this.size + pos.x] = newElem;
+        }
+    }
+
+    public get getSize(): number {
+        return this.size;
+    }
+
 }
 
 /**

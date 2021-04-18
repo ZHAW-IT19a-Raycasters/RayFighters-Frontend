@@ -19,10 +19,10 @@ describe('Testing Map2D methods', () => {
      F W
      F W
     */
-    map.setElem(new Vec2D(0, 0), new MapElement(MapElementType.FLOOR));
-    map.setElem(new Vec2D(0, 1), new MapElement(MapElementType.FLOOR));
-    map.setElem(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
-    map.setElem(new Vec2D(1, 1), new MapElement(MapElementType.WALL));
+    map.setElement(new Vec2D(0, 0), new MapElement(MapElementType.FLOOR));
+    map.setElement(new Vec2D(0, 1), new MapElement(MapElementType.FLOOR));
+    map.setElement(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
+    map.setElement(new Vec2D(1, 1), new MapElement(MapElementType.WALL));
 
     let el00 = map.getElementByPosition(new Vec2D(0, 0));
     let el01 = map.getElementByPosition(new Vec2D(0, 1));
@@ -46,7 +46,7 @@ describe('Testing Map2D methods', () => {
 
   it('should correctly handle getting elements at fractional coordinates', () => {
     let map = new Map2D(16);
-    map.setElem(new Vec2D(0.55123, 8 + 1E-6), new MapElement(MapElementType.FLOOR));
+    map.setElement(new Vec2D(0.55123, 8 + 1E-6), new MapElement(MapElementType.FLOOR));
 
     let elem = map.getElementByPosition(new Vec2D(0, 8));
     try {
@@ -84,7 +84,7 @@ describe('Testing Map2D methods', () => {
     const map = new Map2D(4); // 4x4 map
     map.initialize(); // Map with no walls
     // Put a wall at the top left:
-    map.setElem(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
+    map.setElement(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
     const steps = map.rayCast(rayOrigin, rayAngle, maxSteps);
 
     expect(steps.length <= maxSteps + 1).toBeTruthy();
@@ -103,10 +103,10 @@ describe('Testing Map2D methods', () => {
                    "0 [1 1]\n" +
                    "1 [1 0]\n";
     const map = new Map2D(2);
-    map.setElem(new Vec2D(0, 0), new MapElement(MapElementType.WALL));
-    map.setElem(new Vec2D(0, 1), new MapElement(MapElementType.WALL));
-    map.setElem(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
-    map.setElem(new Vec2D(1, 1), new MapElement(MapElementType.FLOOR));
+    map.setElement(new Vec2D(0, 0), new MapElement(MapElementType.WALL));
+    map.setElement(new Vec2D(0, 1), new MapElement(MapElementType.WALL));
+    map.setElement(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
+    map.setElement(new Vec2D(1, 1), new MapElement(MapElementType.FLOOR));
     expect(map.toString()).toBe(expected);
   });
   /*

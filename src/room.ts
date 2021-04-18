@@ -21,7 +21,7 @@ export class Room {
         this.sprites = new Array<Sprite>();
 
         if (loadMap) {
-            this.map.fromText(loadMap);
+            this.map.parseMapData(loadMap);
         } else if (isRandomized) {
             this.map.randomize();
         } else {
