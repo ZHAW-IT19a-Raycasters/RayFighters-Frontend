@@ -1,5 +1,5 @@
 Cwcville Shooting Range
-skyline.jpg
+assets/sceneries/skyline.jpg
 FAFAFA;C0C0C0
 FFFFFF;0B0B0B
 32
