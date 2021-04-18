@@ -36,5 +36,5 @@ FFFFFF;0B0B0B
 20000000000000000000000000000002
 21111111111111111111111111111212
 2
-1 = concrete_neon_blue.jpg
-2 = concrete_neon_orange.jpg
+1 = assets/walls/concrete_neon_blue.jpg
+2 = assets/walls/concrete_neon_orange.jpg

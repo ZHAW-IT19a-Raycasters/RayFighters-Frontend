@@ -14,7 +14,7 @@ function runGame(canvasName: string, fpsCounterName: string): void {
   let renderer = new Renderer(canvas, 300, 32, 0.6, Renderer.STANDARD_CEILING_GRADIENT/*, Renderer.STANDARD_FLOOR_GRADIENT*/);
   let loop = new GameLoop(fpsCounterName);
   let controls = new Controls();
-  let player = new Player(1, 1, 0.3 * Math.PI, new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, './assets/audio/shoot_1.mp3'));
+  let player = new Player(6, 6, 0.3 * Math.PI, new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, './assets/audio/shoot_1.mp3'));
 
   room.setSkyBox(new Image2D("./assets/sceneries/skyline.jpg", 3510, 1440));
   room.getWallImages.push(new Image2D("./assets/walls/concrete.jpg", 2048, 2048));

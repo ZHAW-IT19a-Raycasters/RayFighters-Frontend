@@ -3,7 +3,7 @@ import { Raycaster, Step } from "../src/raycaster";
 import { Sprite } from "./sprites/sprite";
 import { HealthPickup } from "./sprites/healthpickup";
 import { WeaponPickup } from "./sprites/weaponpickup";
-import { ColorGradient } from "./renderer";
+import { ColorGradient, Image2D } from "./renderer";
 
 export class Map2D {
     /**
@@ -27,7 +27,7 @@ export class Map2D {
     private ceilingGradient: ColorGradient;
     private floorGradient: ColorGradient;
     private mapSize: number;
-    private wallTextures: Map<string, string>;
+    private wallTextures: Map<string, Image2D>;
 
     /**
      * Size refers to the height and width of the map (it's square)
@@ -38,7 +38,7 @@ export class Map2D {
         }
 
         this.raycaster = new Raycaster(this);
-        this.wallTextures = new Map<string, string>();
+        this.wallTextures = new Map<string, Image2D>();
     }
 
     /**
@@ -94,37 +94,38 @@ export class Map2D {
         this.floorGradient = new ColorGradient(floorSplit[0], floorSplit[1]);
         this.mapSize = parseInt(lines[4]);
 
-        let x = 0;
-        let y = 0;
+        const numberOfWallTextures = parseInt(lines[5 + this.mapSize]);
+        for (let index = 0; index < numberOfWallTextures; index++) {
+            let textureData = lines[index + 6 + this.mapSize].split("=");
+            this.wallTextures.set(textureData[0].trim(), new Image2D(textureData[1].trim(), 2048, 2048));
+        }
 
         this.map = new Array<MapElement>(this.mapSize ** 2);
 
+        let x = 0;
         for (let index = 5; index < 5 + this.mapSize; index++) {
+            let y = index - 5;
             const line = lines[index];
             for (const char of line) {
                 switch (char) {
                     case '+':
-                        console.log("monke found druggos")
                         this.map[x] = new MapElement(MapElementType.SPRITE, new HealthPickup(new Vec2D(x % this.mapSize, y)));
                         break;
                     case '*':
                         this.map[x] = new MapElement(MapElementType.SPRITE, new WeaponPickup(new Vec2D(x % this.mapSize, y)));
                         break;
-                    default:
-                        let num = Number(char);
-                        this.map[x] = new MapElement(num as MapElementType);
+                    default:    
+                        if (char.match("([1-9])|([A-Z])")) { // Check if it's a wall
+                            this.map[x] = new MapElement(MapElementType.WALL);
+                            this.map[x].setWallImage = this.wallTextures.get(char);
+                        } else if (char === "0") { // Else it's a floor
+                            this.map[x] = new MapElement(MapElementType.FLOOR);
+                        }
                 }
                 x++;
-                // Increment y coordinate if x has reached map width
-                if (x % this.mapSize === this.mapSize - 1) {
-                    y++;
-                }
             }
 
         }
-        console.log("monke dun readin ")
-
-
     }
 
     /**
@@ -236,6 +237,7 @@ export class MapElement {
     // TODO: plenty of room to add more interesting properties to walls or
     // floors!!
     private sprite: Sprite;
+    private wallImage: Image2D;
 
     constructor(type: MapElementType, sprite?: Sprite) {
         this.type = type;
@@ -249,4 +251,14 @@ export class MapElement {
     public get getSprite(): Sprite {
         return this.sprite;
     }
+
+    public get getWallImage(): Image2D {
+        return this.wallImage;
+    }
+
+    
+    public set setWallImage(i : Image2D) {
+        this.wallImage = i;
+    }
+    
 }
