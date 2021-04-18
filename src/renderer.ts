@@ -141,7 +141,7 @@ export class Renderer {
     if (this.ceilingGradient) {
       this.drawCeiling();
     } else {
-      this.drawSkyBox(room.getSkyBox, player.getDirection)
+      this.drawSkyBox(room.getMap.getSkyBox, player.getDirection)
     }
 
     if (this.floorGradient) {

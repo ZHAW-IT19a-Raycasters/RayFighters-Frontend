@@ -23,7 +23,7 @@ export class Map2D {
      * Map data according to wiki, see https://github.zhaw.ch/raycasters/docs/wiki/Map
      */
     private mapName: string;
-    private skyBoxFile: string;
+    private skyBox: Image2D;
     private ceilingGradient: ColorGradient;
     private floorGradient: ColorGradient;
     private mapSize: number;
@@ -85,7 +85,7 @@ export class Map2D {
         const lines = map.split('\n');
 
         this.mapName = lines[0];
-        this.skyBoxFile = lines[1];
+        this.skyBox = new Image2D(lines[1], 3512, 1440);
         if (lines[2].trim().length > 0) {
             const ceilingSplit = lines[2].split(";");
             this.ceilingGradient = new ColorGradient(ceilingSplit[0], ceilingSplit[1]);
@@ -215,6 +215,11 @@ export class Map2D {
         return this.size;
     }
 
+    
+    public get getSkyBox() : Image2D {
+        return this.skyBox
+    }
+
 }
 
 /**
@@ -260,5 +265,7 @@ export class MapElement {
     public set setWallImage(i : Image2D) {
         this.wallImage = i;
     }
+
+    
     
 }

@@ -12,7 +12,6 @@ import { Vec2D } from './vec2d';
 export class Room {
     private map: Map2D;
     private skyBox: Image2D;
-    private wallImages: Image2D[];
     private sprites: Sprite[];
     // private enemies: Enemy[]; TODO Maybe keep?
 
@@ -41,23 +40,10 @@ export class Room {
             }
         }
 
-        this.wallImages = new Array<Image2D>();
     }
 
     public get getMap(): Map2D {
         return this.map;
-    }
-
-    public setSkyBox(skybox: any): void {
-        this.skyBox = skybox;
-    }
-
-    public get getSkyBox(): Image2D {
-        return this.skyBox;
-    }
-
-    public get getWallImages(): Image2D[] {
-        return this.wallImages;
     }
 
     public get getSprites(): Sprite[] {
