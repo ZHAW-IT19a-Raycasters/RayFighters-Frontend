@@ -3,7 +3,8 @@ import { Packet } from "./packet";
 
 /**
  * Wrapper class for simplifying communication.
- * Creates new Packets and returns them through static Command instance (factory pattern)
+ * Creates new Packets and returns them through static Command instance (factory pattern).
+ * Using this wrapper to create commands to the server is super easy. Just call its methods with 'Command.whoAmI()', 'Command.move(1.0, 2.0)' and so on.
  */
 export class Command {
     /**
@@ -57,7 +58,7 @@ export class Command {
      * @param coordinateY new Y coordinate of the player.
      * @returns a new client movement packet.
      */
-    public static movement(coordinateX: number, coordinateY: number) {
+    public static move(coordinateX: number, coordinateY: number) {
         return new Packet({ opCode: OpCode.CLIENT_MOVEMENT, coorX: coordinateX, coorY: coordinateY })
     }
 

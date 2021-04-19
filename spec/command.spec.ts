@@ -1,5 +1,4 @@
 import { Command } from "../src/communication/command";
-import { OpCode } from "../src/communication/opcode";
 import { Packet } from "../src/communication/packet";
 import { ProtocolParser } from "../src/communication/protocolparser";
 
@@ -40,7 +39,7 @@ describe('Command wrapper test', () => {
             0x00, 0x00, 0x00, 0x00, 0x00, 0xD0, 0x84, 0x40,     // X movement (666.0)
             0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40      // Y movement (999.999)
         ];    
-        const packet: Packet = Command.movement(666.0, 999.999)
+        const packet: Packet = Command.move(666.0, 999.999)
         const byteData = ProtocolParser.get.serialize(packet);
         expect(byteData.length).toBe(expectedData.length);
         for (let index = 0; index < expectedData.length; index++) {
