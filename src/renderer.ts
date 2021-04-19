@@ -339,13 +339,13 @@ export class Renderer {
     let stepIndexHit = -1;
 
     // Skip over the rays that haven't hit a Wall or similar and keep track of the index where they did hit:
-    while (++stepIndexHit < steps.length && steps[stepIndexHit].mapElement.getType() !== MapElementType.WALL);
+    while (++stepIndexHit < steps.length && steps[stepIndexHit] != undefined && steps[stepIndexHit].mapElement.getType() !== MapElementType.WALL);
 
     // Try from the back down to the ray step nearest to the player to draw the bar that hit a wall:
     for (let s = steps.length - 1; s >= 0; s--) {
       let step = steps[s];
       // wall hit:
-      if (s === stepIndexHit) {
+      if (s === stepIndexHit && step != undefined) {
         texture = step.mapElement.getWallImage;
         // x coordinate offset for drawing the texture:
         let textureX = Math.floor(texture.width * step.offset);

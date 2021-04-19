@@ -30,11 +30,15 @@ export class Raycaster {
      */
     private currentRange: number;
 
+    private rayBuffer: Array<Step>;
+
     /**
      * 
      * @param map The map that we'll cast rays on
      */
-    constructor(private map: Map2D) { }
+    constructor(private map: Map2D) {
+        this.rayBuffer = new Array<Step>();
+     }
 
     public set dir(dir: Vec2D) {
         this.currentDir = dir;
@@ -42,36 +46,51 @@ export class Raycaster {
 
     public set range(range: number) {
         this.currentRange = range;
+        this.rayBuffer = new Array<Step>(range * 2);
     }
     
     /**
+     * Skrrrr skrrrrr less goooooo
+     * @param currentStep 
+     * @returns 
+     */
+    private calculateCurrentStep(currentStep: Step): Step {
+        // Next step to take until a wall/floor border is reached (in x and y):
+        const xStep = this.step(this.currentDir.y, this.currentDir.x, currentStep.pos, false);
+        const yStep = this.step(this.currentDir.x, this.currentDir.y, new Vec2D(currentStep.pos.y, currentStep.pos.x), true);
+
+        let nextStep;
+        // Move to gridline that's closer:
+        if(xStep.length < yStep.length) { // x closer
+            nextStep = this.inspect(xStep, 1, 0, currentStep.distance, xStep.pos.y);
+        } else { // y closer
+            nextStep = this.inspect(yStep, 0, 1, currentStep.distance, yStep.pos.x);
+        }
+
+        return nextStep;
+    }
+
+    /**
      * Casts a ray based off of origin parameters and this.map
-     * Is recursive!
      * 
      * @param origin Starting step from where the ray is cast
      * @returns An array of steps up to the point where a wall is hit
      */
     public ray(origin: Step): Step[] {
-        // Next step to take until a wall/floor border is reached (in x and y):
-        const xStep = this.step(this.currentDir.y, this.currentDir.x, origin.pos, false);
-        const yStep = this.step(this.currentDir.x, this.currentDir.y, new Vec2D(origin.pos.y, origin.pos.x), true);
+        let nextStep: Step = origin;
+        this.rayBuffer[0] = origin;
 
-        let nextStep;
-        // Move to gridline that's closer:
-        if(xStep.length < yStep.length) { // x closer
-            nextStep = this.inspect(xStep, 1, 0, origin.distance, xStep.pos.y);
-        } else { // y closer
-            nextStep = this.inspect(yStep, 0, 1, origin.distance, yStep.pos.x);
+        // Clear buffer
+        for (let index = 1; index < this.rayBuffer.length; index++) {
+            this.rayBuffer[index] = undefined;
+        }
+        
+        for (let index = 1; nextStep.distance < this.currentRange; index++) {
+            nextStep = this.calculateCurrentStep(nextStep);
+            this.rayBuffer[index] = nextStep;
         }
 
-        // Draw distance: If the next step would make the total ray length
-        // larger than the range, then we stop raycasting:
-        if(nextStep.distance > this.currentRange) {
-            return [origin];
-        }
-
-        // Recursively move onto the next step:
-        return [origin].concat(this.ray(nextStep));
+        return this.rayBuffer;
     }
 
     /**
