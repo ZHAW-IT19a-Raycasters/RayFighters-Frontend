@@ -1,7 +1,8 @@
 import { WebSocket } from './websocketmock'
-import { Socket, SocketState } from '../src/socket'
-import { OpCode, Packet } from '../src/packet'
-import { ProtocolParser } from '../src/protocolparser';
+import { Socket, SocketState } from '../src/communication/socket'
+import { Packet } from '../src/communication/packet'
+import { ProtocolParser } from '../src/communication/protocolparser';
+import { OpCode } from '../src/communication/opcode';
 
 const url = "ws://fakeurl.ch";
 const webSocket = new WebSocket(url);

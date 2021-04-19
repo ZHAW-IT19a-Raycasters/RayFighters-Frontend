@@ -1,5 +1,6 @@
-import { OpCode, Packet, PlayerInfo } from "../src/packet";
-import { ProtocolParser } from "../src/protocolparser";
+import { OpCode } from "../src/communication/opcode";
+import { Packet, PlayerInfo } from "../src/communication/packet";
+import { ProtocolParser } from "../src/communication/protocolparser";
 const { TextEncoder } = require("fastestsmallesttextencoderdecoder");
 
 
@@ -119,7 +120,7 @@ describe('Client side protocol serialize unit test', () => {
         }
     })
 
-    it('should generate a byte stream representing shooting  correctly', () => {
+    it('should generate a byte stream representing shooting correctly', () => {
         const expectedData = [
             0x14,                                               // Opcode
             0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0x1B, 0x40      // Angle (6.9)
