@@ -114,6 +114,9 @@ export class Map2D {
                     case '*':
                         this.map[x] = new MapElement(MapElementType.SPRITE, new WeaponPickup(new Vec2D(x % this.mapSize, y)));
                         break;
+                    case '\r':
+                        x--;
+                        break;
                     default:    
                         if (char.match("([1-9])|([A-Z])")) { // Check if it's a wall
                             this.map[x] = new MapElement(MapElementType.WALL);

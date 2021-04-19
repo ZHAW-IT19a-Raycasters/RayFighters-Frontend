@@ -26,5 +26,41 @@ function runGame(canvasName: string, fpsCounterName: string): void {
     })
   });
 }
+//runGame('game-canvas', 'fps-counter');
 
-runGame('game-canvas', 'fps-counter');
+const startForm: HTMLFormElement = document.querySelector('#startGameForm');
+const gameControls: HTMLElement = document.querySelector('#gameControls');
+const sharebtn: HTMLElement = document.querySelector('#sharebtn');
+
+startForm.addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const formData = new FormData(startForm);
+
+  const playerName = formData.get('inputPlayerName') as string;
+  const selectMap = formData.get('selectMap') as string;
+
+  const header = { "alg": "HS256", "typ": "JWT" };
+  const payload = { "playerName": playerName };
+
+  startForm.setAttribute('hidden', '');
+  gameControls.removeAttribute('hidden');
+
+  runGame('game-canvas', 'fps-counter');
+});
+
+sharebtn.addEventListener('click', function(e){
+  e.preventDefault();
+  const URL = window.location.href;
+  copyToClipboard(URL);
+  this.innerHTML = 'URL copied!'
+});
+
+function copyToClipboard(text: string) {
+  var input = document.body.appendChild(document.createElement("input"));
+  input.value = text;
+  input.focus();
+  input.select();
+  document.execCommand('copy');
+  input.parentNode.removeChild(input);
+}
