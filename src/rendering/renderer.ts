@@ -431,7 +431,7 @@ export class Renderer {
     this.context.restore();
   }
 
-  private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 2, color: string = '#a714a2'): void {
+  private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 3, color: string = '#a714a2'): void {
     this.context.save();
     this.context.fillStyle = color;
     this.context.fillRect(this.canvas.width / 2 - radius - size, this.canvas.height / 2,
