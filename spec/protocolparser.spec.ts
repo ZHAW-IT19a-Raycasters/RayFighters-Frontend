@@ -120,7 +120,7 @@ describe('Client side protocol serialize unit test', () => {
         }
     })
 
-    it('should generate a byte stream representing shooting  correctly', () => {
+    it('should generate a byte stream representing shooting correctly', () => {
         const expectedData = [
             0x14,                                               // Opcode
             0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0x1B, 0x40      // Angle (6.9)
