@@ -1,4 +1,5 @@
-import { OpCode, Packet, PlayerInfo } from "./packet";
+import { OpCode } from "./opcode";
+import { Packet, PlayerInfo } from "./packet";
 
 
 /**

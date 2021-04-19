@@ -1,5 +1,6 @@
-import { OpCode, Packet, PlayerInfo } from "../src/packet";
-import { ProtocolParser } from "../src/protocolparser";
+import { OpCode } from "../src/communication/opcode";
+import { Packet, PlayerInfo } from "../src/communication/packet";
+import { ProtocolParser } from "../src/communication/protocolparser";
 const { TextEncoder } = require("fastestsmallesttextencoderdecoder");
 
 

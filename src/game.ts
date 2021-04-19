@@ -1,10 +1,11 @@
 import { Controls } from './controls';
 import { GameLoop } from './gameloop';
-import { OpCode, Packet } from './packet';
+import { Packet } from './communication/packet';
 import { Player } from './player';
 import { Image2D, Renderer } from './renderer';
 import { Room } from './room';
 import { Weapon } from './weapon';
+import { Command } from './communication/command';
 
 function runGame(canvasName: string, fpsCounterName: string): void {
   // The element that contains the canvas element to drawn in
@@ -20,7 +21,7 @@ function runGame(canvasName: string, fpsCounterName: string): void {
     // Begin gameloop using this frame handler
     player.update(controls, room.getMap, time);
     renderer.render(room, player, time);
-    sendCallback(new Packet({opCode: OpCode.CLIENT_UNKNOWN}));
+    sendCallback(Command.unknown());
     receivedPackets.forEach(p => {
       console.log(p.opCode)
     })
