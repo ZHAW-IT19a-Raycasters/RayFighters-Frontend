@@ -1,4 +1,4 @@
-import { Image2D } from "../renderer";
+import { Image2D } from "../rendering/renderer";
 import { Sprite, SpriteType } from "./sprite";
 import { Vec2D } from "../vec2d";
 import { MathHelper } from "../mathhelper";

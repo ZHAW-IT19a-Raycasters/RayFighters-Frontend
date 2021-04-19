@@ -1,5 +1,5 @@
-import { Map2D, MapElement } from "./map2d";
-import { Vec2D } from "./vec2d";
+import { Map2D, MapElement } from "../map2d";
+import { Vec2D } from "../vec2d";
 
 /**
  * Performs raycasting on a map
@@ -38,7 +38,7 @@ export class Raycaster {
      */
     constructor(private map: Map2D) {
         this.rayBuffer = new Array<Step>();
-     }
+    }
 
     public set dir(dir: Vec2D) {
         this.currentDir = dir;
@@ -46,11 +46,11 @@ export class Raycaster {
 
     public set range(range: number) {
         this.currentRange = range;
-        this.rayBuffer = new Array<Step>(range * 2);
+        this.rayBuffer = new Array<Step>(range);
     }
-    
+
     /**
-     * Skrrrr skrrrrr less goooooo
+     * Calculates the current step
      * @param currentStep 
      * @returns 
      */
@@ -61,7 +61,7 @@ export class Raycaster {
 
         let nextStep;
         // Move to gridline that's closer:
-        if(xStep.length < yStep.length) { // x closer
+        if (xStep.length < yStep.length) { // x closer
             nextStep = this.inspect(xStep, 1, 0, currentStep.distance, xStep.pos.y);
         } else { // y closer
             nextStep = this.inspect(yStep, 0, 1, currentStep.distance, yStep.pos.x);
@@ -84,7 +84,7 @@ export class Raycaster {
         for (let index = 1; index < this.rayBuffer.length; index++) {
             this.rayBuffer[index] = undefined;
         }
-        
+
         for (let index = 1; nextStep.distance < this.currentRange; index++) {
             nextStep = this.calculateCurrentStep(nextStep);
             this.rayBuffer[index] = nextStep;
@@ -104,7 +104,7 @@ export class Raycaster {
      */
     public step(ySlope: number, xSlope: number, pos: Vec2D, isInverted: boolean) {
         let step = new Step(new Vec2D(), Infinity);
-        if(xSlope !== 0) {
+        if (xSlope !== 0) {
             // Calculate delta x and delta y needed to reach next MapElement:
             const dx = xSlope > 0 ?
                 Math.floor(pos.x + 1) - pos.x :
@@ -116,7 +116,8 @@ export class Raycaster {
                 isInverted ? pos.y + dy : pos.x + dx,
                 isInverted ? pos.x + dx : pos.y + dy
             );
-            step.length = (dx**2) + (dy**2);
+
+            step.length = (dx ** 2) + (dy ** 2);
         }
         return step;
     }

@@ -1,7 +1,6 @@
 import { Map2D, MapElementType } from "./map2d";
 import { KeyCodes, Controls } from "./controls";
 import { Vec2D } from "./vec2d";
-import { Image2D, Renderer } from "./renderer";
 import { MathHelper } from "./mathhelper";
 import { Weapon } from "./weapon";
 

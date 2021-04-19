@@ -1,5 +1,5 @@
 import { Map2D, MapElementType } from './map2d';
-import { Image2D } from './renderer';
+import { Image2D } from './rendering/renderer';
 import { Enemy } from './sprites/enemy';
 import { Sprite } from './sprites/sprite';
 import { Vec2D } from './vec2d';

@@ -1,9 +1,9 @@
 import { Vec2D } from "./vec2d";
-import { Raycaster, Step } from "../src/raycaster";
+import { Raycaster, Step } from "./rendering/raycaster";
 import { Sprite } from "./sprites/sprite";
 import { HealthPickup } from "./sprites/healthpickup";
 import { WeaponPickup } from "./sprites/weaponpickup";
-import { ColorGradient, Image2D } from "./renderer";
+import { ColorGradient, Image2D } from "./rendering/renderer";
 
 export class Map2D {
     /**

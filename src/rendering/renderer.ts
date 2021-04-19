@@ -1,11 +1,11 @@
-import { MapElementType } from './map2d';
-import { MathHelper } from './mathhelper';
-import { Player } from './player';
+import { MapElementType } from '../map2d';
+import { MathHelper } from '../mathhelper';
+import { Player } from '../player';
 import { Step } from './raycaster';
-import { Room } from './room';
-import { Sprite } from './sprites/sprite';
-import { Vec2D } from './vec2d';
-import { Weapon } from './weapon';
+import { Room } from '../room';
+import { Sprite } from '../sprites/sprite';
+import { Vec2D } from '../vec2d';
+import { Weapon } from '../weapon';
 
 /**
  * 2D image object class for easier graphics handling.
