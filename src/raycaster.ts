@@ -13,6 +13,7 @@ import { Vec2D } from "./vec2d";
  * - https://www.playfuljs.com/a-first-person-engine-in-265-lines/
  */
 export class Raycaster {
+    private static readonly DEFAULT_RANGE = 8;
     /**
      * Direction of the ray that's currently being worked on
      * (cos, sin)
@@ -30,6 +31,11 @@ export class Raycaster {
      */
     private currentRange: number;
 
+    /**
+      * Buffer that's used to store the steps in a ray cast.
+      * The idea is to not have to re allocate a whole new array
+      * every time a ray is cast.
+      */
     private rayBuffer: Array<Step>;
 
     /**
@@ -37,7 +43,8 @@ export class Raycaster {
      * @param map The map that we'll cast rays on
      */
     constructor(private map: Map2D) {
-        this.rayBuffer = new Array<Step>();
+        this.currentRange = Raycaster.DEFAULT_RANGE;
+        this.rayBuffer = new Array<Step>(this.currentRange);
      }
 
     public set dir(dir: Vec2D) {
@@ -46,28 +53,27 @@ export class Raycaster {
 
     public set range(range: number) {
         this.currentRange = range;
-        this.rayBuffer = new Array<Step>(range * 2);
+        this.rayBuffer.length = 0;
+        this.rayBuffer = new Array<Step>(range + 1);
     }
     
     /**
-     * Skrrrr skrrrrr less goooooo
+     * Calculate the next step in a ray
      * @param currentStep 
-     * @returns 
+     * @returns next step after the current step
      */
     private calculateCurrentStep(currentStep: Step): Step {
         // Next step to take until a wall/floor border is reached (in x and y):
         const xStep = this.step(this.currentDir.y, this.currentDir.x, currentStep.pos, false);
         const yStep = this.step(this.currentDir.x, this.currentDir.y, new Vec2D(currentStep.pos.y, currentStep.pos.x), true);
 
-        let nextStep;
         // Move to gridline that's closer:
         if(xStep.length < yStep.length) { // x closer
-            nextStep = this.inspect(xStep, 1, 0, currentStep.distance, xStep.pos.y);
-        } else { // y closer
-            nextStep = this.inspect(yStep, 0, 1, currentStep.distance, yStep.pos.x);
+            return this.inspect(xStep, 1, 0, currentStep.distance, xStep.pos.y);
         }
 
-        return nextStep;
+        // y closer
+        return this.inspect(yStep, 0, 1, currentStep.distance, yStep.pos.x);
     }
 
     /**
@@ -77,17 +83,18 @@ export class Raycaster {
      * @returns An array of steps up to the point where a wall is hit
      */
     public ray(origin: Step): Step[] {
-        let nextStep: Step = origin;
+        let nextStep = origin;
+        let index = 1;
         this.rayBuffer[0] = origin;
 
-        // Clear buffer
-        for (let index = 1; index < this.rayBuffer.length; index++) {
-            this.rayBuffer[index] = undefined;
-        }
-        
-        for (let index = 1; nextStep.distance < this.currentRange; index++) {
+        for (; nextStep.distance < this.currentRange; index++) {
             nextStep = this.calculateCurrentStep(nextStep);
             this.rayBuffer[index] = nextStep;
+        }
+
+        // Clear rest
+        for (let ci = index + 1; ci < this.rayBuffer.length; ci++) {
+            this.rayBuffer[ci] = undefined;
         }
 
         return this.rayBuffer;
