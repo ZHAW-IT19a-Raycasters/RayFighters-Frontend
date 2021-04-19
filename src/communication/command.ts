@@ -8,11 +8,6 @@ import { Packet } from "./packet";
  */
 export class Command {
     /**
-     * Singleton instance.
-     */
-    private static instance: Command;
-
-    /**
      * Tells the server to disconnect.
      * @returns a disconnect packet.
      */
@@ -69,17 +64,5 @@ export class Command {
      */
     public static shoot(angle: number) {
         return new Packet({ opCode: OpCode.CLIENT_SHOOTING, angle: angle })
-    }
-
-    /**
-     * Singleton getter, enabling singleton pattern.
-     * @returns a singleton ProtocolParser instance.
-     */
-    public static get get(): Command {
-        if (!Command.instance) {
-            Command.instance = new Command();
-        }
-
-        return Command.instance;
     }
 }
