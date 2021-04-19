@@ -2,7 +2,7 @@ import { Controls } from './controls';
 import { GameLoop } from './gameloop';
 import { Packet } from './communication/packet';
 import { Player } from './player';
-import { Image2D, Renderer } from './renderer';
+import { Renderer } from './renderer';
 import { Room } from './room';
 import { Weapon } from './weapon';
 import { Command } from './communication/command';
