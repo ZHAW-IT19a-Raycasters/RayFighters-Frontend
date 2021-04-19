@@ -118,10 +118,10 @@ export class Renderer {
     this.fieldOfView = 2 * Math.atan(Renderer.SENSORWIDTH / (2 * this.focalLength)) // 2 * ARCTAN (SENSOR WIDTH / (2 X FOCAL LENGTH)) * (180/Π)
     this.halfFieldOfView = 0.5 * this.fieldOfView;
 
-    if(ceilGradient) {
+    if (ceilGradient) {
       this.originalCeilingNearColor = ceilGradient.near;
     }
-    if(floorGradient) {
+    if (floorGradient) {
       this.originalFloorNearColor = floorGradient.near;
     }
   }
@@ -153,7 +153,7 @@ export class Renderer {
 
     this.drawSprites(room, player);
 
-    if(player.getWeapon) {
+    if (player.getWeapon) {
       this.drawWeapon(player, time);
       this.drawCrosshair();
     }
@@ -165,18 +165,18 @@ export class Renderer {
    * See if the player shot his gun and overwrite the floor and ceiling gradient
    */
   private muzzleFlashGradientCheck(weapon: Weapon) {
-    if(weapon.isMuzzleFlashOngoing) {
-      if(this.ceilingGradient) {
+    if (weapon.isMuzzleFlashOngoing) {
+      if (this.ceilingGradient) {
         this.ceilingGradient.near = weapon.getMuzzleFlashColor;
       }
-      if(this.floorGradient) {
+      if (this.floorGradient) {
         this.floorGradient.near = weapon.getMuzzleFlashColor;
       }
     } else {
-      if(this.ceilingGradient) {
+      if (this.ceilingGradient) {
         this.ceilingGradient.near = this.originalCeilingNearColor;
       }
-      if(this.floorGradient) {
+      if (this.floorGradient) {
         this.floorGradient.near = this.originalFloorNearColor;
       }
     }
@@ -194,11 +194,17 @@ export class Renderer {
     const bobSpeed = 3; //<-- How fast the weapon sways
 
     // Positioning. We want the weapon to be on the bottom, middle.
-    let wx = this.canvas.width - weapon.getCurrentImage2D.width;
-    let wy = this.canvas.height - weapon.getCurrentImage2D.height;
-    wx = wx * 0.5 + (Math.sin(bobSpeed * time * player.getPaces * (1/time)) * bobSway);
-    wy = wy + Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1/time)) * bobSway);
-    this.context.drawImage(weapon.getCurrentImage2D.image, wx, wy, weapon.getCurrentImage2D.width, weapon.getCurrentImage2D.height);
+    const weaponWidth = weapon.getCurrentImage2D.width * Weapon.WEAPON_ZOOM;
+    const weaponHeight = weapon.getCurrentImage2D.height * Weapon.WEAPON_ZOOM;
+
+    let wx = (this.canvas.width - weaponWidth) * 0.5;
+    let wy = this.canvas.height - weaponHeight;
+
+    if (player.hasMoved()) {
+      wx += (Math.sin(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
+      wy += Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
+    } 
+    this.context.drawImage(weapon.getCurrentImage2D.image, wx, wy, weaponWidth, weaponHeight);
   }
 
   /**
@@ -248,7 +254,7 @@ export class Renderer {
       sprite = sprites[i];
       // Distance sprite<->player:
       distance = MathHelper.euclideanDistance(sprite.getPosition, player.getPosition);
-      if(distance > this.drawDistance) {
+      if (distance > this.drawDistance) {
         // Sprite is beyond the drawing distance, so we totally skip drawing it:
         continue;
       }
@@ -257,7 +263,7 @@ export class Renderer {
         // Start out with middle of screen:
         drawPos.x = this.canvas.width / 2;
         // How much the object deviates from our center of view on x:
-        horizontalDeviationFactor = (angle as number - player.getDirection); 
+        horizontalDeviationFactor = (angle as number - player.getDirection);
         // Deviation added to center of view:
         drawPos.x = drawPos.x + (horizontalDeviationFactor * this.halfFieldOfView) * drawPos.x;
 
@@ -270,9 +276,9 @@ export class Renderer {
           drawPos.x, drawPos.y,
           sprite.getSprite().width * distanceSizeScalingFactor, sprite.getSprite().height * distanceSizeScalingFactor
         );
-        
-      } 
-      
+
+      }
+
       // Debug code
       //let debugText;
       //if (angle >= leftAngle && angle <= rightAngle) {
@@ -281,7 +287,7 @@ export class Renderer {
       //  if (index == 0) debugText = "";
       //}
       //debugText += "left angle = " + (leftAngle * (180 / Math.PI)).toString() + "\nright angle = " + (rightAngle * (180 / Math.PI)).toString() + "\nFOV = " + (this.fieldOfView * (180 / Math.PI)).toString() + "\nPlayer direction: " + (player.getDirection * (180 / Math.PI)).toString();
-      
+
     }
   }
 
@@ -363,7 +369,7 @@ export class Renderer {
         // Draw rectangle identical to the drawImage above just to shade it in darker:
         this.context.fillRect(left, wall.top, width, wall.height);
 
-        if(player.getWeapon.isMuzzleFlashOngoing) {
+        if (player.getWeapon.isMuzzleFlashOngoing) {
           this.context.fillStyle = player.getWeapon.getMuzzleFlashColor;
           this.context.globalAlpha = (1 / (1 + step.distance));
           this.context.fillRect(left, wall.top, width, wall.height);

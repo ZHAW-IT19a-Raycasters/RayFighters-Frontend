@@ -13,6 +13,7 @@ export class Player {
   private playerId: string;
   private position: Vec2D;
   private paces: number;
+  private lastPaces: number;
 
   public get getPosition(): Vec2D {
     return this.position;
@@ -91,6 +92,8 @@ export class Player {
    * @param seconds
    */
   public update(controls: Controls, map: Map2D, seconds: number): void {
+    this.lastPaces = this.paces;
+
     let hasWalkedX = 0, hasWalkedY = 0;
     const walkDelta = this.walkSpeed * seconds;
     if (controls.states.get(KeyCodes.TURN_LEFT)) {
@@ -135,5 +138,13 @@ export class Player {
 
       this.weapon.update(seconds);
     }
+  }
+
+  /**
+   * Check if player has moved in last tick. Used to prevent weapon bob.
+   * @returns True if player has moved.
+   */
+  public hasMoved(): boolean {
+    return this.lastPaces !== this.paces;
   }
 }

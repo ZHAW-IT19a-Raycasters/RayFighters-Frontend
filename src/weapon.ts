@@ -5,7 +5,7 @@ enum WeaponState {
 }
 
 export class Weapon {
-    private static readonly WEAPON_ZOOM = 3.5; // magnification of weapon images
+    public static WEAPON_ZOOM = 3.5; // magnification of weapon images
     private static readonly SHOOT_ANIM_DURATION = 0.2; // seconds
     private static readonly MUZZLE_FLASH_DURATION = 0.1; // seconds
     public static readonly DEFAULT_MUZZLE_FLASH_COLOR = '#baba82';
@@ -32,8 +32,8 @@ export class Weapon {
     private shootAudio: HTMLAudioElement;
 
     constructor(private imgPath: string, shootImgPaths: string[], width: number, height: number, shootSoundEffect?: string, muzzFlashCol?: string, testingImage2DClass?: any, testingAudioClass?: any) {
-        width *= Weapon.WEAPON_ZOOM;
-        height *= Weapon.WEAPON_ZOOM;
+        /*width *= Weapon.WEAPON_ZOOM;
+        height *= Weapon.WEAPON_ZOOM;*/
         this.idleImage = testingImage2DClass ? new testingImage2DClass(imgPath, width, height) : new Image2D(imgPath, width, height);
         this.weaponState = WeaponState.IDLE;
         this.shootImages = new Array<Image2D>(shootImgPaths.length);
