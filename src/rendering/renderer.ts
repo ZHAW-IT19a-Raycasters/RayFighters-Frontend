@@ -278,16 +278,6 @@ export class Renderer {
         );
 
       }
-
-      // Debug code
-      //let debugText;
-      //if (angle >= leftAngle && angle <= rightAngle) {
-      //  if (index == 0) debugText = "is in view\nAngle = " + (angle * (180 / Math.PI)).toString() + "\n\n";
-      //} else {
-      //  if (index == 0) debugText = "";
-      //}
-      //debugText += "left angle = " + (leftAngle * (180 / Math.PI)).toString() + "\nright angle = " + (rightAngle * (180 / Math.PI)).toString() + "\nFOV = " + (this.fieldOfView * (180 / Math.PI)).toString() + "\nPlayer direction: " + (player.getDirection * (180 / Math.PI)).toString();
-
     }
   }
 
