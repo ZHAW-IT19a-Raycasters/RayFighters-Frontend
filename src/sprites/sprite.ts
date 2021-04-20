@@ -1,6 +1,4 @@
-import { MathHelper } from "../mathhelper";
-import { PlayerInfo } from "../packet";
-import { Image2D } from "../renderer";
+import { Image2D } from "../rendering/renderer";
 import { Vec2D } from "../vec2d";
 
 /**

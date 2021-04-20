@@ -64,7 +64,7 @@ describe('Testing Map2D methods', () => {
     map.initialize(); // Map with no walls
     const steps = map.rayCast(rayOrigin, rayAngle, maxSteps);
 
-    expect(steps.length).toBe(maxSteps + 1);
+    expect(steps.length).toBe(maxSteps + 2);
     expect(steps[0].pos).toEqual(rayOrigin);
     expect(steps[0].mapElement.getType()).toBe(MapElementType.NONE);
     expect(steps[1].pos).toEqual(new Vec2D(rayOrigin.x, 1));

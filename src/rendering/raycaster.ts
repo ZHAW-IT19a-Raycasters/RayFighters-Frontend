@@ -1,5 +1,5 @@
-import { Map2D, MapElement } from "./map2d";
-import { Vec2D } from "./vec2d";
+import { Map2D, MapElement } from "../map2d";
+import { Vec2D } from "../vec2d";
 
 /**
  * Performs raycasting on a map
@@ -13,6 +13,7 @@ import { Vec2D } from "./vec2d";
  * - https://www.playfuljs.com/a-first-person-engine-in-265-lines/
  */
 export class Raycaster {
+    private static readonly DEFAULT_RANGE = 8;
     /**
      * Direction of the ray that's currently being worked on
      * (cos, sin)
@@ -31,10 +32,20 @@ export class Raycaster {
     private currentRange: number;
 
     /**
+      * Buffer that's used to store the steps in a ray cast.
+      * The idea is to not have to re allocate a whole new array
+      * every time a ray is cast.
+      */
+    private rayBuffer: Array<Step>;
+
+    /**
      * 
      * @param map The map that we'll cast rays on
      */
-    constructor(private map: Map2D) { }
+    constructor(private map: Map2D) {
+        this.currentRange = Raycaster.DEFAULT_RANGE;
+        this.rayBuffer = new Array<Step>(this.currentRange);
+     }
 
     public set dir(dir: Vec2D) {
         this.currentDir = dir;
@@ -42,36 +53,51 @@ export class Raycaster {
 
     public set range(range: number) {
         this.currentRange = range;
+        this.rayBuffer.length = 0;
+        this.rayBuffer = new Array<Step>(range + 1);
     }
-    
+
+    /**
+     * Calculate the next step in a ray
+     * @param currentStep 
+     * @returns next step after the current step
+     */
+    private calculateCurrentStep(currentStep: Step): Step {
+        // Next step to take until a wall/floor border is reached (in x and y):
+        const xStep = this.step(this.currentDir.y, this.currentDir.x, currentStep.pos, false);
+        const yStep = this.step(this.currentDir.x, this.currentDir.y, new Vec2D(currentStep.pos.y, currentStep.pos.x), true);
+
+        // Move to gridline that's closer:
+        if(xStep.length < yStep.length) { // x closer
+            return this.inspect(xStep, 1, 0, currentStep.distance, xStep.pos.y);
+        }
+
+        // y closer
+        return this.inspect(yStep, 0, 1, currentStep.distance, yStep.pos.x);
+    }
+
     /**
      * Casts a ray based off of origin parameters and this.map
-     * Is recursive!
      * 
      * @param origin Starting step from where the ray is cast
      * @returns An array of steps up to the point where a wall is hit
      */
     public ray(origin: Step): Step[] {
-        // Next step to take until a wall/floor border is reached (in x and y):
-        const xStep = this.step(this.currentDir.y, this.currentDir.x, origin.pos, false);
-        const yStep = this.step(this.currentDir.x, this.currentDir.y, new Vec2D(origin.pos.y, origin.pos.x), true);
+        let nextStep = origin;
+        let index = 1;
+        this.rayBuffer[0] = origin;
 
-        let nextStep;
-        // Move to gridline that's closer:
-        if(xStep.length < yStep.length) { // x closer
-            nextStep = this.inspect(xStep, 1, 0, origin.distance, xStep.pos.y);
-        } else { // y closer
-            nextStep = this.inspect(yStep, 0, 1, origin.distance, yStep.pos.x);
+        for (; nextStep.distance < this.currentRange; index++) {
+            nextStep = this.calculateCurrentStep(nextStep);
+            this.rayBuffer[index] = nextStep;
         }
 
-        // Draw distance: If the next step would make the total ray length
-        // larger than the range, then we stop raycasting:
-        if(nextStep.distance > this.currentRange) {
-            return [origin];
+        // Clear rest
+        for (let ci = index + 1; ci < this.rayBuffer.length; ci++) {
+            this.rayBuffer[ci] = undefined;
         }
 
-        // Recursively move onto the next step:
-        return [origin].concat(this.ray(nextStep));
+        return this.rayBuffer;
     }
 
     /**
@@ -85,7 +111,7 @@ export class Raycaster {
      */
     public step(ySlope: number, xSlope: number, pos: Vec2D, isInverted: boolean) {
         let step = new Step(new Vec2D(), Infinity);
-        if(xSlope !== 0) {
+        if (xSlope !== 0) {
             // Calculate delta x and delta y needed to reach next MapElement:
             const dx = xSlope > 0 ?
                 Math.floor(pos.x + 1) - pos.x :
@@ -97,7 +123,8 @@ export class Raycaster {
                 isInverted ? pos.y + dy : pos.x + dx,
                 isInverted ? pos.x + dx : pos.y + dy
             );
-            step.length = (dx**2) + (dy**2);
+
+            step.length = (dx ** 2) + (dy ** 2);
         }
         return step;
     }

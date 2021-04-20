@@ -1,4 +1,4 @@
-import { Image2D } from "../renderer";
+import { Image2D } from "../rendering/renderer";
 import { Sprite, SpriteType } from "./sprite";
 import { Vec2D } from "../vec2d";
 import { MathHelper } from "../mathhelper";
@@ -23,10 +23,6 @@ export class Enemy extends Sprite {
 
     public getSprite(): Image2D {
         const lookDirection = Math.abs(this.direction - this.lastPlayerViewingAngle);
-        document.getElementById('debug-window').innerText = 
-        "Sprite direction: " + this.direction.toString()+ "\n" + 
-        "player angle: " +  this.lastPlayerViewingAngle.toString() + "\n" + 
-        "Look direction: " + lookDirection.toString() ;
         
         // Check east
         if ((lookDirection > MathHelper.NORTH + MathHelper.EIGHTH_OF_CIRCLE && lookDirection < MathHelper.CIRCLE) || (lookDirection <= MathHelper.SOUTH - MathHelper.EIGHTH_OF_CIRCLE && lookDirection >= MathHelper.EAST)) {
