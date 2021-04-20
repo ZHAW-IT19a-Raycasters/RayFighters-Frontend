@@ -1,18 +1,19 @@
-import { Map2D } from "./map2d";
-import { KeyCodes } from "./controls";
-import { Controls } from "./controls";
+import { Map2D, MapElementType } from "./map2d";
+import { KeyCodes, Controls } from "./controls";
 import { Vec2D } from "./vec2d";
-import { Image2D, Renderer } from "./renderer";
+import { MathHelper } from "./mathhelper";
+import { Weapon } from "./weapon";
+
 
 /**
  * Player class, handling all the Player actions.
  */
 export class Player {
+  public static readonly DEFAULT_WALK_SPEED = 2;
   private playerId: string;
   private position: Vec2D;
-  private direction: number;
-  private currWeapon: Image2D;
-  private paces: any;
+  private paces: number;
+  private lastPaces: number;
 
   public get getPosition(): Vec2D {
     return this.position;
@@ -22,8 +23,16 @@ export class Player {
     return this.direction;
   }
 
-  public get getcurrWeapon(): Image2D {
-    return this.currWeapon;
+  public get getWeapon(): Weapon {
+    return this.weapon;
+  }
+  
+  public get getPaces(): number {
+    return this.paces;
+  }
+
+  public get getWalkSpeed(): number {
+    return this.walkSpeed;
   }
 
   /***
@@ -32,21 +41,20 @@ export class Player {
    * @param y Player postition on the y-axis
    * @param direction Starting angle/direction
    */
-  constructor(x: number, y: number, direction: number) {
+  constructor(x: number, y: number, private direction: number, private weapon?: Weapon, private walkSpeed?: number) {
     this.position = new Vec2D(x, y);
-    this.direction = direction;
-    //this.setWeapon(new Image2D('./assets/weapons/knife_hand.png', 319, 320));
     this.paces = 0;
+    if(!walkSpeed) {
+      this.walkSpeed = Player.DEFAULT_WALK_SPEED;
+    }
   }
-  /***
-   * Sets the Image of the weapon the Player is yielding
-   *
-   * @param src path to the image
-   * @param width width of the image
-   * @param height height of the image
-   */
-  public setWeapon(src: string, width: number, height: number): void {
-    this.currWeapon = new Image2D(src, width, height);
+
+  public setWalkSpeed(speed: number): void {
+    this.walkSpeed = speed;
+  }
+
+  public setWeapon(weapon: Weapon): void {
+    this.weapon = weapon;
   }
 
   /***
@@ -55,7 +63,7 @@ export class Player {
    * @param angle angle by how much the player rotates
    */
   public rotate(angle: number): void {
-    this.direction = (this.direction + angle + Renderer.CIRCLE) % Renderer.CIRCLE;
+    this.direction = (this.direction + angle + MathHelper.CIRCLE) % MathHelper.CIRCLE;
   }
 
   /***
@@ -68,13 +76,12 @@ export class Player {
   public walk(distance: number, map: Map2D, direction: number): void {
     const dx = Math.cos(direction) * distance;
     const dy = Math.sin(direction) * distance;
-    if (map.getElem(new Vec2D(this.position.x + dx, this.position.y)).getType() <= 0) {
+    if (map.getElementByPosition(new Vec2D(this.position.x + dx, this.position.y)).getType() !== MapElementType.WALL) {
       this.position.x += dx;
     }
-    if (map.getElem(new Vec2D(this.position.x, this.position.y + dy)).getType() <= 0) {
+    if (map.getElementByPosition(new Vec2D(this.position.x, this.position.y + dy)).getType() !== MapElementType.WALL) {
       this.position.y += dy;
     }
-    this.paces += distance;
   }
 
   /***
@@ -85,8 +92,16 @@ export class Player {
    * @param seconds
    */
   public update(controls: Controls, map: Map2D, seconds: number): void {
-    if (controls.states.get(KeyCodes.TURN_LEFT)) this.rotate(-Math.PI * seconds);
-    if (controls.states.get(KeyCodes.TURN_RIGHT)) this.rotate(Math.PI * seconds);
+    this.lastPaces = this.paces;
+
+    let hasWalkedX = 0, hasWalkedY = 0;
+    const walkDelta = this.walkSpeed * seconds;
+    if (controls.states.get(KeyCodes.TURN_LEFT)) {
+      this.rotate(-Math.PI * seconds);
+    }
+    if (controls.states.get(KeyCodes.TURN_RIGHT)) {
+      this.rotate(Math.PI * seconds);
+    }
     if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
       this.rotate(-Math.PI * (seconds * 0.75));
       controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
@@ -95,9 +110,47 @@ export class Player {
       this.rotate(Math.PI *  (seconds * 0.75));
       controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
     }
-    if (controls.states.get(KeyCodes.FORWARD)) this.walk(3 * seconds, map, this.direction);
-    if (controls.states.get(KeyCodes.BACKWARD)) this.walk(-3 * seconds, map, this.direction);
-    if (controls.states.get(KeyCodes.STRAFE_LEFT)) this.walk(3 * seconds, map, this.direction - Math.PI / 2);
-    if (controls.states.get(KeyCodes.STRAFE_RIGHT)) this.walk(-3 * seconds, map, this.direction - Math.PI / 2);
+
+    if (controls.states.get(KeyCodes.FORWARD)) {
+      this.walk(walkDelta, map, this.direction);
+      ++hasWalkedY;
+    }
+    if (controls.states.get(KeyCodes.BACKWARD)) {
+      this.walk(-walkDelta, map, this.direction);
+      ++hasWalkedY;
+    }
+    if (controls.states.get(KeyCodes.STRAFE_LEFT)) {
+      this.walk(walkDelta, map, this.direction - Math.PI / 2);
+      ++hasWalkedX;
+    }
+    if (controls.states.get(KeyCodes.STRAFE_RIGHT)) {
+      this.walk(-walkDelta, map, this.direction - Math.PI / 2);
+      ++hasWalkedX;
+    }
+    if(hasWalkedX == 1 || hasWalkedY == 1) {
+      this.paces += walkDelta;
+    }
+
+    if(this.weapon) {
+      if (controls.states.get(KeyCodes.SHOOT)) {
+        this.weapon.shoot();
+      }
+
+      this.weapon.update(seconds);
+    }
   }
+
+  /**
+   * Check if player has moved in last tick. Used to prevent weapon bob.
+   * @returns True if player has moved.
+   */
+  public hasMoved(): boolean {
+    return this.lastPaces !== this.paces;
+  }
+
+  
+  public set setDirection(d : number) {
+    this.direction = d;
+  }
+  
 }

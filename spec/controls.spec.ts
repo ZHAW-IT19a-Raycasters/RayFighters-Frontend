@@ -28,24 +28,4 @@ describe('Controls methods', () => {
             expect(c.states.get(element) == true);
         });
     });
-
-    /** 
-     * TODO TouchEvent is experimental code. It may be impossible to create a test for it. This is our best effort:
-     * 
-    it('should register a touch event', () => {
-        c = new Controls();
-        [KeyCodes.BACKWARD, KeyCodes.FORWARD, KeyCodes.SCOREBOARD, KeyCodes.SHOOT].forEach(element => {
-            document.dispatchEvent(new TouchEvent('touchstart', { 
-                touches: 
-                [new Touch({ 
-                    pageX: 250, 
-                    pageY: 250, 
-                    identifier: 0, 
-                    target: document })] 
-                }));
-            expect(c.states.get(element) == true);
-        });
-    });
-    */
-
 });
