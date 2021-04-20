@@ -1,5 +1,5 @@
 import { Player } from "../player";
-import { Image2D } from "../renderer";
+import { Image2D } from "../rendering/renderer";
 import { Vec2D } from "../vec2d";
 import { Sprite, SpriteType } from "./sprite";
 
