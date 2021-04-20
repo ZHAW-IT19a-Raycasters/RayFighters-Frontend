@@ -1,10 +1,13 @@
-@font-face { font-family: ArcadeClassic; src: url('assets/fonts/ARCADECLASSIC.TTF'); } 
+@font-face {
+  font-family: ArcadeClassic;
+  src: url("assets/fonts/ARCADECLASSIC.TTF");
+}
 
 body {
   /* disable scrolling */
-  margin: 0; 
-  height: 100%; 
-  overflow: hidden; 
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
   position: fixed;
 
   /* disable select, copy + paste */
@@ -20,13 +23,21 @@ body {
   background-position-y: 30%;
 }
 
-.grow { transition: all .2s ease-in-out; }
-.grow:hover { transform: scale(1.1); }
+.grow {
+  transition: all 0.2s ease-in-out;
+}
+.grow:hover {
+  transform: scale(1.1);
+}
+
+label {
+  font-size: 1.7vw;
+}
 
 #shootbutton {
   height: 100px;
   width: 100px;
-  
+
   position: fixed;
   overflow: hidden;
   right: 30px;
@@ -87,56 +98,68 @@ canvas#game-canvas {
 
 #mainContainer {
   font-family: ArcadeClassic;
-  color:rgba(202, 171, 127,0.7);
+  color: #fff;
   text-shadow: 3px 3px 0px rgba(216, 36, 177, 0.4);
   flex-flow: column wrap;
   justify-content: center;
   align-content: center;
 }
 
-#startGameForm {
-  background-color: rgba(0, 0, 0, 0.7);
-  color:rgba(202, 171, 127,0.7);
+.menuCon {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 25px;
 }
 
-#startGameForm label {
-  font-size: 1.7vw;
+#startGameForm input,
+#startGameForm select,
+#startGameForm option {
   color: #fff;
-}
-
-#startGameForm input, #startGameForm select, #startGameForm option {
-  color:#fff;
   border: 1px solid rgba(216, 36, 177, 0.4);
   text-shadow: 3px 3px 0px rgba(216, 36, 177, 0.4);
   background-color: transparent;
 }
 
-#startGameForm input:focus, #startGameForm select:focus, #startGameForm option:focus {
-  box-shadow: 0 0 0 .2rem rgba(216, 36, 177, 0.1);
+#startGameForm input:focus,
+#startGameForm input:hover,
+#startGameForm select:focus,
+#startGameForm select:hover {
+  box-shadow: 0 0 0 0.2rem rgba(216, 36, 177, 0.1);
 }
 
 #startbtn {
   display: inline-block;
-  padding: 0.5em 3em;
+  padding: 0.3em 2em;
   margin: auto;
-  font-size: 2vw;
   color: #fff;
-  background-color: rgba(202, 171, 127,0.7);
-  border:1px solid rgba(216, 36, 177, 0.4);
+  font-size: 2rem;
+  background-color: rgba(202, 171, 127, 0.7);
+  border: 1px solid rgba(216, 36, 177, 0.4);
   box-shadow: rgba(216, 36, 177, 0.4) -5px 5px,
     rgba(216, 36, 177, 0.3) -10px 10px, rgba(216, 36, 177, 0.2) -15px 15px,
     rgba(216, 36, 177, 0.1) -20px 20px, rgba(216, 36, 177, 0.05) -25px 25px;
   cursor: pointer;
 }
 
-#sharebtn, #aboutbtn {
+#sharebtn,
+#aboutbtn,
+#backbtn {
   display: inline-block;
   margin: 1.5em 0 -1em 0;
-  font-size: 1vw;
-  color:rgba(202, 171, 127,0.7);
+  color: rgba(202, 171, 127, 0.7);
   cursor: pointer;
 }
 
-#sharebtn:active, #sharebtn:hover {
-  color:rgba(216, 36, 177, 0.4);
+#sharebtn:active,
+#sharebtn:hover,
+#backbtn:active,
+#backbtn:hover,
+#aboutbtn:active,
+#aboutbtn:hover {
+  color: rgba(216, 36, 177, 0.4);
+}
+
+#aboutProject p {
+  min-width: 20vw;
+  max-width: 50vw;
+  margin: 0;
 }

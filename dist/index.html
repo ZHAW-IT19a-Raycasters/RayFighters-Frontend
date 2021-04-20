@@ -1,67 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="style.css">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="style.css" />
 
-    <title>Raycaster FPS with multiplayer!</title>
-  </head>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
 
-  <body>
-    <div id="debug-container"><span id="debug-window"></span></div>
+  <title>Raycaster FPS with multiplayer!</title>
+</head>
 
-    <div id="gameControls" hidden>
-      <div id="fps-container">FPS: <span id="fps-counter"></span></div>
-      <div id="shootbutton"><br />Pew</div>
-    </div>
-    
-    <div id="mainContainer" class="container-fluid d-flex h-100 position-fixed">
-      <div class="d-flex">
-          <form id="startGameForm" class="p-5 rounded text-white">
-            <div class="form-row">
-              <div class="form-group col-sm-8">
-                <label>Player Name</label>
-                <input type="text" class="form-control" name="inputPlayerName">
-              </div>
-              <div class="form-group col-sm-4">
-                <label>Choose Map</label>
-                <select class="form-control" name="selectMap">
-                  <option>Map 1</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-row justify-content-center">
-              <div class="form-group m-4">
-                <button type="submit" class="btn grow" id="startbtn">Start Game</button>
-              </div>
-            </div>
-            <div class="form-row" style="justify-content: space-between;">
-              <div id='aboutbtn' class="grow">
-                <span>About the Game</span>
-              </div>
-              <div id='sharebtn' class="grow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-share" viewBox="0 0 20 20">
-                  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-                </svg>
-                <span>Share with friends</span>
-              </div>
-            </div>
-          </form>
+<body>
+  <div id="debug-container"><span id="debug-window"></span></div>
+
+  <div id="gameControls" hidden>
+    <div id="fps-container">FPS: <span id="fps-counter"></span></div>
+    <div id="shootbutton"><br />Pew</div>
+  </div>
+
+  <div id="mainContainer" class="container-fluid d-flex h-100 position-fixed">
+    <div class="d-flex menuCon text-white">
+      <form id="startGameForm" class="p-5">
+        <div class="form-row">
+          <div class="form-group col-sm-8">
+            <label>Player Name</label>
+            <input type="text" class="form-control menu-item" name="inputPlayerName" />
+          </div>
+          <div class="form-group col-sm-4">
+            <label>Choose Map</label>
+            <select class="form-control menu-item" name="selectMap">
+              <option>Map 1</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row justify-content-center">
+          <div class="form-group m-4">
+            <button type="submit" class="btn grow menu-item" id="startbtn">
+              Start Game
+            </button>
+          </div>
+        </div>
+        <div class="form-row justify-content-between">
+          <div id="aboutbtn" class="grow menu-item">
+            <span>
+              <h6>About the Game</h6>
+            </span>
+          </div>
+          <div id="sharebtn" class="grow menu-item">
+            <h6>
+              <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-share"
+                viewBox="0 0 20 20">
+                <path
+                  d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
+              </svg>
+              Share with friends
+            </h6>
+          </div>
+        </div>
+      </form>
+
+      <div id="aboutProject" class="p-5" hidden>
+        <div class="form-row justify-content-end">
+          <div id="backbtn" class="m-0 px-2 grow menu-item">
+            <h6 class="m-0">X go Back</h6>
+          </div>
+        </div>
+        <div class="form-row text-center text-break">
+          <p></p>
+        </div>
       </div>
     </div>
+  </div>
 
-    <canvas id="game-canvas"></canvas>
-    
-    <script src="bundle.js"></script>
+  <canvas id="game-canvas"></canvas>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+  <script src="bundle.js"></script>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>
