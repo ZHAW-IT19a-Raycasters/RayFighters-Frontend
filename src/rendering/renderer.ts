@@ -109,7 +109,7 @@ export class Renderer {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.resolution = resolution;
-    this.spacing = canvas.height * 1.78 / resolution;
+    this.spacing = canvas.width / resolution;
     this.drawDistance = drawDistance || Renderer.STANDARD_DRAWDISTANCE;
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
     this.floorGradient = floorGradient;
@@ -194,8 +194,9 @@ export class Renderer {
     const bobSpeed = 3; //<-- How fast the weapon sways
 
     // Positioning. We want the weapon to be on the bottom, middle.
-    const weaponWidth = weapon.getCurrentImage2D.width * Weapon.WEAPON_ZOOM;
-    const weaponHeight = weapon.getCurrentImage2D.height * Weapon.WEAPON_ZOOM;
+    const screenHeightFraction = this.canvas.height / weapon.getCurrentImage2D.height;
+    const weaponWidth = weapon.getCurrentImage2D.width * screenHeightFraction * Weapon.WEAPON_ZOOM;
+    const weaponHeight = weapon.getCurrentImage2D.height * screenHeightFraction * Weapon.WEAPON_ZOOM;
 
     let wx = (this.canvas.width - weaponWidth) * 0.5;
     let wy = this.canvas.height - weaponHeight;

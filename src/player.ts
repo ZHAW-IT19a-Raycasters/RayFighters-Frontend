@@ -147,4 +147,10 @@ export class Player {
   public hasMoved(): boolean {
     return this.lastPaces !== this.paces;
   }
+
+  
+  public set setDirection(d : number) {
+    this.direction = d;
+  }
+  
 }
