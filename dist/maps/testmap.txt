@@ -1,7 +1,8 @@
-Cwcville Shooting Range
+Cwcville Extra a e s t h e t i c Shooting Range
 assets/sceneries/surreal_beach.jpg
-FAFAFA;C0C0C0
-FFFFFF;0B0B0B
+
+#1fb8c3;#a9ccd2
+#f07572;32;0.5
 32
 33333322211555555551122233333333
 30000000000000000000000000002133
@@ -36,8 +37,8 @@ FFFFFF;0B0B0B
 40000000000000000000000000000004
 44444444444444444444444444444444
 5
-1 = assets/walls/slate_pink.jpg
+1 = assets/walls/slate_orange.jpg
 2 = assets/walls/slate_purple.jpg
-3 = assets/walls/slate_orange.jpg
+3 = assets/walls/slate_pink.jpg
 4 = assets/walls/glass.png
-5 = assets/walls/vertical_bars_pink.png
+5 = assets/walls/glass.png
