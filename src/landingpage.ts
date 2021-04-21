@@ -70,6 +70,9 @@ function handleLogIn(): void {
     const overlayEffect: HTMLElement = document.querySelector("#overlay-effect");
     overlayEffect.remove();
 
+    const landingpageVideo: HTMLElement = document.querySelector("#video");
+    landingpageVideo.remove();
+
     //load the html for the Game
     loadPage('../dist/html/game.html');
 
