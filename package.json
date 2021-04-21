@@ -35,5 +35,8 @@
   "reporter": [
     "html"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "bootstrap": "^4.6.0",
+    "bootstrap-icons": "^1.4.1"
+  }
 }

@@ -29,7 +29,12 @@ function initializeRenderer() {
 
 }
 
-function runGame(canvasName: string, fpsCounterName: string): void {
+/**
+ * Runs the Game
+ * @param canvasName Id of the Canvas HTMLElement
+ * @param fpsCounterName Id of the FPS Counter HTMLElement
+  */
+export function runGame(canvasName: string, fpsCounterName: string): void {
   // The element that contains the canvas element to drawn in
   canvas = document.getElementById(canvasName);
   room = new Room({ mapSize: 32, loadMap: 'maps/testmap.txt' });
@@ -55,5 +60,3 @@ function runGame(canvasName: string, fpsCounterName: string): void {
     })
   });
 }
-
-runGame('game-canvas', 'fps-counter');
