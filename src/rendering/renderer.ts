@@ -6,6 +6,7 @@ import { Room } from '../room';
 import { Sprite } from '../sprites/sprite';
 import { Vec2D } from '../vec2d';
 import { Weapon } from '../weapon';
+import { Fog } from './fog';
 
 /**
  * 2D image object class for easier graphics handling.
@@ -353,12 +354,21 @@ export class Renderer {
         // Finally, draw the bar:
         this.context.drawImage(texture.image, textureX, 0, 1, texture.height, left, wall.top, width, wall.height);
 
-        // Make walls drawn further back darker for basic shading:
-        this.context.fillStyle = '#111111';
-        // The farther the step that hit is, the lower the alpha for drawing should be:
-        this.context.globalAlpha = Math.max((step.distance) / (this.drawDistance * 0.75), 0);
-        // Draw rectangle identical to the drawImage above just to shade it in darker:
-        this.context.fillRect(left, wall.top, width, wall.height);
+        // Check if map has fog of war, render if present
+        if(room.getMap.getFog){
+          // Make walls drawn further back darker for basic shading:
+          this.context.fillStyle = room.getMap.getFog.color;
+          // The farther the step that hit is, the lower the alpha for drawing should be:
+          let currentAlpha = Math.max((step.distance) / (room.getMap.getFog.distance), 0);
+
+          // Render fog if below engage threshold
+          if (currentAlpha > room.getMap.getFog.engage) {
+            this.context.globalAlpha = Math.max((step.distance) / (room.getMap.getFog.distance), 0) - room.getMap.getFog.engage;
+            // Draw rectangle identical to the drawImage above just to shade it in the fog color:
+            this.context.fillRect(left, wall.top, width, wall.height);
+          }
+        }
+        
 
         if (player.getWeapon.isMuzzleFlashOngoing) {
           this.context.fillStyle = player.getWeapon.getMuzzleFlashColor;
