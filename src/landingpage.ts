@@ -8,9 +8,16 @@ export function landingpageScript(): void {
 
     const startTab: HTMLFormElement = document.querySelector("#logInForm");
     const aboutTab: HTMLElement = document.querySelector("#aboutTab");
+    const menuFooter: HTMLElement = document.querySelector("#menuFooter");
+    const backgroundMusic: HTMLAudioElement = new Audio("./assets/audio/menuMusic_1.mp3");
+
+    backgroundMusic.volume = 0.7;
+    backgroundMusic.loop = true;
+    backgroundMusic.play();
 
     startTab.addEventListener("submit", function (event) {
         event.preventDefault();
+        backgroundMusic.pause()
         handleLogIn();
     });
     document.querySelectorAll(".menu-item").forEach(item => {
@@ -18,9 +25,13 @@ export function landingpageScript(): void {
             event.preventDefault();
             playSoundEffect("./assets/audio/menuToggle_1.mp3");
         });
+        item.addEventListener("click", (event) => {
+            playSoundEffect("./assets/audio/menuEnter_1.mp3");
+        });
     });
     document.querySelector("#aboutbtn").addEventListener("click", function (event) {
         event.preventDefault();
+        menuFooter.hidden = true;
         ToggleMenuTab(startTab, aboutTab);
         const credits =
             "CREDITS\nThis\u00A0awesome\u00A0game\u00A0was\u00A0created\u00A0as\u00A0a\u00A0software\u00A0project\u00A0at\u00A0the\u00A0Zürcher\u00A0Hochschule\u00A0für\nAngewandte\u00A0Wissenschaften.";
@@ -32,12 +43,17 @@ export function landingpageScript(): void {
     });
     document.querySelector("#backbtn").addEventListener("click", function (event) {
         event.preventDefault();
+        menuFooter.hidden = false;
         ToggleMenuTab(aboutTab, startTab);
     });
     document.querySelector("#sharebtn").addEventListener("click", function (event) {
         event.preventDefault();
         urlToClipboard();
         this.innerHTML = "URL copied!";
+    });
+    document.querySelector("#mutebtn").addEventListener("click", function (event) {
+        event.preventDefault();
+        toggleBackMusic(this, backgroundMusic);
     });
 }
 
@@ -51,6 +67,12 @@ function handleLogIn(): void {
 
     //getJWT(content);
 
+    const overlayEffect: HTMLElement = document.querySelector("#overlay-effect");
+    overlayEffect.remove();
+
+    const landingpageVideo: HTMLElement = document.querySelector("#video");
+    landingpageVideo.remove();
+
     //load the html for the Game
     loadPage('../dist/html/game.html');
 
@@ -59,12 +81,27 @@ function handleLogIn(): void {
 }
 
 /**
+ * Mute/Unmute Background Music
+ *  @param backgroundMusic Musik
+ *  @param icon Mute/Unmute HTMLElement
+ */
+ function toggleBackMusic(icon: any, backgroundMusic: HTMLAudioElement): void {
+    if(backgroundMusic.muted) {
+        backgroundMusic.muted = false;
+        icon.innerHTML = '<h5><i class="bi bi-volume-up"></i></h5>';
+    } else {
+        backgroundMusic.muted = true;
+        icon.innerHTML = '<h5><i class="bi bi-volume-mute"></i></h5>';
+    }
+}
+
+/**
  * Plays soundeffect
  * @param audioPath Soundeffect that should be played
  */
 function playSoundEffect(audioPath: string): void {
     const soundEffect: HTMLAudioElement = new Audio(audioPath);
-    soundEffect.volume = 0.2;
+    soundEffect.volume = 0.1;
     (<HTMLAudioElement>soundEffect.cloneNode()).play();
 }
 
