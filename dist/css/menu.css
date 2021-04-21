@@ -1,10 +1,12 @@
 .menuContainer {
-  font-family: ArcadeClassic;
-  color: #fff;
-  text-shadow: 3px 3px 0px rgba(216, 36, 177, 0.4);
   flex-flow: column wrap;
   justify-content: center;
   align-content: center;
+
+  font-family: ArcadeClassic;
+  color: #fff;
+  text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
+  animation: textflicker 0.5s infinite;
 }
 
 .menuWrapper {
@@ -15,10 +17,13 @@
 #logInForm input,
 #logInForm select,
 #logInForm option {
-  color: #fff;
   border: 1px solid rgba(216, 36, 177, 0.4);
-  text-shadow: 3px 3px 0px rgba(216, 36, 177, 0.4);
   background-color: transparent;
+
+  font-family: ArcadeClassic;
+  color: #fff;
+  text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
+  animation: textflicker 0.5s infinite;
 }
 
 #logInForm input:focus,
@@ -32,7 +37,6 @@
   display: inline-block;
   padding: 0.3em 2em;
   margin: auto;
-  color: #fff;
   font-size: 2em;
   background-color: rgba(202, 171, 127, 0.7);
   border: 1px solid rgba(216, 36, 177, 0.4);
@@ -40,6 +44,11 @@
     rgba(216, 36, 177, 0.3) -10px 10px, rgba(216, 36, 177, 0.2) -15px 15px,
     rgba(216, 36, 177, 0.1) -20px 20px, rgba(216, 36, 177, 0.05) -25px 25px;
   cursor: pointer;
+
+  font-family: ArcadeClassic;
+  color: #fff;
+  text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
+  animation: textflicker 0.5s infinite;
 }
 
 .txt-btn {
