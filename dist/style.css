@@ -55,6 +55,23 @@ body {
   animation: textflicker 0.5s infinite;
 }
 
+.videocontainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+#video {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
 .grow {
   transition: all 0.2s ease-in-out;
 }
