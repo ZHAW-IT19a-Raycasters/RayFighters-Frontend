@@ -1,3 +1,8 @@
+@font-face {
+  font-family: ArcadeClassic;
+  src: url("assets/fonts/ARCADECLASSIC.TTF");
+}
+
 body {
   /* Disable scrolling */
   margin: 0; 
@@ -11,6 +16,18 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  /* Background */
+  background-image: url("img/RaycasterLogo.jpg");
+  background-size: cover;
+  background-position-y: 30%;
+}
+
+.grow {
+  transition: all 0.2s ease-in-out;
+}
+.grow:hover {
+  transform: scale(1.1);
 }
 
 #shootbutton {
@@ -32,11 +49,18 @@ body {
   box-shadow: 0px 0px 18px palevioletred;
 }
 
+/* Hide shoot button on mobile */
+@media screen and (min-device-width: 769px) {
+  #shootbutton {
+    display: none;
+  }
+}
+
 img {
   height: 100%;
   width: 100%;
   object-fit: contain;
-  }
+}
 
 #fps-container {
   position: fixed;
@@ -45,6 +69,7 @@ img {
   top: 30px;
   padding: 5px;
 
+  font-family: ArcadeClassic;
   font-size: x-large;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -75,11 +100,4 @@ canvas#game-canvas {
   user-select: none;
   outline: none;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
-}
-
-/* Hide shoot button on mobile */
-@media screen and (min-device-width: 769px) {
-  #shootbutton {
-    display: none;
-  }
 }

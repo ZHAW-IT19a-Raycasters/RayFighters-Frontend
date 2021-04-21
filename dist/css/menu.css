@@ -1,0 +1,62 @@
+.menuContainer {
+  font-family: ArcadeClassic;
+  color: #fff;
+  text-shadow: 3px 3px 0px rgba(216, 36, 177, 0.4);
+  flex-flow: column wrap;
+  justify-content: center;
+  align-content: center;
+}
+
+.menuWrapper {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 25px;
+}
+
+#logInForm input,
+#logInForm select,
+#logInForm option {
+  color: #fff;
+  border: 1px solid rgba(216, 36, 177, 0.4);
+  text-shadow: 3px 3px 0px rgba(216, 36, 177, 0.4);
+  background-color: transparent;
+}
+
+#logInForm input:focus,
+#logInForm input:hover,
+#logInForm select:focus,
+#logInForm select:hover {
+  box-shadow: 0 0 0 0.2em rgba(216, 36, 177, 0.1);
+}
+
+#startbtn {
+  display: inline-block;
+  padding: 0.3em 2em;
+  margin: auto;
+  color: #fff;
+  font-size: 2em;
+  background-color: rgba(202, 171, 127, 0.7);
+  border: 1px solid rgba(216, 36, 177, 0.4);
+  box-shadow: rgba(216, 36, 177, 0.4) -5px 5px,
+    rgba(216, 36, 177, 0.3) -10px 10px, rgba(216, 36, 177, 0.2) -15px 15px,
+    rgba(216, 36, 177, 0.1) -20px 20px, rgba(216, 36, 177, 0.05) -25px 25px;
+  cursor: pointer;
+}
+
+.txt-btn {
+  display: inline-block;
+  margin: 1.5em 0 -1em 0;
+  color: rgba(202, 171, 127, 0.7);
+  cursor: pointer;
+}
+
+.txt-btn:focus,
+.txt-btn:active,
+.txt-btn:hover {
+  color: rgba(216, 36, 177, 0.4);
+}
+
+#aboutTab p {
+  min-width: 20vw;
+  max-width: 50vw;
+  margin: 0;
+}
