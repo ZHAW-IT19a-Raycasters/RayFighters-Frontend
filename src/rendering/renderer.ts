@@ -453,13 +453,16 @@ export class Renderer {
     this.context.restore();
   }
 
-
+  /**
+   * Changes the resolution to enable dynamic resolution scaling.
+   * @param delta By how much we change the current resolution.
+   */
   public changeResolution(delta: number) {
     const newResolution = this.resolution + delta;
     if (((this.canvas.width / 10) <= newResolution) && (this.canvas.width > newResolution)) {
       this.resolution = newResolution;
       this.spacing = this.canvas.width / newResolution;
     }
-    document.getElementById('fps-counter').innerText += ", walls: " + newResolution;
+    document.getElementById('fps-counter').innerText += " - Dynamic resolution engaged (" + newResolution + ")";
   }
 }

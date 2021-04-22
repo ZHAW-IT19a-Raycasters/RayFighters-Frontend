@@ -17,8 +17,14 @@ var renderer: Renderer;
  */
 var canvas: HTMLElement;
 
+/**
+ * Player instance.
+ */
 var player: Player;
 
+/**
+ * Current room.
+ */
 var room: Room
 
 /**
@@ -42,14 +48,13 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   player = new Player(6, 6, 0.3 * Math.PI, new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, './assets/audio/9mm.mp3'));
   initializeRenderer();
   let controls = new Controls();
-  let loop = new GameLoop(fpsCounterName, renderer);
+  let loop = new GameLoop(fpsCounterName, (d: number) => { renderer.changeResolution(d) });
 
   // Listen to window resizes, and in case of that, re-initialize renderer to prevent images from stretching.
   window.addEventListener('resize', function () {
     initializeRenderer();
     loop.restartDynamicResolution();
   }, true);
-
 
   loop.begin(function (time: number, receivedPackets: Array<Packet>, sendCallback: any) {
     // Begin gameloop using this frame handler

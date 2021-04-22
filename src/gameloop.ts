@@ -1,6 +1,5 @@
 import { Packet } from "./communication/packet";
 import { Socket } from "./communication/socket";
-import { Renderer } from "./rendering/renderer";
 
 export class GameLoop {
   private lastTime: number;
@@ -9,21 +8,46 @@ export class GameLoop {
   private frameSum: number;
   private fpsElem: HTMLElement;
   private socket: Socket;
-  private static readonly FPS_GOAL: number = 60;
+
+  /**
+   * FPS goal ideally met. If below, resolution gets toned down. By resolution we mean bar subdivision of walls rendered on-screen.
+   */
+  private static readonly FPS_GOAL: number = 50;
+  
+  /**
+   * Minimum FPS threshold. If the framerate dips below that, dynamic resolution iteration gets triggered.
+   */
   private static readonly FPS_MINIMUM: number = 30;
+
+  /**
+   * Counts of dynamic resolution.
+   */
   private resolutionAdjustCounter: number;
+
+  /**
+   * Maximum amount of resolution iteration steps and seconds until an ideal resolution was found.
+   */
   private static readonly MAXIMUM_RESOLUTION_ADJUST = 10;
-  private renderer: Renderer;
+
+  /**
+   * How aggressive the dynamic resolution iteration is. Ideally between 5 and 20.
+   */
+  private static readonly DYNAMIC_RESOLUTION_AGGRESSIVENESS = 10;
+
+  /**
+   * Callback to resolution change method located in the Renderer class.
+   */
+  private changeResolutionCallback: any;
 
 
-  constructor(fpsDivName: string, renderer: Renderer) {
+  constructor(fpsDivName: string, changeResolutionCallback: any) {
     this.frame.bind(this);
     this.lastTime = 0;
     this.secSum = 0;
-    this.frameSum = 0;
+    this.frameSum = 0; 
     this.fpsElem = document.getElementById(fpsDivName);
     this.socket = new Socket("ws://localhost:8080"); // TODO: Change to our server address.
-    this.renderer = renderer;
+    this.changeResolutionCallback = changeResolutionCallback;
   }
 
   public begin(callb: any): void {
@@ -32,21 +56,24 @@ export class GameLoop {
   }
 
   /**
-   * Triggers dynamic resolution iteration.
+   * Triggers dynamic resolution negotiation between game and browser / machine.
    */
   private dynamicResolution(){
-    if(this.frameSum <= GameLoop.FPS_GOAL) {
-      this.renderer.changeResolution(-10); 
-    } else {
-      this.renderer.changeResolution(10);
-    }
+    this.changeResolutionCallback(((this.frameSum <= GameLoop.FPS_GOAL) ? - 1 : 1 ) * GameLoop.DYNAMIC_RESOLUTION_AGGRESSIVENESS);
     this.resolutionAdjustCounter++;
   }
 
+  /**
+   * Restart dynamic resolution negotiation.
+   */
   public restartDynamicResolution(){
     this.resolutionAdjustCounter = 0;
   }
 
+  /**
+   * Handling of each frame.
+   * @param currTime Current time.
+   */
   public frame = (currTime: number) => {
     // How many seconds have passed, is probably a small fraction:
     let secs = (currTime - this.lastTime) / 1E3;
