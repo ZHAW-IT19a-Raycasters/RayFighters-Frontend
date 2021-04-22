@@ -10,6 +10,9 @@ export class GameLoop {
   private fpsElem: HTMLElement;
   private socket: Socket;
   private static readonly FPS_GOAL: number = 60;
+  private static readonly FPS_MINIMUM: number = 30;
+  private resolutionAdjustCounter: number;
+  private static readonly MAXIMUM_RESOLUTION_ADJUST = 10;
   private renderer: Renderer;
 
 
@@ -28,6 +31,22 @@ export class GameLoop {
     requestAnimationFrame(this.frame);
   }
 
+  /**
+   * Triggers dynamic resolution iteration.
+   */
+  private dynamicResolution(){
+    if(this.frameSum <= GameLoop.FPS_GOAL) {
+      this.renderer.changeResolution(-10); 
+    } else {
+      this.renderer.changeResolution(10);
+    }
+    this.resolutionAdjustCounter++;
+  }
+
+  public restartDynamicResolution(){
+    this.resolutionAdjustCounter = 0;
+  }
+
   public frame = (currTime: number) => {
     // How many seconds have passed, is probably a small fraction:
     let secs = (currTime - this.lastTime) / 1E3;
@@ -35,15 +54,18 @@ export class GameLoop {
     this.secSum += secs;
     ++this.frameSum;
 
-    if(this.frameSum <= GameLoop.FPS_GOAL) {
-      this.renderer.changeResolution(0.25); 
-    } else {
-      this.renderer.changeResolution(-0.25);
-    }
-
     if (this.secSum >= 1) {
+      if (this.frameSum < GameLoop.FPS_MINIMUM) {
+        this.restartDynamicResolution();
+      }
+
       this.fpsElem.innerText = `${this.frameSum}`;
       this.secSum = 0;
+
+      if (this.resolutionAdjustCounter < GameLoop.MAXIMUM_RESOLUTION_ADJUST) {
+        this.dynamicResolution();
+      }
+
       this.frameSum = 0;
     }
 

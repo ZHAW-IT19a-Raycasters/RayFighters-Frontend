@@ -6,7 +6,6 @@ import { Room } from '../room';
 import { Sprite } from '../sprites/sprite';
 import { Vec2D } from '../vec2d';
 import { Weapon } from '../weapon';
-import { Fog } from './fog';
 
 /**
  * 2D image object class for easier graphics handling.
@@ -48,7 +47,7 @@ export class Renderer {
    * bars to represent them.
    */
   private resolution: number; // TODO create dynamic resolution based of FPS (super based idea)
-  private newResolution: number;
+
   /**
    * Bar spacing. Determines how wide the bars are are.
    */
@@ -110,7 +109,6 @@ export class Renderer {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.resolution = resolution;
-    this.newResolution = resolution;
     this.spacing = canvas.width / resolution;
     this.drawDistance = drawDistance || Renderer.STANDARD_DRAWDISTANCE;
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
@@ -134,8 +132,6 @@ export class Renderer {
    * @param player 
    */
   public render(room: Room, player: Player, time: number): void {
-    this.resolution = this.newResolution;
-
     this.context.save();
 
     this.muzzleFlashGradientCheck(player.getWeapon);
@@ -208,7 +204,7 @@ export class Renderer {
     if (player.hasMoved()) {
       wx += (Math.sin(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
       wy += Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
-    } 
+    }
     this.context.drawImage(weapon.getCurrentImage2D.image, wx, wy, weaponWidth, weaponHeight);
   }
 
@@ -358,7 +354,7 @@ export class Renderer {
         this.context.drawImage(texture.image, textureX, 0, 1, texture.height, left, wall.top, width, wall.height);
 
         // Check if map has fog of war, render if present
-        if(room.getMap.getFog){
+        if (room.getMap.getFog) {
           // Make walls drawn further back darker for basic shading:
           this.context.fillStyle = room.getMap.getFog.color;
           // The farther the step that hit is, the lower the alpha for drawing should be:
@@ -371,7 +367,7 @@ export class Renderer {
             this.context.fillRect(left, wall.top, width, wall.height);
           }
         }
-        
+
 
         if (player.getWeapon.isMuzzleFlashOngoing) {
           this.context.fillStyle = player.getWeapon.getMuzzleFlashColor;
@@ -457,9 +453,13 @@ export class Renderer {
     this.context.restore();
   }
 
-  
-  public changeResolution(delta : number) {
-      this.newResolution += delta; 
+
+  public changeResolution(delta: number) {
+    const newResolution = this.resolution + delta;
+    if (((this.canvas.width / 10) <= newResolution) && (this.canvas.width > newResolution)) {
+      this.resolution = newResolution;
+      this.spacing = this.canvas.width / newResolution;
+    }
+    document.getElementById('fps-counter').innerText += ", walls: " + newResolution;
   }
-  
 }

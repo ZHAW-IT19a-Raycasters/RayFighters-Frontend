@@ -47,6 +47,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   // Listen to window resizes, and in case of that, re-initialize renderer to prevent images from stretching.
   window.addEventListener('resize', function () {
     initializeRenderer();
+    loop.restartDynamicResolution();
   }, true);
 
 
