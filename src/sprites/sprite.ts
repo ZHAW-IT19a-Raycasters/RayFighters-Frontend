@@ -1,5 +1,5 @@
 import { Image2D } from "../rendering/renderer";
-import { Vec2D } from "../vec2d";
+import { Vec2D } from "../common/vec2d";
 
 /**
  * Determines what type the sprite is, to enable distinguishing different sprites on the logic side.

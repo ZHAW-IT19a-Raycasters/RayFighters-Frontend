@@ -1,6 +1,6 @@
-import { Controls, KeyCodes } from "../src/controls";
-import { Map2D } from "../src/map2d";
-import { Player } from "../src/player";
+import { Controls, KeyCodes } from "../src/player/controls";
+import { Map2D } from "../src/maps/map2d";
+import { Player } from "../src/player/player";
 
 describe('Player module testing', () => {
   it('Player rotates by 90 degree', () => {

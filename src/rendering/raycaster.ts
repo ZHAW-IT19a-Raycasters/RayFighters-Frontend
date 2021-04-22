@@ -1,5 +1,5 @@
-import { Map2D, MapElement } from "../map2d";
-import { Vec2D } from "../vec2d";
+import { Map2D, MapElement } from "../maps/map2d";
+import { Vec2D } from "../common/vec2d";
 
 /**
  * Performs raycasting on a map

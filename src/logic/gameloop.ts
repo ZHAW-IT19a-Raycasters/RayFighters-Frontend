@@ -1,5 +1,5 @@
-import { Packet } from "./communication/packet";
-import { Socket } from "./communication/socket";
+import { Packet } from "../communication/packet";
+import { Socket } from "../communication/socket";
 
 export class GameLoop {
   private lastTime: number;
