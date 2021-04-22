@@ -40,9 +40,9 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   room = new Room({ mapSize: 32, loadMap: 'maps/testmap.txt' });
   console.log(room.getMap.toString());
   player = new Player(6, 6, 0.3 * Math.PI, new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, './assets/audio/9mm.mp3'));
-  initializeRenderer()
-  let loop = new GameLoop(fpsCounterName);
+  initializeRenderer();
   let controls = new Controls();
+  let loop = new GameLoop(fpsCounterName, renderer);
 
   // Listen to window resizes, and in case of that, re-initialize renderer to prevent images from stretching.
   window.addEventListener('resize', function () {

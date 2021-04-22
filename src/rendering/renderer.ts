@@ -48,7 +48,7 @@ export class Renderer {
    * bars to represent them.
    */
   private resolution: number; // TODO create dynamic resolution based of FPS (super based idea)
-
+  private newResolution: number;
   /**
    * Bar spacing. Determines how wide the bars are are.
    */
@@ -110,6 +110,7 @@ export class Renderer {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.resolution = resolution;
+    this.newResolution = resolution;
     this.spacing = canvas.width / resolution;
     this.drawDistance = drawDistance || Renderer.STANDARD_DRAWDISTANCE;
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
@@ -133,6 +134,8 @@ export class Renderer {
    * @param player 
    */
   public render(room: Room, player: Player, time: number): void {
+    this.resolution = this.newResolution;
+
     this.context.save();
 
     this.muzzleFlashGradientCheck(player.getWeapon);
@@ -453,4 +456,10 @@ export class Renderer {
     );
     this.context.restore();
   }
+
+  
+  public changeResolution(delta : number) {
+      this.newResolution += delta; 
+  }
+  
 }

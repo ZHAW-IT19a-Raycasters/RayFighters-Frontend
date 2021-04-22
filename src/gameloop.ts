@@ -1,5 +1,6 @@
 import { Packet } from "./communication/packet";
 import { Socket } from "./communication/socket";
+import { Renderer } from "./rendering/renderer";
 
 export class GameLoop {
   private lastTime: number;
@@ -8,15 +9,18 @@ export class GameLoop {
   private frameSum: number;
   private fpsElem: HTMLElement;
   private socket: Socket;
+  private static readonly FPS_GOAL: number = 60;
+  private renderer: Renderer;
 
 
-  constructor(fpsDivName: string) {
+  constructor(fpsDivName: string, renderer: Renderer) {
     this.frame.bind(this);
     this.lastTime = 0;
     this.secSum = 0;
     this.frameSum = 0;
     this.fpsElem = document.getElementById(fpsDivName);
     this.socket = new Socket("ws://localhost:8080"); // TODO: Change to our server address.
+    this.renderer = renderer;
   }
 
   public begin(callb: any): void {
@@ -30,6 +34,12 @@ export class GameLoop {
 
     this.secSum += secs;
     ++this.frameSum;
+
+    if(this.frameSum <= GameLoop.FPS_GOAL) {
+      this.renderer.changeResolution(0.25); 
+    } else {
+      this.renderer.changeResolution(-0.25);
+    }
 
     if (this.secSum >= 1) {
       this.fpsElem.innerText = `${this.frameSum}`;
