@@ -1,4 +1,4 @@
-import { Weapon } from '../src/weapon'
+import { Weapon } from '../src/player/weapon'
 import { Image2D } from './image2dmock'
 import { JSDOM } from 'jsdom';
 

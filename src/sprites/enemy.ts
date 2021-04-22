@@ -1,7 +1,7 @@
 import { Image2D } from "../rendering/renderer";
 import { Sprite, SpriteType } from "./sprite";
-import { Vec2D } from "../vec2d";
-import { MathHelper } from "../mathhelper";
+import { Vec2D } from "../common/vec2d";
+import { MathHelper } from "../common/mathhelper";
 
 export class Enemy extends Sprite {
     private userID: number;

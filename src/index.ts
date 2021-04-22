@@ -3,8 +3,7 @@ import { landingpageScript } from "./landingpage";
 /**
  * load the html for the StartMenu
  */
-loadPage('../dist/html/startMenu.html');
-
+loadPage("../dist/html/startMenu.html");
 landingpageScript();
 
 /**

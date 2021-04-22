@@ -1,5 +1,5 @@
 import { Image2D } from "../rendering/renderer";
-import { Vec2D } from "../vec2d";
+import { Vec2D } from "../common/vec2d";
 import { Sprite, SpriteType } from "./sprite";
 
 export class Decoration extends Sprite {
