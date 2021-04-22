@@ -205,7 +205,7 @@ export class Renderer {
     if (player.hasMoved()) {
       wx += (Math.sin(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
       wy += Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
-    } 
+    }
     this.context.drawImage(weapon.getCurrentImage2D.image, wx, wy, weaponWidth, weaponHeight);
   }
 
@@ -355,7 +355,7 @@ export class Renderer {
         this.context.drawImage(texture.image, textureX, 0, 1, texture.height, left, wall.top, width, wall.height);
 
         // Check if map has fog of war, render if present
-        if(room.getMap.getFog){
+        if (room.getMap.getFog) {
           // Make walls drawn further back darker for basic shading:
           this.context.fillStyle = room.getMap.getFog.color;
           // The farther the step that hit is, the lower the alpha for drawing should be:
@@ -368,7 +368,7 @@ export class Renderer {
             this.context.fillRect(left, wall.top, width, wall.height);
           }
         }
-        
+
 
         if (player.getWeapon.isMuzzleFlashOngoing) {
           this.context.fillStyle = player.getWeapon.getMuzzleFlashColor;
@@ -452,5 +452,18 @@ export class Renderer {
       thickness, size
     );
     this.context.restore();
+  }
+
+  /**
+   * Changes the resolution to enable dynamic resolution scaling.
+   * @param delta By how much we change the current resolution.
+   */
+  public changeResolution(delta: number) {
+    const newResolution = this.resolution + delta;
+    if (((this.canvas.width / 10) <= newResolution) && (this.canvas.width > newResolution)) {
+      this.resolution = newResolution;
+      this.spacing = this.canvas.width / newResolution;
+    }
+    document.getElementById('fps-counter').innerText += " - Dynamic resolution engaged (" + newResolution + ")";
   }
 }
