@@ -1,5 +1,5 @@
-import { Map2D, MapElement, MapElementType } from "../src/map2d";
-import { Vec2D } from "../src/vec2d";
+import { Vec2D } from "../src/common/vec2d";
+import { Map2D, MapElement, MapElementType } from "../src/maps/map2d";
 
 describe('Testing Map2D methods', () => {
   it('should generate the map array to be square of "size"', () => {
