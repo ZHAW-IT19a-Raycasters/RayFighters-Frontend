@@ -262,12 +262,15 @@ export class Renderer {
       }
 
       if ((angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)) !== false) {
+        let screenRatio = this.canvas.width / (Math.PI * 0.5);
         // Start out with middle of screen:
         drawPos.x = this.canvas.width / 2;
         // How much the object deviates from our center of view on x:
         horizontalDeviationFactor = (angle as number - player.getDirection);
         // Deviation added to center of view:
-        drawPos.x = drawPos.x + (horizontalDeviationFactor * this.halfFieldOfView) * drawPos.x;
+        //drawPos.x = drawPos.x + (horizontalDeviationFactor * this.halfFieldOfView) * drawPos.x;
+        drawPos.x += screenRatio * horizontalDeviationFactor;
+
 
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
         distanceSizeScalingFactor = 1 / distance;
