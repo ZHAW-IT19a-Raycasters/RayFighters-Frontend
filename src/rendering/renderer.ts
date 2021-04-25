@@ -95,6 +95,7 @@ export class Renderer {
     */
   private depthBuffer: number[];
 
+  private screenRatio: number;
 
   /**
     * @constructor
@@ -118,6 +119,7 @@ export class Renderer {
 
     this.fieldOfView = 2 * Math.atan(Renderer.SENSORWIDTH / (2 * this.focalLength)) // 2 * ARCTAN (SENSOR WIDTH / (2 X FOCAL LENGTH)) * (180/Π)
     this.halfFieldOfView = 0.5 * this.fieldOfView;
+    this.screenRatio = this.canvas.width / this.fieldOfView;
 
     if (ceilGradient) {
       this.originalCeilingNearColor = ceilGradient.near;
@@ -263,11 +265,11 @@ export class Renderer {
 
       if ((angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)) !== false) {
         // Start out with middle of screen:
-        drawPos.x = this.canvas.width / 2;
         // How much the object deviates from our center of view on x:
         horizontalDeviationFactor = (angle as number - player.getDirection);
         // Deviation added to center of view:
-        drawPos.x = drawPos.x + (horizontalDeviationFactor * this.halfFieldOfView) * drawPos.x;
+        drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
+
 
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
         distanceSizeScalingFactor = 1 / distance;
