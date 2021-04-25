@@ -58,6 +58,25 @@ export function landingpageScript(): void {
 }
 
 /**
+ * Retreives a JSON authetication token.
+ */
+function getJWT(content: any): void {
+    let JSONcontent = JSON.stringify(content)
+    const xhttp = new XMLHttpRequest();
+
+    // Retreive JWT token
+    xhttp.open("POST", "localhost:8080/auth", false);
+
+    // Connecting to server
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSONcontent);
+
+    if (xhttp.status != 200) {
+        alert("Error authenticating to the server!");
+    }
+}
+
+/**
  * Starts the game and requests a JWT
  */
 function handleLogIn(): void {
@@ -65,7 +84,7 @@ function handleLogIn(): void {
     const playerName = formData.get("inputPlayerName") as string;
     const content = { "username": playerName };
 
-    //getJWT(content);
+    getJWT(content);
 
     const overlayEffect: HTMLElement = document.querySelector("#overlay-effect");
     overlayEffect.remove();
@@ -85,8 +104,8 @@ function handleLogIn(): void {
  *  @param backgroundMusic Musik
  *  @param icon Mute/Unmute HTMLElement
  */
- function toggleBackMusic(icon: any, backgroundMusic: HTMLAudioElement): void {
-    if(backgroundMusic.muted) {
+function toggleBackMusic(icon: any, backgroundMusic: HTMLAudioElement): void {
+    if (backgroundMusic.muted) {
         backgroundMusic.muted = false;
         icon.innerHTML = '<h5><i class="bi bi-volume-up"></i></h5>';
     } else {
