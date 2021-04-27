@@ -28,7 +28,7 @@ export class ColorGradient {
 export class Renderer {
   static STANDARD_DRAWDISTANCE = 16;
   static STANDARD_FOCAL = 0.75;
-  static SENSORWIDTH = 2;
+  static SENSORWIDTH = 1;
   static STANDARD_FLOOR_GRADIENT = new ColorGradient('#777777', '#111111');
   static STANDARD_CEILING_GRADIENT = new ColorGradient('#777777', '#111111');
 
@@ -271,10 +271,10 @@ export class Renderer {
         drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
         
         // drawPos.y ????
-
+        
 
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
-        distanceSizeScalingFactor = 1 / distance;
+        distanceSizeScalingFactor = 1 / (distance * Math.cos(angle as number - player.getDirection));
         // Update player viewing angle in sprite to help calculating which image will be sent back.
         sprite.lastPlayerViewingAngle = angle as number;
         const spriteWidth = sprite.getSprite().width * distanceSizeScalingFactor
@@ -284,7 +284,6 @@ export class Renderer {
           drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3),
           spriteWidth, spriteHeight
         );
-
       }
     }
   }
