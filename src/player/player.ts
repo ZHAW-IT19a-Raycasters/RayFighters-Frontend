@@ -152,5 +152,8 @@ export class Player {
   public set setDirection(d : number) {
     this.direction = d;
   }
-  
+
+  public set setPosition(p: Vec2D) {
+    this.position = p;
+  }
 }
