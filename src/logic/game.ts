@@ -62,7 +62,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
     // Begin gameloop using this frame handler
     player.update(controls, room.getMap, time);
     if (player.hasMoved) {
-      sendCallback(Command.move(player.getPosition.x, player.getPosition.y));
+    //  sendCallback(Command.move(player.getPosition.x, player.getPosition.y));
     }
     renderer.render(room, player, time);
     receivedPackets.forEach(p => {
