@@ -43,7 +43,7 @@ function initializeRenderer() {
 export function runGame(canvasName: string, fpsCounterName: string): void {
   // The element that contains the canvas element to drawn in
   canvas = document.getElementById(canvasName);
-  room = new Room({ mapSize: 32, loadMap: 'maps/sundown_resort.txt' });
+  room = new Room({ mapSize: 32, loadMap: 'maps/desert.txt' });
   console.log(room.getMap.toString());
   player = new Player(6, 6, 0.3 * Math.PI, new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, './assets/audio/9mm.mp3'));
   initializeRenderer();
