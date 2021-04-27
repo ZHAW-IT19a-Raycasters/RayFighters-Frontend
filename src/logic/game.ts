@@ -86,7 +86,7 @@ function handleServerMessages(p: Packet) {
       // TODO: Handle unknown
       break;
     case OpCode.SERVER_MOVEMENT:
-      player.setPosition = new Vec2D(p.coorX, p.coorY);
+      alert("Player with ID" + p.userID + "has moved to" + p.coorX + "|" + p.coorY);
       break;
     case OpCode.SERVER_YOUARECALLED:
       alert("Your ID is: " + p.name);
@@ -106,6 +106,14 @@ function handleServerMessages(p: Packet) {
       break;
     case OpCode.SERVER_SENDALLPLAYERKD:
       alert("Server has sent all player K/D");
+      // TODO: Handle player K/D
+      break;
+    case OpCode.SERVER_TELEPORT:
+      alert("Player with ID" + p.userID + "has been teleported to" + p.coorX + "|" + p.coorY);
+      // TODO: Handle teleport
+      break;
+    case OpCode.SERVER_SHOOTING:
+      alert("Player with ID" + p.userID + "has shot in angle " + p.angle);
       // TODO: Handle player K/D
       break;
     default:

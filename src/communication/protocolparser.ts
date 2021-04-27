@@ -27,7 +27,7 @@ export class ProtocolParser {
             this.textDecoder = new TextDecoder();
         } else {
             this.textDecoder = new TextDecoder();
-        }        
+        }
     }
     /**
      * Parse a chunk of byte stream received from the server. We'll use this in
@@ -45,8 +45,14 @@ export class ProtocolParser {
             case OpCode.SERVER_UNKNOWN:
                 packet = new Packet({ opCode: opCode });
                 break;
-            case OpCode.SERVER_MOVEMENT:
+            case OpCode.SERVER_TELEPORT:
                 packet = new Packet({ opCode: opCode, userID: message[1], coorX: this.u8ArraytoFloat(message, 2), coorY: this.u8ArraytoFloat(message, 10) });
+                break;
+            case OpCode.SERVER_MOVEMENT:
+                packet = new Packet({ opCode: opCode, userID: message[1], coorX: this.u8ArraytoFloat(message, 2), coorY: this.u8ArraytoFloat(message, 10), angle: this.u8ArraytoFloat(message, 18) });
+                break;
+            case OpCode.SERVER_SHOOTING:
+                packet = new Packet({ opCode: opCode, userID: message[1], angle: this.u8ArraytoFloat(message, 2) });
                 break;
             case OpCode.SERVER_PLAYERDEATH:
                 packet = new Packet({ opCode: opCode, victimID: message[1], killerID: message[2] });
@@ -89,16 +95,16 @@ export class ProtocolParser {
      */
     private u8ArraytoFloat(byteData: Uint8Array, startIndex: number): number {
         return new Float64Array(
-          new Uint8Array([
-            byteData[startIndex + 0],
-            byteData[startIndex + 1],
-            byteData[startIndex + 2],
-            byteData[startIndex + 3],
-            byteData[startIndex + 4],
-            byteData[startIndex + 5],
-            byteData[startIndex + 6],
-            byteData[startIndex + 7]
-          ]).buffer)[0];
+            new Uint8Array([
+                byteData[startIndex + 0],
+                byteData[startIndex + 1],
+                byteData[startIndex + 2],
+                byteData[startIndex + 3],
+                byteData[startIndex + 4],
+                byteData[startIndex + 5],
+                byteData[startIndex + 6],
+                byteData[startIndex + 7]
+            ]).buffer)[0];
     }
 
     /**
@@ -106,11 +112,11 @@ export class ProtocolParser {
      * @param floatToConvert number type float to be converted.
      * @returns a fully assembled unsigned 8-bit integer array.
      */
-    private floatToU8Array(floatToConvert: number): Uint8Array {    
+    private floatToU8Array(floatToConvert: number): Uint8Array {
         var data = new Float64Array([floatToConvert]);
         return new Uint8Array(data.buffer);
     }
-    
+
 
     /**
      * Helper method to convert an unsigned 16-bit value from the byte stream to numbers.
@@ -155,7 +161,7 @@ export class ProtocolParser {
      */
     public serialize(packet: Packet): Uint8Array {
         let byteData: Uint8Array; //= new Uint8Array(); Todo: initialize
-        
+
         switch (packet.opCode) {
             case OpCode.CLIENT_DISCONNECT:
             case OpCode.CLIENT_UNKNOWN:

@@ -20,9 +20,9 @@ describe('Server side protocol parser unit test', () => {
         expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
     })
 
-    it('should parse movement correctly', () => {
-        serverMessage = new Uint8Array([OpCode.SERVER_MOVEMENT, 0x44, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F]);
-        expectedPacket = new Packet({ opCode: OpCode.SERVER_MOVEMENT, userID: 0x44, coorX: 0.1, coorY: 0.2 });
+    it('should parse teleport correctly', () => {
+        serverMessage = new Uint8Array([OpCode.SERVER_TELEPORT, 0x44, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F]);
+        expectedPacket = new Packet({ opCode: OpCode.SERVER_TELEPORT, userID: 0x44, coorX: 0.1, coorY: 0.2 });
         expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
         expect(ProtocolParser.get.parse(serverMessage).userID).toBe(expectedPacket.userID);
         expect(ProtocolParser.get.parse(serverMessage).coorX).toBe(expectedPacket.coorX);
