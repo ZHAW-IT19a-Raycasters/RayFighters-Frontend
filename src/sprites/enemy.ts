@@ -11,10 +11,10 @@ export class Enemy extends Sprite {
         super(
             new Vec2D(4, 4), 
             new Array<Image2D>(
-                new Image2D('assets/enemies/front.png', 1024, 2048),
-                new Image2D('assets/enemies/right.png', 1024, 2048),
-                new Image2D('assets/enemies/back.png', 1024, 2048),
-                new Image2D('assets/enemies/left.png', 1024, 2048)
+                new Image2D('assets/enemies/female/front_1.png', 1024, 2048),
+                new Image2D('assets/enemies/female/side_r_1.png', 1024, 2048),
+                new Image2D('assets/enemies/female/back_1.png', 1024, 2048),
+                new Image2D('assets/enemies/female/side_l_1.png', 1024, 2048)
             ),
             SpriteType.ENEMY);
         this.userID = userID;
