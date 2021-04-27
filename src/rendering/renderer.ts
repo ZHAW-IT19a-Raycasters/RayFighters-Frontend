@@ -269,16 +269,20 @@ export class Renderer {
         horizontalDeviationFactor = (angle as number - player.getDirection);
         // Deviation added to center of view:
         drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
+        
+        // drawPos.y ????
 
 
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
         distanceSizeScalingFactor = 1 / distance;
         // Update player viewing angle in sprite to help calculating which image will be sent back.
         sprite.lastPlayerViewingAngle = angle as number;
+        const spriteWidth = sprite.getSprite().width * distanceSizeScalingFactor
+        const spriteHeight = sprite.getSprite().height * distanceSizeScalingFactor
         // Finally, draw the image with the parameters above:
         this.context.drawImage(sprite.getSprite().image,
-          drawPos.x, drawPos.y,
-          sprite.getSprite().width * distanceSizeScalingFactor, sprite.getSprite().height * distanceSizeScalingFactor
+          drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3),
+          spriteWidth, spriteHeight
         );
 
       }

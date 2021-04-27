@@ -9,12 +9,12 @@ export class Enemy extends Sprite {
     constructor(userID: number, position: Vec2D){
         // TODO: Remove static placement
         super(
-            new Vec2D(4, 4), 
+            new Vec2D(position.x, position.y), 
             new Array<Image2D>(
-                new Image2D('assets/enemies/female/front_1.png', 1024, 2048),
-                new Image2D('assets/enemies/female/side_r_1.png', 1024, 2048),
-                new Image2D('assets/enemies/female/back_1.png', 1024, 2048),
-                new Image2D('assets/enemies/female/side_l_1.png', 1024, 2048)
+                new Image2D('assets/enemies/female/front_1.png', .4 * 1024, .4 * 2048),
+                new Image2D('assets/enemies/female/side_r_1.png', .4 * 1024, .4 * 2048),
+                new Image2D('assets/enemies/female/back_1.png', .4 * 1024, .4 * 2048),
+                new Image2D('assets/enemies/female/side_l_1.png', .4 * 1024, .4 * 2048)
             ),
             SpriteType.ENEMY);
         this.userID = userID;

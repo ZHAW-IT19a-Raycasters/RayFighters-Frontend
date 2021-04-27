@@ -28,7 +28,7 @@ export class Room {
         }
 
         // STATIC DEBUG ENEMY:
-        this.sprites.push(new Enemy(69, new Vec2D(5,5)));
+        this.sprites.push(new Enemy(69, new Vec2D(8.9, 3.9)));
 
         // TODO remove later
 
