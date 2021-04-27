@@ -63,9 +63,11 @@ export function landingpageScript(): void {
 function getJWT(content: any): void {
     let JSONcontent = JSON.stringify(content)
     const xhttp = new XMLHttpRequest();
+    // force browser to send cookies
+    xhttp.withCredentials = true
 
     // Retreive JWT token
-    xhttp.open("POST", "localhost:8080/auth", false);
+    xhttp.open("POST", "http://127.0.0.1:8080/auth", false);
 
     // Connecting to server
     xhttp.setRequestHeader("Content-type", "application/json");
@@ -93,7 +95,7 @@ function handleLogIn(): void {
     landingpageVideo.remove();
 
     //load the html for the Game
-    loadPage('../dist/html/game.html');
+    loadPage('html/game.html');
 
     // run the Game
     runGame("game-canvas", "fps-counter");

@@ -46,7 +46,7 @@ export class GameLoop {
     this.secSum = 0;
     this.frameSum = 0; 
     this.fpsElem = document.getElementById(fpsDivName);
-    this.socket = new Socket("ws://localhost:8080"); // TODO: Change to our server address.
+    this.socket = new Socket("ws://127.0.0.1:8080/ws/1"); // TODO: Change to our server address.
     this.changeResolutionCallback = changeResolutionCallback;
   }
 
