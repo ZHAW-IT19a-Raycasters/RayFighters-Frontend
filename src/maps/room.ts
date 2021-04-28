@@ -33,12 +33,12 @@ export class Room {
 
 
         // Add sprites from map to sprite array
-        //for (let index = 0; index < this.map.getElements.length; index++) {
-        //    if (this.map.getElements[index].getType() === MapElementType.SPRITE) {
-        //        this.sprites.push(this.map.getElements[index].getSprite);
-        //        // console.log("Sprite added. Position:" + this.map.getElements[index].getSprite.getPosition.toString())
-        //    }
-        //}
+        for (let index = 0; index < this.map.getElements.length; index++) {
+            if (this.map.getElements[index].getType() === MapElementType.SPRITE) {
+                this.sprites.push(this.map.getElements[index].getSprite);
+                // console.log("Sprite added. Position:" + this.map.getElements[index].getSprite.getPosition.toString())
+            }
+        }
 
     }
 
