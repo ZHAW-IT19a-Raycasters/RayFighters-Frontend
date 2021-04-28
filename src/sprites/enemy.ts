@@ -20,6 +20,10 @@ export class Enemy extends Sprite {
         this.userID = userID;
     }
 
+    public get getUserID(): number {
+      return this.userID;
+    }
+
 
     public getSprite(): Image2D {
         const lookDirection = Math.abs(this.direction - this.lastPlayerViewingAngle);

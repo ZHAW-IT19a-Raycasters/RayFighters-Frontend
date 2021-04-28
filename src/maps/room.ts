@@ -28,17 +28,17 @@ export class Room {
         }
 
         // STATIC DEBUG ENEMY:
+        // TODO remove later
         this.sprites.push(new Enemy(69, new Vec2D(8.9, 3.9)));
 
-        // TODO remove later
 
         // Add sprites from map to sprite array
-        for (let index = 0; index < this.map.getElements.length; index++) {
-            if (this.map.getElements[index].getType() === MapElementType.SPRITE) {
-                this.sprites.push(this.map.getElements[index].getSprite);
-                // console.log("Sprite added. Position:" + this.map.getElements[index].getSprite.getPosition.toString())
-            }
-        }
+        //for (let index = 0; index < this.map.getElements.length; index++) {
+        //    if (this.map.getElements[index].getType() === MapElementType.SPRITE) {
+        //        this.sprites.push(this.map.getElements[index].getSprite);
+        //        // console.log("Sprite added. Position:" + this.map.getElements[index].getSprite.getPosition.toString())
+        //    }
+        //}
 
     }
 

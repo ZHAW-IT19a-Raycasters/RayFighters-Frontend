@@ -270,9 +270,6 @@ export class Renderer {
         // Deviation added to center of view:
         drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
         
-        // drawPos.y ????
-        
-
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
         distanceSizeScalingFactor = 1 / (distance * Math.cos(angle as number - player.getDirection));
         // Update player viewing angle in sprite to help calculating which image will be sent back.
