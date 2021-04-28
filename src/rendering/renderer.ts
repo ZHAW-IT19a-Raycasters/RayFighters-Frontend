@@ -480,6 +480,7 @@ export class Renderer {
     if (((this.canvas.width / 10) <= newResolution) && (this.canvas.width > newResolution)) {
       this.resolution = newResolution;
       this.spacing = this.canvas.width / newResolution;
+      this.barDepthBuffer = new Array<number>(this.canvas.width);
     }
     document.getElementById('fps-counter').innerText += " - Dynamic resolution engaged (" + newResolution + ")";
   }
