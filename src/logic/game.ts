@@ -47,7 +47,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   canvas = document.getElementById(canvasName);
   room = new Room({ mapSize: 32, loadMap: 'maps/desert.txt' });
   console.log(room.getMap.toString());
-  player = new Player(6, 6, 0.3 * Math.PI, new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, './assets/audio/9mm.mp3'));
+  player = new Player(6, 6, 0.3 * Math.PI,  new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, './assets/audio/9mm.mp3'));
   initializeRenderer();
   let controls = new Controls();
   let loop = new GameLoop(fpsCounterName, (d: number) => { renderer.changeResolution(d) });
@@ -60,10 +60,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
 
   loop.begin(function (time: number, receivedPackets: Array<Packet>, sendCallback: any) {
     // Begin gameloop using this frame handler
-    player.update(controls, room.getMap, time);
-    if (player.hasMoved) {
-    //  sendCallback(Command.move(player.getPosition.x, player.getPosition.y));
-    }
+    player.update(controls, room.getMap, time, sendCallback);
     renderer.render(room, player, time);
     receivedPackets.forEach(p => {
       handleServerMessages(p);
@@ -90,7 +87,7 @@ function handleServerMessages(p: Packet) {
       break;
     case OpCode.SERVER_YOUARECALLED:
       alert("Your ID is: " + p.name);
-      // TODO: Do smarter stuff
+      // TODO: Save player's ID
       break;
     case OpCode.SERVER_PLAYERJOINED:
       alert("New player has joined: ID " + p.name);

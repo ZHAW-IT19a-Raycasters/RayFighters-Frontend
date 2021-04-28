@@ -32,7 +32,7 @@ wss.on('connection', ws => {
         .clients
         .forEach( client => {
             //send the client the current message
-            client.send(buffer);
+            //client.send(buffer);
         });
     });
 

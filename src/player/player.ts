@@ -3,6 +3,7 @@ import { KeyCodes, Controls } from "./controls";
 import { Vec2D } from "../common/vec2d";
 import { MathHelper } from "../common/mathhelper";
 import { Weapon } from "./weapon";
+import { Command } from "../communication/command";
 
 
 /**
@@ -85,13 +86,13 @@ export class Player {
   }
 
   /***
-   * Handles all the movement actions of the Player
+   * Handles all the movement actions of the Player and communicates to the server.
    *
    * @param controls  {@link Controls}
    * @param map {@link Map}
    * @param seconds
    */
-  public update(controls: Controls, map: Map2D, seconds: number): void {
+  public update(controls: Controls, map: Map2D, seconds: number, sendCallback: any): void {
     this.lastPaces = this.paces;
 
     let hasWalkedX = 0, hasWalkedY = 0;
@@ -129,13 +130,15 @@ export class Player {
     }
     if(hasWalkedX == 1 || hasWalkedY == 1) {
       this.paces += walkDelta;
+      sendCallback(Command.move(this.position.x, this.position.y));
     }
 
     if(this.weapon) {
       if (controls.states.get(KeyCodes.SHOOT)) {
         this.weapon.shoot();
+        sendCallback(Command.shoot(this.direction));
       }
-
+      
       this.weapon.update(seconds);
     }
   }
