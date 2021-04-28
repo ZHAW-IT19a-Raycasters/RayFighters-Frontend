@@ -26,7 +26,13 @@ wss.on('connection', ws => {
 
     // Receive message
     ws.on('message', (message) => {
-    console.log("Message received! " + message + " ||| # of received messages: " + counter++)
+
+        let printMessage = "";
+        for (let index = 0; index < message.length; index++) {
+            printMessage += message[index].toString(16);
+            printMessage += " "
+        }
+    console.log("Message received! " + printMessage + " ||| # of received messages: " + counter++)
         //for each websocket client
         wss
         .clients
