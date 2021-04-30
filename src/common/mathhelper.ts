@@ -58,8 +58,11 @@ export class MathHelper {
         }
 
         // Now that we have the angle: The target is in plain view IF it's between the borders of our vision:
+        document.getElementById('debug-window').innerText = `debug: ${(angle) * (180/Math.PI)}`;
         if (angle >= leftAngle && angle <= rightAngle) {
             return angle;
+        } else {
+          document.getElementById('debug-window').innerText += ' NOT IN VIEW ';
         }
         // The object was beyond our vision:
         return false;

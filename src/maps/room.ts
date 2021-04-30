@@ -29,13 +29,6 @@ export class Room {
             this.map.initialize();
         }
 
-        // STATIC DEBUG ENEMY:
-        //let testEnemy = new Enemy();
-        //testEnemy.setPosition = new Vec2D(4,4);
-        //this.sprites.push(testEnemy);
-
-        // TODO remove later
-
         // Add sprites from map to sprite array
         for (let index = 0; index < this.map.getElements.length; index++) {
             if (this.map.getElements[index].getType() === MapElementType.SPRITE) {
