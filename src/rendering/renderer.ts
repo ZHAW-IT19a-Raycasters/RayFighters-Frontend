@@ -1,11 +1,12 @@
-import { MapElementType } from '../map2d';
-import { MathHelper } from '../mathhelper';
-import { Player } from '../player';
+import { MapElementType } from '../maps/map2d';
+import { MathHelper } from '../common/mathhelper';
+import { Player } from '../player/player';
 import { Step } from './raycaster';
-import { Room } from '../room';
+import { Room } from '../maps/room';
 import { Sprite } from '../sprites/sprite';
-import { Vec2D } from '../vec2d';
-import { Weapon } from '../weapon';
+import { Vec2D } from '../common/vec2d';
+import { Weapon } from '../player/weapon';
+import { Fog } from './fog';
 
 /**
  * 2D image object class for easier graphics handling.
@@ -27,7 +28,7 @@ export class ColorGradient {
 export class Renderer {
   static STANDARD_DRAWDISTANCE = 16;
   static STANDARD_FOCAL = 0.75;
-  static SENSORWIDTH = 2;
+  static SENSORWIDTH = 1;
   static STANDARD_FLOOR_GRADIENT = new ColorGradient('#777777', '#111111');
   static STANDARD_CEILING_GRADIENT = new ColorGradient('#777777', '#111111');
 
@@ -92,8 +93,9 @@ export class Renderer {
     * This is crucial to determine whether we are allowed to draw a Sprite or Enemy.
     * Is used as a lookup table. Mapping is [x_coor] -> distance_from_player
     */
-  private depthBuffer: number[];
+  private barDepthBuffer: Array<number>;
 
+  private screenRatio: number;
 
   /**
     * @constructor
@@ -117,6 +119,7 @@ export class Renderer {
 
     this.fieldOfView = 2 * Math.atan(Renderer.SENSORWIDTH / (2 * this.focalLength)) // 2 * ARCTAN (SENSOR WIDTH / (2 X FOCAL LENGTH)) * (180/Π)
     this.halfFieldOfView = 0.5 * this.fieldOfView;
+    this.screenRatio = this.canvas.width / this.fieldOfView;
 
     if (ceilGradient) {
       this.originalCeilingNearColor = ceilGradient.near;
@@ -124,6 +127,8 @@ export class Renderer {
     if (floorGradient) {
       this.originalFloorNearColor = floorGradient.near;
     }
+
+    this.barDepthBuffer = new Array<number>(this.canvas.width);
   }
 
   /**
@@ -204,7 +209,7 @@ export class Renderer {
     if (player.hasMoved()) {
       wx += (Math.sin(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
       wy += Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
-    } 
+    }
     this.context.drawImage(weapon.getCurrentImage2D.image, wx, wy, weaponWidth, weaponHeight);
   }
 
@@ -230,12 +235,7 @@ export class Renderer {
     this.context.fillStyle = gradient;
   }
 
-  /**
-   * Draw sprites stored in a room in respect to the players position, direction, and the renderers drawing distance.
-   * TODO: Rendering order with walls
-   */
-  private drawSprites(room: Room, player: Player) {
-    const sprites = room.getSprites;
+  private drawSpriteList(sprites: Sprite[], player: Player){
     // Position at which we draw the sprite:
     const drawPos = new Vec2D(0, this.canvas.height / 2);
     let sprite: Sprite;
@@ -247,6 +247,8 @@ export class Renderer {
     let distanceSizeScalingFactor: number;
     // How much the sprite's x coordinate on screen deviates from the middle of the screen:
     let horizontalDeviationFactor: number;
+
+    let currentBarDepth: number;
 
     this.context.globalAlpha = 1;
 
@@ -262,24 +264,41 @@ export class Renderer {
 
       if ((angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)) !== false) {
         // Start out with middle of screen:
-        drawPos.x = this.canvas.width / 2;
         // How much the object deviates from our center of view on x:
         horizontalDeviationFactor = (angle as number - player.getDirection);
         // Deviation added to center of view:
-        drawPos.x = drawPos.x + (horizontalDeviationFactor * this.halfFieldOfView) * drawPos.x;
+        drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
 
+        // distance to camera of bar at approximately drawPos.x
+        currentBarDepth = this.barDepthBuffer[drawPos.x - (drawPos.x % this.spacing)];
+
+        // Check if a bar was already drawn closer to the camera than the sprite:
+        if(currentBarDepth < distance /* maybe cosine corrected?*/) {
+          continue; //<-- wall overlaps sprite, skip drawing sprite completely
+        }
+        
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
-        distanceSizeScalingFactor = 1 / distance;
+        distanceSizeScalingFactor = 1 / (distance * Math.cos(angle as number - player.getDirection));
         // Update player viewing angle in sprite to help calculating which image will be sent back.
         sprite.lastPlayerViewingAngle = angle as number;
+        const spriteWidth = sprite.getSprite().width * distanceSizeScalingFactor
+        const spriteHeight = sprite.getSprite().height * distanceSizeScalingFactor
         // Finally, draw the image with the parameters above:
         this.context.drawImage(sprite.getSprite().image,
-          drawPos.x, drawPos.y,
-          sprite.getSprite().width * distanceSizeScalingFactor, sprite.getSprite().height * distanceSizeScalingFactor
+          drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3),
+          spriteWidth, spriteHeight
         );
-
       }
     }
+  }
+
+  /**
+   * Draw sprites stored in a room in respect to the players position, direction, and the renderers drawing distance.
+   * TODO: Rendering order with walls
+   */
+  private drawSprites(room: Room, player: Player) {
+    this.drawSpriteList(room.getSprites, player);
+    this.drawSpriteList(room.getEnemies, player);
   }
 
   /**
@@ -349,16 +368,28 @@ export class Renderer {
         // we want ot know where we start drawing the wall on the y axis and how tall it is:
         let wall = this.calculateWall(step.mapElement.getType(), rayAngle, step.distance);
 
+        // in our bar depth buffer, update what distance this bar was last rendered at:
+        this.barDepthBuffer[left - (left % this.spacing)] = step.distance;
+
         this.context.globalAlpha = 1; // full brightness for drawing the bar
         // Finally, draw the bar:
         this.context.drawImage(texture.image, textureX, 0, 1, texture.height, left, wall.top, width, wall.height);
 
-        // Make walls drawn further back darker for basic shading:
-        this.context.fillStyle = '#111111';
-        // The farther the step that hit is, the lower the alpha for drawing should be:
-        this.context.globalAlpha = Math.max((step.distance) / (this.drawDistance * 0.75), 0);
-        // Draw rectangle identical to the drawImage above just to shade it in darker:
-        this.context.fillRect(left, wall.top, width, wall.height);
+        // Check if map has fog of war, render if present
+        if (room.getMap.getFog) {
+          // Make walls drawn further back darker for basic shading:
+          this.context.fillStyle = room.getMap.getFog.color;
+          // The farther the step that hit is, the lower the alpha for drawing should be:
+          let currentAlpha = Math.max((step.distance) / (room.getMap.getFog.distance), 0);
+
+          // Render fog if below engage threshold
+          if (currentAlpha > room.getMap.getFog.engage) {
+            this.context.globalAlpha = Math.max((step.distance) / (room.getMap.getFog.distance), 0) - room.getMap.getFog.engage;
+            // Draw rectangle identical to the drawImage above just to shade it in the fog color:
+            this.context.fillRect(left, wall.top, width, wall.height);
+          }
+        }
+
 
         if (player.getWeapon.isMuzzleFlashOngoing) {
           this.context.fillStyle = player.getWeapon.getMuzzleFlashColor;
@@ -442,5 +473,19 @@ export class Renderer {
       thickness, size
     );
     this.context.restore();
+  }
+
+  /**
+   * Changes the resolution to enable dynamic resolution scaling.
+   * @param delta By how much we change the current resolution.
+   */
+  public changeResolution(delta: number) {
+    const newResolution = this.resolution + delta;
+    if (((this.canvas.width / 10) <= newResolution) && (this.canvas.width > newResolution)) {
+      this.resolution = newResolution;
+      this.spacing = this.canvas.width / newResolution;
+      this.barDepthBuffer = new Array<number>(this.canvas.width);
+    }
+    document.getElementById('fps-counter').innerText += " - Dynamic resolution engaged (" + newResolution + ")";
   }
 }

@@ -1,6 +1,7 @@
-import { Controls, KeyCodes } from "../src/controls";
-import { Map2D } from "../src/map2d";
-import { Player } from "../src/player";
+import { Controls, KeyCodes } from "../src/player/controls";
+import { Map2D } from "../src/maps/map2d";
+import { Player } from "../src/player/player";
+import { Packet } from "../src/communication/packet";
 
 describe('Player module testing', () => {
   it('Player rotates by 90 degree', () => {
@@ -21,10 +22,11 @@ describe('Player module testing', () => {
     let player = new Player(0, 0, 0);
     let map = new Map2D(32);
     let controls = new Controls();
+    let dummyCallback = function (p: Packet) { /* no implementation needed */ };
     controls.states.set(KeyCodes.FORWARD, true);
     controls.states.set(KeyCodes.TURN_LEFT, true);
     const seconds = 3;
-    player.update(controls, map, seconds);
+    player.update(controls, map, seconds, dummyCallback);
 
     expect(player.getDirection).toBeCloseTo(-Math.PI);
     expect(player.getPosition.x).toBeCloseTo(-seconds * Player.DEFAULT_WALK_SPEED);

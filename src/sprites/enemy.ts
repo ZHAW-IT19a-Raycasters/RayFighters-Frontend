@@ -1,28 +1,26 @@
 import { Image2D } from "../rendering/renderer";
 import { Sprite, SpriteType } from "./sprite";
-import { Vec2D } from "../vec2d";
-import { MathHelper } from "../mathhelper";
+import { Vec2D } from "../common/vec2d";
+import { MathHelper } from "../common/mathhelper";
+import { PlayerInfo } from "../communication/playerinfo";
+import { Player } from "../player/player";
 
 export class Enemy extends Sprite {
-    private userID: number;
+    private playerInfo: PlayerInfo;
 
-    constructor(userID: number, position: Vec2D){
-        // TODO: Remove static placement
+    constructor(){
         super(
-            new Vec2D(4, 4), 
             new Array<Image2D>(
-                new Image2D('assets/enemies/front.png', 1024, 2048),
-                new Image2D('assets/enemies/right.png', 1024, 2048),
-                new Image2D('assets/enemies/back.png', 1024, 2048),
-                new Image2D('assets/enemies/left.png', 1024, 2048)
+                new Image2D('assets/enemies/female/front_1.png', .4 * 1024, .4 * 2048),
+                new Image2D('assets/enemies/female/side_r_1.png', .4 * 1024, .4 * 2048),
+                new Image2D('assets/enemies/female/back_1.png', .4 * 1024, .4 * 2048),
+                new Image2D('assets/enemies/female/side_l_1.png', .4 * 1024, .4 * 2048)
             ),
             SpriteType.ENEMY);
-        this.userID = userID;
     }
 
-
     public getSprite(): Image2D {
-        const lookDirection = Math.abs(this.direction - this.lastPlayerViewingAngle);
+        const lookDirection = Math.abs(this.angle - this.lastPlayerViewingAngle);
         
         // Check east
         if ((lookDirection > MathHelper.NORTH + MathHelper.EIGHTH_OF_CIRCLE && lookDirection < MathHelper.CIRCLE) || (lookDirection <= MathHelper.SOUTH - MathHelper.EIGHTH_OF_CIRCLE && lookDirection >= MathHelper.EAST)) {
@@ -41,4 +39,13 @@ export class Enemy extends Sprite {
 
         return this.sprites[0];
     }
+    
+    public get getPlayerInfo() : PlayerInfo {
+        return this.playerInfo
+    }
+
+    public set setPlayerInfo(playerInfo: PlayerInfo) {
+        this.playerInfo = playerInfo;
+    }
+    
 }

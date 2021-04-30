@@ -1,4 +1,4 @@
-import { Image2D } from "./rendering/renderer";
+import { Image2D } from "../rendering/renderer";
 
 enum WeaponState {
     IDLE, SHOOTING

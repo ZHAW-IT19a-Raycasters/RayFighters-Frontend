@@ -1,8 +1,39 @@
+@font-face {
+  font-family: ArcadeClassic;
+  src: url("assets/fonts/ARCADECLASSIC.TTF");
+}
+
+#overlay-effect {
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgb(234, 54, 175, 0.1) 3px,
+    rgb(234, 54, 175, 0.1) 3px
+  );
+}
+
+#overlay-effect:after {
+  animation: grain 8s steps(10) infinite;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgb(117, 250, 105, 0.5) 3px,
+    rgb(117, 250, 105, 0.5) 3px
+  );
+  content: "";
+  height: 300%;
+  left: -50%;
+  opacity: 0.3;
+  position: fixed;
+  top: -100%;
+  width: 300%;
+}
+
 body {
   /* Disable scrolling */
-  margin: 0; 
-  height: 100%; 
-  overflow: hidden; 
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
   position: fixed;
 
   /* Disable select, copy + paste */
@@ -11,12 +42,47 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  /* Background */
+  background-image: url("img/RaycasterLogo1.png");
+  background-size: cover;
+  background-position-y: 20%;
+
+  letter-spacing: 0.1em;
+  font-family: ArcadeClassic;
+  color: #fff;
+  text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
+  animation: textflicker 0.5s infinite;
+}
+
+.videocontainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+#video {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.grow {
+  transition: all 0.2s ease-in-out;
+}
+.grow:hover {
+  transform: scale(1.1);
 }
 
 #shootbutton {
   height: 10vh;
   width: 10vh;
-  
+
   position: fixed;
   overflow: hidden;
   right: 30px;
@@ -32,11 +98,18 @@ body {
   box-shadow: 0px 0px 18px palevioletred;
 }
 
+/* Hide shoot button on mobile */
+@media screen and (min-device-width: 769px) {
+  #shootbutton {
+    display: none;
+  }
+}
+
 img {
   height: 100%;
   width: 100%;
   object-fit: contain;
-  }
+}
 
 #fps-container {
   position: fixed;
@@ -45,6 +118,7 @@ img {
   top: 30px;
   padding: 5px;
 
+  font-family: ArcadeClassic;
   font-size: x-large;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -77,9 +151,45 @@ canvas#game-canvas {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
 }
 
-/* Hide shoot button on mobile */
-@media screen and (min-device-width: 769px) {
-  #shootbutton {
-    display: none;
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  20% {
+    transform: translate(-15%, 5%);
+  }
+  30% {
+    transform: translate(7%, -25%);
+  }
+  40% {
+    transform: translate(-5%, 25%);
+  }
+  50% {
+    transform: translate(-15%, 10%);
+  }
+  60% {
+    transform: translate(15%, 0%);
+  }
+  70% {
+    transform: translate(0%, 15%);
+  }
+  80% {
+    transform: translate(3%, 35%);
+  }
+  90% {
+    transform: translate(-10%, 10%);
+  }
+}
+
+@keyframes textflicker {
+  from {
+    text-shadow: 1px 0 0 #ea36af, -2px 0 0 #75fa69;
+  }
+  to {
+    text-shadow: 2px 0.5px 2px #ea36af, -1px -0.5px 2px #75fa69;
   }
 }

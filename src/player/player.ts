@@ -1,8 +1,10 @@
-import { Map2D, MapElementType } from "./map2d";
+import { Map2D, MapElementType } from "../maps/map2d";
 import { KeyCodes, Controls } from "./controls";
-import { Vec2D } from "./vec2d";
-import { MathHelper } from "./mathhelper";
+import { Vec2D } from "../common/vec2d";
+import { MathHelper } from "../common/mathhelper";
 import { Weapon } from "./weapon";
+import { Command } from "../communication/command";
+import { PlayerInfo } from "../communication/playerinfo";
 
 
 /**
@@ -10,7 +12,9 @@ import { Weapon } from "./weapon";
  */
 export class Player {
   public static readonly DEFAULT_WALK_SPEED = 2;
-  private playerId: string;
+  public static readonly MAX_HEALTH = 150;
+  private playerInfo: PlayerInfo;
+  private health: number;
   private position: Vec2D;
   private paces: number;
   private lastPaces: number;
@@ -20,13 +24,13 @@ export class Player {
   }
 
   public get getDirection(): number {
-    return this.direction;
+    return this.angle;
   }
 
   public get getWeapon(): Weapon {
     return this.weapon;
   }
-  
+
   public get getPaces(): number {
     return this.paces;
   }
@@ -39,14 +43,15 @@ export class Player {
    * @constructor
    * @param x Player postition on the x-axis
    * @param y Player postition on the y-axis
-   * @param direction Starting angle/direction
+   * @param angle Starting angle/direction
    */
-  constructor(x: number, y: number, private direction: number, private weapon?: Weapon, private walkSpeed?: number) {
+  constructor(x: number, y: number, private angle: number, private weapon?: Weapon, private walkSpeed?: number) {
     this.position = new Vec2D(x, y);
     this.paces = 0;
-    if(!walkSpeed) {
+    if (!walkSpeed) {
       this.walkSpeed = Player.DEFAULT_WALK_SPEED;
     }
+    this.playerInfo = new PlayerInfo({ killCount: 0, deathCount: 0 })
   }
 
   public setWalkSpeed(speed: number): void {
@@ -63,7 +68,7 @@ export class Player {
    * @param angle angle by how much the player rotates
    */
   public rotate(angle: number): void {
-    this.direction = (this.direction + angle + MathHelper.CIRCLE) % MathHelper.CIRCLE;
+    this.angle = (this.angle + angle + MathHelper.CIRCLE) % MathHelper.CIRCLE;
   }
 
   /***
@@ -85,13 +90,13 @@ export class Player {
   }
 
   /***
-   * Handles all the movement actions of the Player
+   * Handles all the movement actions of the Player and communicates to the server.
    *
    * @param controls  {@link Controls}
    * @param map {@link Map}
    * @param seconds
    */
-  public update(controls: Controls, map: Map2D, seconds: number): void {
+  public update(controls: Controls, map: Map2D, seconds: number, sendCallback: any): void {
     this.lastPaces = this.paces;
 
     let hasWalkedX = 0, hasWalkedY = 0;
@@ -107,36 +112,42 @@ export class Player {
       controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
     }
     if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
-      this.rotate(Math.PI *  (seconds * 0.75));
+      this.rotate(Math.PI * (seconds * 0.75));
       controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
     }
 
     if (controls.states.get(KeyCodes.FORWARD)) {
-      this.walk(walkDelta, map, this.direction);
+      this.walk(walkDelta, map, this.angle);
       ++hasWalkedY;
     }
     if (controls.states.get(KeyCodes.BACKWARD)) {
-      this.walk(-walkDelta, map, this.direction);
+      this.walk(-walkDelta, map, this.angle);
       ++hasWalkedY;
     }
     if (controls.states.get(KeyCodes.STRAFE_LEFT)) {
-      this.walk(walkDelta, map, this.direction - Math.PI / 2);
+      this.walk(walkDelta, map, this.angle - Math.PI / 2);
       ++hasWalkedX;
     }
     if (controls.states.get(KeyCodes.STRAFE_RIGHT)) {
-      this.walk(-walkDelta, map, this.direction - Math.PI / 2);
+      this.walk(-walkDelta, map, this.angle - Math.PI / 2);
       ++hasWalkedX;
     }
-    if(hasWalkedX == 1 || hasWalkedY == 1) {
+    if (hasWalkedX == 1 || hasWalkedY == 1) {
       this.paces += walkDelta;
+      sendCallback(Command.move(this.position.x, this.position.y, this.angle));
     }
 
-    if(this.weapon) {
+    if (this.weapon) {
       if (controls.states.get(KeyCodes.SHOOT)) {
         this.weapon.shoot();
+        sendCallback(Command.shoot(this.angle));
       }
 
       this.weapon.update(seconds);
+    }
+
+    if (controls.states.get(KeyCodes.SCOREBOARD)) {
+      // TODO Show scoreboard on HUD
     }
   }
 
@@ -148,9 +159,30 @@ export class Player {
     return this.lastPaces !== this.paces;
   }
 
-  
-  public set setDirection(d : number) {
-    this.direction = d;
+  /**
+   * Change health based on given delta. Calls death handling if health falls below zero.
+   * @param delta positive or negative health deviation.
+   */
+  public changeHealth(delta: number) {
+    if (this.health + delta < 0) {
+      return; // TODO: Handle death!
+    } else if (this.health + delta >= Player.MAX_HEALTH) {
+      this.health = Player.MAX_HEALTH;
+    } else {
+      this.health += delta;
+    }
   }
-  
+
+  public set setDirection(d: number) {
+    this.angle = d;
+  }
+
+  public set setPosition(p: Vec2D) {
+    this.position = p;
+  }
+
+  public get getPlayerInfo() {
+    return this.playerInfo;
+  }
+
 }

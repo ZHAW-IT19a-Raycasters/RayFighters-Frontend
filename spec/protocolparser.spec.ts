@@ -1,5 +1,6 @@
 import { OpCode } from "../src/communication/opcode";
-import { Packet, PlayerInfo } from "../src/communication/packet";
+import { Packet } from "../src/communication/packet";
+import { PlayerInfo } from "../src/communication/playerinfo";
 import { ProtocolParser } from "../src/communication/protocolparser";
 const { TextEncoder } = require("fastestsmallesttextencoderdecoder");
 
@@ -20,9 +21,9 @@ describe('Server side protocol parser unit test', () => {
         expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
     })
 
-    it('should parse movement correctly', () => {
-        serverMessage = new Uint8Array([OpCode.SERVER_MOVEMENT, 0x44, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F]);
-        expectedPacket = new Packet({ opCode: OpCode.SERVER_MOVEMENT, userID: 0x44, coorX: 0.1, coorY: 0.2 });
+    it('should parse teleport correctly', () => {
+        serverMessage = new Uint8Array([OpCode.SERVER_TELEPORT, 0x44, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F]);
+        expectedPacket = new Packet({ opCode: OpCode.SERVER_TELEPORT, userID: 0x44, coorX: 0.1, coorY: 0.2 });
         expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
         expect(ProtocolParser.get.parse(serverMessage).userID).toBe(expectedPacket.userID);
         expect(ProtocolParser.get.parse(serverMessage).coorX).toBe(expectedPacket.coorX);
@@ -110,9 +111,10 @@ describe('Client side protocol serialize unit test', () => {
         const expectedData = [
             0x0A,                                               // Opcode
             0x00, 0x00, 0x00, 0x00, 0x00, 0xD0, 0x84, 0x40,     // X movement (666.0)
-            0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40      // Y movement (999.999)
+            0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40,     // Y movement (999.999)
+            0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40      // angle (999.999)
         ];    
-        const packet: Packet = new Packet({ opCode: OpCode.CLIENT_MOVEMENT, coorX: 666.0, coorY: 999.999 })
+        const packet: Packet = new Packet({ opCode: OpCode.CLIENT_MOVEMENT, coorX: 666.0, coorY: 999.999, angle: 999.999 })
         const byteData = ProtocolParser.get.serialize(packet);
         expect(byteData.length).toBe(expectedData.length);
         for (let index = 0; index < expectedData.length; index++) {

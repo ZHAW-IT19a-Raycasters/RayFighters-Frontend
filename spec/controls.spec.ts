@@ -1,5 +1,5 @@
-import { Controls } from "../src/controls";
-import { KeyCodes } from "../src/controls";
+import { Controls } from "../src/player/controls";
+import { KeyCodes } from "../src/player/controls";
 import { JSDOM } from 'jsdom';
 import * as fs from 'fs'
 

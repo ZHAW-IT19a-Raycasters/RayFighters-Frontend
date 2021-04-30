@@ -1,9 +1,10 @@
-import { Vec2D } from "./vec2d";
-import { Raycaster, Step } from "./rendering/raycaster";
-import { Sprite } from "./sprites/sprite";
-import { HealthPickup } from "./sprites/healthpickup";
-import { WeaponPickup } from "./sprites/weaponpickup";
-import { ColorGradient, Image2D } from "./rendering/renderer";
+import { Vec2D } from "../common/vec2d";
+import { Raycaster, Step } from "../rendering/raycaster";
+import { Sprite } from "../sprites/sprite";
+import { HealthPickup } from "../sprites/healthpickup";
+import { WeaponPickup } from "../sprites/weaponpickup";
+import { ColorGradient, Image2D } from "../rendering/renderer";
+import { Fog } from "../rendering/fog";
 
 export class Map2D {
     /**
@@ -28,6 +29,7 @@ export class Map2D {
     private floorGradient: ColorGradient;
     private mapSize: number;
     private wallTextures: Map<string, Image2D>;
+    private fog: Fog;
 
     /**
      * Size refers to the height and width of the map (it's square)
@@ -90,29 +92,44 @@ export class Map2D {
             const ceilingSplit = lines[2].split(";");
             this.ceilingGradient = new ColorGradient(ceilingSplit[0], ceilingSplit[1]);
         }
-        const floorSplit = lines[3].split(";");
-        this.floorGradient = new ColorGradient(floorSplit[0], floorSplit[1]);
-        this.mapSize = parseInt(lines[4]);
+        if (lines[3].trim().length > 0) {
+            const floorSplit = lines[3].split(";");
+            this.floorGradient = new ColorGradient(floorSplit[0], floorSplit[1]);
+        }
+        
+        if (lines[4].trim().length > 0) {
+            const fogSplit = lines[4].split(";");
+            this.fog = new Fog(fogSplit[0], parseInt(fogSplit[1]), parseFloat(fogSplit[2]));
+        }
 
-        const numberOfWallTextures = parseInt(lines[5 + this.mapSize]);
+        this.mapSize = parseInt(lines[5]);
+
+        const numberOfWallTextures = parseInt(lines[6 + this.mapSize]);
         for (let index = 0; index < numberOfWallTextures; index++) {
-            let textureData = lines[index + 6 + this.mapSize].split("=");
+            let textureData = lines[index + 7 + this.mapSize].split("=");
             this.wallTextures.set(textureData[0].trim(), new Image2D(textureData[1].trim(), 2048, 2048));
         }
 
         this.map = new Array<MapElement>(this.mapSize ** 2);
 
         let x = 0;
-        for (let index = 5; index < 5 + this.mapSize; index++) {
-            let y = index - 5;
+        for (let index = 6; index < 6 + this.mapSize; index++) {
+            let y = index - 6;
             const line = lines[index];
             for (const char of line) {
                 switch (char) {
                     case '+':
-                        this.map[x] = new MapElement(MapElementType.SPRITE, new HealthPickup(new Vec2D(x % this.mapSize, y)));
+                        const healthPickup = new HealthPickup();
+                        healthPickup.setPosition = new Vec2D(x % this.mapSize, y)
+                        this.map[x] = new MapElement(MapElementType.SPRITE, healthPickup);
                         break;
                     case '*':
-                        this.map[x] = new MapElement(MapElementType.SPRITE, new WeaponPickup(new Vec2D(x % this.mapSize, y)));
+                        const weaponPickup = new WeaponPickup();
+                        weaponPickup.setPosition = new Vec2D(x % this.mapSize, y);
+                        this.map[x] = new MapElement(MapElementType.SPRITE, weaponPickup);
+                        break;
+                    case '\r':
+                        x--;
                         break;
                     default:    
                         if (char.match("([1-9])|([A-Z])")) { // Check if it's a wall
@@ -215,11 +232,23 @@ export class Map2D {
         return this.size;
     }
 
-    
-    public get getSkyBox() : Image2D {
+
+    public get getSkyBox(): Image2D {
         return this.skyBox
     }
 
+
+    public get getCeilingGradient(): ColorGradient {
+        return this.ceilingGradient;
+    }
+
+    public get getFloorGradient(): ColorGradient {
+        return this.floorGradient;
+    }
+
+    public get getFog() : Fog {
+        return this.fog
+    }
 }
 
 /**
@@ -260,12 +289,8 @@ export class MapElement {
     public get getWallImage(): Image2D {
         return this.wallImage;
     }
-
     
-    public set setWallImage(i : Image2D) {
+    public set setWallImage(i: Image2D) {
         this.wallImage = i;
     }
-
-    
-    
 }

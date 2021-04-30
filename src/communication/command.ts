@@ -53,8 +53,8 @@ export class Command {
      * @param coordinateY new Y coordinate of the player.
      * @returns a new client movement packet.
      */
-    public static move(coordinateX: number, coordinateY: number) {
-        return new Packet({ opCode: OpCode.CLIENT_MOVEMENT, coorX: coordinateX, coorY: coordinateY })
+    public static move(coordinateX: number, coordinateY: number, angle: number) {
+        return new Packet({ opCode: OpCode.CLIENT_MOVEMENT, coorX: coordinateX, coorY: coordinateY, angle: angle })
     }
 
     /**
