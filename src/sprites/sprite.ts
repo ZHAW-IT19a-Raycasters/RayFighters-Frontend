@@ -23,7 +23,7 @@ export class Sprite {
     /**
      * Direction the sprite is facing in radiants.
      */
-    protected direction: number;
+    protected angle: number;
 
     /**
      * Last angle this sprite was viewed from the perspective of the player.
@@ -53,7 +53,7 @@ export class Sprite {
         // TODO: Setting position via server message
         //this.position = position;      
 
-        this.direction = 0;
+        this.angle = 0;
 
         this.type = type;
 
@@ -66,8 +66,13 @@ export class Sprite {
         return this.position;
     }
 
-    public get getDirection(): number {
-        return this.direction;
+    public get getAngle(): number {
+        return this.angle;
+    }
+
+    public set setAngle(angle: number) {
+        console.log("anglerino changerino to " + angle)
+        this.angle = angle;
     }
 
     public set setPosition(position: Vec2D) {
