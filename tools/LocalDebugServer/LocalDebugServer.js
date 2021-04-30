@@ -1,5 +1,7 @@
 /**
- * Emulates a server on your machine.
+ * SEÑOR DEBUGGERINO SERVERINO.
+ * 
+ * Emulates a serverino on your machino to do some debuggerino to the raycasterinos.
  * 
  * To use type on your terminal:        node LocalDebugServer.js
  * The default address and port is:     ws://localhost:8080
@@ -11,7 +13,7 @@
 const WebSocket = require('ws')
  
 const wss = new WebSocket.Server({ port: 8080 })
-console.log("Starting server on port 8080... Listening now!")
+console.log("Starting debuggerino serverino on port 8080... Doing a listen and boop the snoot!")
 
 const testMessage = new Uint8Array([0x65]) // Opcode.SERVER_UNKNOWN
 
@@ -47,11 +49,11 @@ wss.on('connection', ws => {
 
     setInterval(function(){ 
         testcoor += 0.1
-        move(0x1, Math.cos(testcoor), Math.sin(testcoor), Math.cos(testcoor), ws)
-        move(0x04, -Math.cos(testcoor), -Math.sin(testcoor), Math.cos(testcoor), ws)
-        move(0x34, Math.cos(-testcoor), Math.sin(-testcoor), Math.cos(testcoor), ws)
+        move(0x1, Math.cos(testcoor) * 10, Math.sin(testcoor), Math.cos(testcoor), ws)
+        move(0x04, -Math.cos(testcoor), -Math.sin(testcoor) * 10, Math.cos(testcoor), ws)
+        move(0x34, Math.cos(-testcoor) * 5, Math.sin(-testcoor) * 5, Math.cos(testcoor), ws)
 
-     }, 100);
+     }, 10);
 
     // Receive message
     ws.on('message', (message) => {
@@ -86,7 +88,6 @@ function teleport(uid, xpos, ypos, websock){
         buffer[index + 2] = x[index]
         buffer[index + 10] = y[index]
     }
-    console.log(buffer)
     websock.send(buffer);
 }
 
@@ -100,7 +101,6 @@ function move(uid, xpos, ypos, angle, websock){
         buffer[index + 10] = y[index]
         buffer[index + 18] =  a[index]
     }
-    console.log(buffer)
     websock.send(buffer);
 }
 
