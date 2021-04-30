@@ -12,7 +12,9 @@ import { PlayerInfo } from "../communication/playerinfo";
  */
 export class Player {
   public static readonly DEFAULT_WALK_SPEED = 2;
+  public static readonly MAX_HEALTH = 150;
   private playerInfo: PlayerInfo;
+  private health: number;
   private position: Vec2D;
   private paces: number;
   private lastPaces: number;
@@ -157,6 +159,19 @@ export class Player {
     return this.lastPaces !== this.paces;
   }
 
+  /**
+   * Change health based on given delta. Calls death handling if health falls below zero.
+   * @param delta positive or negative health deviation.
+   */
+  public changeHealth(delta: number) {
+    if (this.health + delta < 0) {
+      return; // TODO: Handle death!
+    } else if (this.health + delta >= Player.MAX_HEALTH) {
+      this.health = Player.MAX_HEALTH;
+    } else {
+      this.health += delta;
+    }
+  }
 
   public set setDirection(d: number) {
     this.direction = d;
@@ -169,4 +184,5 @@ export class Player {
   public get getPlayerInfo() {
     return this.playerInfo;
   }
+
 }

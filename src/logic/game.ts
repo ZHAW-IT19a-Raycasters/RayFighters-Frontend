@@ -7,6 +7,8 @@ import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
 import { ServerConnection } from '../communication/serverconnection';
+import { Sprite } from '../sprites/sprite';
+import { HealthPickup } from '../sprites/healthpickup';
 
 /**
  * Renderer instance. Needs to be updated upon window resize.
@@ -95,8 +97,9 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
     }
 
     // Refresh sprite array
-    
 
+
+    
     // Update player positions, controls, map, time and sendCallback for communicating with the server.
     player.update(controls, room.getMap, time, sendCallback);
     renderer.render(room, player, time);
@@ -104,4 +107,5 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
       serverConnection.handlePacket(p);
     })
   });
+
 }
