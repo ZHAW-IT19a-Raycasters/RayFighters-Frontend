@@ -2,14 +2,15 @@ import { Image2D } from "../rendering/renderer";
 import { Sprite, SpriteType } from "./sprite";
 import { Vec2D } from "../common/vec2d";
 import { MathHelper } from "../common/mathhelper";
+import { PlayerInfo } from "../communication/playerinfo";
+import { Player } from "../player/player";
 
 export class Enemy extends Sprite {
-    private userID: number;
+    private playerInfo: PlayerInfo;
 
-    constructor(userID: number, position: Vec2D){
+    constructor(){
         // TODO: Remove static placement
         super(
-            new Vec2D(4, 4), 
             new Array<Image2D>(
                 new Image2D('assets/enemies/female/front_1.png', 1024, 2048),
                 new Image2D('assets/enemies/female/side_r_1.png', 1024, 2048),
@@ -17,7 +18,6 @@ export class Enemy extends Sprite {
                 new Image2D('assets/enemies/female/side_l_1.png', 1024, 2048)
             ),
             SpriteType.ENEMY);
-        this.userID = userID;
     }
 
 
@@ -41,4 +41,13 @@ export class Enemy extends Sprite {
 
         return this.sprites[0];
     }
+    
+    public get getPlayerInfo() : PlayerInfo {
+        return this.playerInfo
+    }
+
+    public set setPlayerInfo(playerInfo: PlayerInfo) {
+        this.playerInfo = playerInfo;
+    }
+    
 }

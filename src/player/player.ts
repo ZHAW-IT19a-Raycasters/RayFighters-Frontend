@@ -4,6 +4,7 @@ import { Vec2D } from "../common/vec2d";
 import { MathHelper } from "../common/mathhelper";
 import { Weapon } from "./weapon";
 import { Command } from "../communication/command";
+import { PlayerInfo } from "../communication/playerinfo";
 
 
 /**
@@ -11,7 +12,7 @@ import { Command } from "../communication/command";
  */
 export class Player {
   public static readonly DEFAULT_WALK_SPEED = 2;
-  private playerId: string;
+  private playerInfo: PlayerInfo;
   private position: Vec2D;
   private paces: number;
   private lastPaces: number;
@@ -27,7 +28,7 @@ export class Player {
   public get getWeapon(): Weapon {
     return this.weapon;
   }
-  
+
   public get getPaces(): number {
     return this.paces;
   }
@@ -45,9 +46,10 @@ export class Player {
   constructor(x: number, y: number, private direction: number, private weapon?: Weapon, private walkSpeed?: number) {
     this.position = new Vec2D(x, y);
     this.paces = 0;
-    if(!walkSpeed) {
+    if (!walkSpeed) {
       this.walkSpeed = Player.DEFAULT_WALK_SPEED;
     }
+    this.playerInfo = new PlayerInfo({ killCount: 0, deathCount: 0 })
   }
 
   public setWalkSpeed(speed: number): void {
@@ -108,7 +110,7 @@ export class Player {
       controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
     }
     if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
-      this.rotate(Math.PI *  (seconds * 0.75));
+      this.rotate(Math.PI * (seconds * 0.75));
       controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
     }
 
@@ -128,18 +130,22 @@ export class Player {
       this.walk(-walkDelta, map, this.direction - Math.PI / 2);
       ++hasWalkedX;
     }
-    if(hasWalkedX == 1 || hasWalkedY == 1) {
+    if (hasWalkedX == 1 || hasWalkedY == 1) {
       this.paces += walkDelta;
       sendCallback(Command.move(this.position.x, this.position.y));
     }
 
-    if(this.weapon) {
+    if (this.weapon) {
       if (controls.states.get(KeyCodes.SHOOT)) {
         this.weapon.shoot();
         sendCallback(Command.shoot(this.direction));
       }
-      
+
       this.weapon.update(seconds);
+    }
+
+    if (controls.states.get(KeyCodes.SCOREBOARD)) {
+      // TODO Show scoreboard on HUD
     }
   }
 
@@ -151,12 +157,16 @@ export class Player {
     return this.lastPaces !== this.paces;
   }
 
-  
-  public set setDirection(d : number) {
+
+  public set setDirection(d: number) {
     this.direction = d;
   }
 
   public set setPosition(p: Vec2D) {
     this.position = p;
+  }
+
+  public get getPlayerInfo() {
+    return this.playerInfo;
   }
 }

@@ -119,10 +119,14 @@ export class Map2D {
             for (const char of line) {
                 switch (char) {
                     case '+':
-                        this.map[x] = new MapElement(MapElementType.SPRITE, new HealthPickup(new Vec2D(x % this.mapSize, y)));
+                        const healthPickup = new HealthPickup();
+                        healthPickup.setPosition = new Vec2D(x % this.mapSize, y)
+                        this.map[x] = new MapElement(MapElementType.SPRITE, healthPickup);
                         break;
                     case '*':
-                        this.map[x] = new MapElement(MapElementType.SPRITE, new WeaponPickup(new Vec2D(x % this.mapSize, y)));
+                        const weaponPickup = new WeaponPickup();
+                        weaponPickup.setPosition = new Vec2D(x % this.mapSize, y);
+                        this.map[x] = new MapElement(MapElementType.SPRITE, weaponPickup);
                         break;
                     case '\r':
                         x--;
