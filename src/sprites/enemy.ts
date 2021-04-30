@@ -12,12 +12,16 @@ export class Enemy extends Sprite {
         // TODO: Remove static placement
         super(
             new Array<Image2D>(
-                new Image2D('assets/enemies/female/front_1.png', 1024, 2048),
-                new Image2D('assets/enemies/female/side_r_1.png', 1024, 2048),
-                new Image2D('assets/enemies/female/back_1.png', 1024, 2048),
-                new Image2D('assets/enemies/female/side_l_1.png', 1024, 2048)
+                new Image2D('assets/enemies/female/front_1.png', .4 * 1024, .4 * 2048),
+                new Image2D('assets/enemies/female/side_r_1.png', .4 * 1024, .4 * 2048),
+                new Image2D('assets/enemies/female/back_1.png', .4 * 1024, .4 * 2048),
+                new Image2D('assets/enemies/female/side_l_1.png', .4 * 1024, .4 * 2048)
             ),
             SpriteType.ENEMY);
+    }
+
+    public get getUserID(): number {
+      return this.userID;
     }
 
 
