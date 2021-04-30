@@ -11,7 +11,7 @@
  */
 
 const WebSocket = require('ws')
- 
+
 const wss = new WebSocket.Server({ port: 8080 })
 console.log("Starting debuggerino serverino on port 8080... Doing a listen and boop the snoot!")
 
@@ -23,7 +23,7 @@ buffer = testMessage.buffer
 let testcoor = 0;
 
 let counter = 0
- 
+
 wss.on('connection', ws => {
     console.log("Connection established with game client!")
 
@@ -47,13 +47,13 @@ wss.on('connection', ws => {
     teleport(0x04, 5, 6, ws);
     teleport(0x34, 3, 3, ws);
 
-    setInterval(function(){ 
+    setInterval(function () {
         testcoor += 0.1
-        move(0x1, Math.cos(testcoor) * 10, Math.sin(testcoor), Math.cos(testcoor), ws)
-        move(0x04, -Math.cos(testcoor), -Math.sin(testcoor) * 10, Math.cos(testcoor), ws)
-        move(0x34, Math.cos(-testcoor) * 5, Math.sin(-testcoor) * 5, Math.cos(testcoor), ws)
+        move(0x1, 4, 2, 0, ws)
+        move(0x04, 5, 6, 0.5*Math.PI, ws)
+        move(0x34, 3, 3, Math.PI, ws)
 
-     }, 10);
+    }, 100);
 
     // Receive message
     ws.on('message', (message) => {
@@ -63,16 +63,16 @@ wss.on('connection', ws => {
             printMessage += message[index].toString(16);
             printMessage += " "
         }
-    console.log("Message received! " + printMessage + " ||| # of received messages: " + counter++)
+        console.log("Message received! " + printMessage + " ||| # of received messages: " + counter++)
         //for each websocket client
         wss
-        .clients
-        .forEach( client => {
-            //send the client the current message
-            //client.send(buffer);
-        });
+            .clients
+            .forEach(client => {
+                //send the client the current message
+                //client.send(buffer);
+            });
     });
-     
+
 })
 
 function floatToU8(floatToConvert) {
@@ -80,7 +80,7 @@ function floatToU8(floatToConvert) {
     return new Uint8Array(data.buffer);
 }
 
-function teleport(uid, xpos, ypos, websock){
+function teleport(uid, xpos, ypos, websock) {
     let x = floatToU8(xpos);
     let y = floatToU8(ypos);
     buffer = new Uint8Array([0x6F, uid, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F]);
@@ -91,15 +91,15 @@ function teleport(uid, xpos, ypos, websock){
     websock.send(buffer);
 }
 
-function move(uid, xpos, ypos, angle, websock){
+function move(uid, xpos, ypos, angle, websock) {
     let x = floatToU8(xpos);
     let y = floatToU8(ypos);
     let a = floatToU8(angle);
-    buffer = new Uint8Array([0x6F, uid, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0x1B, 0x40]);
+    buffer = new Uint8Array([0x6E, uid, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0x1B, 0x40]);
     for (let index = 0; index < 8; index++) {
         buffer[index + 2] = x[index]
         buffer[index + 10] = y[index]
-        buffer[index + 18] =  a[index]
+        buffer[index + 18] = a[index]
     }
     websock.send(buffer);
 }

@@ -43,31 +43,31 @@ export class ServerConnection {
                 // TODO: Handle unknown
                 break;
             case OpCode.SERVER_MOVEMENT:
-                alert("Player with ID" + p.userID + "has moved to" + p.coorX + "|" + p.coorY);
                 this.enemyMap.get(p.userID).setPosition = new Vec2D(p.coorX, p.coorY);
+                this.enemyMap.get(p.userID).setAngle = p.angle;
                 break;
             case OpCode.SERVER_YOUARECALLED:
-                alert("Your ID is: " + p.userID);
+                console.log("Your ID is: " + p.userID);
                 this.player.getPlayerInfo.userID = p.userID
                 break;
             case OpCode.SERVER_PLAYERJOINED:
-                alert("New player has joined: ID " + p.name);
+                console.log("New player has joined: ID " + p.name);
                 this.addEnemy(p.userID, new PlayerInfo({userID: p.userID, userName: p.name, killCount: 0, deathCount: 0}))
                 break;
             case OpCode.SERVER_PLAYERLEFT:
-                alert("Player has left: ID " + p.name);
+                console.log("Player has left: ID " + p.name);
                 this.removeEnemy(p.userID);
                 break;
             case OpCode.SERVER_SENDALLPLAYERINFO:
-                alert("Server has sent all player info");
+                console.log("Server has sent all player info");
                 this.synchronizeEnemyList(p.playerInfoList);
                 break;
             case OpCode.SERVER_SENDALLPLAYERKD:
-                alert("Server has sent all player K/D");
+                console.log("Server has sent all player K/D");
                 this.synchronizeEnemyList(p.playerKillDeathList);
                 break;
             case OpCode.SERVER_TELEPORT:
-                //console.log("Player with ID" + p.userID + "has been teleported to" + p.coorX + "|" + p.coorY);
+                console.log("Player with ID" + p.userID + "has been teleported to" + p.coorX + "|" + p.coorY);
                 const newPosition = new Vec2D(p.coorX, p.coorY);
                 if (p.userID === this.player.getPlayerInfo.userID) {
                     this.player.setPosition = newPosition;
@@ -77,7 +77,6 @@ export class ServerConnection {
                 break;
             case OpCode.SERVER_SHOOTING:
                 alert("Player with ID" + p.userID + "has shot in angle " + p.angle);
-                // TODO: Handle player K/D
                 break;
             default:
                 break;

@@ -9,7 +9,6 @@ export class Enemy extends Sprite {
     private playerInfo: PlayerInfo;
 
     constructor(){
-        // TODO: Remove static placement
         super(
             new Array<Image2D>(
                 new Image2D('assets/enemies/female/front_1.png', .4 * 1024, .4 * 2048),
@@ -21,7 +20,7 @@ export class Enemy extends Sprite {
     }
 
     public getSprite(): Image2D {
-        const lookDirection = Math.abs(this.direction - this.lastPlayerViewingAngle);
+        const lookDirection = Math.abs(this.angle - this.lastPlayerViewingAngle);
         
         // Check east
         if ((lookDirection > MathHelper.NORTH + MathHelper.EIGHTH_OF_CIRCLE && lookDirection < MathHelper.CIRCLE) || (lookDirection <= MathHelper.SOUTH - MathHelper.EIGHTH_OF_CIRCLE && lookDirection >= MathHelper.EAST)) {
