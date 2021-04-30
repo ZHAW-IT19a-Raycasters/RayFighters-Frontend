@@ -1,5 +1,5 @@
 import { Packet } from "../communication/packet";
-import { Socket } from "../communication/socket";
+import { Socket, SocketState } from "../communication/socket";
 
 export class GameLoop {
   private lastTime: number;
@@ -120,4 +120,10 @@ export class GameLoop {
 
     this.socket.sendAll();
   }
+
+  
+  public get getSocketState() : SocketState {
+    return this.socket.socketState;
+  }
+  
 }

@@ -86,7 +86,7 @@ function handleLogIn(): void {
     const playerName = formData.get("inputPlayerName") as string;
     const content = { "username": playerName };
 
-    getJWT(content);
+    //getJWT(content);
 
     const overlayEffect: HTMLElement = document.querySelector("#overlay-effect");
     overlayEffect.remove();

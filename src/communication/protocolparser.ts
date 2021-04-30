@@ -1,5 +1,6 @@
 import { OpCode } from "./opcode";
-import { Packet, PlayerInfo } from "./packet";
+import { Packet } from "./packet";
+import { PlayerInfo } from "./playerinfo";
 
 
 /**
@@ -171,16 +172,20 @@ export class ProtocolParser {
                 byteData = new Uint8Array(1);
                 byteData[0] = packet.opCode;
                 break;
+
             case OpCode.CLIENT_MOVEMENT:
-                byteData = new Uint8Array(17);
+                byteData = new Uint8Array(25);
                 byteData[0] = packet.opCode;
                 let convertedFloatX: Uint8Array = this.floatToU8Array(packet.coorX);
                 let convertedFloatY: Uint8Array = this.floatToU8Array(packet.coorY);
+                let angle: Uint8Array = this.floatToU8Array(packet.angle);
                 for (let index = 0; index < 8; index++) {
                     byteData[index + 1] = convertedFloatX[index];
                     byteData[index + 9] = convertedFloatY[index];
+                    byteData[index + 17] = angle[index];
                 }
                 break;
+
             case OpCode.CLIENT_SHOOTING:
                 byteData = new Uint8Array(9);
                 byteData[0] = packet.opCode;
@@ -189,6 +194,7 @@ export class ProtocolParser {
                     byteData[index + 1] = convertedFloat[index];
                 }
                 break;
+                
             default:
                 throw Error("Opcode not recognized! Can't serialize!");
         }

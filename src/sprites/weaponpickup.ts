@@ -1,12 +1,11 @@
 import { Player } from "../player/player";
 import { Image2D } from "../rendering/renderer";
-import { Vec2D } from "../common/vec2d";
 import { Sprite, SpriteType } from "./sprite";
 
 export class WeaponPickup extends Sprite {
-    constructor(position: Vec2D){
+    constructor(){
         // TODO: Add static image
-        super(position, new Array<Image2D>(new Image2D('assets/enemies/placeholder.png', 1024, 1024)), SpriteType.WEAPON_PICKUP);
+        super(new Array<Image2D>(new Image2D('assets/pickups/weapon.png', 1024, 2048)), SpriteType.WEAPON_PICKUP);
     }
 
     public trigger(player: Player){

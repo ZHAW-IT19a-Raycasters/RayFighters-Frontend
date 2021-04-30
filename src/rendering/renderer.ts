@@ -235,12 +235,7 @@ export class Renderer {
     this.context.fillStyle = gradient;
   }
 
-  /**
-   * Draw sprites stored in a room in respect to the players position, direction, and the renderers drawing distance.
-   * TODO: Rendering order with walls
-   */
-  private drawSprites(room: Room, player: Player) {
-    const sprites = room.getSprites;
+  private drawSpriteList(sprites: Sprite[], player: Player){
     // Position at which we draw the sprite:
     const drawPos = new Vec2D(0, this.canvas.height / 2);
     let sprite: Sprite;
@@ -295,6 +290,15 @@ export class Renderer {
         );
       }
     }
+  }
+
+  /**
+   * Draw sprites stored in a room in respect to the players position, direction, and the renderers drawing distance.
+   * TODO: Rendering order with walls
+   */
+  private drawSprites(room: Room, player: Player) {
+    this.drawSpriteList(room.getSprites, player);
+    this.drawSpriteList(room.getEnemies, player);
   }
 
   /**

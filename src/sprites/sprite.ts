@@ -18,7 +18,7 @@ export class Sprite {
     /**
      * Position on the map.
      */
-    private position: Vec2D;
+    protected position: Vec2D;
 
     /**
      * Direction the sprite is facing in radiants.
@@ -43,21 +43,23 @@ export class Sprite {
      * Type of sprite, see enum above.
      */
     private type: SpriteType;
-    
-    constructor(position: Vec2D, sprites: Array<Image2D>, type: SpriteType) {
+
+    constructor(/*position: Vec2D,*/ sprites: Array<Image2D>, type: SpriteType) {
         // Currently just using default placeholder sprite. 
         // TODO: Expand with front/side images
         this.sprites = sprites;
 
         // Currently using default position of (1|1). 
         // TODO: Setting position via server message
-        this.position = position;      
+        //this.position = position;      
 
         this.direction = 0;
 
         this.type = type;
 
         this.lastPlayerViewingAngle = 0;
+
+        this.position = new Vec2D(1, 1);
     }
 
     public get getPosition(): Vec2D {
@@ -68,7 +70,7 @@ export class Sprite {
         return this.direction;
     }
 
-    public set setPosition(position: Vec2D) {
+    public set setPosition(position: Vec2D) {
         this.position = position;
     }
 
