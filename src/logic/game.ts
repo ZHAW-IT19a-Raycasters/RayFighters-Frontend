@@ -6,6 +6,8 @@ import { Renderer } from '../rendering/renderer';
 import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { Command } from '../communication/command';
+import { OpCode } from '../communication/opcode';
+import { Vec2D } from '../common/vec2d';
 
 /**
  * Renderer instance. Needs to be updated upon window resize.
@@ -59,10 +61,62 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   loop.begin(function (time: number, receivedPackets: Array<Packet>, sendCallback: any) {
     // Begin gameloop using this frame handler
     player.update(controls, room.getMap, time);
+    if (player.hasMoved) {
+    //  sendCallback(Command.move(player.getPosition.x, player.getPosition.y));
+    }
     renderer.render(room, player, time);
-    sendCallback(Command.unknown());
     receivedPackets.forEach(p => {
-      console.log(p.opCode)
+      handleServerMessages(p);
     })
   });
+}
+
+function handleServerMessages(p: Packet) {
+  switch (p.opCode) {
+    case OpCode.SERVER_PLAYERDEATH:
+      alert("You have died!");
+      // TODO: Handle player death
+      break;
+    case OpCode.SERVER_DISCONNECT:
+      alert("Server has disconnected!");
+      // TODO: Handle disconnect
+      break;
+    case OpCode.SERVER_UNKNOWN:
+      alert("Server has sent unknown message");
+      // TODO: Handle unknown
+      break;
+    case OpCode.SERVER_MOVEMENT:
+      alert("Player with ID" + p.userID + "has moved to" + p.coorX + "|" + p.coorY);
+      break;
+    case OpCode.SERVER_YOUARECALLED:
+      alert("Your ID is: " + p.name);
+      // TODO: Do smarter stuff
+      break;
+    case OpCode.SERVER_PLAYERJOINED:
+      alert("New player has joined: ID " + p.name);
+      // TODO: Create new enemy sprite
+      break;
+    case OpCode.SERVER_PLAYERLEFT:
+      alert("Player has left: ID " + p.name);
+      // TODO: Remove enemy
+      break;
+    case OpCode.SERVER_SENDALLPLAYERINFO:
+      alert("Server has sent all player info");
+      // TODO: Handle player info
+      break;
+    case OpCode.SERVER_SENDALLPLAYERKD:
+      alert("Server has sent all player K/D");
+      // TODO: Handle player K/D
+      break;
+    case OpCode.SERVER_TELEPORT:
+      alert("Player with ID" + p.userID + "has been teleported to" + p.coorX + "|" + p.coorY);
+      // TODO: Handle teleport
+      break;
+    case OpCode.SERVER_SHOOTING:
+      alert("Player with ID" + p.userID + "has shot in angle " + p.angle);
+      // TODO: Handle player K/D
+      break;
+    default:
+      break;
+  }
 }
