@@ -3,6 +3,7 @@ import { Image2D } from '../rendering/renderer';
 import { Enemy } from '../sprites/enemy';
 import { Sprite } from '../sprites/sprite';
 import { Vec2D } from '../common/vec2d';
+import { PlayerInfo } from '../communication/playerinfo';
 
 
 /**
@@ -28,9 +29,9 @@ export class Room {
         }
 
         // STATIC DEBUG ENEMY:
-        let testEnemy = new Enemy();
-        testEnemy.setPosition = new Vec2D(4,4);
-        this.sprites.push(testEnemy);
+        //let testEnemy = new Enemy();
+        //testEnemy.setPosition = new Vec2D(4,4);
+        //this.sprites.push(testEnemy);
 
         // TODO remove later
 
@@ -50,5 +51,9 @@ export class Room {
 
     public get getSprites(): Sprite[] {
         return this.sprites;
+    }
+
+    public updateSpriteMap(enemies: Array<Enemy>){
+
     }
 }

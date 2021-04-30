@@ -122,4 +122,8 @@ export class ServerConnection {
         enemyToAdd.setPlayerInfo = playerInfo;
         this.enemyMap.set(userID, enemyToAdd);
     }
+
+    public get getEnemyMap() {
+        return this.enemyMap;
+    }
 }

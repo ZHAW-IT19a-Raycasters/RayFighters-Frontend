@@ -93,6 +93,10 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
       // TODO: End game loop - Return to landing page
       return;
     }
+
+    // Refresh sprite array
+    
+
     // Update player positions, controls, map, time and sendCallback for communicating with the server.
     player.update(controls, room.getMap, time, sendCallback);
     renderer.render(room, player, time);

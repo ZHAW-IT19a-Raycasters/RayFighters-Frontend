@@ -7,7 +7,7 @@ export class HealthPickup extends Sprite {
 
     constructor(){
         // TODO: Add static image
-        super(new Array<Image2D>(new Image2D('assets/pickups/medkit.png', 1024, 2048)), SpriteType.HEALTH_PICKUP);
+        super(new Array<Image2D>(new Image2D('assets/pickups/syringe.png', 1024, 2048)), SpriteType.HEALTH_PICKUP);
     }
 
     public trigger(player: Player) {
