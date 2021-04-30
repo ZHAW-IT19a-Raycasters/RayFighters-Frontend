@@ -28,9 +28,9 @@ export class Room {
         }
 
         // STATIC DEBUG ENEMY:
-        this.sprites.push(new Enemy(69, new Vec2D(5,5)));
-
         // TODO remove later
+        this.sprites.push(new Enemy(69, new Vec2D(8.9, 3.9)));
+
 
         // Add sprites from map to sprite array
         for (let index = 0; index < this.map.getElements.length; index++) {

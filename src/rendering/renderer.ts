@@ -28,7 +28,7 @@ export class ColorGradient {
 export class Renderer {
   static STANDARD_DRAWDISTANCE = 16;
   static STANDARD_FOCAL = 0.75;
-  static SENSORWIDTH = 2;
+  static SENSORWIDTH = 1;
   static STANDARD_FLOOR_GRADIENT = new ColorGradient('#777777', '#111111');
   static STANDARD_CEILING_GRADIENT = new ColorGradient('#777777', '#111111');
 
@@ -93,7 +93,7 @@ export class Renderer {
     * This is crucial to determine whether we are allowed to draw a Sprite or Enemy.
     * Is used as a lookup table. Mapping is [x_coor] -> distance_from_player
     */
-  private depthBuffer: number[];
+  private barDepthBuffer: Array<number>;
 
   private screenRatio: number;
 
@@ -127,6 +127,8 @@ export class Renderer {
     if (floorGradient) {
       this.originalFloorNearColor = floorGradient.near;
     }
+
+    this.barDepthBuffer = new Array<number>(this.canvas.width);
   }
 
   /**
@@ -251,6 +253,8 @@ export class Renderer {
     // How much the sprite's x coordinate on screen deviates from the middle of the screen:
     let horizontalDeviationFactor: number;
 
+    let currentBarDepth: number;
+
     this.context.globalAlpha = 1;
 
     // Collect all sprites and iterate through them.
@@ -270,17 +274,25 @@ export class Renderer {
         // Deviation added to center of view:
         drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
 
+        // distance to camera of bar at approximately drawPos.x
+        currentBarDepth = this.barDepthBuffer[drawPos.x - (drawPos.x % this.spacing)];
 
+        // Check if a bar was already drawn closer to the camera than the sprite:
+        if(currentBarDepth < distance /* maybe cosine corrected?*/) {
+          continue; //<-- wall overlaps sprite, skip drawing sprite completely
+        }
+        
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
-        distanceSizeScalingFactor = 1 / distance;
+        distanceSizeScalingFactor = 1 / (distance * Math.cos(angle as number - player.getDirection));
         // Update player viewing angle in sprite to help calculating which image will be sent back.
         sprite.lastPlayerViewingAngle = angle as number;
+        const spriteWidth = sprite.getSprite().width * distanceSizeScalingFactor
+        const spriteHeight = sprite.getSprite().height * distanceSizeScalingFactor
         // Finally, draw the image with the parameters above:
         this.context.drawImage(sprite.getSprite().image,
-          drawPos.x, drawPos.y,
-          sprite.getSprite().width * distanceSizeScalingFactor, sprite.getSprite().height * distanceSizeScalingFactor
+          drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3),
+          spriteWidth, spriteHeight
         );
-
       }
     }
   }
@@ -351,6 +363,9 @@ export class Renderer {
         let textureX = Math.floor(texture.width * step.offset);
         // we want ot know where we start drawing the wall on the y axis and how tall it is:
         let wall = this.calculateWall(step.mapElement.getType(), rayAngle, step.distance);
+
+        // in our bar depth buffer, update what distance this bar was last rendered at:
+        this.barDepthBuffer[left - (left % this.spacing)] = step.distance;
 
         this.context.globalAlpha = 1; // full brightness for drawing the bar
         // Finally, draw the bar:
@@ -465,6 +480,7 @@ export class Renderer {
     if (((this.canvas.width / 10) <= newResolution) && (this.canvas.width > newResolution)) {
       this.resolution = newResolution;
       this.spacing = this.canvas.width / newResolution;
+      this.barDepthBuffer = new Array<number>(this.canvas.width);
     }
     document.getElementById('fps-counter').innerText += " - Dynamic resolution engaged (" + newResolution + ")";
   }
