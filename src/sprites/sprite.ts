@@ -43,7 +43,7 @@ export class Sprite {
      * Type of sprite, see enum above.
      */
     private type: SpriteType;
-    
+
     constructor(/*position: Vec2D,*/ sprites: Array<Image2D>, type: SpriteType) {
         // Currently just using default placeholder sprite. 
         // TODO: Expand with front/side images
@@ -58,6 +58,8 @@ export class Sprite {
         this.type = type;
 
         this.lastPlayerViewingAngle = 0;
+
+        this.position = new Vec2D(1, 1);
     }
 
     public get getPosition(): Vec2D {
@@ -68,7 +70,7 @@ export class Sprite {
         return this.direction;
     }
 
-    public set setPosition(position: Vec2D) {
+    public set setPosition(position: Vec2D) {
         this.position = position;
     }
 

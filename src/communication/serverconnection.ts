@@ -16,9 +16,12 @@ export class ServerConnection {
      */
     private enemyMap: Map<number, Enemy>;
 
-    constructor(player: Player) {
+    private updateEnemyCallback: any;
+
+    constructor(player: Player, updateEnemyCallback: any) {
         this.player = player;
         this.enemyMap = new Map<number, Enemy>();
+        this.updateEnemyCallback = updateEnemyCallback;
     }
 
     /**
@@ -123,7 +126,7 @@ export class ServerConnection {
         this.enemyMap.set(userID, enemyToAdd);
     }
 
-    public get getEnemyMap() {
-        return this.enemyMap;
+    public get getEnemies() {
+        return Array.from(this.enemyMap.values());
     }
 }

@@ -24,13 +24,16 @@ let counter = 0
 wss.on('connection', ws => {
     console.log("Connection established with game client!")
 
+    /**
+     * 
+    playerInfo[0] = new PlayerInfo({ userID: 1, userName: "Hans" });
+    playerInfo[1] = new PlayerInfo({ userID: 4, userName: "Peter" });
+    playerInfo[2] = new PlayerInfo({ userID: 52, userName: "Meier" });
+     */
+
     // Send 'You are called'
     buffer = new Uint8Array([0x7C, 0xAA]);
     ws.send(buffer)
-
-    // Send teleport
-    //buffer = new Uint8Array([0x6F, 0xAA, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F]);
-    //ws.send(buffer)
 
     // Send player info
     buffer = new Uint8Array([0x82, 0x3, 0x1, 0x4, 0x0, 0x48, 0x61, 0x6E, 0x73, 0x4, 0x5, 0x0, 0x50, 0x65, 0x74, 0x65, 0x72, 0x34, 0x5, 0x0, 0x4D, 0x65, 0x69, 0x65, 0x72]);
@@ -38,6 +41,13 @@ wss.on('connection', ws => {
 
     // Send player KD
     buffer = new Uint8Array([0x83, 0x3, 0x1, 0xB, 0x0, 0xC, 0x0, 0x4, 0xC, 0x0, 0xD, 0x0, 0x34, 0x42, 0x0, 0x65, 0x0]);
+    ws.send(buffer)
+
+    teleport(0x01, 4, 2, ws);
+    teleport(0x04, 5, 6, ws);
+    teleport(0x34, 3, 3, ws);
+
+
     ws.send(buffer)
 
     // Receive message
@@ -60,6 +70,22 @@ wss.on('connection', ws => {
 
   
 })
+
+function floatToU8(floatToConvert) {
+    var data = new Float64Array([floatToConvert]);
+    return new Uint8Array(data.buffer);
+}
+
+function teleport(uid, xpos, ypos, websock){
+    let x = floatToU8(xpos);
+    let y = floatToU8(ypos);
+    buffer = new Uint8Array([0x6F, uid, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F]);
+    for (let index = 0; index < buffer.length; index++) {
+        buffer[index + 2] = x[index]
+        buffer[index + 10] = y[index]
+    }
+    websock.send(buffer);
+}
 
 
 

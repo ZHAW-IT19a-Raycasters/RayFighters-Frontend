@@ -111,9 +111,10 @@ describe('Client side protocol serialize unit test', () => {
         const expectedData = [
             0x0A,                                               // Opcode
             0x00, 0x00, 0x00, 0x00, 0x00, 0xD0, 0x84, 0x40,     // X movement (666.0)
-            0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40      // Y movement (999.999)
+            0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40,     // Y movement (999.999)
+            0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40      // angle (999.999)
         ];    
-        const packet: Packet = new Packet({ opCode: OpCode.CLIENT_MOVEMENT, coorX: 666.0, coorY: 999.999 })
+        const packet: Packet = new Packet({ opCode: OpCode.CLIENT_MOVEMENT, coorX: 666.0, coorY: 999.999, angle: 999.999 })
         const byteData = ProtocolParser.get.serialize(packet);
         expect(byteData.length).toBe(expectedData.length);
         for (let index = 0; index < expectedData.length; index++) {

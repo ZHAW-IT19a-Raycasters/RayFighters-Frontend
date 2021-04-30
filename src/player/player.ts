@@ -24,7 +24,7 @@ export class Player {
   }
 
   public get getDirection(): number {
-    return this.direction;
+    return this.angle;
   }
 
   public get getWeapon(): Weapon {
@@ -43,9 +43,9 @@ export class Player {
    * @constructor
    * @param x Player postition on the x-axis
    * @param y Player postition on the y-axis
-   * @param direction Starting angle/direction
+   * @param angle Starting angle/direction
    */
-  constructor(x: number, y: number, private direction: number, private weapon?: Weapon, private walkSpeed?: number) {
+  constructor(x: number, y: number, private angle: number, private weapon?: Weapon, private walkSpeed?: number) {
     this.position = new Vec2D(x, y);
     this.paces = 0;
     if (!walkSpeed) {
@@ -68,7 +68,7 @@ export class Player {
    * @param angle angle by how much the player rotates
    */
   public rotate(angle: number): void {
-    this.direction = (this.direction + angle + MathHelper.CIRCLE) % MathHelper.CIRCLE;
+    this.angle = (this.angle + angle + MathHelper.CIRCLE) % MathHelper.CIRCLE;
   }
 
   /***
@@ -117,30 +117,30 @@ export class Player {
     }
 
     if (controls.states.get(KeyCodes.FORWARD)) {
-      this.walk(walkDelta, map, this.direction);
+      this.walk(walkDelta, map, this.angle);
       ++hasWalkedY;
     }
     if (controls.states.get(KeyCodes.BACKWARD)) {
-      this.walk(-walkDelta, map, this.direction);
+      this.walk(-walkDelta, map, this.angle);
       ++hasWalkedY;
     }
     if (controls.states.get(KeyCodes.STRAFE_LEFT)) {
-      this.walk(walkDelta, map, this.direction - Math.PI / 2);
+      this.walk(walkDelta, map, this.angle - Math.PI / 2);
       ++hasWalkedX;
     }
     if (controls.states.get(KeyCodes.STRAFE_RIGHT)) {
-      this.walk(-walkDelta, map, this.direction - Math.PI / 2);
+      this.walk(-walkDelta, map, this.angle - Math.PI / 2);
       ++hasWalkedX;
     }
     if (hasWalkedX == 1 || hasWalkedY == 1) {
       this.paces += walkDelta;
-      sendCallback(Command.move(this.position.x, this.position.y));
+      sendCallback(Command.move(this.position.x, this.position.y, this.angle));
     }
 
     if (this.weapon) {
       if (controls.states.get(KeyCodes.SHOOT)) {
         this.weapon.shoot();
-        sendCallback(Command.shoot(this.direction));
+        sendCallback(Command.shoot(this.angle));
       }
 
       this.weapon.update(seconds);
@@ -174,7 +174,7 @@ export class Player {
   }
 
   public set setDirection(d: number) {
-    this.direction = d;
+    this.angle = d;
   }
 
   public set setPosition(p: Vec2D) {

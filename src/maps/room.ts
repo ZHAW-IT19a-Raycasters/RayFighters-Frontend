@@ -14,6 +14,7 @@ export class Room {
     private map: Map2D;
     private skyBox: Image2D;
     private sprites: Sprite[];
+    private enemies: Enemy[];
     // private enemies: Enemy[]; TODO Maybe keep?
 
     constructor({ mapSize, isRandomized = false, loadMap }: { mapSize: number; isRandomized?: boolean; loadMap?: string; }) {
@@ -53,7 +54,11 @@ export class Room {
         return this.sprites;
     }
 
-    public updateSpriteMap(enemies: Array<Enemy>){
+    public get getEnemies(): Enemy[] {
+        return this.enemies;
+    }
 
+    public updateSpriteMap(enemies: Array<Enemy>){
+        this.enemies = enemies;
     }
 }
