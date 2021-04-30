@@ -18,18 +18,16 @@ const testMessage = new Uint8Array([0x65]) // Opcode.SERVER_UNKNOWN
 let buffer = new ArrayBuffer(1)
 buffer = testMessage.buffer
 
+let testcoor = 0;
 
 let counter = 0
  
 wss.on('connection', ws => {
     console.log("Connection established with game client!")
 
-    /**
-     * 
-    playerInfo[0] = new PlayerInfo({ userID: 1, userName: "Hans" });
-    playerInfo[1] = new PlayerInfo({ userID: 4, userName: "Peter" });
-    playerInfo[2] = new PlayerInfo({ userID: 52, userName: "Meier" });
-     */
+    //playerInfo[0] = new PlayerInfo({ userID: 1, userName: "Hans" });
+    //playerInfo[1] = new PlayerInfo({ userID: 4, userName: "Peter" });
+    //playerInfo[2] = new PlayerInfo({ userID: 52, userName: "Meier" });
 
     // Send 'You are called'
     buffer = new Uint8Array([0x7C, 0xAA]);
@@ -47,8 +45,13 @@ wss.on('connection', ws => {
     teleport(0x04, 5, 6, ws);
     teleport(0x34, 3, 3, ws);
 
+    setInterval(function(){ 
+        testcoor += 0.1
+        move(0x1, Math.cos(testcoor), Math.sin(testcoor), Math.cos(testcoor), ws)
+        move(0x04, -Math.cos(testcoor), -Math.sin(testcoor), Math.cos(testcoor), ws)
+        move(0x34, Math.cos(-testcoor), Math.sin(-testcoor), Math.cos(testcoor), ws)
 
-    ws.send(buffer)
+     }, 100);
 
     // Receive message
     ws.on('message', (message) => {
@@ -67,8 +70,7 @@ wss.on('connection', ws => {
             //client.send(buffer);
         });
     });
-
-  
+     
 })
 
 function floatToU8(floatToConvert) {
@@ -80,10 +82,25 @@ function teleport(uid, xpos, ypos, websock){
     let x = floatToU8(xpos);
     let y = floatToU8(ypos);
     buffer = new Uint8Array([0x6F, uid, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F]);
-    for (let index = 0; index < buffer.length; index++) {
+    for (let index = 0; index < 8; index++) {
         buffer[index + 2] = x[index]
         buffer[index + 10] = y[index]
     }
+    console.log(buffer)
+    websock.send(buffer);
+}
+
+function move(uid, xpos, ypos, angle, websock){
+    let x = floatToU8(xpos);
+    let y = floatToU8(ypos);
+    let a = floatToU8(angle);
+    buffer = new Uint8Array([0x6F, uid, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0x1B, 0x40]);
+    for (let index = 0; index < 8; index++) {
+        buffer[index + 2] = x[index]
+        buffer[index + 10] = y[index]
+        buffer[index + 18] =  a[index]
+    }
+    console.log(buffer)
     websock.send(buffer);
 }
 

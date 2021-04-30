@@ -172,6 +172,7 @@ export class ProtocolParser {
                 byteData = new Uint8Array(1);
                 byteData[0] = packet.opCode;
                 break;
+
             case OpCode.CLIENT_MOVEMENT:
                 byteData = new Uint8Array(25);
                 byteData[0] = packet.opCode;
@@ -184,6 +185,7 @@ export class ProtocolParser {
                     byteData[index + 17] = angle[index];
                 }
                 break;
+
             case OpCode.CLIENT_SHOOTING:
                 byteData = new Uint8Array(9);
                 byteData[0] = packet.opCode;
@@ -192,6 +194,7 @@ export class ProtocolParser {
                     byteData[index + 1] = convertedFloat[index];
                 }
                 break;
+                
             default:
                 throw Error("Opcode not recognized! Can't serialize!");
         }

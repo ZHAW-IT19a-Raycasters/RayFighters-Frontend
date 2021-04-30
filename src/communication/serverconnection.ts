@@ -67,7 +67,7 @@ export class ServerConnection {
                 this.synchronizeEnemyList(p.playerKillDeathList);
                 break;
             case OpCode.SERVER_TELEPORT:
-                alert("Player with ID" + p.userID + "has been teleported to" + p.coorX + "|" + p.coorY);
+                //console.log("Player with ID" + p.userID + "has been teleported to" + p.coorX + "|" + p.coorY);
                 const newPosition = new Vec2D(p.coorX, p.coorY);
                 if (p.userID === this.player.getPlayerInfo.userID) {
                     this.player.setPosition = newPosition;
