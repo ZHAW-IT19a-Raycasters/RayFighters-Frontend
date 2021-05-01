@@ -6,7 +6,6 @@ import { Room } from '../maps/room';
 import { Sprite } from '../sprites/sprite';
 import { Vec2D } from '../common/vec2d';
 import { Weapon } from '../player/weapon';
-import { Fog } from './fog';
 
 /**
  * 2D image object class for easier graphics handling.
