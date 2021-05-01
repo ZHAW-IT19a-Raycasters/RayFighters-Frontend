@@ -76,4 +76,33 @@ describe('Socket method testing', () => {
     // Trigger socket to send back a message
     expect(receivedData.opCode).toEqual(expectedPacket.opCode);
   })
+
+  it('should recognize the socket ready state', () => {
+    let innerWebSocket = new WebSocket(url);
+    let innerSocket = new Socket(url, innerWebSocket);
+    innerWebSocket.readyState = 0;
+
+    // Prepare SERVER_DISCONNECT message (1-byte array with content 0x64)
+    let message: Uint8Array = new Uint8Array(new ArrayBuffer(1));
+    message.set([0x64]);
+
+    // Receive data from Socket
+    innerWebSocket.triggerOnMessage(message);
+    expect(innerSocket.socketState).toBe(SocketState.ERROR);
+    expect(innerSocket.getReceived()[0]).toBeUndefined;
+    // TODO: Get this test to work correctly
+  })
+
+  it('should handle undefined messages correctly', () => {
+    // Prepare new WebSocket and Socket
+    let innerWebSocket = new WebSocket(url);
+    let innerSocket = new Socket(url, innerWebSocket);
+
+    // Prepare SERVER_DISCONNECT message (1-byte array with content 0x64)
+    let message: any = undefined;
+
+    // Receive data from Socket
+    innerWebSocket.triggerOnMessage(message);
+    expect(innerSocket.getReceived()[0]).toBeUndefined;
+  })
 });

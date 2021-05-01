@@ -9,4 +9,11 @@ describe('2D vector methods', () => {
         expect(point.x).toBe(1);
         expect(point.y).toBe(9);
     });
+
+    it('should create strings out of vectors correctly', () => {
+        const pointX: number = 1.11111;
+        const pointY: number = 9.99999;
+        const point: Vec2D = new Vec2D(pointX, pointY);
+        expect(point.toString()).toBe('(' + pointX.toString() + ', ' + pointY.toString() + ')')
+    })
 });
