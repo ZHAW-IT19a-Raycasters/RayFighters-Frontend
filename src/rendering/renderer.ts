@@ -248,12 +248,20 @@ export class Renderer {
     // How much the sprite's x coordinate on screen deviates from the middle of the screen:
     let horizontalDeviationFactor: number;
 
+    // Which bar we're checking against for depth:
+    let barIndex: number;
+
+    // Depth (distance) of the current bar at the current angle:
     let currentBarDepth: number;
+
+    // Width and height of sprites to be drawn
+    let spriteWidth: number;
+    let spriteHeight: number;
 
     this.context.globalAlpha = 1;
 
     // Collect all sprites and iterate through them.
-    for (let i = 0; i < sprites.length; i++) {
+    for (let i = 0, len = sprites.length; i < len; i++) {
       sprite = sprites[i];
       // Distance sprite<->player:
       distance = MathHelper.euclideanDistance(sprite.getPosition, player.getPosition);
@@ -270,23 +278,27 @@ export class Renderer {
         drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
 
         // distance to camera of bar at approximately drawPos.x
-        currentBarDepth = this.barDepthBuffer[drawPos.x - (drawPos.x % this.spacing)];
+        barIndex = drawPos.x - (drawPos.x % this.spacing);
+        currentBarDepth = this.barDepthBuffer[barIndex];
 
-        // Check if a bar was already drawn closer to the camera than the sprite:
-        if(currentBarDepth < distance /* maybe cosine corrected?*/) {
+        // Check if a bar was already drawn closer to the camera than the sprite.
+        // Or the angle where a bar would be is unset entirely
+        if(currentBarDepth < distance || currentBarDepth == undefined ) {
           continue; //<-- wall overlaps sprite, skip drawing sprite completely
         }
         
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
         distanceSizeScalingFactor = 1 / (distance * Math.cos(angle as number - player.getDirection));
+
         // Update player viewing angle in sprite to help calculating which image will be sent back.
         sprite.lastPlayerViewingAngle = angle as number;
-        const spriteWidth = sprite.getSprite().width * distanceSizeScalingFactor
-        const spriteHeight = sprite.getSprite().height * distanceSizeScalingFactor
+        spriteWidth = sprite.getSprite().width * distanceSizeScalingFactor;
+        spriteHeight = sprite.getSprite().height * distanceSizeScalingFactor;
+
         // Finally, draw the image with the parameters above:
         this.context.drawImage(sprite.getSprite().image,
-          drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3),
-          spriteWidth, spriteHeight
+           drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3),
+           spriteWidth, spriteHeight
         );
       }
     }
