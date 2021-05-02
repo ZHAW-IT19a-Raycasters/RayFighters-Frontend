@@ -128,17 +128,6 @@ img {
   object-fit: contain;
 }
 
-#fps-container {
-  width: auto;
-  top: 0;
-  left: 0;
-  padding: 1em;
-
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 0 0 5px 0;
-  box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
-    -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
-}
 
 #debug-window {
   position: fixed;
@@ -208,39 +197,4 @@ canvas#game-canvas {
   to {
     text-shadow: 2px 0.5px 2px #ea36af, -1px -0.5px 2px #75fa69;
   }
-}
-
-#toolbar {
-  min-width: 100vw;
-  bottom: 0;
-  max-height: 15vh;
-  padding: 1em;
-
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 5px 5px 0 0;
-  box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
-    -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
-}
-
-#ticker-container {
-  width: auto;
-  top: 0;
-  right: 0;
-  padding: 1em;
-
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 0 0 0 5px;
-  box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
-    -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
-}
-
-#alert-container {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-#respawnbtn {
-  display: inline-block;
-  text-align: center;
-  padding: 1em;
-  cursor: pointer;
 }

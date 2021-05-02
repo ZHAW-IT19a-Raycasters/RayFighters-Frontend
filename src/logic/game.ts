@@ -7,6 +7,7 @@ import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
 import { PacketToGameLogic } from '../communication/packettogamelogic';
+import { gameHud } from '../gameHud';
 import { Enemy } from '../entities/enemy';
 
 /**
@@ -28,6 +29,11 @@ var player: Player;
  * Current room.
  */
 var room: Room
+
+/**
+ * Current gameHud.
+ */
+ var hud: gameHud
 
 /**
  * Debug boolean for websocket state. 
@@ -64,6 +70,10 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   // Player Setup
   player = new Player(6, 6, 0.3 * Math.PI,  new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4));
   initializeRenderer();
+
+  // Display PlayerInfo and Mapname on HUD
+  hud = new gameHud(room.getMap.getMapName, player.getPlayerInfo.userName);
+
   let controls = new Controls();
   let loop = new GameLoop(SERVER_URL, fpsCounterName, (d: number) => { renderer.changeResolution(d) });
 

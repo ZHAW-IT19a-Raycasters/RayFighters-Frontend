@@ -12,7 +12,7 @@
         <div class="row mx-3 text-center">
             <div class="col">
                 <div class="row justify-content-center m-0">
-                    <h5 id="mapName" class="m-0">Desert Land</h5>
+                    <h5 id="mapName" class="m-0">Desert</h5>
                 </div>
                 <div id="playerName" class="row justify-content-center m-0">
                     PlayerName
@@ -20,12 +20,18 @@
             </div>
             <div class="col">
                 <div class="row h-100 justify-content-center align-items-center m-0">
-                    <h2 id="timer" class="m-0">00:59</h2>
+                    <h2 id="timer" class="m-0">05:00</h2>
                 </div>
             </div>
             <div class="col">
-                <div id="health" class="row justify-content-center m-0">
-                    HP: 50/100
+                <div class="row justify-content-center m-0">
+                    HP: <span id="health">100</span>/100
+                </div>
+                <div class="row justify-content-center m-0">
+                    Kills: <span id="kills">0</span>
+                </div>
+                <div class="row justify-content-center m-0">
+                    Deaths: <span id="deaths">0</span>
                 </div>
             </div>
         </div>
@@ -33,7 +39,7 @@
 </div>
 
 <!--
-<div id="alert-container" class="menuContainer container-fluid d-flex h-100 position-fixed">
+<div id="respawn-container" class="menuContainer container-fluid d-flex h-100 position-fixed">
     <div class="row text-white p-2">
         <h1>You have been killed</h1>
     </div>
