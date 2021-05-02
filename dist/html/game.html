@@ -1,8 +1,49 @@
 <div id="debug-container"><span id="debug-window"></span></div>
 
 <div id="gameControls">
-    <div id="fps-container">FPS: <span id="fps-counter"></span></div>
-    <div id="shootbutton"><img src="assets/ui/crosshair.png" alt="crosshair"></div>
+    <div id="fps-container" class="container position-fixed">
+        FPS: <span id="fps-counter"></span>
+    </div>
+    <div id="ticker-container" class="container position-fixed" hidden></div>
+    <div id="shootbutton">
+        <img src="assets/ui/crosshair.png" alt="crosshair" />
+    </div>
+    <div id="toolbar" class="container position-fixed">
+        <div class="row mx-3 text-center">
+            <div class="col">
+                <div class="row justify-content-center m-0">
+                    <h5 id="mapName" class="m-0">Desert Land</h5>
+                </div>
+                <div id="playerName" class="row justify-content-center m-0">
+                    PlayerName
+                </div>
+            </div>
+            <div class="col">
+                <div class="row h-100 justify-content-center align-items-center m-0">
+                    <h2 id="timer" class="m-0">00:59</h2>
+                </div>
+            </div>
+            <div class="col">
+                <div id="health" class="row justify-content-center m-0">
+                    HP: 50/100
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!--
+<div id="alert-container" class="menuContainer container-fluid d-flex h-100 position-fixed">
+    <div class="row text-white p-2">
+        <h1>You have been killed</h1>
+    </div>
+    <div class="row justify-content-center">
+        <div id="respawnbtn" class="grow">
+            <span>
+                <h4>Respawn</h4>
+            </span>
+        </div>
+    </div>
+</div>
+-->
 <canvas id="game-canvas"></canvas>
