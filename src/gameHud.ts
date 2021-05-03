@@ -169,14 +169,12 @@ export function updateScoreboard(PlayerList: any): void {
         cell = document.createElement("td");
         cellText = document.createTextNode(player.deaths);
         cell.appendChild(cellText);
-        row.appendChild(cell);
-
         table.appendChild(row);
     });
 }
 
 /**
- * Show/Hide Scoreboard 
+ * Show/Hide Scoreboard
  */
 export function toggleScoreboard(): void {
     settings.hidden = true;

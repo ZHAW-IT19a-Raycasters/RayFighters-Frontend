@@ -15,29 +15,50 @@
     <div id="socket-status" class="position-fixed"></div>
 
     <div id="toolbar" class="container position-fixed p-3">
-        <div class="row mx-3 text-center">
-            <div class="col">
+        <div class="row text-center mx-0">
+
+            <div class="col-4 p-0 pr-4">
                 <div class="row justify-content-center m-0">
                     <h5 id="mapName" class="m-0">Desert</h5>
                 </div>
-                <div id="playerName" class="row justify-content-center m-0">
-                    PlayerName
+                <div class="row justify-content-center m-0">
+                    <span id="playerName">Playername</span>
                 </div>
             </div>
-            <div class="col">
-                <div class="row h-100 justify-content-center align-items-center m-0">
-                    <h2 id="timer" class="m-0">05:00</h2>
+
+            <div class="col-2 p-0">
+                <div class="row justify-content-center m-0">
+                    <h5 class="m-0">Health</h5>
+                </div>
+                <div class="row justify-content-center m-0">
+                    <span id="health">100</span>%
                 </div>
             </div>
-            <div class="col" style="line-height: normal;">
+
+            <div class="col-2 p-0">
                 <div class="row justify-content-center m-0">
-                    HP: <span id="health">100</span>/100
+                    <h5 class="m-0">Deaths</h5>
                 </div>
                 <div class="row justify-content-center m-0">
-                    Kills: <span id="kills">0</span>
+                    <span id="deaths">0</span>
+                </div>
+            </div>
+
+            <div class="col-2 p-0">
+                <div class="row justify-content-center m-0">
+                    <h5 class="m-0">Kills</h5>
                 </div>
                 <div class="row justify-content-center m-0">
-                    Deaths: <span id="deaths">0</span>
+                    <span id="kills">0</span>
+                </div>
+            </div>
+
+            <div class="col-2 p-0 pl-4">
+                <div class="row justify-content-center m-0">
+                    <h5 class="m-0">Time</h5>
+                </div>
+                <div class="row justify-content-center m-0">
+                    <span id="timer" >05:00</span>
                 </div>
             </div>
         </div>
@@ -69,10 +90,10 @@
         <table>
             <thead>
                 <tr>
-                  <th scope="col">Rank</th>
-                  <th scope="col">Playername</th>
-                  <th scope="col">Kill #</th>
-                  <th scope="col">Death #</th>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Playername</th>
+                    <th scope="col">Kill #</th>
+                    <th scope="col">Death #</th>
                 </tr>
             </thead>
             <tbody>

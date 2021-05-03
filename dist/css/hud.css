@@ -2,7 +2,9 @@
   min-width: 100vw;
   bottom: 0;
 
-  background-color: rgba(0, 0, 0, 0.8);
+  background-image: url(../img/hudbg.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   border-radius: 5px 5px 0 0;
   box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
     -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
@@ -16,10 +18,10 @@
 
   margin: -5em 0px 0px 0px;
 
-  background-color: rgba(0, 0, 0, 0.8);
+  background-image: url(../img/hudbgSmall.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   border-radius: 0 0 5px 0;
-  box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
-    -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
 }
 
 .ticker {
@@ -30,10 +32,10 @@
 
   margin: -5em 0px 0px 0px;
 
-  background-color: rgba(0, 0, 0, 0.8);
+  background-image: url(../img/hudbgSmall.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   border-radius: 0 0 0 5px;
-  box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
-    -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
 }
 
 .hud-con {
