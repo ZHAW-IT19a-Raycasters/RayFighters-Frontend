@@ -1,15 +1,5 @@
 import { Image2D } from "../rendering/renderer";
-import { Entity } from "./entity";
-
-/**
- * Determines what type the sprite is, to enable distinguishing different sprites on the logic side.
- */
-export enum SpriteType {
-    ENEMY,
-    WEAPON_PICKUP,
-    HEALTH_PICKUP,
-    DECORATION
-}
+import { Entity, EntityType } from "./entity";
 
 /**
  * Sprite superclass. Does all the important methods for handling 2D graphics on the 3D plane.
@@ -28,10 +18,10 @@ export class Sprite extends Entity  {
     /**
      * Type of sprite, see enum above.
      */
-    private type: SpriteType;
+    private type: EntityType;
 
-    constructor(sprites: Array<Image2D>, type: SpriteType) {
-        super();
+    constructor(sprites: Array<Image2D>, type: EntityType) {
+        super(type);
         this.sprites = sprites;
         this.type = type;
     }
