@@ -2,7 +2,7 @@ import { Map2D, MapElementType } from "../maps/map2d";
 import { KeyCodes, Controls } from "./controls";
 import { Vec2D } from "../common/vec2d";
 import { MathHelper } from "../common/mathhelper";
-import { Weapon } from "./weapon";
+import { Weapon, WeaponState } from "./weapon";
 import { Command } from "../communication/command";
 import { PlayerInfo } from "../communication/playerinfo";
 
@@ -98,20 +98,29 @@ export class Player {
    */
   public update(controls: Controls, map: Map2D, seconds: number, sendCallback: any): void {
     this.lastPaces = this.paces;
-
-    let hasWalkedX = 0, hasWalkedY = 0;
+    let hasWalkedX = 0;
+    let hasWalkedY = 0;
+    let hasRotated = 0;
     const walkDelta = this.walkSpeed * seconds;
+
     if (controls.states.get(KeyCodes.TURN_LEFT)) {
+      ++hasRotated;
       this.rotate(-Math.PI * seconds);
     }
+
     if (controls.states.get(KeyCodes.TURN_RIGHT)) {
+      ++hasRotated;
       this.rotate(Math.PI * seconds);
     }
+
     if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
+      ++hasRotated;
       this.rotate(-Math.PI * (seconds * 0.75));
       controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
     }
+
     if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
+      ++hasRotated;
       this.rotate(Math.PI * (seconds * 0.75));
       controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
     }
@@ -120,27 +129,42 @@ export class Player {
       this.walk(walkDelta, map, this.angle);
       ++hasWalkedY;
     }
+
     if (controls.states.get(KeyCodes.BACKWARD)) {
       this.walk(-walkDelta, map, this.angle);
       ++hasWalkedY;
     }
+
     if (controls.states.get(KeyCodes.STRAFE_LEFT)) {
       this.walk(walkDelta, map, this.angle - Math.PI / 2);
       ++hasWalkedX;
     }
+
     if (controls.states.get(KeyCodes.STRAFE_RIGHT)) {
       this.walk(-walkDelta, map, this.angle - Math.PI / 2);
       ++hasWalkedX;
     }
-    if (hasWalkedX == 1 || hasWalkedY == 1) {
+
+    // Player-side movement handling and communication to server. Checks if the player has moved or rotated
+    if (hasWalkedX == 1 || hasWalkedY == 1 || hasRotated >= 1) {
+      // If so, accumulate paces and send message to server
       this.paces += walkDelta;
       sendCallback(Command.move(this.position.x, this.position.y, this.angle));
     }
 
+    // Player-side weapon handling and communication to server.
     if (this.weapon) {
-      if (controls.states.get(KeyCodes.SHOOT)) {
+      if (controls.states.get(KeyCodes.SHOOT) && (this.weapon.getWeaponState === WeaponState.IDLE)) {
         this.weapon.shoot();
+
+        // Send shoot message to server
         sendCallback(Command.shoot(this.angle));
+
+        // If the weapon is semiautomatic, the player isn't able to hold down the button to shoot continuously.
+        if (this.weapon.isSemiautomatic) {
+          // Toggle the controls map shoot entry back to false.
+          controls.states.set(KeyCodes.SHOOT, false);
+        }
       }
 
       this.weapon.update(seconds);
