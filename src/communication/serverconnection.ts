@@ -1,6 +1,6 @@
 import { Vec2D } from "../common/vec2d";
 import { Player } from "../player/player";
-import { Enemy } from "../sprites/enemy";
+import { Enemy } from "../entities/enemy";
 import { OpCode } from "./opcode";
 import { Packet } from "./packet";
 import { PlayerInfo } from "./playerinfo";
