@@ -30,6 +30,9 @@ export abstract class Entity {
      */
     public lastPlayerViewingAngle: number;
 
+    /**
+     * What type this entity is.
+     */
     private entityType: EntityType;
     
     constructor(entityType: EntityType) {
@@ -44,7 +47,7 @@ export abstract class Entity {
     }
 
     public get getAngle(): number {
-        return this.angle;
+        return this.angle /*+ (Math.PI / 2)*/;
     }
 
     public set setAngle(angle: number) {

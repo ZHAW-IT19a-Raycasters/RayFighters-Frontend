@@ -52,12 +52,11 @@ wss.on('connection', ws => {
         move(0x1, Math.cos(testcoor) + 4, Math.sin(testcoor) + 3, 0, ws)
         move(0x04, Math.cos(testcoor) + 5, Math.sin(testcoor) + 6, 0.5*Math.PI, ws)
         move(0x34, Math.cos(testcoor) + 3, Math.sin(testcoor) + 3, Math.PI, ws)
-
+        
     }, 100);
 
     // Receive message
     ws.on('message', (message) => {
-
         let printMessage = "";
         for (let index = 0; index < message.length; index++) {
             printMessage += message[index].toString(16);
