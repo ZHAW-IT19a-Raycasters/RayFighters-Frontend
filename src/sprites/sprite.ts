@@ -71,7 +71,6 @@ export class Sprite {
     }
 
     public set setAngle(angle: number) {
-        console.log("anglerino changerino to " + angle)
         this.angle = angle;
     }
 
