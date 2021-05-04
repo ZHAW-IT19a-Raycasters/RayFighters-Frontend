@@ -1,9 +1,9 @@
 import { Map2D, MapElementType } from './map2d';
 import { Image2D } from '../rendering/renderer';
-import { Enemy } from '../sprites/enemy';
-import { Sprite } from '../sprites/sprite';
 import { Vec2D } from '../common/vec2d';
 import { PlayerInfo } from '../communication/playerinfo';
+import { Enemy } from '../entities/enemy';
+import { Sprite } from '../entities/sprite';
 
 
 /**

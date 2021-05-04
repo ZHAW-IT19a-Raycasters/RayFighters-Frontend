@@ -7,9 +7,9 @@ import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
 import { ServerConnection } from '../communication/serverconnection';
-import { Sprite } from '../sprites/sprite';
-import { HealthPickup } from '../sprites/healthpickup';
-import { Enemy } from '../sprites/enemy';
+import { Sprite } from '../entities/sprite';
+import { HealthPickup } from '../entities/healthpickup';
+import { Enemy } from '../entities/enemy';
 
 /**
  * Renderer instance. Needs to be updated upon window resize.

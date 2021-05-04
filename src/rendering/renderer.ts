@@ -3,10 +3,9 @@ import { MathHelper } from '../common/mathhelper';
 import { Player } from '../player/player';
 import { Step } from './raycaster';
 import { Room } from '../maps/room';
-import { Sprite } from '../sprites/sprite';
 import { Vec2D } from '../common/vec2d';
 import { Weapon } from '../player/weapon';
-import { Fog } from './fog';
+import { Sprite } from '../entities/sprite';
 
 /**
  * 2D image object class for easier graphics handling.
@@ -310,7 +309,7 @@ export class Renderer {
    */
   private drawSprites(room: Room, player: Player) {
     this.drawSpriteList(room.getSprites, player);
-    this.drawSpriteList(room.getEnemies, player);
+    //this.drawSpriteList(room.getEnemies, player);
   }
 
   /**
