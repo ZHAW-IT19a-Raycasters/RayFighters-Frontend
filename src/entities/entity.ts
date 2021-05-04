@@ -1,4 +1,15 @@
 import { Vec2D } from "../common/vec2d";
+import { Image2D } from "../rendering/renderer";
+
+/**
+ * Determines what type the entitiy is, to enable distinguishing different entities on the logic side.
+ */
+ export enum EntityType {
+    ENEMY,
+    WEAPON_PICKUP,
+    HEALTH_PICKUP,
+    DECORATION
+}
 
 /**
  * Superclass for entities (Objects/Players in the game) like Sprites and Enemies.
@@ -18,11 +29,14 @@ export abstract class Entity {
      * Last angle this sprite was viewed from the perspective of the player.
      */
     public lastPlayerViewingAngle: number;
+
+    private entityType: EntityType;
     
-    constructor() {
+    constructor(entityType: EntityType) {
         this.lastPlayerViewingAngle = 0;
         this.angle = 0;
         this.position = new Vec2D(1, 1);
+        this.entityType = entityType;
     }
 
     public get getPosition(): Vec2D {
@@ -40,4 +54,6 @@ export abstract class Entity {
     public set setPosition(position: Vec2D) {
         this.position = position;
     }
+
+    public abstract getSprite(): Image2D;
 }

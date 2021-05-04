@@ -1,7 +1,7 @@
 import { Image2D } from "../rendering/renderer";
 import { MathHelper } from "../common/mathhelper";
 import { PlayerInfo } from "../communication/playerinfo";
-import { Entity } from "./entity";
+import { Entity, EntityType } from "./entity";
 
 enum EnemySpriteState {
     IDLE, WALK_1, WALK_2, SHOOTING
@@ -31,7 +31,7 @@ export class Enemy extends Entity {
 
 
     constructor() {
-        super();
+        super(EntityType.ENEMY);
 
         this.idleSprites = new Array<Image2D>(  
             new Image2D('assets/enemies/female/front_0.png', Enemy.ENEMY_SCALING * Enemy.ENEMY_WIDTH, Enemy.ENEMY_SCALING * Enemy.ENEMY_HEIGHT),
@@ -68,6 +68,8 @@ export class Enemy extends Entity {
         this.spriteMap.set(EnemySpriteState.SHOOTING, this.shootingSprites);
 
         this.walkAnimationCounter = 0;
+
+        this.spriteState = EnemySpriteState.IDLE;
     }
 
     public getSprite(): Image2D {
