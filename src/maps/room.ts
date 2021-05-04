@@ -53,4 +53,10 @@ export class Room {
     public updateSpriteMap(enemies: Array<Enemy>){
         this.enemies = enemies;
     }
+
+    public updateEnemies(time: number){
+        for (let index = 0; index < this.enemies.length; index++) {
+            this.enemies[index].update(time);            
+        }
+    }
 }

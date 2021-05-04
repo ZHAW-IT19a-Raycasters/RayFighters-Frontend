@@ -23,10 +23,14 @@ export class Enemy extends Entity {
     private spriteMap: Map<EnemySpriteState, Array<Image2D>>;
     private spriteState: EnemySpriteState;
     private walkAnimationCounter: number;
+    private timeElapsedSinceStartedWalking: number;
+    private timeSinceWalkInterval: number;
 
     private static readonly ENEMY_HEIGHT = 2048;
     private static readonly ENEMY_WIDTH = 1024;
     private static readonly ENEMY_SCALING = 0.4;
+    private static readonly WALK_INTERVAL = 0.2; // [seconds]
+    private static readonly WALK_COOLDOWN = 0.5; // [seconds]
     private static readonly WALKING_CYCLE = new Array<EnemySpriteState>(EnemySpriteState.IDLE, EnemySpriteState.WALK_1, EnemySpriteState.IDLE, EnemySpriteState.WALK_2);
 
 
@@ -70,6 +74,10 @@ export class Enemy extends Entity {
         this.walkAnimationCounter = 0;
 
         this.spriteState = EnemySpriteState.IDLE;
+        
+        this.timeElapsedSinceStartedWalking = 0;
+
+        this.timeSinceWalkInterval = 0;
     }
 
     public getSprite(): Image2D {
@@ -103,6 +111,9 @@ export class Enemy extends Entity {
         this.playerInfo = playerInfo;
     }
 
+    /**
+     * Cycle between different walking cycle states.
+     */
     public cycleSpriteState(): void{
         ++this.walkAnimationCounter;
         this.spriteState = Enemy.WALKING_CYCLE[this.walkAnimationCounter % Enemy.WALKING_CYCLE.length];
@@ -110,5 +121,23 @@ export class Enemy extends Entity {
 
     public showShootAnimation(): void {
         this.spriteState = EnemySpriteState.SHOOTING;
+    }
+
+    /**
+     * Update method for walking animation.
+     * @param time 
+     */
+    public update(time: number): void {
+        this.timeElapsedSinceStartedWalking += time;
+        if (this.timeElapsedSinceStartedWalking > Enemy.WALK_COOLDOWN) {
+            this.spriteState = EnemySpriteState.IDLE;
+            this.timeElapsedSinceStartedWalking = 0;
+        } else {
+            this.timeSinceWalkInterval += time;
+            if (this.timeSinceWalkInterval > Enemy.WALK_INTERVAL) {
+                this.timeSinceWalkInterval = 0;
+                this.cycleSpriteState();
+            }
+        }
     }
 }

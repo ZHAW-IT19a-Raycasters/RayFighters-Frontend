@@ -99,11 +99,13 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
       return;
     }
 
-    // Refresh sprite array
+    // Refresh sprite array and cycle walk animation
     room.updateSpriteMap(serverConnection.getEnemies);
-    
+    room.updateEnemies(time);
+
     // Update player positions, controls, map, time and sendCallback for communicating with the server.
     player.update(controls, room.getMap, time, sendCallback);
+
     renderer.render(room, player, time);
     receivedPackets.forEach(p => {
       serverConnection.handlePacket(p);
