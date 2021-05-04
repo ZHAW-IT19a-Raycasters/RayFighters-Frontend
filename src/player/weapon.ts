@@ -1,4 +1,5 @@
 import { Image2D } from "../rendering/renderer";
+import { Sound } from "../sound/sound";
 
 export enum WeaponState {
     IDLE, SHOOTING
@@ -43,8 +44,6 @@ export class Weapon {
 
     private muzzleFlashColor: string;
 
-    private shootAudio: HTMLAudioElement;
-
     constructor(
         private imgPath: string, 
         shootImgPaths: string[], 
@@ -52,10 +51,8 @@ export class Weapon {
         height: number, 
         semiAutomatic: boolean, 
         shootDuration?: number,
-        shootSoundEffect?: string, 
         muzzFlashCol?: string, 
         testingImage2DClass?: any, 
-        testingAudioClass?: any
         ) {
 
         this.idleImage = testingImage2DClass ? new testingImage2DClass(imgPath, width, height) : new Image2D(imgPath, width, height);
@@ -85,10 +82,6 @@ export class Weapon {
         }
         this.shootAnimDuration = this.shootDuration / this.shootImages.length;
 
-        if(shootSoundEffect) {
-            this.shootAudio = testingAudioClass ? new testingAudioClass(shootSoundEffect) : new Audio(shootSoundEffect);
-            this.shootAudio.volume = 0.5;
-        }
     }
 
     public get getMuzzleFlashColor(): string {
@@ -108,9 +101,7 @@ export class Weapon {
 
     public shoot(): void {
         if(this.weaponState == WeaponState.IDLE){
-            if(this.shootAudio) {
-                (<HTMLAudioElement>this.shootAudio.cloneNode()).play();
-            }
+            Sound.get.shoot(0.5);
             this.weaponState = WeaponState.SHOOTING;
             this.muzzleFlashOngoing = true;
         }
@@ -123,7 +114,6 @@ export class Weapon {
                 if(this.currentShootImage == (this.shootImages.length - 1)) {
                     this.weaponState = WeaponState.IDLE;
                     this.currentShootImage = 0;
-                    this.shootAudio.pause();
                 } else {
                     ++this.currentShootImage;
                     this.muzzleFlashOngoing = false;

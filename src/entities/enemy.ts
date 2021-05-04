@@ -2,16 +2,18 @@ import { Image2D } from "../rendering/renderer";
 import { MathHelper } from "../common/mathhelper";
 import { PlayerInfo } from "../communication/playerinfo";
 import { Entity, EntityType } from "./entity";
+import { Sound } from "../sound/sound";
+import { Vec2D } from "../common/vec2d";
 
 enum EnemySpriteState {
     IDLE, WALK_1, WALK_2, SHOOTING
 }
 
 enum EnemySpriteDirection {
-    NORTH = 0,
-    EAST = 1,
-    SOUTH = 2,
-    WEST = 3,
+    NORTH = 1,
+    EAST = 2,
+    SOUTH = 3,
+    WEST = 0,
 }
 
 export class Enemy extends Entity {
@@ -25,6 +27,9 @@ export class Enemy extends Entity {
     private walkAnimationCounter: number;
     private timeElapsedSinceStartedWalking: number;
     private timeSinceWalkInterval: number;
+    private timeSinceShotInterval: number;
+    private hasShot: boolean;
+    private isWalking: boolean;
 
     private static readonly ENEMY_HEIGHT = 2048;
     private static readonly ENEMY_WIDTH = 1024;
@@ -32,7 +37,6 @@ export class Enemy extends Entity {
     private static readonly WALK_INTERVAL = 0.2; // [seconds]
     private static readonly WALK_COOLDOWN = 0.5; // [seconds]
     private static readonly WALKING_CYCLE = new Array<EnemySpriteState>(EnemySpriteState.IDLE, EnemySpriteState.WALK_1, EnemySpriteState.IDLE, EnemySpriteState.WALK_2);
-
 
     constructor() {
         super(EntityType.ENEMY);
@@ -78,6 +82,12 @@ export class Enemy extends Entity {
         this.timeElapsedSinceStartedWalking = 0;
 
         this.timeSinceWalkInterval = 0;
+
+        this.hasShot = false;
+
+        this.timeSinceShotInterval = 0;
+
+        this.isWalking = false;
     }
 
     public getSprite(): Image2D {
@@ -119,8 +129,19 @@ export class Enemy extends Entity {
         this.spriteState = Enemy.WALKING_CYCLE[this.walkAnimationCounter % Enemy.WALKING_CYCLE.length];
     }
 
-    public showShootAnimation(): void {
-        this.spriteState = EnemySpriteState.SHOOTING;
+    /**
+     * Shows shooting animation.
+     */
+    public shoot(playerPosition: Vec2D): void {
+        this.hasShot = true;
+        Sound.get.shoot(1 / MathHelper.euclideanDistance(playerPosition, this.position));    
+    }
+
+    /**
+     * Shows walking animation.
+     */
+    public walk(): void {
+        this.isWalking = true;
     }
 
     /**
@@ -128,15 +149,29 @@ export class Enemy extends Entity {
      * @param time 
      */
     public update(time: number): void {
-        this.timeElapsedSinceStartedWalking += time;
-        if (this.timeElapsedSinceStartedWalking > Enemy.WALK_COOLDOWN) {
-            this.spriteState = EnemySpriteState.IDLE;
-            this.timeElapsedSinceStartedWalking = 0;
-        } else {
+        if (this.hasShot){
+            this.timeSinceShotInterval += time;
+            if (this.timeSinceShotInterval > Enemy.WALK_INTERVAL) {
+                this.hasShot = false;
+                this.timeSinceShotInterval = 0;
+            } else {
+                this.spriteState = EnemySpriteState.SHOOTING;
+            }
+            return;
+        } 
+
+        if (this.isWalking) {
+            this.timeElapsedSinceStartedWalking += time;
             this.timeSinceWalkInterval += time;
-            if (this.timeSinceWalkInterval > Enemy.WALK_INTERVAL) {
-                this.timeSinceWalkInterval = 0;
-                this.cycleSpriteState();
+            if (this.timeElapsedSinceStartedWalking > Enemy.WALK_COOLDOWN) {
+                this.isWalking = false;
+                this.spriteState = EnemySpriteState.IDLE;
+                this.timeElapsedSinceStartedWalking = 0;
+            } else {
+                if (this.timeSinceWalkInterval > Enemy.WALK_INTERVAL) {
+                    this.timeSinceWalkInterval = 0;
+                    this.cycleSpriteState();
+                }
             }
         }
     }
