@@ -5,10 +5,16 @@ import { Entity, EntityType } from "./entity";
 import { Sound } from "../sound/sound";
 import { Vec2D } from "../common/vec2d";
 
+/**
+ * State of walking / shooting animation.
+ */
 enum EnemySpriteState {
     IDLE, WALK_1, WALK_2, SHOOTING
 }
 
+/**
+ * Direction the player can face.
+ */
 enum EnemySpriteDirection {
     NORTH = 1,
     EAST = 2,
@@ -16,32 +22,112 @@ enum EnemySpriteDirection {
     WEST = 0,
 }
 
+/**
+ * Dedicated enemy class for other players. Provides all methods the game uses to display competitors on the playfield.
+ */
 export class Enemy extends Entity {
+    /**
+     * All player informaton of the enemy. See {@link PlayerInfo}
+     */
     private playerInfo: PlayerInfo;
+
+    /**
+     * Array of idling sprites of the enemy. (Front / Back / Left / Right)
+     */
     private idleSprites: Array<Image2D>;
+
+    /**
+     * Array of left stepping walking sprites of the enemy. (Front / Back / Left / Right)
+     */
     private walkSprites1: Array<Image2D>;
+
+    /**
+     * Array of right stepping walking sprites of the enemy. (Front / Back / Left / Right)
+     */
     private walkSprites2: Array<Image2D>;
+
+    /**
+     * Array of shooting sprites of the enemy. (Front / Back / Left / Right)
+     */
     private shootingSprites: Array<Image2D>;
+
+    /**
+     * Map collection of all sprites of the enemy. Makes organizing and loading the correct sprite for the situation easier.
+     */
     private spriteMap: Map<EnemySpriteState, Array<Image2D>>;
+
+    /**
+     * Current walking state of the enemy. See {@link EnemySpriteState}
+     */
     private spriteState: EnemySpriteState;
+
+    /**
+     * Counter of the walking animation. Needed for walking animation. Needed for counting until the next animation is triggered.
+     */
     private walkAnimationCounter: number;
+
+    /**
+     * Time that has passed since the player started walking. Needed for walking animation.
+     */
     private timeElapsedSinceStartedWalking: number;
+
+    /**
+     * Time that passes between walking animation intervals. Needed for walking animation.
+     */
     private timeSinceWalkInterval: number;
+
+    /**
+     * Time that passes between shooting animation intervals. Needed for shooting animation.
+     */
     private timeSinceShotInterval: number;
+
+    /**
+     * Determines if the enemy has shot recently.
+     */
     private hasShot: boolean;
+    
+    /**
+     * Determines if the enemy is currently walking.
+     */
     private isWalking: boolean;
 
+    /**
+     * Height of enemy sprite.
+     */
     private static readonly ENEMY_HEIGHT = 2048;
+
+    /**
+     * Width of enemy sprite.
+     */
     private static readonly ENEMY_WIDTH = 1024;
+
+    /**
+     * Scaling of enemy sprite (relative to the walls)
+     */
     private static readonly ENEMY_SCALING = 0.4;
+
+    /**
+     * Time in [seconds] how long the walking animation interval lasts.
+     */
     private static readonly WALK_INTERVAL = 0.2; // [seconds]
+
+    /**
+     * Time in [seconds] how long the walking animation cooldown lasts.
+     */
     private static readonly WALK_COOLDOWN = 0.5; // [seconds]
+
+    /**
+     * Fixed array that defines the order of the walking animation.
+     */
     private static readonly WALKING_CYCLE = new Array<EnemySpriteState>(EnemySpriteState.IDLE, EnemySpriteState.WALK_1, EnemySpriteState.IDLE, EnemySpriteState.WALK_2);
 
+    /**
+     * Constructor of the enemy class. Instantiates an {@link Entity} instance and prerepares all sprite arrays and adds it to the {@link spriteMap}.
+     */
     constructor() {
         super(EntityType.ENEMY);
 
-        this.idleSprites = new Array<Image2D>(  
+        this.idleSprites = new Array<Image2D>(
             new Image2D('assets/enemies/female/front_0.png', Enemy.ENEMY_SCALING * Enemy.ENEMY_WIDTH, Enemy.ENEMY_SCALING * Enemy.ENEMY_HEIGHT),
             new Image2D('assets/enemies/female/side_r_0.png', Enemy.ENEMY_SCALING * Enemy.ENEMY_WIDTH, Enemy.ENEMY_SCALING * Enemy.ENEMY_HEIGHT),
             new Image2D('assets/enemies/female/back_0.png', Enemy.ENEMY_SCALING * Enemy.ENEMY_WIDTH, Enemy.ENEMY_SCALING * Enemy.ENEMY_HEIGHT),
@@ -69,33 +155,33 @@ export class Enemy extends Entity {
             new Image2D('assets/enemies/female/side_l_shoot.png', Enemy.ENEMY_SCALING * Enemy.ENEMY_WIDTH, Enemy.ENEMY_SCALING * Enemy.ENEMY_HEIGHT)
         );
 
+        // Fill up the sprite map with above arrays.
         this.spriteMap = new Map<EnemySpriteState, Array<Image2D>>();
         this.spriteMap.set(EnemySpriteState.IDLE, this.idleSprites);
         this.spriteMap.set(EnemySpriteState.WALK_1, this.walkSprites1);
         this.spriteMap.set(EnemySpriteState.WALK_2, this.walkSprites2);
         this.spriteMap.set(EnemySpriteState.SHOOTING, this.shootingSprites);
 
+        // Initialization of all variables.
         this.walkAnimationCounter = 0;
-
         this.spriteState = EnemySpriteState.IDLE;
-        
         this.timeElapsedSinceStartedWalking = 0;
-
         this.timeSinceWalkInterval = 0;
-
         this.hasShot = false;
-
         this.timeSinceShotInterval = 0;
-
         this.isWalking = false;
     }
 
+    /**
+     * Returns the correct sprite depending on the viewing angle of the player.
+     * @returns an {@link Image2D} instance with the correct image.
+     */
     public getSprite(): Image2D {
         const lookDirection = Math.abs(this.angle - this.lastPlayerViewingAngle);
 
         // Check east
         if ((lookDirection > MathHelper.NORTH + MathHelper.EIGHTH_OF_CIRCLE && lookDirection < MathHelper.CIRCLE) ||
-         (lookDirection <= MathHelper.SOUTH - MathHelper.EIGHTH_OF_CIRCLE && lookDirection >= MathHelper.EAST)) {
+            (lookDirection <= MathHelper.SOUTH - MathHelper.EIGHTH_OF_CIRCLE && lookDirection >= MathHelper.EAST)) {
             return this.spriteMap.get(this.spriteState)[EnemySpriteDirection.EAST];
         }
 
@@ -124,21 +210,22 @@ export class Enemy extends Entity {
     /**
      * Cycle between different walking cycle states.
      */
-    public cycleSpriteState(): void{
+    public cycleSpriteState(): void {
         ++this.walkAnimationCounter;
         this.spriteState = Enemy.WALKING_CYCLE[this.walkAnimationCounter % Enemy.WALKING_CYCLE.length];
     }
 
     /**
-     * Shows shooting animation.
+     * Triggers shooting animation.
      */
     public shoot(playerPosition: Vec2D): void {
         this.hasShot = true;
-        Sound.get.shoot(1 / MathHelper.euclideanDistance(playerPosition, this.position));    
+        const distance = MathHelper.euclideanDistance(playerPosition, this.position);
+        Sound.get.shoot(Sound.get.distanceToVolume(distance));
     }
 
     /**
-     * Shows walking animation.
+     * Triggers walking animation.
      */
     public walk(): void {
         this.isWalking = true;
@@ -146,10 +233,10 @@ export class Enemy extends Entity {
 
     /**
      * Update method for walking animation.
-     * @param time 
+     * @param time how much time has passed. [seconds]
      */
     public update(time: number): void {
-        if (this.hasShot){
+        if (this.hasShot) {
             this.timeSinceShotInterval += time;
             if (this.timeSinceShotInterval > Enemy.WALK_INTERVAL) {
                 this.hasShot = false;
@@ -158,9 +245,9 @@ export class Enemy extends Entity {
                 this.spriteState = EnemySpriteState.SHOOTING;
             }
             return;
-        } 
+        }
 
-        if (this.isWalking) {
+        if (this.isWalking) {
             this.timeElapsedSinceStartedWalking += time;
             this.timeSinceWalkInterval += time;
             if (this.timeElapsedSinceStartedWalking > Enemy.WALK_COOLDOWN) {

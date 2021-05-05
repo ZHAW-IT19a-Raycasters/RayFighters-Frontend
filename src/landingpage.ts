@@ -11,7 +11,7 @@ export function landingpageScript(): void {
     const menuFooter: HTMLElement = document.querySelector("#menuFooter");
     const backgroundMusic: HTMLAudioElement = new Audio("./assets/audio/menuMusic_1.mp3");
 
-    backgroundMusic.volume = 0.7;
+    backgroundMusic.volume = 0.25;
     backgroundMusic.loop = true;
     backgroundMusic.play();
 

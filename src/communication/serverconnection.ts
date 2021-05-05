@@ -127,6 +127,10 @@ export class ServerConnection {
         this.enemyMap.set(userID, enemyToAdd);
     }
 
+    private playerDeath(){
+        // TODO implement player death
+    }
+
     public get getEnemies() {
         return Array.from(this.enemyMap.values());
     }
