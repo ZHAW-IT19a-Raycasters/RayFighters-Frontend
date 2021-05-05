@@ -168,6 +168,8 @@ export class Player {
       }
 
       this.weapon.update(seconds);
+
+      //document.getElementById('debug-window').innerText = "Position: (" + this.position.x + " | " + this.position.y + ")";
     }
 
     if (controls.states.get(KeyCodes.SCOREBOARD)) {
