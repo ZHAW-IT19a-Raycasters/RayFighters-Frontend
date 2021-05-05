@@ -1,10 +1,10 @@
 import { Vec2D } from "../common/vec2d";
 import { Raycaster, Step } from "../rendering/raycaster";
-import { Sprite } from "../sprites/sprite";
-import { HealthPickup } from "../sprites/healthpickup";
-import { WeaponPickup } from "../sprites/weaponpickup";
 import { ColorGradient, Image2D } from "../rendering/renderer";
 import { Fog } from "../rendering/fog";
+import { HealthPickup } from "../entities/healthpickup";
+import { Sprite } from "../entities/sprite";
+import { WeaponPickup } from "../entities/weaponpickup";
 
 export class Map2D {
     /**

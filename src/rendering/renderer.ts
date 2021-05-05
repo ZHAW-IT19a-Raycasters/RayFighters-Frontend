@@ -3,10 +3,10 @@ import { MathHelper } from '../common/mathhelper';
 import { Player } from '../player/player';
 import { Step } from './raycaster';
 import { Room } from '../maps/room';
-import { Sprite } from '../sprites/sprite';
 import { Vec2D } from '../common/vec2d';
 import { Weapon } from '../player/weapon';
-import { Fog } from './fog';
+import { Sprite } from '../entities/sprite';
+import { Entity } from '../entities/entity';
 
 /**
  * 2D image object class for easier graphics handling.
@@ -235,10 +235,10 @@ export class Renderer {
     this.context.fillStyle = gradient;
   }
 
-  private drawSpriteList(sprites: Sprite[], player: Player){
+  private drawSpriteList(entities: Entity[], player: Player){
     // Position at which we draw the sprite:
     const drawPos = new Vec2D(0, this.canvas.height / 2);
-    let sprite: Sprite;
+    let sprite: Entity;
     // distance between the player and the sprite:
     let distance: number;
     // note that the angle may not be set (===false) because sprite is outside our vision:
@@ -261,8 +261,8 @@ export class Renderer {
     this.context.globalAlpha = 1;
 
     // Collect all sprites and iterate through them.
-    for (let i = 0, len = sprites.length; i < len; i++) {
-      sprite = sprites[i];
+    for (let i = 0, len = entities.length; i < len; i++) {
+      sprite = entities[i];
       // Distance sprite<->player:
       distance = MathHelper.euclideanDistance(sprite.getPosition, player.getPosition);
       if (distance > this.drawDistance) {

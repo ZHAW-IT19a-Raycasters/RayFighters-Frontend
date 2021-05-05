@@ -49,15 +49,14 @@ wss.on('connection', ws => {
 
     setInterval(function () {
         testcoor += 0.1
-        move(0x1, 4, 2, 0, ws)
-        move(0x04, 5, 6, 0.5*Math.PI, ws)
-        move(0x34, 3, 3, Math.PI, ws)
-
+        move(0x1, Math.cos(testcoor) + 4, Math.sin(testcoor) + 3, 0, ws)
+        move(0x04, Math.cos(testcoor) + 5, Math.sin(testcoor) + 6, 0.5*Math.PI, ws)
+        move(0x34, Math.cos(testcoor) + 3, Math.sin(testcoor) + 3, Math.PI, ws)
+        
     }, 100);
 
     // Receive message
     ws.on('message', (message) => {
-
         let printMessage = "";
         for (let index = 0; index < message.length; index++) {
             printMessage += message[index].toString(16);

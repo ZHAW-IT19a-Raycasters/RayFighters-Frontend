@@ -1,6 +1,6 @@
 import { Vec2D } from "../common/vec2d";
 import { Player } from "../player/player";
-import { Enemy } from "../sprites/enemy";
+import { Enemy } from "../entities/enemy";
 import { OpCode } from "./opcode";
 import { Packet } from "./packet";
 import { PlayerInfo } from "./playerinfo";
@@ -45,6 +45,7 @@ export class ServerConnection {
             case OpCode.SERVER_MOVEMENT:
                 this.enemyMap.get(p.userID).setPosition = new Vec2D(p.coorX, p.coorY);
                 this.enemyMap.get(p.userID).setAngle = p.angle;
+                this.enemyMap.get(p.userID).walk();
                 break;
             case OpCode.SERVER_YOUARECALLED:
                 console.log("Your ID is: " + p.userID);
@@ -76,7 +77,8 @@ export class ServerConnection {
                 }
                 break;
             case OpCode.SERVER_SHOOTING:
-                alert("Player with ID" + p.userID + "has shot in angle " + p.angle);
+                this.enemyMap.get(p.userID).shoot(this.player.getPosition);
+                // TODO play sound
                 break;
             default:
                 break;
@@ -123,6 +125,10 @@ export class ServerConnection {
         let enemyToAdd = new Enemy();
         enemyToAdd.setPlayerInfo = playerInfo;
         this.enemyMap.set(userID, enemyToAdd);
+    }
+
+    private playerDeath(){
+        // TODO implement player death
     }
 
     public get getEnemies() {

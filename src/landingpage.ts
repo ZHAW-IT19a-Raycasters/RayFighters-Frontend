@@ -11,7 +11,7 @@ export function landingpageScript(): void {
     const menuFooter: HTMLElement = document.querySelector("#menuFooter");
     const backgroundMusic: HTMLAudioElement = new Audio("./assets/audio/menuMusic_1.mp3");
 
-    backgroundMusic.volume = 0.7;
+    backgroundMusic.volume = 0.25;
     backgroundMusic.loop = true;
     backgroundMusic.play();
 
@@ -86,7 +86,7 @@ function handleLogIn(): void {
     const playerName = formData.get("inputPlayerName") as string;
     const content = { "username": playerName };
 
-    //getJWT(content);
+    getJWT(content);
 
     const overlayEffect: HTMLElement = document.querySelector("#overlay-effect");
     overlayEffect.remove();
