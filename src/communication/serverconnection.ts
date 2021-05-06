@@ -150,8 +150,7 @@ export class ServerConnection {
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
             // TODO: Call GUI
-            this.player.setDead = true;
-            alert("You have died!");
+            this.player.setDead(true);
         }
                 
         // TODO update kill feed
