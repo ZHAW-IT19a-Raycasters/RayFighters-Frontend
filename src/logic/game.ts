@@ -7,8 +7,6 @@ import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
 import { ServerConnection } from '../communication/serverconnection';
-import { Sprite } from '../entities/sprite';
-import { HealthPickup } from '../entities/healthpickup';
 import { Enemy } from '../entities/enemy';
 
 /**

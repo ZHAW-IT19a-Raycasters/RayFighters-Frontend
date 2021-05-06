@@ -5,6 +5,8 @@ import { MathHelper } from "../common/mathhelper";
 import { Weapon, WeaponState } from "./weapon";
 import { Command } from "../communication/command";
 import { PlayerInfo } from "../communication/playerinfo";
+import { Sound, SoundType } from "../sound/sound";
+import { Enemy } from "../entities/enemy";
 
 
 /**
@@ -13,31 +15,21 @@ import { PlayerInfo } from "../communication/playerinfo";
 export class Player {
   public static readonly DEFAULT_WALK_SPEED = 2;
   public static readonly MAX_HEALTH = 150;
+  private static readonly DEATH_SOUND_VOLUME = 0.5;
+
   private playerInfo: PlayerInfo;
   private health: number;
   private position: Vec2D;
   private paces: number;
   private lastPaces: number;
+  private dead: boolean;
 
-  public get getPosition(): Vec2D {
-    return this.position;
-  }
+  /**
+   * Timer for walking sounds.
+   */
+  private walkTimer: number;
 
-  public get getDirection(): number {
-    return this.angle;
-  }
-
-  public get getWeapon(): Weapon {
-    return this.weapon;
-  }
-
-  public get getPaces(): number {
-    return this.paces;
-  }
-
-  public get getWalkSpeed(): number {
-    return this.walkSpeed;
-  }
+  
 
   /***
    * @constructor
@@ -52,6 +44,7 @@ export class Player {
       this.walkSpeed = Player.DEFAULT_WALK_SPEED;
     }
     this.playerInfo = new PlayerInfo({ killCount: 0, deathCount: 0 })
+    this.walkTimer = 0;
   }
 
   public setWalkSpeed(speed: number): void {
@@ -103,6 +96,11 @@ export class Player {
     let hasRotated = 0;
     const walkDelta = this.walkSpeed * seconds;
 
+    if (this.dead) {
+      Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
+      alert("You has done the die!"); 
+    }
+
     if (controls.states.get(KeyCodes.TURN_LEFT)) {
       ++hasRotated;
       this.rotate(-Math.PI * seconds);
@@ -149,6 +147,12 @@ export class Player {
     if (hasWalkedX == 1 || hasWalkedY == 1 || hasRotated >= 1) {
       // If so, accumulate paces and send message to server
       this.paces += walkDelta;
+
+      this.walkTimer += seconds;
+      if (this.walkTimer > Enemy.WALK_INTERVAL * Enemy.STEP_SOUND_DIVIDER) {
+        this.walkTimer = 0;
+        Sound.get.play(SoundType.STEP, Sound.STEP_MAX_VOLUME);
+      }
       sendCallback(Command.move(this.position.x, this.position.y, this.angle));
     }
 
@@ -191,7 +195,8 @@ export class Player {
    */
   public changeHealth(delta: number) {
     if (this.health + delta < 0) {
-      return; // TODO: Handle death!
+      this.dead = true;
+      return; 
     } else if (this.health + delta >= Player.MAX_HEALTH) {
       this.health = Player.MAX_HEALTH;
     } else {
@@ -211,4 +216,31 @@ export class Player {
     return this.playerInfo;
   }
 
+  public set setDead(dead: boolean) {
+    this.dead = dead;
+  }
+
+  public get isDead(){
+    return this.dead;
+  }
+
+  public get getPosition(): Vec2D {
+    return this.position;
+  }
+
+  public get getDirection(): number {
+    return this.angle;
+  }
+
+  public get getWeapon(): Weapon {
+    return this.weapon;
+  }
+
+  public get getPaces(): number {
+    return this.paces;
+  }
+
+  public get getWalkSpeed(): number {
+    return this.walkSpeed;
+  }
 }

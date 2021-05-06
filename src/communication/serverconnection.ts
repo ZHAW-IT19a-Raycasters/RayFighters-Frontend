@@ -30,9 +30,9 @@ export class ServerConnection {
      */
     public handlePacket(p: Packet) {
         switch (p.opCode) {
+            // TODO create methods for each case
             case OpCode.SERVER_PLAYERDEATH:
-                alert("You have died!");
-                // TODO: Handle player death
+                this.playerDeath(p.killerID, p.victimID);
                 break;
             case OpCode.SERVER_DISCONNECT:
                 alert("Server has disconnected!");
@@ -46,6 +46,7 @@ export class ServerConnection {
                 this.enemyMap.get(p.userID).setPosition = new Vec2D(p.coorX, p.coorY);
                 this.enemyMap.get(p.userID).setAngle = p.angle;
                 this.enemyMap.get(p.userID).walk();
+                this.enemyMap.get(p.userID).updateDistanceToPlayer(this.player.getPosition);
                 break;
             case OpCode.SERVER_YOUARECALLED:
                 console.log("Your ID is: " + p.userID);
@@ -87,8 +88,8 @@ export class ServerConnection {
 
     /**
      * Updates Player or Enemy information.
-     * @param playerInfoOld 
-     * @param playerInfoNew 
+     * @param playerInfoOld Old {@link PlayerInfo} to be processed.
+     * @param playerInfoNew New {@link PlayerInfo} to be processed.
      */
     private updatePlayerInfo(playerInfoOld: PlayerInfo, playerInfoNew: PlayerInfo) {
         if (playerInfoNew.deathCount) {
@@ -102,6 +103,10 @@ export class ServerConnection {
         }
     }
 
+    /**
+     * Synchronises the {@link enemyMap} with joining or leaving {@link Enemy} instances.
+     * @param list Array of {@link PlayerInfo} to be processed.
+     */
     private synchronizeEnemyList(list: Array<PlayerInfo>) {
         for (let index = 0; index < list.length; index++) {
             let userID = list[index].userID;
@@ -115,20 +120,41 @@ export class ServerConnection {
         }
     }
 
+    /**
+     * Removes an {@link Enemy} from the map.
+     * @param userID ID of the {@link Enemy} to be removed.
+     */
     private removeEnemy(userID: number) {
         if (this.enemyMap.has(userID)){
             this.enemyMap.delete(userID);
         }
     }
 
+    /**
+     * Adds an {@link Enemy} to the map.
+     * @param userID ID of the {@link Enemy} to be added.
+     * @param playerInfo {@link PlayerInfo} instance containing all information of {@link Enemy}.
+     */
     private addEnemy(userID: number, playerInfo: PlayerInfo) {
         let enemyToAdd = new Enemy();
         enemyToAdd.setPlayerInfo = playerInfo;
         this.enemyMap.set(userID, enemyToAdd);
     }
 
-    private playerDeath(){
-        // TODO implement player death
+    /**
+     * Handles death of player or enemy.
+     * @param killerID Who has defeated an {@link Player} or {@link Enemy}.
+     * @param victimID {@link Player} or {@link Enemy} who has been defeated.
+     */
+    private playerDeath(killerID: number, victimID: number){
+        // Has player been defeated?
+        if (victimID === this.player.getPlayerInfo.userID) {
+            // TODO: Call GUI
+            this.player.setDead = true;
+            alert("You have died!");
+        }
+                
+        // TODO update kill feed
     }
 
     public get getEnemies() {
