@@ -47,17 +47,16 @@ wss.on('connection', ws => {
     teleport(0x04, 5, 6, ws);
     teleport(0x34, 3, 3, ws);
 
-    setInterval(function () {
-        testcoor += 0.1
-        move(0x1, 4, 2, 0, ws)
-        move(0x04, 5, 6, 0.5*Math.PI, ws)
-        move(0x34, 3, 3, Math.PI, ws)
-
-    }, 100);
+    setTimeout(function () {
+        buffer = new Uint8Array([0x78, 0x45, 0xAA]);
+        ws.send(buffer)
+        setTimeout(function () {
+            teleport(0xAA, 4, 2, ws);
+        }, 1000);
+    }, 10000);
 
     // Receive message
     ws.on('message', (message) => {
-
         let printMessage = "";
         for (let index = 0; index < message.length; index++) {
             printMessage += message[index].toString(16);

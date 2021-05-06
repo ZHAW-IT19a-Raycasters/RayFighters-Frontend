@@ -61,9 +61,10 @@ export class MathHelper {
         //document.getElementById('debug-window').innerText = `debug: ${(angle) * (180/Math.PI)}`;
         if (angle >= leftAngle && angle <= rightAngle) {
             return angle;
-        } /* else {
-          document.getElementById('debug-window').innerText += ' NOT IN VIEW ';
-        }*/
+
+        } else {
+          //document.getElementById('debug-window').innerText += ' NOT IN VIEW ';
+        }
         // The object was beyond our vision:
         return false;
     }

@@ -1,14 +1,30 @@
 import { Image2D } from "../rendering/renderer";
+import { Sound, SoundType } from "../sound/sound";
 
-enum WeaponState {
+
+export enum WeaponState {
     IDLE, SHOOTING
 }
 
 export class Weapon {
     public static WEAPON_ZOOM = 0.5; // magnification of weapon images
-    private static readonly SHOOT_ANIM_DURATION = 0.2; // seconds
+
+    /**
+     * Also corresponds with shoot frequency. Determines after which timespan a shot can be fired.
+     */
+    private static readonly DEFAULT_SHOOT_DURATION = 0.4; // seconds
     private static readonly MUZZLE_FLASH_DURATION = 0.1; // seconds
     public static readonly DEFAULT_MUZZLE_FLASH_COLOR = '#baba82';
+
+    /**
+     * Determines if the weapon is semi-automatic. If false, it's automatic.
+     */
+    private semiAutomatic: boolean;
+
+    /**
+     * Determines how long the shooting animation lasts.
+     */
+    private shootDuration: number;
 
     /**
      * Image shown when the gun's not being shot
@@ -29,11 +45,17 @@ export class Weapon {
 
     private muzzleFlashColor: string;
 
-    private shootAudio: HTMLAudioElement;
+    constructor(
+        private imgPath: string, 
+        shootImgPaths: string[], 
+        width: number, 
+        height: number, 
+        semiAutomatic: boolean, 
+        shootDuration?: number,
+        muzzFlashCol?: string, 
+        testingImage2DClass?: any, 
+        ) {
 
-    constructor(private imgPath: string, shootImgPaths: string[], width: number, height: number, shootSoundEffect?: string, muzzFlashCol?: string, testingImage2DClass?: any, testingAudioClass?: any) {
-        /*width *= Weapon.WEAPON_ZOOM;
-        height *= Weapon.WEAPON_ZOOM;*/
         this.idleImage = testingImage2DClass ? new testingImage2DClass(imgPath, width, height) : new Image2D(imgPath, width, height);
         this.weaponState = WeaponState.IDLE;
         this.shootImages = new Array<Image2D>(shootImgPaths.length);
@@ -42,7 +64,6 @@ export class Weapon {
         }
         // How long one shoot animation sprite's displayed for.
         // Example for 1s with 2 images: would mean that each image gets 0.5s of time.
-        this.shootAnimDuration = Weapon.SHOOT_ANIM_DURATION / this.shootImages.length;
         this.currentShootImage = 0;
         this.timeSinceLastShootImg = 0;
         this.muzzleFlashOngoing = false;
@@ -51,10 +72,17 @@ export class Weapon {
         } else {
             this.muzzleFlashColor = Weapon.DEFAULT_MUZZLE_FLASH_COLOR;
         }
-        if(shootSoundEffect) {
-            this.shootAudio = testingAudioClass ? new testingAudioClass(shootSoundEffect) : new Audio(shootSoundEffect);
-            this.shootAudio.volume = 0.5;
+
+        this.semiAutomatic = semiAutomatic;
+
+        // Setup shoot duration (weapon timeout)
+        if(shootDuration){
+            this.shootDuration = shootDuration;
+        } else {
+            this.shootDuration = Weapon.DEFAULT_SHOOT_DURATION;
         }
+        this.shootAnimDuration = this.shootDuration / this.shootImages.length;
+
     }
 
     public get getMuzzleFlashColor(): string {
@@ -74,9 +102,7 @@ export class Weapon {
 
     public shoot(): void {
         if(this.weaponState == WeaponState.IDLE){
-            if(this.shootAudio) {
-                (<HTMLAudioElement>this.shootAudio.cloneNode()).play();
-            }
+            Sound.get.play(SoundType.SHOOT, 0.5);
             this.weaponState = WeaponState.SHOOTING;
             this.muzzleFlashOngoing = true;
         }
@@ -89,7 +115,6 @@ export class Weapon {
                 if(this.currentShootImage == (this.shootImages.length - 1)) {
                     this.weaponState = WeaponState.IDLE;
                     this.currentShootImage = 0;
-                    this.shootAudio.pause();
                 } else {
                     ++this.currentShootImage;
                     this.muzzleFlashOngoing = false;
@@ -97,5 +122,13 @@ export class Weapon {
                 this.timeSinceLastShootImg = 0;
             }
         }
+    }
+
+    public get getWeaponState() : WeaponState {
+        return this.weaponState
+    }
+
+    public get isSemiautomatic(): boolean {
+        return this.semiAutomatic;
     }
 }

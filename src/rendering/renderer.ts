@@ -3,9 +3,9 @@ import { MathHelper } from '../common/mathhelper';
 import { Player } from '../player/player';
 import { Step } from './raycaster';
 import { Room } from '../maps/room';
-import { Sprite } from '../sprites/sprite';
 import { Vec2D } from '../common/vec2d';
 import { Weapon } from '../player/weapon';
+import { Entity } from '../entities/entity';
 
 /**
  * 2D image object class for easier graphics handling.
@@ -25,6 +25,21 @@ export class ColorGradient {
 }
 
 export class Renderer {
+  /**
+   * Color of the death screen (if the {@link Player} dies)
+   */
+  private static readonly DEATH_SCREEN_COLOR = '#a714a2';
+
+  /**
+   * Maximum opacity of the death screen (if the {@link Player} dies)
+   */
+  private static readonly DEATH_SCREEN_MAX_OPACITY = 0.5;
+
+  /**
+   * Color of the crosshair.
+   */
+  private static readonly CROSSHAIR_COLOR = '#a714a2';
+
   static STANDARD_DRAWDISTANCE = 16;
   static STANDARD_FOCAL = 0.75;
   static SENSORWIDTH = 1;
@@ -157,9 +172,13 @@ export class Renderer {
 
     this.drawSprites(room, player);
 
-    if (player.getWeapon) {
+    if (player.getWeapon && !player.isDead) {
       this.drawWeapon(player, time);
       this.drawCrosshair();
+    }
+
+    if (player.isDead) {
+      this.deathScreen();
     }
 
     this.context.restore();
@@ -234,10 +253,10 @@ export class Renderer {
     this.context.fillStyle = gradient;
   }
 
-  private drawSpriteList(sprites: Sprite[], player: Player){
+  private drawSpriteList(entities: Entity[], player: Player) {
     // Position at which we draw the sprite:
     const drawPos = new Vec2D(0, this.canvas.height / 2);
-    let sprite: Sprite;
+    let sprite: Entity;
     // distance between the player and the sprite:
     let distance: number;
     // note that the angle may not be set (===false) because sprite is outside our vision:
@@ -260,8 +279,8 @@ export class Renderer {
     this.context.globalAlpha = 1;
 
     // Collect all sprites and iterate through them.
-    for (let i = 0, len = sprites.length; i < len; i++) {
-      sprite = sprites[i];
+    for (let i = 0, len = entities.length; i < len; i++) {
+      sprite = entities[i];
       // Distance sprite<->player:
       distance = MathHelper.euclideanDistance(sprite.getPosition, player.getPosition);
       if (distance > this.drawDistance) {
@@ -282,10 +301,10 @@ export class Renderer {
 
         // Check if a bar was already drawn closer to the camera than the sprite.
         // Or the angle where a bar would be is unset entirely
-        if(currentBarDepth < distance || currentBarDepth == undefined ) {
+        if (currentBarDepth < distance || currentBarDepth == undefined) {
           continue; //<-- wall overlaps sprite, skip drawing sprite completely
         }
-        
+
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
         distanceSizeScalingFactor = 1 / (distance * Math.cos(angle as number - player.getDirection));
 
@@ -296,8 +315,8 @@ export class Renderer {
 
         // Finally, draw the image with the parameters above:
         this.context.drawImage(sprite.getSprite().image,
-           drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3),
-           spriteWidth, spriteHeight
+          drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3),
+          spriteWidth, spriteHeight
         );
       }
     }
@@ -470,7 +489,7 @@ export class Renderer {
     this.context.restore();
   }
 
-  private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 3, color: string = '#a714a2'): void {
+  private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 3, color: string = Renderer.CROSSHAIR_COLOR): void {
     this.context.save();
     this.context.fillStyle = color;
     this.context.fillRect(this.canvas.width / 2 - radius - size, this.canvas.height / 2,
@@ -498,5 +517,14 @@ export class Renderer {
       this.barDepthBuffer = new Array<number>(this.canvas.width);
     }
     document.getElementById('fps-counter').innerText += " - Dynamic resolution engaged (" + newResolution + ")";
+  }
+
+  /**
+   * Shows an animation in case the {@link Player} is defeated.
+   */
+  public deathScreen() {
+    this.context.fillStyle = Renderer.DEATH_SCREEN_COLOR;
+    this.context.globalAlpha = Renderer.DEATH_SCREEN_MAX_OPACITY;
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }

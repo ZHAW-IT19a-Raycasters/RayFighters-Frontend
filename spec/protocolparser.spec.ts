@@ -50,7 +50,7 @@ describe('Server side protocol parser unit test', () => {
 
     it('should parse player death correctly', () => {
         serverMessage = new Uint8Array([OpCode.SERVER_PLAYERDEATH, 0x45, 0x46]);
-        expectedPacket = new Packet({ opCode: OpCode.SERVER_PLAYERDEATH, victimID: 0x45, killerID: 0x46 });
+        expectedPacket = new Packet({ opCode: OpCode.SERVER_PLAYERDEATH, killerID: 0x45, victimID: 0x46 });
         expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
         expect(ProtocolParser.get.parse(serverMessage).victimID).toBe(expectedPacket.victimID);
         expect(ProtocolParser.get.parse(serverMessage).killerID).toBe(expectedPacket.killerID);

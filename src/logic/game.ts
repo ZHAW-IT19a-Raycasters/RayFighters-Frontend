@@ -7,9 +7,7 @@ import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
 import { ServerConnection } from '../communication/serverconnection';
-import { Sprite } from '../sprites/sprite';
-import { HealthPickup } from '../sprites/healthpickup';
-import { Enemy } from '../sprites/enemy';
+import { Enemy } from '../entities/enemy';
 
 /**
  * Renderer instance. Needs to be updated upon window resize.
@@ -61,7 +59,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   room = new Room({ mapSize: 32, loadMap: 'maps/desert.txt' });
 
   // Player Setup
-  player = new Player(6, 6, 0.3 * Math.PI,  new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, './assets/audio/9mm.mp3'));
+  player = new Player(6, 6, 0.3 * Math.PI,  new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4));
   initializeRenderer();
   let controls = new Controls();
   let loop = new GameLoop(fpsCounterName, (d: number) => { renderer.changeResolution(d) });
@@ -99,11 +97,13 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
       return;
     }
 
-    // Refresh sprite array
+    // Refresh sprite array and cycle walk animation
     room.updateSpriteMap(serverConnection.getEnemies);
-    
+    room.updateEnemies(time);
+
     // Update player positions, controls, map, time and sendCallback for communicating with the server.
     player.update(controls, room.getMap, time, sendCallback);
+
     renderer.render(room, player, time);
     receivedPackets.forEach(p => {
       serverConnection.handlePacket(p);
