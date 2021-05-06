@@ -2,7 +2,7 @@ import { Image2D } from "../rendering/renderer";
 import { MathHelper } from "../common/mathhelper";
 import { PlayerInfo } from "../communication/playerinfo";
 import { Entity, EntityType } from "./entity";
-import { Sound } from "../sound/sound";
+import { Sound, SoundType } from "../sound/sound";
 import { Vec2D } from "../common/vec2d";
 
 /**
@@ -26,6 +26,42 @@ enum EnemySpriteDirection {
  * Dedicated enemy class for other players. Provides all methods the game uses to display competitors on the playfield.
  */
 export class Enemy extends Entity {
+    /**
+     * Height of enemy sprite.
+     */
+    private static readonly ENEMY_HEIGHT = 2048;
+
+    /**
+     * Width of enemy sprite.
+     */
+    private static readonly ENEMY_WIDTH = 1024;
+
+    /**
+     * Scaling of enemy sprite (relative to the walls)
+     */
+    private static readonly ENEMY_SCALING = 0.4;
+
+    /**
+     * Time in [seconds] how long the walking animation interval lasts.
+     */
+    public static readonly WALK_INTERVAL = 0.2; // [seconds]
+
+    /**
+     * Determines by which divisor the step sound volume is calculated.
+     */
+    public static readonly STEP_SOUND_DIVIDER = 2;
+
+    /**
+     * Time in [seconds] how long the walking animation cooldown lasts.
+     */
+    private static readonly WALK_COOLDOWN = 0.5; // [seconds]
+
+    /**
+     * Fixed array that defines the order of the walking animation.
+     */
+    private static readonly WALKING_CYCLE = new Array<EnemySpriteState>(EnemySpriteState.IDLE, EnemySpriteState.WALK_1, EnemySpriteState.IDLE, EnemySpriteState.WALK_2);
+
+    
     /**
      * All player informaton of the enemy. See {@link PlayerInfo}
      */
@@ -92,35 +128,11 @@ export class Enemy extends Entity {
     private isWalking: boolean;
 
     /**
-     * Height of enemy sprite.
+     * The distance from the player.
      */
-    private static readonly ENEMY_HEIGHT = 2048;
+    private distanceToPlayer: number;
 
-    /**
-     * Width of enemy sprite.
-     */
-    private static readonly ENEMY_WIDTH = 1024;
-
-    /**
-     * Scaling of enemy sprite (relative to the walls)
-     */
-    private static readonly ENEMY_SCALING = 0.4;
-
-    /**
-     * Time in [seconds] how long the walking animation interval lasts.
-     */
-    private static readonly WALK_INTERVAL = 0.2; // [seconds]
-
-    /**
-     * Time in [seconds] how long the walking animation cooldown lasts.
-     */
-    private static readonly WALK_COOLDOWN = 0.5; // [seconds]
-
-    /**
-     * Fixed array that defines the order of the walking animation.
-     */
-    private static readonly WALKING_CYCLE = new Array<EnemySpriteState>(EnemySpriteState.IDLE, EnemySpriteState.WALK_1, EnemySpriteState.IDLE, EnemySpriteState.WALK_2);
-
+    
     /**
      * Constructor of the enemy class. Instantiates an {@link Entity} instance and prerepares all sprite arrays and adds it to the {@link spriteMap}.
      */
@@ -212,6 +224,9 @@ export class Enemy extends Entity {
      */
     public cycleSpriteState(): void {
         ++this.walkAnimationCounter;
+        if (this.walkAnimationCounter % Enemy.STEP_SOUND_DIVIDER === 0) {
+            Sound.get.play(SoundType.STEP, Sound.get.distanceToVolume(this.distanceToPlayer));
+        }
         this.spriteState = Enemy.WALKING_CYCLE[this.walkAnimationCounter % Enemy.WALKING_CYCLE.length];
     }
 
@@ -220,8 +235,7 @@ export class Enemy extends Entity {
      */
     public shoot(playerPosition: Vec2D): void {
         this.hasShot = true;
-        const distance = MathHelper.euclideanDistance(playerPosition, this.position);
-        Sound.get.shoot(Sound.get.distanceToVolume(distance));
+        Sound.get.play(SoundType.SHOOT, Sound.get.distanceToVolume(this.distanceToPlayer));
     }
 
     /**
@@ -229,6 +243,14 @@ export class Enemy extends Entity {
      */
     public walk(): void {
         this.isWalking = true;
+    }
+
+    /**
+     * Updates distance to {@link Player}.
+     * @param playerPosition {@link Vec2D} position of {@link Player}.
+     */
+    public updateDistanceToPlayer(playerPosition: Vec2D) {
+        this.distanceToPlayer = MathHelper.euclideanDistance(playerPosition, this.position);
     }
 
     /**
