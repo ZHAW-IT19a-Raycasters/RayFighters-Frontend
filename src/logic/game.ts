@@ -6,7 +6,7 @@ import { Renderer } from '../rendering/renderer';
 import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
-import { ServerConnection } from '../communication/serverconnection';
+import { PacketToGameLogic } from '../communication/packettogamelogic';
 import { Enemy } from '../entities/enemy';
 
 /**
@@ -35,7 +35,7 @@ var room: Room
  */
 var webSocketConnectionRequired: boolean = false; 
 
-var serverConnection: ServerConnection;
+var serverConnection: PacketToGameLogic;
 
 const SERVER_URL = "ws://127.0.0.1:8080/ws/1";
 const DEFAULT_RAYCASTER_RESOLUTION = 500;
@@ -73,7 +73,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
     loop.restartDynamicResolution();
   }, true);
 
-  serverConnection = new ServerConnection(player);
+  serverConnection = new PacketToGameLogic(player);
 
   /**
    * Checks if the connection to the server is alive.
