@@ -7,6 +7,8 @@ import { Sprite } from "../entities/sprite";
 import { WeaponPickup } from "../entities/weaponpickup";
 
 export class Map2D {
+    private static readonly SKYBOX_WIDTH = 3512;
+    private static readonly SKYBOX_HEIGHT = 1440;
     /**
      * An array describing the map (whether a cell has a wall or
      * not): wall = 1, floor = 0
@@ -79,32 +81,47 @@ export class Map2D {
     }
 
     /**
+     * Load and parse map file according to our map definition.
+     * Don't edit this method unless you know the map syntax:
+     * https://github.zhaw.ch/raycasters/docs/wiki/Map#example
      * 
-     * @param filename 
+     * @param filename Filepath to string
      */
     public parseMapData(filename: string): void {
         const map = this.readMap(filename)
         const lines = map.split('\n');
 
+        // First line is always the map name
         this.mapName = lines[0];
-        this.skyBox = new Image2D(lines[1], 3512, 1440);
+        // Next line defines the skybox file name
+        this.skyBox = new Image2D(lines[1], Map2D.SKYBOX_WIDTH, Map2D.SKYBOX_HEIGHT);
+
+        // The next line can be empty or contains the ceiling color gradient
         if (lines[2].trim().length > 0) {
             const ceilingSplit = lines[2].split(";");
             this.ceilingGradient = new ColorGradient(ceilingSplit[0], ceilingSplit[1]);
         }
+
+        // The next line can be empty or contains the floor color gradient
         if (lines[3].trim().length > 0) {
             const floorSplit = lines[3].split(";");
             this.floorGradient = new ColorGradient(floorSplit[0], floorSplit[1]);
         }
         
+        // Then comes the fog properties of the map
         if (lines[4].trim().length > 0) {
             const fogSplit = lines[4].split(";");
             this.fog = new Fog(fogSplit[0], parseInt(fogSplit[1]), parseFloat(fogSplit[2]));
         }
 
+        // Next line defines the map size (height=width => square map)
         this.mapSize = parseInt(lines[5]);
 
+        // Skip ahead after the map definition and fetch the amount of wall textures
         const numberOfWallTextures = parseInt(lines[6 + this.mapSize]);
+
+        // Parse wall textures. Note that although this comes AFTER in the map
+        // file, we need it NOW because we can't parse the map otherwise.
         for (let index = 0; index < numberOfWallTextures; index++) {
             let textureData = lines[index + 7 + this.mapSize].split("=");
             this.wallTextures.set(textureData[0].trim(), new Image2D(textureData[1].trim(), 2048, 2048));
@@ -112,6 +129,7 @@ export class Map2D {
 
         this.map = new Array<MapElement>(this.mapSize ** 2);
 
+        // Parse the actual map now
         let x = 0;
         for (let index = 6; index < 6 + this.mapSize; index++) {
             let y = index - 6;
@@ -119,19 +137,24 @@ export class Map2D {
             for (const char of line) {
                 switch (char) {
                     case '+':
+                        // Health pickup at this location
                         const healthPickup = new HealthPickup();
                         healthPickup.setPosition = new Vec2D(x % this.mapSize, y)
                         this.map[x] = new MapElement(MapElementType.SPRITE, healthPickup);
                         break;
                     case '*':
+                        // Weapon pickup at this location
                         const weaponPickup = new WeaponPickup();
                         weaponPickup.setPosition = new Vec2D(x % this.mapSize, y);
                         this.map[x] = new MapElement(MapElementType.SPRITE, weaponPickup);
                         break;
                     case '\r':
+                        // Newline, nothing happened here so we decrement x to
+                        // "retry" next line
                         x--;
                         break;
                     default:    
+                        // At this location we've got a wall or floor
                         if (char.match("([1-9])|([A-Z])")) { // Check if it's a wall
                             this.map[x] = new MapElement(MapElementType.WALL);
                             this.map[x].setWallImage = this.wallTextures.get(char);
@@ -193,6 +216,10 @@ export class Map2D {
         }
     }
 
+    /**
+     * Probably best used for debugging on the console.
+     * @returns String representation of the map.
+     */
     public toString(): string {
         let str: string = '   '
         for (let i = 0; i < this.getSize; i++) { str += `${i} ` }
@@ -221,6 +248,12 @@ export class Map2D {
         return this.map.length;
     }
 
+    /**
+     * Overwrite mapelement at position in this map.
+     * 
+     * @param pos Position of map element
+     * @param newElem New map element
+     */
     public setElement(pos: Vec2D, newElem: MapElement): void {
         pos.floor();
         if (pos.x >= 0 && pos.x <= this.size - 1 && pos.y >= 0 && pos.y <= this.size - 1) {
@@ -249,6 +282,10 @@ export class Map2D {
     public get getFog() : Fog {
         return this.fog
     }
+
+    public get getMapName(): string {
+        return this.getMapName;
+    }
 }
 
 /**
@@ -264,7 +301,9 @@ export enum MapElementType {
 }
 
 /**
- * 
+ * Data class for a MapElement
+ * Note that a MapElement is defined as one square in a map. In a size=32 map
+ * there's 32^2 MapElements.
  */
 export class MapElement {
     private type: MapElementType;
