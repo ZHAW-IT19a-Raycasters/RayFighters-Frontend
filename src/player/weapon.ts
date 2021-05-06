@@ -1,5 +1,6 @@
 import { Image2D } from "../rendering/renderer";
-import { Sound } from "../sound/sound";
+import { Sound, SoundType } from "../sound/sound";
+
 
 export enum WeaponState {
     IDLE, SHOOTING
@@ -101,7 +102,7 @@ export class Weapon {
 
     public shoot(): void {
         if(this.weaponState == WeaponState.IDLE){
-            Sound.get.shoot(0.5);
+            Sound.get.play(SoundType.SHOOT, 0.5);
             this.weaponState = WeaponState.SHOOTING;
             this.muzzleFlashOngoing = true;
         }

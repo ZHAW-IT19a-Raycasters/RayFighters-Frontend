@@ -1,8 +1,8 @@
 import { Map2D, MapElementType } from './map2d';
 import { Image2D } from '../rendering/renderer';
-import { Enemy } from '../entities/enemy';
 import { Sprite } from '../entities/sprite';
 import { Entity } from '../entities/entity';
+import { Enemy } from '../entities/enemy';
 
 
 /**

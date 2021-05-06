@@ -500,4 +500,11 @@ export class Renderer {
     }
     document.getElementById('fps-counter').innerText += " - Dynamic resolution engaged (" + newResolution + ")";
   }
+
+  /**
+   * Shows an animation in case the {@link Player} is defeated.
+   */
+  public deathScreen(player: Player){
+    
+  }
 }
