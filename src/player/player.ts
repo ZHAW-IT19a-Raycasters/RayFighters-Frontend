@@ -182,7 +182,9 @@ export class Player {
   }
 
   private die(){
-    Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
+    if(this.dead){
+      Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
+    }
   }
 
   /**
@@ -221,8 +223,8 @@ export class Player {
   }
 
   public setDead(dead: boolean) {
-    this.die();
     this.dead = dead;
+    this.die();
   }
 
   public get isDead(){

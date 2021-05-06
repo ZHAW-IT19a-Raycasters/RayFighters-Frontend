@@ -50,7 +50,9 @@ wss.on('connection', ws => {
     setTimeout(function () {
         buffer = new Uint8Array([0x78, 0x45, 0xAA]);
         ws.send(buffer)
-
+        setTimeout(function () {
+            teleport(0xAA, 4, 2, ws);
+        }, 1000);
     }, 10000);
 
     // Receive message
