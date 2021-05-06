@@ -8,9 +8,9 @@ The web based game client for the Raycaster FPS with Dedicated Multiplayer!
 
 Make sure you have Node and NPM installed.
 
-1. `npm install`
-2. `npm run build`
-3. Built files like `index.html` are in `./dist/`.
+1. Install dependencies: `npm install`
+2. Transpile the project: `npm run build`
+3. Serve the files: `npm run server`
 
 Please look at the [full documentation](https://github.zhaw.ch/raycasters/docs/wiki/Frontend) for the rest.
 
