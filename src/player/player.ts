@@ -97,8 +97,8 @@ export class Player {
     const walkDelta = this.walkSpeed * seconds;
 
     if (this.dead) {
-      Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
-      alert("You has done the die!"); 
+      // If the player has died, we should not be able to shoot or move anymore.
+      return;
     }
 
     if (controls.states.get(KeyCodes.TURN_LEFT)) {
@@ -181,6 +181,12 @@ export class Player {
     }
   }
 
+  private die(){
+    if(this.dead){
+      Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
+    }
+  }
+
   /**
    * Check if player has moved in last tick. Used to prevent weapon bob.
    * @returns True if player has moved.
@@ -216,8 +222,9 @@ export class Player {
     return this.playerInfo;
   }
 
-  public set setDead(dead: boolean) {
+  public setDead(dead: boolean) {
     this.dead = dead;
+    this.die();
   }
 
   public get isDead(){

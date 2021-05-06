@@ -72,6 +72,9 @@ export class ServerConnection {
                 console.log("Player with ID" + p.userID + "has been teleported to" + p.coorX + "|" + p.coorY);
                 const newPosition = new Vec2D(p.coorX, p.coorY);
                 if (p.userID === this.player.getPlayerInfo.userID) {
+                    // If player gets teleported (also happening when spawning), set player not not dead.
+                    this.player.setDead(false);
+                    // Transport player to new position.
                     this.player.setPosition = newPosition;
                 } else {
                     this.enemyMap.get(p.userID).setPosition = newPosition;
@@ -150,8 +153,7 @@ export class ServerConnection {
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
             // TODO: Call GUI
-            this.player.setDead = true;
-            alert("You have died!");
+            this.player.setDead(true);
         }
                 
         // TODO update kill feed

@@ -56,7 +56,7 @@ export class ProtocolParser {
                 packet = new Packet({ opCode: opCode, userID: message[1], angle: this.u8ArraytoFloat(message, 2) });
                 break;
             case OpCode.SERVER_PLAYERDEATH:
-                packet = new Packet({ opCode: opCode, victimID: message[1], killerID: message[2] });
+                packet = new Packet({ opCode: opCode, killerID: message[1], victimID: message[2] });
                 break;
             case OpCode.SERVER_PLAYERJOINED:
                 packet = new Packet({ opCode: opCode, userID: message[1], name: this.assembleString(message, 2) });
