@@ -47,10 +47,10 @@ export class ProtocolParser {
                 packet = new Packet({ opCode: opCode });
                 break;
             case OpCode.SERVER_TELEPORT:
-                packet = new Packet({ opCode: opCode, userID: message[1], coorY: this.u8ArraytoFloat(message, 2), coorX: this.u8ArraytoFloat(message, 10) });
+                packet = new Packet({ opCode: opCode, userID: message[1], coorX: this.u8ArraytoFloat(message, 2), coorY: this.u8ArraytoFloat(message, 10) });
                 break;
             case OpCode.SERVER_MOVEMENT:
-                packet = new Packet({ opCode: opCode, userID: message[1], coorY: this.u8ArraytoFloat(message, 2), coorX: this.u8ArraytoFloat(message, 10), angle: this.u8ArraytoFloat(message, 18) });
+                packet = new Packet({ opCode: opCode, userID: message[1], coorX: this.u8ArraytoFloat(message, 2), coorY: this.u8ArraytoFloat(message, 10), angle: this.u8ArraytoFloat(message, 18) });
                 break;
             case OpCode.SERVER_SHOOTING:
                 packet = new Packet({ opCode: opCode, userID: message[1], angle: this.u8ArraytoFloat(message, 2) });
@@ -176,8 +176,8 @@ export class ProtocolParser {
             case OpCode.CLIENT_MOVEMENT:
                 byteData = new Uint8Array(25);
                 byteData[0] = packet.opCode;
-                let convertedFloatY: Uint8Array = this.floatToU8Array(packet.coorX);
-                let convertedFloatX: Uint8Array = this.floatToU8Array(packet.coorY);
+                let convertedFloatX: Uint8Array = this.floatToU8Array(packet.coorX);
+                let convertedFloatY: Uint8Array = this.floatToU8Array(packet.coorY);
                 let angle: Uint8Array = this.floatToU8Array(packet.angle);
                 for (let index = 0; index < 8; index++) {
                     byteData[index + 1] = convertedFloatX[index];
