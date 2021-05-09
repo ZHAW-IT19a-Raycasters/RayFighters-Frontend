@@ -9,8 +9,9 @@ The web based game client for the Raycaster FPS with Dedicated Multiplayer!
 Make sure you have Node and NPM installed.
 
 1. `npm install`
-2. `npm run build`
-3. Built files like `index.html` are in `./dist/`.
+2. `npm update`
+3. `npm run build`
+4. Built files like `index.html` are in `./dist/`.
 
 
 ### Useful links
