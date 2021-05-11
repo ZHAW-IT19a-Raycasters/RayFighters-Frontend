@@ -1,20 +1,6 @@
-#fps-container {
-  width: auto;
-  top: 0;
-  left: 0;
-  padding: 1em;
-
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 0 0 5px 0;
-  box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
-    -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
-}
-
 #toolbar {
   min-width: 100vw;
   bottom: 0;
-  max-height: 15vh;
-  padding: 1em;
 
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 5px 5px 0 0;
@@ -22,11 +8,27 @@
     -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
 }
 
-#ticker-container {
+#fps-container {
+  width: auto;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+
+  margin: -5em 0px 0px 0px;
+
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 0 0 5px 0;
+  box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
+    -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
+}
+
+.ticker {
   width: auto;
   top: 0;
   right: 0;
-  padding: 1em;
+  visibility: hidden;
+
+  margin: -5em 0px 0px 0px;
 
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 0 0 0 5px;
@@ -34,13 +36,35 @@
     -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
 }
 
-#respawn-container {
+.hud-con {
+  display: flex;
   background-color: rgba(0, 0, 0, 0.8);
+  position:fixed;
+  z-index: 5;
+
+  flex-flow: column wrap;
+  justify-content: center;
+  align-content: center;
+
+  font-family: ArcadeClassic;
+  color: #fff;
+  text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
+  animation: textflicker 0.5s infinite;
+}
+
+#test-container {
+  display: flex;
+  position:fixed;
+  z-index: 5;
 }
 
 #respawnbtn {
   display: inline-block;
   text-align: center;
-  padding: 1em;
   cursor: pointer;
+}
+
+#socket-status {
+  bottom: 18vh;
+  left: 1em;
 }

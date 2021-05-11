@@ -7,8 +7,8 @@ import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
 import { PacketToGameLogic } from '../communication/packettogamelogic';
-import { gameHud } from '../gameHud';
-import { Enemy } from '../entities/enemy';
+import { initializeHud } from '../gameHud';
+import { showAlert } from '..';
 
 /**
  * Renderer instance. Needs to be updated upon window resize.
@@ -29,11 +29,6 @@ var player: Player;
  * Current room.
  */
 var room: Room
-
-/**
- * Current gameHud.
- */
- var hud: gameHud
 
 /**
  * Debug boolean for websocket state. 
@@ -72,7 +67,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   initializeRenderer();
 
   // Display PlayerInfo and Mapname on HUD
-  hud = new gameHud(room.getMap.getMapName, player.getPlayerInfo.userName);
+  initializeHud(room.getMap.getMapName, player.getPlayerInfo.userName);
 
   let controls = new Controls();
   let loop = new GameLoop(SERVER_URL, fpsCounterName, (d: number) => { renderer.changeResolution(d) });
@@ -104,6 +99,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
     // Detect if server connection has encountered an error
     if (checkConnection(loop.getSocketState) == false) {
       alert("Connection to server failed! Exiting the game.");
+      showAlert("Connection to server failed! Exiting the game.");
       // TODO: End game loop - Return to landing page
       return;
     }

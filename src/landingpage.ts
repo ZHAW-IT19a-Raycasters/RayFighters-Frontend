@@ -1,10 +1,10 @@
-import { loadPage } from ".";
+import { loadPage, playSoundEffect } from ".";
 import { runGame } from "./logic/game";
 
 /**
  * Register all Evenlisteners for the Startmenu
  */
-export function landingpageScript(): void {
+export function initializeLandingPage(): void {
 
     const startTab: HTMLFormElement = document.querySelector("#logInForm");
     const aboutTab: HTMLElement = document.querySelector("#aboutTab");
@@ -114,16 +114,6 @@ function toggleBackMusic(icon: any, backgroundMusic: HTMLAudioElement): void {
         backgroundMusic.muted = true;
         icon.innerHTML = '<h5><i class="bi bi-volume-mute"></i></h5>';
     }
-}
-
-/**
- * Plays soundeffect
- * @param audioPath Soundeffect that should be played
- */
-function playSoundEffect(audioPath: string): void {
-    const soundEffect: HTMLAudioElement = new Audio(audioPath);
-    soundEffect.volume = 0.1;
-    (<HTMLAudioElement>soundEffect.cloneNode()).play();
 }
 
 /**

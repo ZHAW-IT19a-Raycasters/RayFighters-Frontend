@@ -13,6 +13,15 @@
     font-size: 16px;
   }
 }
+
+[hidden] {
+  display: none !important;
+}
+
+th, td {
+  padding: 1em;
+}
+
 #overlay-effect {
   background: repeating-linear-gradient(
     transparent,
@@ -70,6 +79,8 @@ body {
   color: #fff;
   text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
   animation: textflicker 0.5s infinite;
+  position:fixed;
+  z-index: 10;
 }
 
 .videocontainer {
@@ -128,7 +139,6 @@ img {
   object-fit: contain;
 }
 
-
 #debug-window {
   position: fixed;
   overflow: hidden;
@@ -138,6 +148,12 @@ img {
 
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
+}
+
+#alert-container {
+  display: flex;
+  background-color: black;
+  position:fixed;
 }
 
 canvas#game-canvas {
