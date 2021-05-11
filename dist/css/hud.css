@@ -1,0 +1,72 @@
+#toolbar {
+  min-width: 100vw;
+  bottom: 0;
+
+  background-image: url(../img/hudbg.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
+    -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
+}
+
+#fps-container {
+  width: auto;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+
+  margin: -5em 0px 0px 0px;
+
+  background-image: url(../img/hudbgSmall.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 0 0 5px 0;
+}
+
+.ticker {
+  width: auto;
+  top: 0;
+  right: 0;
+  visibility: hidden;
+
+  margin: -5em 0px 0px 0px;
+
+  background-image: url(../img/hudbgSmall.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 0 0 0 5px;
+}
+
+.hud-con {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.8);
+  position:fixed;
+  z-index: 5;
+
+  flex-flow: column wrap;
+  justify-content: center;
+  align-content: center;
+
+  font-family: ArcadeClassic;
+  color: #fff;
+  text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
+  animation: textflicker 0.5s infinite;
+}
+
+#test-container {
+  display: flex;
+  position:fixed;
+  z-index: 5;
+}
+
+#respawnbtn {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+}
+
+#socket-status {
+  bottom: 18vh;
+  left: 1em;
+}

@@ -284,7 +284,7 @@ export class Map2D {
     }
 
     public get getMapName(): string {
-        return this.getMapName;
+        return this.mapName;
     }
 }
 

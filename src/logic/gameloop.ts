@@ -75,7 +75,11 @@ export class GameLoop {
     this.secSum = 0;
     this.frameSum = 0; 
     this.fpsElem = document.getElementById(fpsDivName);
-    this.socket = new Socket(websocketServerUrl);
+    if(window.location.host === 'localhost:9000' || window.location.host === '127.0.0.1:9000') {
+      this.socket = new Socket(websocketServerUrl);
+    } else {
+      this.socket = new Socket("ws://" + window.location.host + "/server/ws/1");
+    }
     this.changeResolutionCallback = changeResolutionCallback;
   }
 

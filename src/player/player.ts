@@ -7,6 +7,7 @@ import { Command } from "../communication/command";
 import { PlayerInfo } from "../communication/playerinfo";
 import { Sound, SoundType } from "../sound/sound";
 import { Enemy } from "../entities/enemy";
+import { toggleFPS, toggleScoreboard, toggleSettings } from "../gameHud";
 
 
 /**
@@ -222,7 +223,15 @@ export class Player {
     }
 
     if (controls.states.get(KeyCodes.SCOREBOARD)) {
-      // TODO Show scoreboard on HUD
+      toggleScoreboard();
+    }
+
+    if (controls.states.get(KeyCodes.SETTINGS)) {
+      toggleSettings();
+    }
+
+    if (controls.states.get(KeyCodes.FPS)) {
+      toggleFPS();
     }
   }
 
@@ -249,7 +258,7 @@ export class Player {
   public changeHealth(delta: number) {
     if (this.health + delta < 0) {
       this.dead = true;
-      return; 
+      return; // TODO: Handle death!
     } else if (this.health + delta >= Player.MAX_HEALTH) {
       this.health = Player.MAX_HEALTH;
     } else {
@@ -300,3 +309,4 @@ export class Player {
     return this.walkSpeed;
   }
 }
+
