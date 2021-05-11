@@ -67,7 +67,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   initializeRenderer();
 
   // Display PlayerInfo and Mapname on HUD
-  initializeHud(room.getMap.getMapName, player.getPlayerInfo.userName);
+  initializeHud(room.getMap.getMapName, player.getPlayerInfo);
 
   let controls = new Controls();
   let loop = new GameLoop(SERVER_URL, fpsCounterName, (d: number) => { renderer.changeResolution(d) });

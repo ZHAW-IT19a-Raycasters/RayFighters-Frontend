@@ -1,11 +1,12 @@
 import { playSoundEffect, showAlert } from ".";
+import { PlayerInfo } from "./communication/playerinfo";
+import { Player } from "./player/player";
 
 let tickerCon: HTMLElement;
 let timer: HTMLElement;
-let healthBar: HTMLElement;
+let playerName: HTMLElement;
 let kills: HTMLElement;
 let deaths: HTMLElement;
-let playerName: HTMLElement;
 let mapName: HTMLElement;
 let respawnCon: HTMLElement;
 let scoreboard: HTMLElement;
@@ -16,18 +17,21 @@ let fps: HTMLElement;
 /***
  * Initialize all Hud HTMLElements
  */
-export function initializeHud(map: string, player: string) {
+export function initializeHud(map: string, player: PlayerInfo) {
     tickerCon = document.querySelector("#ticker-container");
     timer = document.querySelector("#timer");
-    healthBar = document.querySelector("#health");
     playerName = document.querySelector("#playerName");
+    kills = document.querySelector("#kills");
+    deaths = document.querySelector("#deaths");
     mapName = document.querySelector("#mapName");
     respawnCon = document.querySelector("#respawn-container");
     scoreboard = document.querySelector("#scoreboard-container");
     settings = document.querySelector("#settings-container");
     socketStatus = document.querySelector("#socket-status");
     fps = document.querySelector("#fps-container");
-    showGameInfo(map, player);
+
+    showMapInfo(map);
+    updatePlayerInfo(player);
 
     document.querySelectorAll(".makes-sound").forEach(item => {
         item.addEventListener("mouseenter", (event) => {
@@ -57,48 +61,31 @@ export function initializeHud(map: string, player: string) {
 }
 
 /**
- * Displays Kill Count of current Player
- * @param killnr numbr of kills
+ * Displays Kill Count and Death Count of current Player
+ * @param player Info of the current Player
  */
-export function updateKillCount(killnr: number): void {
-    kills.innerText = killnr.toString();
-}
-
-/**
- * Displays Death Count of current Player
- * @param deathnr number of deaths
- */
-export function updateDeathCount(deathnr: number): void {
-    deaths.innerText = deathnr.toString();
-}
-
-/**
- * Displays current health of Player
- * @param health
- */
-export function updateHealth(health: number): void {
-    healthBar.innerText = health.toString();
+export function updatePlayerInfo(player: PlayerInfo): void {
+    playerName.innerText = player.userName;
+    kills.innerText = player.killCount.toString();
+    deaths.innerText = player.deathCount.toString();
 }
 
 /**
  * Displays current Map Name and PlayerName
  * @param map Name of the current Map
- * @param player Name of the current Player
  */
-export function showGameInfo(map: string, player: string): void {
+export function showMapInfo(map: string): void {
     mapName.innerText = map;
-    playerName.innerText = player;
 }
 
 /**
  * Ticker in corner
- * @param killer Player that got the kill
- * @param victim Player that was killed
+ * @param msg Message that should be displayed
  */
-export function showTicket(killer: string, victim: string): void {
+export function showTicket(msg: string): void {
     const ticker = document.createElement('div');
     ticker.className = "ticker position-fixed p-3";
-    ticker.innerText = `${killer} killed ${victim}`;
+    ticker.innerText = msg;
     tickerCon.append(ticker);
     ticker.style.transition = "margin 0.5s ease-in-out";
     ticker.style.margin = "0px";
@@ -114,6 +101,7 @@ export function showTicket(killer: string, victim: string): void {
     }, 2000);
 }
 
+// TODO:
 /**
  * Time left until end of round
  * @param 
@@ -123,54 +111,57 @@ export function setTimer(): void {
 
 /**
  * 
- * @param 
  */
-export function ondeath(): void {
+export function displayRespawn(): void {
     settings.hidden = true;
     scoreboard.hidden = true;
     respawnCon.hidden = false;
     document.exitPointerLock();
 }
 
+// TODO:
 /**
  * 
  */
 export function respawn(): void {
     respawnCon.hidden = true;
+    //player.setDeath(false);
     document.body.requestPointerLock();
 }
 
 /**
  * 
- * @param 
+ * @param ranking Array of {@link PlayerInfo}
  */
-export function updateScoreboard(PlayerList: any): void {
+export function updateScoreboard(ranking: Array<PlayerInfo>): void {
+    // TODO: Nicer Method
     const table: HTMLElement = scoreboard.querySelector("tbody");
     table.textContent = '';
-    PlayerList.forEach(function (player: any, rank: string) {
+    for (let index = 0; index < ranking.length; index++) {
         var row = document.createElement("tr");
 
-        // TODO: in a loop
-        var cell = document.createElement("td");
-        var cellText = document.createTextNode(rank);
-        cell.appendChild(cellText);
-        row.appendChild(cell);
+        const cellRank = document.createElement("td");
+        const cellRankText = document.createTextNode((index + 1).toString());
+        cellRank.appendChild(cellRankText);
+        row.appendChild(cellRank);
 
-        cell = document.createElement("td");
-        cellText = document.createTextNode(player.playerName);
-        cell.appendChild(cellText);
-        row.appendChild(cell);
+        const cellPlayerName = document.createElement("td");
+        const cellPlayerNameText = document.createTextNode(ranking[index].userName);
+        cellPlayerName.appendChild(cellPlayerNameText);
+        row.appendChild(cellPlayerName);
 
-        cell = document.createElement("td");
-        cellText = document.createTextNode(player.kills);
-        cell.appendChild(cellText);
-        row.appendChild(cell);
+        const cellKills = document.createElement("td");
+        const cellKillsText = document.createTextNode(ranking[index].killCount.toString());
+        cellKills.appendChild(cellKillsText);
+        row.appendChild(cellKills);
 
-        cell = document.createElement("td");
-        cellText = document.createTextNode(player.deaths);
-        cell.appendChild(cellText);
+        const cellDeaths = document.createElement("td");
+        const cellDeathsText = document.createTextNode(ranking[index].deathCount.toString());
+        cellDeaths.appendChild(cellDeathsText);
+        row.appendChild(cellDeaths);
+
         table.appendChild(row);
-    });
+    }
 }
 
 /**
@@ -198,7 +189,6 @@ export function toggleFPS(): void {
 
 /**
  * 
- * @param 
  */
 export function toggleSettings(): void {
     scoreboard.hidden = true;

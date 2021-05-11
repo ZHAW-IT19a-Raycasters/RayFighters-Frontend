@@ -18,7 +18,7 @@ export function initializeLandingPage(): void {
     startTab.addEventListener("submit", function (event) {
         event.preventDefault();
         backgroundMusic.pause()
-        handleLogIn();
+        handleLogIn(this);
     });
     document.querySelectorAll(".menu-item").forEach(item => {
         item.addEventListener("mouseenter", (event) => {
@@ -80,9 +80,10 @@ function getJWT(content: any): void {
 
 /**
  * Starts the game and requests a JWT
+ * @param form
  */
-function handleLogIn(): void {
-    const formData = new FormData(this);
+function handleLogIn(form: HTMLFormElement): void {
+    const formData = new FormData(form);
     const playerName = formData.get("inputPlayerName") as string;
     const content = { "username": playerName };
 
