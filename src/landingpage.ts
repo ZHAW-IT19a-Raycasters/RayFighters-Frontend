@@ -67,7 +67,7 @@ function getJWT(content: any): void {
     xhttp.withCredentials = true
 
     // Retreive JWT token
-    xhttp.open("POST", "http://127.0.0.1:8080/auth", false);
+    xhttp.open("POST", "/server/auth", false);
 
     // Connecting to server
     xhttp.setRequestHeader("Content-type", "application/json");

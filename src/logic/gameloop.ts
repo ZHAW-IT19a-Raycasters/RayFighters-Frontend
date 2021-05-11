@@ -69,13 +69,14 @@ export class GameLoop {
    * @param fpsDivName HTML ID as string where we put how much FPS we got
    * @param changeResolutionCallback Callback function(deltaResolution) to change the raycaster resolution
    */
-  constructor(websocketServerUrl: string, fpsDivName: string, changeResolutionCallback: any) {
+  constructor(fpsDivName: string, changeResolutionCallback: any) {
     this.frame.bind(this);
     this.lastTime = 0;
     this.secSum = 0;
     this.frameSum = 0; 
     this.fpsElem = document.getElementById(fpsDivName);
-    this.socket = new Socket(websocketServerUrl);
+    // TODO: change to our server adress.
+    this.socket = new Socket("ws://" + window.location.host + "/server/ws/1");
     this.changeResolutionCallback = changeResolutionCallback;
   }
 

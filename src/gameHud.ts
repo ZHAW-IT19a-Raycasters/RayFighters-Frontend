@@ -1,6 +1,5 @@
 import { playSoundEffect, showAlert } from ".";
 import { PlayerInfo } from "./communication/playerinfo";
-import { Player } from "./player/player";
 
 let tickerCon: HTMLElement;
 let timer: HTMLElement;

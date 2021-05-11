@@ -261,10 +261,6 @@ export class Map2D {
         }
     }
 
-    public get getMapName(): string {
-        return this.mapName;
-    }
-
     public get getSize(): number {
         return this.size;
     }
