@@ -70,7 +70,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   initializeHud(room.getMap.getMapName, player.getPlayerInfo);
 
   let controls = new Controls();
-  let loop = new GameLoop(fpsCounterName, (d: number) => { renderer.changeResolution(d) });
+  let loop = new GameLoop(SERVER_URL, fpsCounterName, (d: number) => { renderer.changeResolution(d) });
 
   // Listen to window resizes, and in case of that, re-initialize renderer to prevent images from stretching.
   window.addEventListener('resize', function () {
