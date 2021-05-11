@@ -7,7 +7,6 @@ import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
 import { PacketToGameLogic } from '../communication/packettogamelogic';
-import { Enemy } from '../entities/enemy';
 
 /**
  * Renderer instance. Needs to be updated upon window resize.

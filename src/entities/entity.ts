@@ -4,7 +4,7 @@ import { Image2D } from "../rendering/renderer";
 /**
  * Determines what type the entitiy is, to enable distinguishing different entities on the logic side.
  */
- export enum EntityType {
+export enum EntityType {
     ENEMY,
     WEAPON_PICKUP,
     HEALTH_PICKUP,
@@ -34,7 +34,7 @@ export abstract class Entity {
      * What type this entity is.
      */
     private entityType: EntityType;
-    
+
     constructor(entityType: EntityType) {
         this.lastPlayerViewingAngle = 0;
         this.angle = 0;
