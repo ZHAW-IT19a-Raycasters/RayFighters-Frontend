@@ -1,0 +1,215 @@
+import { playSoundEffect, showAlert } from ".";
+import { PlayerInfo } from "./communication/playerinfo";
+
+let tickerCon: HTMLElement;
+let timer: HTMLElement;
+let playerName: HTMLElement;
+let kills: HTMLElement;
+let deaths: HTMLElement;
+let mapName: HTMLElement;
+let respawnCon: HTMLElement;
+let scoreboard: HTMLElement;
+let settings: HTMLElement;
+let socketStatus: HTMLElement;
+let fps: HTMLElement;
+
+/***
+ * Initialize all Hud HTMLElements
+ */
+export function initializeHud(map: string, player: PlayerInfo) {
+    tickerCon = document.querySelector("#ticker-container");
+    timer = document.querySelector("#timer");
+    playerName = document.querySelector("#playerName");
+    kills = document.querySelector("#kills");
+    deaths = document.querySelector("#deaths");
+    mapName = document.querySelector("#mapName");
+    respawnCon = document.querySelector("#respawn-container");
+    scoreboard = document.querySelector("#scoreboard-container");
+    settings = document.querySelector("#settings-container");
+    socketStatus = document.querySelector("#socket-status");
+    fps = document.querySelector("#fps-container");
+
+    showMapInfo(map);
+    updatePlayerInfo(player);
+
+    document.querySelectorAll(".makes-sound").forEach(item => {
+        item.addEventListener("mouseenter", (event) => {
+            event.preventDefault();
+            playSoundEffect("./assets/audio/menuToggle_1.mp3");
+        });
+        item.addEventListener("click", (event) => {
+            playSoundEffect("./assets/audio/menuEnter_1.mp3");
+        });
+    });
+
+    document.querySelector("#respawnbtn").addEventListener("click", function (event) {
+        event.preventDefault();
+        respawn();
+    });
+
+    document.querySelector("#audio-setting").addEventListener("change", function (event) {
+        event.preventDefault();
+        // Todo: Change Audio Volume
+        console.log(this.value);
+    });
+
+    document.querySelector("#redirectbtn").addEventListener("click", function (event) {
+        event.preventDefault();
+        location.reload();
+    });
+}
+
+/**
+ * Displays Kill Count and Death Count of current Player
+ * @param player Info of the current Player
+ */
+export function updatePlayerInfo(player: PlayerInfo): void {
+    playerName.innerText = player.userName;
+    kills.innerText = player.killCount.toString();
+    deaths.innerText = player.deathCount.toString();
+}
+
+/**
+ * Displays current Map Name and PlayerName
+ * @param map Name of the current Map
+ */
+export function showMapInfo(map: string): void {
+    mapName.innerText = map;
+}
+
+/**
+ * Ticker in corner
+ * @param msg Message that should be displayed
+ */
+export function showTicket(msg: string): void {
+    const ticker = document.createElement('div');
+    ticker.className = "ticker position-fixed p-3";
+    ticker.innerText = msg;
+    tickerCon.append(ticker);
+    ticker.style.transition = "margin 0.5s ease-in-out";
+    ticker.style.margin = "0px";
+    ticker.style.visibility = "visible";
+
+    setTimeout(function () {
+        ticker.style.transition = "margin 0.5s ease-in-out, visibility 0s ease-in-out 0.5s";
+        ticker.style.margin = "-5em 0px 0px 0px";
+        ticker.style.visibility = "hidden";
+        ticker.addEventListener("transitionend", () => {
+            ticker.remove();
+        })
+    }, 2000);
+}
+
+// TODO:
+/**
+ * Time left until end of round
+ * @param 
+ */
+export function setTimer(): void {
+}
+
+/**
+ * 
+ */
+export function displayRespawn(): void {
+    settings.hidden = true;
+    scoreboard.hidden = true;
+    respawnCon.hidden = false;
+    document.exitPointerLock();
+}
+
+// TODO:
+/**
+ * 
+ */
+export function respawn(): void {
+    respawnCon.hidden = true;
+    //player.setDeath(false);
+    document.body.requestPointerLock();
+}
+
+/**
+ * 
+ * @param ranking Array of {@link PlayerInfo}
+ */
+export function updateScoreboard(ranking: Array<PlayerInfo>): void {
+    // TODO: Nicer Method
+    const table: HTMLElement = scoreboard.querySelector("tbody");
+    table.textContent = '';
+    for (let index = 0; index < ranking.length; index++) {
+        var row = document.createElement("tr");
+
+        const cellRank = document.createElement("td");
+        const cellRankText = document.createTextNode((index + 1).toString());
+        cellRank.appendChild(cellRankText);
+        row.appendChild(cellRank);
+
+        const cellPlayerName = document.createElement("td");
+        const cellPlayerNameText = document.createTextNode(ranking[index].userName);
+        cellPlayerName.appendChild(cellPlayerNameText);
+        row.appendChild(cellPlayerName);
+
+        const cellKills = document.createElement("td");
+        const cellKillsText = document.createTextNode(ranking[index].killCount.toString());
+        cellKills.appendChild(cellKillsText);
+        row.appendChild(cellKills);
+
+        const cellDeaths = document.createElement("td");
+        const cellDeathsText = document.createTextNode(ranking[index].deathCount.toString());
+        cellDeaths.appendChild(cellDeathsText);
+        row.appendChild(cellDeaths);
+
+        table.appendChild(row);
+    }
+}
+
+/**
+ * Show/Hide Scoreboard
+ */
+export function toggleScoreboard(): void {
+    settings.hidden = true;
+    scoreboard.hidden = scoreboard.hidden ? false : true;
+}
+
+/**
+ * Show/Hide FPS information
+ */
+export function toggleFPS(): void {
+    if (fps.style.visibility == "hidden") {
+        fps.style.transition = "margin 0.5s ease-in-out";
+        fps.style.visibility = "visible";
+        fps.style.margin = "0px";
+    } else {
+        fps.style.transition = "margin 0.5s ease-in-out, visibility 0s ease-in-out 0.5s";
+        fps.style.margin = "-5em 0px 0px 0px";
+        fps.style.visibility = "hidden";
+    }
+}
+
+/**
+ * 
+ */
+export function toggleSettings(): void {
+    scoreboard.hidden = true;
+    if (settings.hidden) {
+        settings.hidden = false;
+        document.exitPointerLock();
+    } else {
+        settings.hidden = true;
+        document.body.requestPointerLock();
+    }
+}
+
+/**
+ * 
+ * @param msg
+ */
+export function showSocketStatus(msg: string): void {
+    const statusMsg = document.createElement('span');
+    statusMsg.innerText = `${msg}\n`;
+    socketStatus.append(statusMsg);
+
+    setTimeout(function () {
+        statusMsg.remove();
+    }, 5000);
+}

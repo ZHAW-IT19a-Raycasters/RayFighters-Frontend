@@ -5,11 +5,10 @@ import { Step } from './raycaster';
 import { Room } from '../maps/room';
 import { Vec2D } from '../common/vec2d';
 import { Weapon } from '../player/weapon';
-import { Sprite } from '../entities/sprite';
 import { Entity } from '../entities/entity';
 
 /**
- * 2D image object class for easier graphics handling.
+ * Data class: 2D image object for easier graphics handling.
  */
 export class Image2D {
   image: HTMLImageElement;
@@ -21,6 +20,11 @@ export class Image2D {
   }
 }
 
+/**
+ * Data class used to store color gradients. In our case, floors and ceilings.
+ * Near refers to the color closer to the player. Far the color far away in the
+ * horizon.
+ */
 export class ColorGradient {
   constructor(public near: string, public far: string) { }
 }
@@ -41,11 +45,20 @@ export class Renderer {
    */
   private static readonly CROSSHAIR_COLOR = '#a714a2';
 
-  static STANDARD_DRAWDISTANCE = 16;
-  static STANDARD_FOCAL = 0.75;
-  static SENSORWIDTH = 1;
-  static STANDARD_FLOOR_GRADIENT = new ColorGradient('#777777', '#111111');
-  static STANDARD_CEILING_GRADIENT = new ColorGradient('#777777', '#111111');
+  /**
+   * Default value for this.drawDistance
+   */
+  private static readonly STANDARD_DRAWDISTANCE = 16;
+
+  /**
+   * Default value for this.focalLength
+   */
+  private static readonly STANDARD_FOCAL = 0.75;
+
+  /**
+   * Used for calculating this.fieldOfView
+   */
+  private static readonly SENSORWIDTH = 1;
 
   /**
     * Canvas DOM element to draw in
@@ -62,10 +75,14 @@ export class Renderer {
    * The bigger this is, the more detailed the walls are since they have more
    * bars to represent them.
    */
-  private resolution: number; // TODO create dynamic resolution based of FPS (super based idea)
+  private resolution: number;
 
   /**
    * Bar spacing. Determines how wide the bars are are.
+   * Example: If our resolution is 500 and our canvas is 1000,
+   * then spacing is 2, so walls are made of vertical bars 2px wide each.
+   * Note that the higher this (and thus resolution), the more rays are being
+   * cast.
    */
   private spacing: number;
 
@@ -78,7 +95,7 @@ export class Renderer {
   private drawDistance: number;
 
   /**
-   * Field of view. Ranges from 0 to 1.
+   * Determines the field of view. Ranges from 0 to 1.
    * This refers to the y-vector length in the unit circle. The shorter it is,the more you see.
    * https://en.wikipedia.org/wiki/Focal_length
    */
@@ -86,21 +103,35 @@ export class Renderer {
 
   /**
    * Field of view of the player.
+   * Note that this is in radians and set depending on sensor width and the
+   * focal length.
    */
   private fieldOfView: number;
+
+  /**
+   * Shall equal 0.5 * this.fieldOfView. Why as variable?: Because it's used
+   * frequently and we want to save ourselves the divisions.
+   */
   private halfFieldOfView: number;
 
   /**
-   * 
+   * The color gradient to be shown below (floor)
    */
   private floorGradient: ColorGradient;
 
   /**
-   * 
+   * The color gradient to be shown above (ceiling)
    */
   private ceilingGradient: ColorGradient;
 
+  /**
+   * The near color (#RRGGBB) for resetting the ceiling
+   */
   private originalCeilingNearColor: string;
+
+  /**
+   * The near color (#RRGGBB) for resetting the floor
+   */
   private originalFloorNearColor: string;
 
   /**
@@ -170,14 +201,15 @@ export class Renderer {
 
     this.drawWalls(room, player)
 
-
     this.drawSprites(room, player);
 
+    // When the player is dead, we don't show his weapon
     if (player.getWeapon && !player.isDead) {
       this.drawWeapon(player, time);
       this.drawCrosshair();
     }
 
+    // Show the death screen overlay when dead
     if (player.isDead) {
       this.deathScreen();
     }

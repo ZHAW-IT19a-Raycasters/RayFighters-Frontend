@@ -9,15 +9,17 @@
  */
 export enum KeyCodes {
     FORWARD = 87,       // W
-    BACKWARD = 83,      // A
+    BACKWARD = 83,      // S
     TURN_LEFT = 81,     // Q
     TURN_RIGHT = 69,    // E
-    STRAFE_LEFT = 65,   // S
+    STRAFE_LEFT = 65,   // A
     STRAFE_RIGHT = 68,  // D
     SHOOT = 32,         // SPACE
     MOUSE_TURN_LEFT,
     MOUSE_TURN_RIGHT,
-    SCOREBOARD = 9      // TAB
+    SCOREBOARD = 9,     // TAB
+    SETTINGS = 78,      // N
+    FPS = 70            // F
 }
 
 
@@ -40,7 +42,9 @@ export class Controls {
         [KeyCodes.SHOOT, false],
         [KeyCodes.MOUSE_TURN_LEFT, false],
         [KeyCodes.MOUSE_TURN_RIGHT, false],
-        [KeyCodes.SCOREBOARD, false]
+        [KeyCodes.SCOREBOARD, false],
+        [KeyCodes.SETTINGS, false],
+        [KeyCodes.FPS, false]
     ]);
 
     /**

@@ -6,8 +6,9 @@ import { Renderer } from '../rendering/renderer';
 import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
-import { ServerConnection } from '../communication/serverconnection';
-import { Enemy } from '../entities/enemy';
+import { PacketToGameLogic } from '../communication/packettogamelogic';
+import { initializeHud } from '../gameHud';
+import { showAlert } from '..';
 
 /**
  * Renderer instance. Needs to be updated upon window resize.
@@ -35,13 +36,16 @@ var room: Room
  */
 var webSocketConnectionRequired: boolean = false; 
 
-var serverConnection: ServerConnection;
+var serverConnection: PacketToGameLogic;
+
+const SERVER_URL = "ws://127.0.0.1:8080/ws/1";
+const DEFAULT_RAYCASTER_RESOLUTION = 500;
 
 /**
  * Initializes the renderer with its default settings.
  */
 function initializeRenderer() {
-  renderer = new Renderer(canvas, 500, 32, 0.6, room.getMap.getFloorGradient, room.getMap.getCeilingGradient);
+  renderer = new Renderer(canvas, DEFAULT_RAYCASTER_RESOLUTION, 32, 0.6, room.getMap.getFloorGradient, room.getMap.getCeilingGradient);
 }
 
 /**
@@ -61,8 +65,12 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   // Player Setup
   player = new Player(6, 6, 0.3 * Math.PI,  new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4));
   initializeRenderer();
+
+  // Display PlayerInfo and Mapname on HUD
+  initializeHud(room.getMap.getMapName, player.getPlayerInfo);
+
   let controls = new Controls();
-  let loop = new GameLoop(fpsCounterName, (d: number) => { renderer.changeResolution(d) });
+  let loop = new GameLoop(SERVER_URL, fpsCounterName, (d: number) => { renderer.changeResolution(d) });
 
   // Listen to window resizes, and in case of that, re-initialize renderer to prevent images from stretching.
   window.addEventListener('resize', function () {
@@ -70,9 +78,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
     loop.restartDynamicResolution();
   }, true);
 
-  serverConnection = new ServerConnection(player, function (enemies: Array<Enemy>) {
-    room.updateSpriteMap(enemies);
-  });
+  serverConnection = new PacketToGameLogic(player);
 
   /**
    * Checks if the connection to the server is alive.
@@ -93,12 +99,13 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
     // Detect if server connection has encountered an error
     if (checkConnection(loop.getSocketState) == false) {
       alert("Connection to server failed! Exiting the game.");
+      showAlert("Connection to server failed! Exiting the game.");
       // TODO: End game loop - Return to landing page
       return;
     }
 
     // Refresh sprite array and cycle walk animation
-    room.updateSpriteMap(serverConnection.getEnemies);
+    room.updateEnemyEntities(serverConnection.getEnemies);
     room.updateEnemies(time);
 
     // Update player positions, controls, map, time and sendCallback for communicating with the server.

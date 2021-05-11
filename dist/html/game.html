@@ -1,8 +1,109 @@
 <div id="debug-container"><span id="debug-window"></span></div>
 
 <div id="gameControls">
-    <div id="fps-container">FPS: <span id="fps-counter"></span></div>
-    <div id="shootbutton"><img src="assets/ui/crosshair.png" alt="crosshair"></div>
+
+    <div id="fps-container" class="position-fixed p-3">
+        FPS: <span id="fps-counter"></span>
+    </div>
+
+    <div id="ticker-container"></div>
+
+    <div id="shootbutton">
+        <img src="assets/ui/crosshair.png" alt="crosshair" />
+    </div>
+
+    <div id="socket-status" class="position-fixed"></div>
+
+    <div id="toolbar" class="container position-fixed p-3">
+        <div class="row text-center mx-0">
+
+            <div class="col-4 p-0 pr-4">
+                <div class="row justify-content-center m-0">
+                    <h5 id="mapName" class="m-0">Desert</h5>
+                </div>
+                <div class="row justify-content-center m-0">
+                    <span id="playerName">Playername</span>
+                </div>
+            </div>
+
+            <div class="col-2 p-0">
+                <div class="row justify-content-center m-0">
+                    <h5 class="m-0">Deaths</h5>
+                </div>
+                <div class="row justify-content-center m-0">
+                    <span id="deaths">0</span>
+                </div>
+            </div>
+
+            <div class="col-2 p-0">
+                <div class="row justify-content-center m-0">
+                    <h5 class="m-0">Kills</h5>
+                </div>
+                <div class="row justify-content-center m-0">
+                    <span id="kills">0</span>
+                </div>
+            </div>
+
+            <div class="col-4 p-0">
+                <div class="row justify-content-center m-0">
+                    <h5 class="m-0">Time</h5>
+                </div>
+                <div class="row justify-content-center m-0">
+                    <span id="timer" >05:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="settings-container" class="hud-con container-fluid h-100 justify-content-start" hidden>
+    <div class="row text-white p-2 mt-5">
+        <h1>Settings</h1>
+    </div>
+    <div class="row">
+        <label for="audio-setting mb-0 mr-5" class="form-label">Audio</label>
+        <input type="range" class="form-range" min="0" max="10" id="audio-setting">
+    </div>
+    <div class="row mt-5">
+        <div id="redirectbtn" class="grow makes-sound p-3">
+            <span>
+                <h5>Leave Game</h5>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="scoreboard-container" class="hud-con container-fluid h-100 justify-content-start" hidden>
+    <div class="row text-white p-2 mt-5">
+        <h1>Scoreboard</h1>
+    </div>
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Playername</th>
+                    <th scope="col">Kill #</th>
+                    <th scope="col">Death #</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="respawn-container" class="hud-con container-fluid h-100 align-items-center" hidden>
+    <div class="row text-white p-2">
+        <h1>You have been killed</h1>
+    </div>
+    <div class="row mt-5">
+        <div id="respawnbtn" class="grow makes-sound p-3">
+            <span>
+                <h4>Respawn</h4>
+            </span>
+        </div>
+    </div>
 </div>
 
 <canvas id="game-canvas"></canvas>

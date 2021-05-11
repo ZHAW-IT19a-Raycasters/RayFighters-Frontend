@@ -235,6 +235,8 @@ export class Enemy extends Entity {
      */
     public cycleSpriteState(): void {
         ++this.walkAnimationCounter;
+        // We do this modulo check because we don't want to play a step sound
+        // each time a walk animation changes.
         if (this.walkAnimationCounter % Enemy.STEP_SOUND_DIVIDER === 0) {
             Sound.get.play(SoundType.STEP, Sound.get.distanceToVolume(this.distanceToPlayer));
         }
