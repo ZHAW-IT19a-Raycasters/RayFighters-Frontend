@@ -53,16 +53,9 @@ export class Player {
   private lastPaces: number;
 
   /**
-   * Are we currently dead?
-   */
-  private dead: boolean;
-
-  /**
    * Timer for walking sounds.
    */
   private walkTimer: number;
-
-  
 
   /***
    * @constructor
@@ -78,7 +71,7 @@ export class Player {
     if (!walkSpeed) {
       this.walkSpeed = Player.DEFAULT_WALK_SPEED;
     }
-    this.playerInfo = new PlayerInfo({ killCount: 0, deathCount: 0 })
+    this.playerInfo = new PlayerInfo({isDead: false, killCount: 0, deathCount: 0 })
     this.walkTimer = 0;
   }
 
@@ -132,7 +125,7 @@ export class Player {
     let hasRotated = 0;
     const walkDelta = this.walkSpeed * seconds;
 
-    if (this.dead) {
+    if (this.playerInfo.isDead) {
       // If the player has died, we should not be able to shoot or move anymore.
       // Early return! Nothing past this point gets done if we're dead because
       // we don't want the player to be moving or shooting when he's dead.
@@ -239,8 +232,9 @@ export class Player {
    * What happens when we die.
    */
   private die(){
-    // Currently just play the death sound.
-    Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
+    if(this.playerInfo.isDead){
+      Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
+    }
   }
 
   /**
@@ -257,8 +251,8 @@ export class Player {
    */
   public changeHealth(delta: number) {
     if (this.health + delta < 0) {
-      this.dead = true;
-      return; // TODO: Handle death!
+      this.playerInfo.isDead = true;
+      return; 
     } else if (this.health + delta >= Player.MAX_HEALTH) {
       this.health = Player.MAX_HEALTH;
     } else {
@@ -279,14 +273,12 @@ export class Player {
   }
 
   public setDead(dead: boolean) {
-    this.dead = dead;
-    if(this.dead) {
-      this.die();
-    }
+    this.playerInfo.isDead = dead;
+    this.die();
   }
 
   public get isDead(){
-    return this.dead;
+    return this.playerInfo.isDead;
   }
 
   public get getPosition(): Vec2D {

@@ -91,6 +91,7 @@ export class PacketToGameLogic {
                     this.player.setPosition = newPosition;
                 } else {
                     this.enemyMap.get(p.userID).setPosition = newPosition;
+                    this.enemyMap.get(p.userID).getPlayerInfo.isDead = false;
                 }
                 break;
             case OpCode.SERVER_SHOOTING:
@@ -116,6 +117,9 @@ export class PacketToGameLogic {
         }
         if (playerInfoNew.userName) {
             playerInfoOld.userName = playerInfoNew.userName;
+        }
+        if (playerInfoNew.isDead) {
+            playerInfoOld.isDead = playerInfoNew.isDead;
         }
     }
 
@@ -172,11 +176,14 @@ export class PacketToGameLogic {
             updatePlayerInfo(this.player.getPlayerInfo);
             //displayRespawn();
             this.player.setDead(true);
+            showTicket(`${this.enemyMap.get(killerID).getPlayerInfo.userName} killed ${this.player.getPlayerInfo.userName}`);      
+        } else {
+            this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
         }
         if (killerID === this.player.getPlayerInfo.userID) {
             updatePlayerInfo(this.player.getPlayerInfo);
+            showTicket(`${this.player.getPlayerInfo.userName} killed ${this.enemyMap.get(victimID).getPlayerInfo.userName}`);      
         }
-        showTicket(`${this.enemyMap.get(killerID).getPlayerInfo.userName} killed ${this.enemyMap.get(victimID).getPlayerInfo.userName}`);      
     }
     
     public get getEnemies() {

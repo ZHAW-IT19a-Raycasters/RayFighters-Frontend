@@ -93,6 +93,11 @@ export class Enemy extends Entity {
     private spriteMap: Map<EnemySpriteState, Array<Image2D>>;
 
     /**
+     * What sprite to show when this enemy is dead
+     */
+    private deathSprite: Image2D;
+
+    /**
      * Current walking state of the enemy. See {@link EnemySpriteState}
      */
     private spriteState: EnemySpriteState;
@@ -174,6 +179,8 @@ export class Enemy extends Entity {
         this.spriteMap.set(EnemySpriteState.WALK_2, this.walkSprites2);
         this.spriteMap.set(EnemySpriteState.SHOOTING, this.shootingSprites);
 
+        this.deathSprite = new Image2D('assets/enemies/gravestone.png', Enemy.ENEMY_SCALING * Enemy.ENEMY_WIDTH, Enemy.ENEMY_SCALING * Enemy.ENEMY_HEIGHT);
+
         // Initialization of all variables.
         this.walkAnimationCounter = 0;
         this.spriteState = EnemySpriteState.IDLE;
@@ -189,6 +196,10 @@ export class Enemy extends Entity {
      * @returns an {@link Image2D} instance with the correct image.
      */
     public getSprite(): Image2D {
+        if(this.playerInfo.isDead) {
+            return this.deathSprite;
+        }
+
         const lookDirection = Math.abs(this.angle - this.lastPlayerViewingAngle);
 
         // Check east
