@@ -176,13 +176,14 @@ export class PacketToGameLogic {
             updatePlayerInfo(this.player.getPlayerInfo);
             //displayRespawn();
             this.player.setDead(true);
+            showTicket(`${this.enemyMap.get(killerID).getPlayerInfo.userName} killed ${this.player.getPlayerInfo.userName}`);      
         } else {
             this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
         }
         if (killerID === this.player.getPlayerInfo.userID) {
             updatePlayerInfo(this.player.getPlayerInfo);
+            showTicket(`${this.player.getPlayerInfo.userName} killed ${this.enemyMap.get(victimID).getPlayerInfo.userName}`);      
         }
-        showTicket(`${this.enemyMap.get(killerID).getPlayerInfo.userName} killed ${this.enemyMap.get(victimID).getPlayerInfo.userName}`);      
     }
     
     public get getEnemies() {
