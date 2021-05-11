@@ -22,7 +22,7 @@ describe('Server side protocol parser unit test', () => {
     })
 
     it('should parse shooting correctly', () => {
-        serverMessage = new Uint8Array([OpCode.SERVER_TELEPORT, 0x44, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F]);
+        serverMessage = new Uint8Array([OpCode.SERVER_SHOOTING, 0x44, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F]);
         expectedPacket = new Packet({ opCode: OpCode.SERVER_SHOOTING, userID: 0x44, angle: 0.1});
         expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
         expect(ProtocolParser.get.parse(serverMessage).userID).toBe(expectedPacket.userID);

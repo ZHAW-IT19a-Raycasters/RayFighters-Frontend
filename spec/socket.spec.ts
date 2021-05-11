@@ -80,7 +80,7 @@ describe('Socket method testing', () => {
   it('should recognize the socket ready state', () => {
     let innerWebSocket = new WebSocket(url);
     let innerSocket = new Socket(url, innerWebSocket);
-    innerWebSocket.readyState = 0;
+    innerWebSocket.readyState = 1;
 
     // Prepare SERVER_DISCONNECT message (1-byte array with content 0x64)
     let message: Uint8Array = new Uint8Array(new ArrayBuffer(1));
@@ -88,7 +88,7 @@ describe('Socket method testing', () => {
 
     // Receive data from Socket
     innerWebSocket.triggerOnMessage(message);
-    expect(innerSocket.socketState).toBe(SocketState.ERROR);
+    expect(innerSocket.socketState).toBe(SocketState.CLOSED);
     expect(innerSocket.getReceived()[0]).toBeUndefined;
     // TODO: Get this test to work correctly
   })
