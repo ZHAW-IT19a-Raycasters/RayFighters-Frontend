@@ -13,10 +13,14 @@ import { Vec2D } from "../common/vec2d";
  * - https://www.playfuljs.com/a-first-person-engine-in-265-lines/
  */
 export class Raycaster {
+    /**
+     * How far we cast rays by default. See this.currentRange.
+     */
     private static readonly DEFAULT_RANGE = 8;
+
     /**
      * Direction of the ray that's currently being worked on
-     * (cos, sin)
+     * (x,y) = (cos, sin)
      * 
      * IMPORTANT: This vector needs to be set from outside BEFORE calling
      * this.ray(..). Otherwise it'll shoot the ray in the wrong direction.

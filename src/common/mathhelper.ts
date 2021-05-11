@@ -1,5 +1,8 @@
 import { Vec2D } from "./vec2d";
 
+/**
+ * Pure functions and variable definitions to aid in mathy calculations.
+ */
 export class MathHelper {
     /**
      * Distance from start to end in the unit circle
