@@ -124,7 +124,7 @@ export class PacketToGameLogic {
      * @param list Array of {@link PlayerInfo} to be processed.
      */
     private synchronizeEnemyList(list: Array<PlayerInfo>) {
-        var ranking:  Array<PlayerInfo>;
+        //var ranking:  Array<PlayerInfo>;
         for (let index = 0; index < list.length; index++) {
             let userID = list[index].userID;
             if (userID === this.player.getPlayerInfo.userID) {
@@ -134,10 +134,10 @@ export class PacketToGameLogic {
             } else {
                 this.addEnemy(userID, list[index]);
             }
-            ranking.push(list[index]);
+            //ranking.push(list[index]);
         }
-        ranking.sort((a, b) => (b.killCount-b.deathCount) - (a.killCount-a.deathCount));
-        updateScoreboard(ranking);
+        //ranking.sort((a, b) => (b.killCount-b.deathCount) - (a.killCount-a.deathCount));
+        //updateScoreboard(ranking);
     }
 
     /**
@@ -170,7 +170,7 @@ export class PacketToGameLogic {
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
             updatePlayerInfo(this.player.getPlayerInfo);
-            displayRespawn();
+            //displayRespawn();
             this.player.setDead(true);
         }
         if (killerID === this.player.getPlayerInfo.userID) {
