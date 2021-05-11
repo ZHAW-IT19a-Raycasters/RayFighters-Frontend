@@ -67,7 +67,7 @@ function getJWT(content: any): void {
     xhttp.withCredentials = true
 
     // Retreive JWT token
-    if(window.location.host === 'localhost' || window.location.host === '127.0.0.1') {
+    if(window.location.host === 'localhost:9000' || window.location.host === '127.0.0.1:9000') {
         // Development environment
         xhttp.open("POST", "http://127.0.0.1:8080/auth", false);
     } else {
