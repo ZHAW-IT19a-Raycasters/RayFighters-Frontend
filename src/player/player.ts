@@ -13,15 +13,47 @@ import { Enemy } from "../entities/enemy";
  * Player class, handling all the Player actions.
  */
 export class Player {
+  /**
+   * How fast we're moving
+   */
   public static readonly DEFAULT_WALK_SPEED = 2;
+
+  /**
+   * Maximum player life
+   */
   public static readonly MAX_HEALTH = 150;
+
+  /**
+   * Volume of audio clip of when we're shot dead
+   */
   private static readonly DEATH_SOUND_VOLUME = 0.5;
 
+  /**
+   * Further meta informations about ourselves in the network context (what's
+   * our player name and id). Note that enemies have this information aswell.
+   */
   private playerInfo: PlayerInfo;
+
   private health: number;
+
+  /**
+   * Where we are on a 2d plane
+   */
   private position: Vec2D;
+
+  /**
+   * How far we've moved. This is used for the weapon bobbing animation.
+   */
   private paces: number;
+
+  /**
+   * Tied to this.paces. Used to determine whether we've moved.
+   */
   private lastPaces: number;
+
+  /**
+   * Are we currently dead?
+   */
   private dead: boolean;
 
   /**
@@ -35,7 +67,9 @@ export class Player {
    * @constructor
    * @param x Player postition on the x-axis
    * @param y Player postition on the y-axis
-   * @param angle Starting angle/direction
+   * @param angle Starting angle/direction in radians
+   * @param weapon What weapon we're holding
+   * @param walkSpeed Rate at which we're moving
    */
   constructor(x: number, y: number, private angle: number, private weapon?: Weapon, private walkSpeed?: number) {
     this.position = new Vec2D(x, y);
@@ -56,9 +90,9 @@ export class Player {
   }
 
   /***
-   * Rotates Player: Simulates head turning.
+   * Rotates Player: Simulates head turning. Wraps infinitely.
    *
-   * @param angle angle by how much the player rotates
+   * @param angle Delta angle by how much the player rotates.
    */
   public rotate(angle: number): void {
     this.angle = (this.angle + angle + MathHelper.CIRCLE) % MathHelper.CIRCLE;
@@ -83,7 +117,8 @@ export class Player {
   }
 
   /***
-   * Handles all the movement actions of the Player and communicates to the server.
+   * Handles all the movement actions of the Player and communicates to the
+   * server and plays sounds as needed.
    *
    * @param controls  {@link Controls}
    * @param map {@link Map}
@@ -98,52 +133,64 @@ export class Player {
 
     if (this.dead) {
       // If the player has died, we should not be able to shoot or move anymore.
+      // Early return! Nothing past this point gets done if we're dead because
+      // we don't want the player to be moving or shooting when he's dead.
       return;
     }
 
+    // Turn left
     if (controls.states.get(KeyCodes.TURN_LEFT)) {
       ++hasRotated;
       this.rotate(-Math.PI * seconds);
     }
 
+    // Turn right
     if (controls.states.get(KeyCodes.TURN_RIGHT)) {
       ++hasRotated;
       this.rotate(Math.PI * seconds);
     }
 
+    // Mouse look left
     if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
       ++hasRotated;
       this.rotate(-Math.PI * (seconds * 0.75));
       controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
     }
 
+    // Mouse look right
     if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
       ++hasRotated;
       this.rotate(Math.PI * (seconds * 0.75));
       controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
     }
 
+    // Move forward
     if (controls.states.get(KeyCodes.FORWARD)) {
       this.walk(walkDelta, map, this.angle);
       ++hasWalkedY;
     }
 
+    // Move back
     if (controls.states.get(KeyCodes.BACKWARD)) {
       this.walk(-walkDelta, map, this.angle);
       ++hasWalkedY;
     }
 
+    // Move left
     if (controls.states.get(KeyCodes.STRAFE_LEFT)) {
       this.walk(walkDelta, map, this.angle - Math.PI / 2);
       ++hasWalkedX;
     }
 
+    // Move right
     if (controls.states.get(KeyCodes.STRAFE_RIGHT)) {
       this.walk(-walkDelta, map, this.angle - Math.PI / 2);
       ++hasWalkedX;
     }
 
-    // Player-side movement handling and communication to server. Checks if the player has moved or rotated
+    // Player-side movement handling and communication to server.
+    // If we've moved or rotated, then we want to report that to the server,
+    // and play a walking sound.
     if (hasWalkedX == 1 || hasWalkedY == 1 || hasRotated >= 1) {
       // If so, accumulate paces and send message to server
       this.paces += walkDelta;
@@ -172,8 +219,6 @@ export class Player {
       }
 
       this.weapon.update(seconds);
-
-      //document.getElementById('debug-window').innerText = "Position: (" + this.position.x + " | " + this.position.y + ")";
     }
 
     if (controls.states.get(KeyCodes.SCOREBOARD)) {
@@ -181,10 +226,12 @@ export class Player {
     }
   }
 
+  /**
+   * What happens when we die.
+   */
   private die(){
-    if(this.dead){
-      Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
-    }
+    // Currently just play the death sound.
+    Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
   }
 
   /**
@@ -224,7 +271,9 @@ export class Player {
 
   public setDead(dead: boolean) {
     this.dead = dead;
-    this.die();
+    if(this.dead) {
+      this.die();
+    }
   }
 
   public get isDead(){

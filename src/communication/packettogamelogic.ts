@@ -5,7 +5,15 @@ import { OpCode } from "./opcode";
 import { Packet } from "./packet";
 import { PlayerInfo } from "./playerinfo";
 
-export class ServerConnection {
+/**
+ * Class Purpose:
+ * Packet -> Game Logic
+ * Given a packet, generate gamelogic that should result from whatever the packet tells us.
+ * 
+ * Example: Server generated a MOVEMENT packet. Thus, we want to update the
+ * movements of an enemy because he's evidently moved.
+ */
+export class PacketToGameLogic {
     /**
      * Current player instance
      */
@@ -16,16 +24,18 @@ export class ServerConnection {
      */
     private enemyMap: Map<number, Enemy>;
 
-    private updateEnemyCallback: any;
-
-    constructor(player: Player, updateEnemyCallback: any) {
+    /**
+     * 
+     * @param player Player reference
+     */
+    constructor(player: Player) {
         this.player = player;
         this.enemyMap = new Map<number, Enemy>();
-        this.updateEnemyCallback = updateEnemyCallback;
     }
 
     /**
-     * Handles all communication from the server.
+     * Generate gameplay actions through packets received from the server.
+     * 
      * @param p the parsed packet received from the server.
      */
     public handlePacket(p: Packet) {

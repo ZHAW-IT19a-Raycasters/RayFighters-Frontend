@@ -9,10 +9,10 @@
  */
 export enum KeyCodes {
     FORWARD = 87,       // W
-    BACKWARD = 83,      // A
+    BACKWARD = 83,      // S
     TURN_LEFT = 81,     // Q
     TURN_RIGHT = 69,    // E
-    STRAFE_LEFT = 65,   // S
+    STRAFE_LEFT = 65,   // A
     STRAFE_RIGHT = 68,  // D
     SHOOT = 32,         // SPACE
     MOUSE_TURN_LEFT,
