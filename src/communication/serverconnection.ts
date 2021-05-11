@@ -78,6 +78,7 @@ export class ServerConnection {
                     this.player.setPosition = newPosition;
                 } else {
                     this.enemyMap.get(p.userID).setPosition = newPosition;
+                    this.enemyMap.get(p.userID).getPlayerInfo.isDead = false;
                 }
                 break;
             case OpCode.SERVER_SHOOTING:
@@ -103,6 +104,9 @@ export class ServerConnection {
         }
         if (playerInfoNew.userName) {
             playerInfoOld.userName = playerInfoNew.userName;
+        }
+        if (playerInfoNew.isDead) {
+            playerInfoOld.isDead = playerInfoNew.isDead;
         }
     }
 
@@ -154,6 +158,8 @@ export class ServerConnection {
         if (victimID === this.player.getPlayerInfo.userID) {
             // TODO: Call GUI
             this.player.setDead(true);
+        } else {
+            this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
         }
                 
         // TODO update kill feed

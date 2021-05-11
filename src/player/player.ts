@@ -22,14 +22,11 @@ export class Player {
   private position: Vec2D;
   private paces: number;
   private lastPaces: number;
-  private dead: boolean;
 
   /**
    * Timer for walking sounds.
    */
   private walkTimer: number;
-
-  
 
   /***
    * @constructor
@@ -43,7 +40,7 @@ export class Player {
     if (!walkSpeed) {
       this.walkSpeed = Player.DEFAULT_WALK_SPEED;
     }
-    this.playerInfo = new PlayerInfo({ killCount: 0, deathCount: 0 })
+    this.playerInfo = new PlayerInfo({isDead: false, killCount: 0, deathCount: 0 })
     this.walkTimer = 0;
   }
 
@@ -96,7 +93,7 @@ export class Player {
     let hasRotated = 0;
     const walkDelta = this.walkSpeed * seconds;
 
-    if (this.dead) {
+    if (this.playerInfo.isDead) {
       // If the player has died, we should not be able to shoot or move anymore.
       return;
     }
@@ -182,7 +179,7 @@ export class Player {
   }
 
   private die(){
-    if(this.dead){
+    if(this.playerInfo.isDead){
       Sound.get.play(SoundType.DEATH, Player.DEATH_SOUND_VOLUME);
     }
   }
@@ -201,7 +198,7 @@ export class Player {
    */
   public changeHealth(delta: number) {
     if (this.health + delta < 0) {
-      this.dead = true;
+      this.playerInfo.isDead = true;
       return; 
     } else if (this.health + delta >= Player.MAX_HEALTH) {
       this.health = Player.MAX_HEALTH;
@@ -223,12 +220,12 @@ export class Player {
   }
 
   public setDead(dead: boolean) {
-    this.dead = dead;
+    this.playerInfo.isDead = dead;
     this.die();
   }
 
   public get isDead(){
-    return this.dead;
+    return this.playerInfo.isDead;
   }
 
   public get getPosition(): Vec2D {
