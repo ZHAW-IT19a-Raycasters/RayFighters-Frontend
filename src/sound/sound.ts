@@ -60,6 +60,9 @@ export class Sound {
      */
     public play(type: SoundType, volume: number) {
         let audio; 
+        if(volume < 0) {
+            return;
+        }
         
         // Differentiate if the sound is a step sound
         if (type === SoundType.STEP) {
@@ -67,21 +70,16 @@ export class Sound {
             // Shuffle random number based on array length
             audio = <HTMLAudioElement> this.stepSounds[randomIndex].cloneNode();
             if (volume > Sound.STEP_MAX_VOLUME) {
-                volume = Sound.STEP_MAX_VOLUME;
+                audio.volume = Sound.STEP_MAX_VOLUME;
             }
         } else {
             // In case it is a regular sound
             audio = <HTMLAudioElement>this.audioMap.get(type).cloneNode();
             if (volume > 1) {
-                volume = 1;
+                audio.volume = 1.;
             }
         }
-        if (volume < 0) {
-            volume = 0;
-        }
-        audio.volume = volume;
         audio.play();
-        document.getElementById('debug-window').innerText = "bang! (" + volume + ")";
     }
 
     
