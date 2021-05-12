@@ -60,7 +60,7 @@ export class Sound {
      */
     public play(type: SoundType, volume: number) {
         let audio; 
-        if(volume < 0) {
+        if(volume <= 0) {
             return;
         }
         
