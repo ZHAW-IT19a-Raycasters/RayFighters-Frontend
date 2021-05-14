@@ -1,4 +1,6 @@
 import { Queue } from 'queue-typescript';
+import { showAlert } from '..';
+import { showSocketStatus } from '../gameHud';
 import { Packet } from './packet';
 import { ProtocolParser } from './protocolparser';
 
@@ -53,7 +55,7 @@ export class Socket {
         this.socket.binaryType = "arraybuffer";
         
         this.socket.onopen = (e) => {
-            // console.log("Connection established.");
+            showSocketStatus("Connection established.");
             this.socketState = SocketState.CONNECTED;
         };
 
@@ -67,12 +69,14 @@ export class Socket {
         };
 
         this.socket.onclose = (e) => {
-            // console.log("Connection from server closed.");
+            // TODO: change to showAlert()
+            showSocketStatus("Connection from server closed.");
             this.socketState = SocketState.CLOSED;
         };
         
         this.socket.onerror = (e) => {
-            // console.log("ERROR! Connection couldn't be established.");
+            // TODO: change to showAlert()
+            showSocketStatus("ERROR! Connection couldn't be established.");
             this.socketState = SocketState.ERROR;
         };
     }

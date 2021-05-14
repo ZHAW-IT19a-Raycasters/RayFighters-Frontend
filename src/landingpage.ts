@@ -1,10 +1,10 @@
-import { loadPage } from ".";
+import { loadPage, playSoundEffect } from ".";
 import { runGame } from "./logic/game";
 
 /**
  * Register all Evenlisteners for the Startmenu
  */
-export function landingpageScript(): void {
+export function initializeLandingPage(): void {
 
     const startTab: HTMLFormElement = document.querySelector("#logInForm");
     const aboutTab: HTMLElement = document.querySelector("#aboutTab");
@@ -18,7 +18,7 @@ export function landingpageScript(): void {
     startTab.addEventListener("submit", function (event) {
         event.preventDefault();
         backgroundMusic.pause()
-        handleLogIn();
+        handleLogIn(this);
     });
     document.querySelectorAll(".menu-item").forEach(item => {
         item.addEventListener("mouseenter", (event) => {
@@ -67,7 +67,13 @@ function getJWT(content: any): void {
     xhttp.withCredentials = true
 
     // Retreive JWT token
-    xhttp.open("POST", "http://127.0.0.1:8080/auth", false);
+    if(window.location.host === 'localhost:9000' || window.location.host === '127.0.0.1:9000') {
+        // Development environment
+        xhttp.open("POST", "http://127.0.0.1:8080/auth", false);
+    } else {
+        // Production environment
+        xhttp.open("POST", "/server/auth", false);
+    }
 
     // Connecting to server
     xhttp.setRequestHeader("Content-type", "application/json");
@@ -80,9 +86,10 @@ function getJWT(content: any): void {
 
 /**
  * Starts the game and requests a JWT
+ * @param form
  */
-function handleLogIn(): void {
-    const formData = new FormData(this);
+function handleLogIn(form: HTMLFormElement): void {
+    const formData = new FormData(form);
     const playerName = formData.get("inputPlayerName") as string;
     const content = { "username": playerName };
 
@@ -114,16 +121,6 @@ function toggleBackMusic(icon: any, backgroundMusic: HTMLAudioElement): void {
         backgroundMusic.muted = true;
         icon.innerHTML = '<h5><i class="bi bi-volume-mute"></i></h5>';
     }
-}
-
-/**
- * Plays soundeffect
- * @param audioPath Soundeffect that should be played
- */
-function playSoundEffect(audioPath: string): void {
-    const soundEffect: HTMLAudioElement = new Audio(audioPath);
-    soundEffect.volume = 0.1;
-    (<HTMLAudioElement>soundEffect.cloneNode()).play();
 }
 
 /**

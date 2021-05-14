@@ -8,11 +8,13 @@
     public userName?: string;
     public killCount?: number;
     public deathCount?: number;
+    public isDead?: boolean;
 
-    constructor({userID, userName, killCount, deathCount} : {userID?: number, userName?: string, killCount?: number, deathCount?: number}) {
+    constructor({userID, userName, killCount, deathCount, isDead} : {userID?: number, userName?: string, killCount?: number, deathCount?: number, isDead?: boolean}) {
         this.userID = userID;
         this.userName = userName;
         this.killCount = killCount;
         this.deathCount = deathCount;
+        this.isDead = isDead;
     }
 }

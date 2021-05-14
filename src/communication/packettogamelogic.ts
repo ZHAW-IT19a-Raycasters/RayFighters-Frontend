@@ -4,6 +4,7 @@ import { Enemy } from "../entities/enemy";
 import { OpCode } from "./opcode";
 import { Packet } from "./packet";
 import { PlayerInfo } from "./playerinfo";
+import { displayRespawn, showTicket, updatePlayerInfo, updateScoreboard } from "../gameHud";
 
 /**
  * Class Purpose:
@@ -65,10 +66,12 @@ export class PacketToGameLogic {
             case OpCode.SERVER_PLAYERJOINED:
                 console.log("New player has joined: ID " + p.name);
                 this.addEnemy(p.userID, new PlayerInfo({userID: p.userID, userName: p.name, killCount: 0, deathCount: 0}))
+                showTicket(`${p.name} has joined`);
                 break;
             case OpCode.SERVER_PLAYERLEFT:
                 console.log("Player has left: ID " + p.name);
                 this.removeEnemy(p.userID);
+                showTicket(`${p.name} has left`);
                 break;
             case OpCode.SERVER_SENDALLPLAYERINFO:
                 console.log("Server has sent all player info");
@@ -88,12 +91,14 @@ export class PacketToGameLogic {
                     this.player.setPosition = newPosition;
                 } else {
                     this.enemyMap.get(p.userID).setPosition = newPosition;
+                    this.enemyMap.get(p.userID).getPlayerInfo.isDead = false;
                 }
                 break;
             case OpCode.SERVER_SHOOTING:
                 this.enemyMap.get(p.userID).shoot(this.player.getPosition);
-                // TODO play sound
                 break;
+            case OpCode.SERVER_MAPCHANGE:
+                // TODO 
             default:
                 break;
         }
@@ -114,6 +119,9 @@ export class PacketToGameLogic {
         if (playerInfoNew.userName) {
             playerInfoOld.userName = playerInfoNew.userName;
         }
+        if (playerInfoNew.isDead) {
+            playerInfoOld.isDead = playerInfoNew.isDead;
+        }
     }
 
     /**
@@ -121,6 +129,7 @@ export class PacketToGameLogic {
      * @param list Array of {@link PlayerInfo} to be processed.
      */
     private synchronizeEnemyList(list: Array<PlayerInfo>) {
+        //var ranking:  Array<PlayerInfo>;
         for (let index = 0; index < list.length; index++) {
             let userID = list[index].userID;
             if (userID === this.player.getPlayerInfo.userID) {
@@ -130,7 +139,10 @@ export class PacketToGameLogic {
             } else {
                 this.addEnemy(userID, list[index]);
             }
+            //ranking.push(list[index]);
         }
+        //ranking.sort((a, b) => (b.killCount-b.deathCount) - (a.killCount-a.deathCount));
+        //updateScoreboard(ranking);
     }
 
     /**
@@ -162,13 +174,19 @@ export class PacketToGameLogic {
     private playerDeath(killerID: number, victimID: number){
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
-            // TODO: Call GUI
+            updatePlayerInfo(this.player.getPlayerInfo);
+            //displayRespawn();
             this.player.setDead(true);
+            showTicket(`${this.enemyMap.get(killerID).getPlayerInfo.userName} killed ${this.player.getPlayerInfo.userName}`);      
+        } else {
+            this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
         }
-                
-        // TODO update kill feed
+        if (killerID === this.player.getPlayerInfo.userID) {
+            updatePlayerInfo(this.player.getPlayerInfo);
+            showTicket(`${this.player.getPlayerInfo.userName} killed ${this.enemyMap.get(victimID).getPlayerInfo.userName}`);      
+        }
     }
-
+    
     public get getEnemies() {
         return Array.from(this.enemyMap.values());
     }

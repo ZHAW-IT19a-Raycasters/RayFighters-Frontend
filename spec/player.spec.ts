@@ -10,12 +10,11 @@ import { Sound } from "../src/sound/sound";
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document, Audio, HTMLAudioElement, Image } = (new JSDOM(index)).window;
 global.document = document;
-//Sound.get.setAudio = Audio;
 
 describe('Player module testing', () => {
   it('should instantiate the player correctly', () => {
     const testWeapon = new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4);
-    const testPosition = new Vec2D(6,9);
+    const testPosition = new Vec2D(6, 9);
     const testAngle = 6.9;
     const testSpeed = 1;
     let player = new Player(testPosition.x, testPosition.y, testAngle, testWeapon, testSpeed);
@@ -27,7 +26,7 @@ describe('Player module testing', () => {
     expect(player.isDead).toBe(false);
     expect(player.getPlayerInfo).toBeUndefined;
   });
-  
+
   it('should rotate the player by 90 degrees', () => {
     let player = new Player(0, 0, 0);
     player.rotate(Math.PI / 2); // (0 + Math.PI/2 + Math.PI*2) % (Math.PI*2)
