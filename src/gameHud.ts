@@ -207,9 +207,12 @@ export function toggleSettings(): void {
 export function showSocketStatus(msg: string): void {
     const statusMsg = document.createElement('span');
     statusMsg.innerText = `${msg}\n`;
-    socketStatus.append(statusMsg);
+    if (typeof process === 'undefined') {
+        socketStatus.append(statusMsg);
 
-    setTimeout(function () {
-        statusMsg.remove();
-    }, 5000);
+        setTimeout(function () {
+            statusMsg.remove();
+        }, 5000);
+    
+    }
 }
