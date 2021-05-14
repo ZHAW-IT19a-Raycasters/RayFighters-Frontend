@@ -113,7 +113,7 @@ describe('Server side protocol parser unit test', () => {
 
     it('should throw an error if an invalid package is parsed', () => {
         serverMessage = new Uint8Array([OpCode.CLIENT_UNKNOWN]);
-        expect(ProtocolParser.get.parse(serverMessage).opCode).toThrowError("Opcode not recognized! Can't parse!");
+        expect(function () { ProtocolParser.get.parse(serverMessage) }).toThrowError("Opcode not recognized! Can't parse!");
     });
 
     it('should parse map change data correctly', () => {
@@ -188,7 +188,7 @@ describe('Client side protocol serialize unit test', () => {
 
     it('should throw an error if an invalid package is serialized', () => {
         const packet: Packet = new Packet({ opCode: OpCode.SERVER_DISCONNECT })
-        expect(ProtocolParser.get.serialize(packet)).toThrowError;
+        expect(function () { ProtocolParser.get.serialize(packet) }).toThrowError;
     })
 })
 

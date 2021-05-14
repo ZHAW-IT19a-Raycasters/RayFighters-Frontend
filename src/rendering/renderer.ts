@@ -11,12 +11,18 @@ import { Entity } from '../entities/entity';
  * Data class: 2D image object for easier graphics handling.
  */
 export class Image2D {
-  image: HTMLImageElement;
+  image: any;
   source: string;
 
   constructor(source: string, public width: number, public height: number) {
-    this.image = new Image(width, height);
-    this.image.src = source;
+    if (typeof process === 'undefined') {
+      this.image = new Image(width, height);
+      this.image.src = source;
+    } else {
+      // Workaround for undefined Image object errors when running in node (Jasmine testing)
+      this.image = { src : source };
+    }
+    
   }
 }
 

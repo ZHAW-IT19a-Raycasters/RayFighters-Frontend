@@ -6,7 +6,6 @@ import { JSDOM } from 'jsdom';
 import * as fs from 'fs'
 import { Weapon } from "../src/player/weapon";
 import { Vec2D } from "../src/common/vec2d";
-import { Sound } from "../src/sound/sound";
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document, Audio, HTMLAudioElement, Image } = (new JSDOM(index)).window;
 global.document = document;
@@ -52,7 +51,7 @@ describe('Player module testing', () => {
     player.update(controls, map, seconds, dummyCallback);
 
     expect(player.getDirection).toBeCloseTo(Math.PI);
-    expect(player.getPosition.x).toBeCloseTo(-seconds * Player.DEFAULT_WALK_SPEED);
+    expect(player.getPosition.x).toBeCloseTo(-seconds * Player.DEFAULT_WALK_SPEED * 2);
     expect(player.getPosition.y).toBeCloseTo(0);
   });
 });
