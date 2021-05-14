@@ -72,7 +72,7 @@ export class ProtocolParser {
                 packet = new Packet({ opCode: opCode, playerCount: message[1], playerKillDeathList: this.assemblePlayerList(opCode, message.slice(2), message[1]) });
                 break;
             case OpCode.SERVER_MAPCHANGE:
-                packet = new Packet({ opCode: opCode, mapID: message[1], time: this.u8ArraytoBigInt(message, 3) });
+                packet = new Packet({ opCode: opCode, mapID: message[1], time: this.u8ArraytoBigInt(message, 2) });
                 break;
             default:
                 throw Error("Opcode not recognized! Can't parse!");
@@ -123,12 +123,11 @@ export class ProtocolParser {
         const n256 = BigInt(256);
         let result = zero;
         let base = one;
-        byteData.forEach(function (byte) {
-            result += (base * (BigInt(byte)));
+        for (let index = 0; index < 8; index++) {
+            result += (base * (BigInt(byteData[startIndex + index])));
             base *= (n256);
-        });
+        }
         return result;
-
     }
 
     /**
@@ -217,7 +216,7 @@ export class ProtocolParser {
                     byteData[index + 1] = convertedFloat[index];
                 }
                 break;
-
+                        
             default:
                 throw Error("Opcode not recognized! Can't serialize!");
         }

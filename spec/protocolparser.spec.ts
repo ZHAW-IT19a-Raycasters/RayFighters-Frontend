@@ -172,20 +172,6 @@ describe('Client side protocol serialize unit test', () => {
         }
     })
 
-    it('should read map change and time correctly', () => {
-        const expectedData = [
-            0x8c,                                               // Opcode
-            0x01,                                               // Map with ID 1
-            0x00, 0x60, 0x18, 0xab, 0xed, 0xef, 0x74, 0x11      // Time (1257894000000000000)
-        ];
-        const packet: Packet = new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: 1, time: BigInt(1257894000000000000) });
-        const byteData = ProtocolParser.get.serialize(packet);
-        expect(byteData.length).toBe(expectedData.length);
-        for (let index = 0; index < expectedData.length; index++) {
-            expect(byteData[index]).toBe(expectedData[index]);
-        }
-    })
-
     it('should throw an error if an invalid package is serialized', () => {
         const packet: Packet = new Packet({ opCode: OpCode.SERVER_DISCONNECT })
         expect(function () { ProtocolParser.get.serialize(packet) }).toThrowError;
