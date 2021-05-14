@@ -2,8 +2,10 @@ import { OpCode } from "../src/communication/opcode";
 import { Packet } from "../src/communication/packet";
 import { PlayerInfo } from "../src/communication/playerinfo";
 import { ProtocolParser } from "../src/communication/protocolparser";
+import { PreTest } from "./pretest";
 const { TextEncoder } = require("fastestsmallesttextencoderdecoder");
 
+const preTest = new PreTest();
 
 let serverMessage: Uint8Array;
 let expectedPacket: Packet;
@@ -19,6 +21,24 @@ describe('Server side protocol parser unit test', () => {
         serverMessage = new Uint8Array([OpCode.SERVER_UNKNOWN]);
         expectedPacket = new Packet({ opCode: OpCode.SERVER_UNKNOWN });
         expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
+    })
+
+    it('should parse shooting correctly', () => {
+        serverMessage = new Uint8Array([OpCode.SERVER_SHOOTING, 0x44, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F]);
+        expectedPacket = new Packet({ opCode: OpCode.SERVER_SHOOTING, userID: 0x44, angle: 0.1 });
+        expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
+        expect(ProtocolParser.get.parse(serverMessage).userID).toBe(expectedPacket.userID);
+        expect(ProtocolParser.get.parse(serverMessage).angle).toBe(expectedPacket.angle);
+    })
+
+    it('should parse movement correctly', () => {
+        serverMessage = new Uint8Array([OpCode.SERVER_MOVEMENT, 0x44, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xC9, 0x3F, 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F]);
+        expectedPacket = new Packet({ opCode: OpCode.SERVER_MOVEMENT, userID: 0x44, coorX: 0.1, coorY: 0.2, angle: 0.1 });
+        expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
+        expect(ProtocolParser.get.parse(serverMessage).userID).toBe(expectedPacket.userID);
+        expect(ProtocolParser.get.parse(serverMessage).coorX).toBe(expectedPacket.coorX);
+        expect(ProtocolParser.get.parse(serverMessage).coorY).toBe(expectedPacket.coorY);
+        expect(ProtocolParser.get.parse(serverMessage).angle).toBe(expectedPacket.angle);
     })
 
     it('should parse teleport correctly', () => {
@@ -90,6 +110,23 @@ describe('Server side protocol parser unit test', () => {
         expect(ProtocolParser.get.parse(serverMessage).playerKillDeathList[1]).toEqual(expectedPacket.playerKillDeathList[1]);
         expect(ProtocolParser.get.parse(serverMessage).playerKillDeathList[2]).toEqual(expectedPacket.playerKillDeathList[2]);
     })
+
+    it('should throw an error if an invalid package is parsed', () => {
+        serverMessage = new Uint8Array([OpCode.CLIENT_UNKNOWN]);
+        expect(function () { ProtocolParser.get.parse(serverMessage) }).toThrowError("Opcode not recognized! Can't parse!");
+    });
+
+    it('should parse map change data correctly', () => {
+        serverMessage = new Uint8Array([
+            OpCode.SERVER_MAPCHANGE,
+            0x01,                                               // Map with ID 1
+            0x00, 0x60, 0x18, 0xab, 0xed, 0xef, 0x74, 0x11      // Time (1257894000000000000)
+        ]);
+        expectedPacket = new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: 1, time: BigInt(1257894000000000000) });
+        expect(ProtocolParser.get.parse(serverMessage).opCode).toBe(expectedPacket.opCode);
+        expect(ProtocolParser.get.parse(serverMessage).mapID).toBe(expectedPacket.mapID);
+        expect(ProtocolParser.get.parse(serverMessage).time).toBe(expectedPacket.time);
+    });
 })
 
 describe('Client side protocol serialize unit test', () => {
@@ -113,8 +150,8 @@ describe('Client side protocol serialize unit test', () => {
             0x00, 0x00, 0x00, 0x00, 0x00, 0xD0, 0x84, 0x40,     // X movement (666.0)
             0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40,     // Y movement (999.999)
             0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40      // angle (999.999)
-        ];    
-        const packet: Packet = new Packet({ opCode: OpCode.CLIENT_MOVEMENT, coorX: 666.0, coorY: 999.999, angle: 999.999 })
+        ];
+        const packet: Packet = new Packet({ opCode: OpCode.CLIENT_MOVEMENT, coorX: 666.0, coorY: 999.999, angle: 999.999 });
         const byteData = ProtocolParser.get.serialize(packet);
         expect(byteData.length).toBe(expectedData.length);
         for (let index = 0; index < expectedData.length; index++) {
@@ -127,11 +164,20 @@ describe('Client side protocol serialize unit test', () => {
             0x14,                                               // Opcode
             0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0x1B, 0x40      // Angle (6.9)
         ];
-        const packet: Packet = new Packet({ opCode: OpCode.CLIENT_SHOOTING, angle: 6.9 })
+        const packet: Packet = new Packet({ opCode: OpCode.CLIENT_SHOOTING, angle: 6.9 });
         const byteData = ProtocolParser.get.serialize(packet);
         expect(byteData.length).toBe(expectedData.length);
         for (let index = 0; index < expectedData.length; index++) {
             expect(byteData[index]).toBe(expectedData[index]);
         }
     })
+
+    it('should throw an error if an invalid package is serialized', () => {
+        const packet: Packet = new Packet({ opCode: OpCode.SERVER_DISCONNECT })
+        expect(function () { ProtocolParser.get.serialize(packet) }).toThrowError;
+    })
 })
+
+describe("Protocol parser helper methods", () => {
+    // TODO not sure if i want to test them
+});

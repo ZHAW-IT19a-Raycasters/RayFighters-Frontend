@@ -96,8 +96,9 @@ export class PacketToGameLogic {
                 break;
             case OpCode.SERVER_SHOOTING:
                 this.enemyMap.get(p.userID).shoot(this.player.getPosition);
-                // TODO play sound
                 break;
+            case OpCode.SERVER_MAPCHANGE:
+                // TODO 
             default:
                 break;
         }

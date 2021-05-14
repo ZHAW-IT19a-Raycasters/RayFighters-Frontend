@@ -25,7 +25,7 @@ export class Sound {
      * Maximum volume of steps. Ranges between 0 and 1.
      */
     public static readonly STEP_MAX_VOLUME = 0.25;
-    
+
     /**
      * Map of audio files.
      */
@@ -42,16 +42,22 @@ export class Sound {
     private constructor() {
         // Prepare regular sound map.
         this.audioMap = new Map<SoundType, HTMLAudioElement>();
-        this.audioMap.set(SoundType.SHOOT, new Audio('./assets/audio/9mm.mp3'));
-        this.audioMap.set(SoundType.DEATH, new Audio('./assets/audio/death.wav'));
+        if (typeof process === 'undefined') {
+            this.audioMap.set(SoundType.SHOOT, new Audio('./assets/audio/9mm.mp3'));
+            this.audioMap.set(SoundType.DEATH, new Audio('./assets/audio/death.wav'));
+        }
+
 
         // Prepare footstep sound array.
         this.stepSounds = new Array<HTMLAudioElement>();
-        this.stepSounds.push(new Audio('./assets/audio/step_1.wav'));
-        this.stepSounds.push(new Audio('./assets/audio/step_2.wav'));
-        this.stepSounds.push(new Audio('./assets/audio/step_3.wav'));
-        this.stepSounds.push(new Audio('./assets/audio/step_4.wav'));
-        this.stepSounds.push(new Audio('./assets/audio/step_5.wav'));
+        if (typeof process === 'undefined') {
+            // early return if run from node (Audio makes tests fail)
+            this.stepSounds.push(new Audio('./assets/audio/step_1.wav'));
+            this.stepSounds.push(new Audio('./assets/audio/step_2.wav'));
+            this.stepSounds.push(new Audio('./assets/audio/step_3.wav'));
+            this.stepSounds.push(new Audio('./assets/audio/step_4.wav'));
+            this.stepSounds.push(new Audio('./assets/audio/step_5.wav'));
+        }
     }
 
     /**
@@ -59,16 +65,21 @@ export class Sound {
      * @param volume how loud the sound plays. Ranges from 0 to 1.
      */
     public play(type: SoundType, volume: number) {
-        let audio; 
-        if(volume <= 0) {
+        // early return if run from node (Audio makes tests fail)
+        if (typeof process !== 'undefined') {
             return;
         }
-        
+
+        let audio;
+        if (volume <= 0) {
+            return;
+        }
+
         // Differentiate if the sound is a step sound
         if (type === SoundType.STEP) {
             const randomIndex = Math.floor(Math.random() * this.stepSounds.length);
             // Shuffle random number based on array length
-            audio = <HTMLAudioElement> this.stepSounds[randomIndex].cloneNode();
+            audio = <HTMLAudioElement>this.stepSounds[randomIndex].cloneNode();
             if (volume > Sound.STEP_MAX_VOLUME) {
                 audio.volume = Sound.STEP_MAX_VOLUME;
             }
@@ -82,7 +93,7 @@ export class Sound {
         audio.play();
     }
 
-    
+
 
     /**
      * Calculates an ideal volume curve for sounds that have been triggered somewhere else on the map.
