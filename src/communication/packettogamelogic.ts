@@ -43,18 +43,15 @@ export class PacketToGameLogic {
      */
     public handlePacket(p: Packet) {
         switch (p.opCode) {
-            // TODO create methods for each case
             case OpCode.SERVER_PLAYERDEATH:
                 this.playerDeath(p.killerID, p.victimID);
                 break;
             case OpCode.SERVER_DISCONNECT:
                 alert("Server has disconnected!");
                 this.cancelGame();
-                // TODO: Handle disconnect
                 break;
             case OpCode.SERVER_UNKNOWN:
                 alert("Server has sent unknown message");
-                // TODO: Handle unknown
                 break;
             case OpCode.SERVER_MOVEMENT:
                 this.movement(p);

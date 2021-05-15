@@ -308,5 +308,9 @@ export class Player {
   public get getWalkSpeed(): number {
     return this.walkSpeed;
   }
+
+  public set setPlayerInfo(playerInfo: PlayerInfo) {
+    this.playerInfo = playerInfo;
+  }
 }
 
