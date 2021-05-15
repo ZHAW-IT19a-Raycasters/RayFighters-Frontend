@@ -5,6 +5,7 @@ import { OpCode } from "./opcode";
 import { Packet } from "./packet";
 import { PlayerInfo } from "./playerinfo";
 import { displayRespawn, showTicket, updatePlayerInfo, updateScoreboard } from "../gameHud";
+import { loadPage } from "..";
 
 /**
  * Class Purpose:
@@ -47,6 +48,7 @@ export class PacketToGameLogic {
                 break;
             case OpCode.SERVER_DISCONNECT:
                 alert("Server has disconnected!");
+                this.cancelGame();
                 // TODO: Handle disconnect
                 break;
             case OpCode.SERVER_UNKNOWN:
@@ -54,14 +56,12 @@ export class PacketToGameLogic {
                 // TODO: Handle unknown
                 break;
             case OpCode.SERVER_MOVEMENT:
-                this.enemyMap.get(p.userID).setPosition = new Vec2D(p.coorX, p.coorY);
-                this.enemyMap.get(p.userID).setAngle = p.angle;
-                this.enemyMap.get(p.userID).walk();
-                this.enemyMap.get(p.userID).updateDistanceToPlayer(this.player.getPosition);
+                this.movement(p);
                 break;
             case OpCode.SERVER_YOUARECALLED:
                 console.log("Your ID is: " + p.userID);
-                this.player.getPlayerInfo.userID = p.userID
+                this.player.getPlayerInfo.userID = p.userID;
+                updatePlayerInfo(this.player.getPlayerInfo);
                 break;
             case OpCode.SERVER_PLAYERJOINED:
                 console.log("New player has joined: ID " + p.name);
@@ -83,16 +83,7 @@ export class PacketToGameLogic {
                 break;
             case OpCode.SERVER_TELEPORT:
                 console.log("Player with ID" + p.userID + "has been teleported to" + p.coorX + "|" + p.coorY);
-                const newPosition = new Vec2D(p.coorX, p.coorY);
-                if (p.userID === this.player.getPlayerInfo.userID) {
-                    // If player gets teleported (also happening when spawning), set player not not dead.
-                    this.player.setDead(false);
-                    // Transport player to new position.
-                    this.player.setPosition = newPosition;
-                } else {
-                    this.enemyMap.get(p.userID).setPosition = newPosition;
-                    this.enemyMap.get(p.userID).getPlayerInfo.isDead = false;
-                }
+                this.teleport(p);
                 break;
             case OpCode.SERVER_SHOOTING:
                 this.enemyMap.get(p.userID).shoot(this.player.getPosition);
@@ -132,11 +123,7 @@ export class PacketToGameLogic {
         //var ranking:  Array<PlayerInfo>;
         for (let index = 0; index < list.length; index++) {
             let userID = list[index].userID;
-            if (userID === this.player.getPlayerInfo.userID) {
-                this.updatePlayerInfo(this.player.getPlayerInfo, list[index]);
-                // Refresh player info on HUD.
-                updatePlayerInfo(this.player.getPlayerInfo);
-            } else if (this.enemyMap.has(userID)) {
+            if (this.enemyMap.has(userID)) {
                 this.updatePlayerInfo(this.enemyMap.get(userID).getPlayerInfo, list[index]);
             } else {
                 this.addEnemy(userID, list[index]);
@@ -177,7 +164,7 @@ export class PacketToGameLogic {
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
             updatePlayerInfo(this.player.getPlayerInfo);
-            //displayRespawn();
+            // TODO: displayRespawn();
             this.player.setDead(true);
             showTicket(`${this.enemyMap.get(killerID).getPlayerInfo.userName} killed ${this.player.getPlayerInfo.userName}`);      
         } else {
@@ -189,11 +176,47 @@ export class PacketToGameLogic {
             this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
         }
         if (killerID === this.player.getPlayerInfo.userID) {
+            this.player.getPlayerInfo.killCount++;
             updatePlayerInfo(this.player.getPlayerInfo);
             showTicket(`${this.player.getPlayerInfo.userName} killed ${this.enemyMap.get(victimID).getPlayerInfo.userName}`);      
         }
     }
+
+    /**
+     * Handles movement
+     * @param p Packet received from the server.
+     */
+    private movement(p: Packet) {
+        this.enemyMap.get(p.userID).setPosition = new Vec2D(p.coorX, p.coorY);
+        this.enemyMap.get(p.userID).setAngle = p.angle;
+        this.enemyMap.get(p.userID).walk();
+        this.enemyMap.get(p.userID).updateDistanceToPlayer(this.player.getPosition);
+    }
+
+    /**
+     * Handles teleportation, as well as respawning.
+     * @param p Packet received from the server.
+     */
+    private teleport(p: Packet) {
+        const newPosition = new Vec2D(p.coorX, p.coorY);
+        if (p.userID === this.player.getPlayerInfo.userID) {
+            // If player gets teleported (also happening when spawning), set player not not dead.
+            this.player.setDead(false);
+            // Transport player to new position.
+            this.player.setPosition = newPosition;
+        } else {
+            this.enemyMap.get(p.userID).setPosition = newPosition;
+            this.enemyMap.get(p.userID).getPlayerInfo.isDead = false;
+        }
+    }
     
+    /**
+     * Stops the game and returns the player to the landing page.
+     */
+    private cancelGame(){
+        loadPage('./index.html');
+    }
+
     public get getEnemies() {
         return Array.from(this.enemyMap.values());
     }

@@ -71,7 +71,15 @@ export class Player {
     if (!walkSpeed) {
       this.walkSpeed = Player.DEFAULT_WALK_SPEED;
     }
-    this.playerInfo = new PlayerInfo({isDead: false, killCount: 0, deathCount: 0 })
+
+    this.playerInfo = new PlayerInfo({isDead: false, killCount: 0, deathCount: 0 });
+
+    // Retrieve player name from local storage
+    if (typeof(Storage) !== 'undefined'){
+      const playerName = localStorage.getItem('name');
+      this.playerInfo.userName = playerName;
+    }
+    
     this.walkTimer = 0;
   }
 

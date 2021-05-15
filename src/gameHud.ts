@@ -61,12 +61,12 @@ export function initializeHud(map: string, player: PlayerInfo) {
 
 /**
  * Displays Kill Count and Death Count of current Player
- * @param player Info of the current Player
+ * @param playerInfo Info of the current Player
  */
-export function updatePlayerInfo(player: PlayerInfo): void {
-    playerName.innerText = player.userName;
-    kills.innerText = player.killCount.toString();
-    deaths.innerText = player.deathCount.toString();
+export function updatePlayerInfo(playerInfo: PlayerInfo): void {
+    playerName.innerText = playerInfo.userName;
+    kills.innerText = playerInfo.killCount.toString();
+    deaths.innerText = playerInfo.deathCount.toString();
 }
 
 /**
