@@ -169,7 +169,7 @@ export class PacketToGameLogic {
             killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
             let victimName = this.player.getPlayerInfo.getUserName;
             victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
-            showTicket(`${killerName} killed ${victimName}`);      
+            showTicket(`${killerName} ${StringHelper.randomKillVerb()} ${victimName}`);      
         } else {
             // Fallback to prevent crash if victim isn't present in client-internal enemy map
             if(!this.enemyMap.has(victimID) || this.enemyMap.get(victimID).getPlayerInfo == undefined){
@@ -185,7 +185,7 @@ export class PacketToGameLogic {
             killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
             let victimName = this.enemyMap.get(victimID).getPlayerInfo.getUserName;
             victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
-            showTicket(`${killerName} killed ${victimName}`); 
+            showTicket(`${killerName} ${StringHelper.randomKillVerb()} ${victimName}`); 
         }
     }
 
