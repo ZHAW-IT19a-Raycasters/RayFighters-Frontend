@@ -91,6 +91,13 @@ function getJWT(content: any): void {
 function handleLogIn(form: HTMLFormElement): void {
     const formData = new FormData(form);
     const playerName = formData.get("inputPlayerName") as string;
+
+    // Save to local storage
+    if (typeof(Storage) !== 'undefined') {
+        // Store
+        localStorage.setItem('name', playerName);
+    }
+
     const content = { "username": playerName };
 
     getJWT(content);
