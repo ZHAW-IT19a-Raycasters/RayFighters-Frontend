@@ -30,7 +30,7 @@ export function initializeHud(map: string, player: PlayerInfo) {
     fps = document.querySelector("#fps-container");
 
     showMapInfo(map);
-    updatePlayerInfo(player);
+    //updatePlayerInfo(player); TODO we need to call this externally when the data is ready!
 
     document.querySelectorAll(".makes-sound").forEach(item => {
         item.addEventListener("mouseenter", (event) => {

@@ -134,6 +134,8 @@ export class PacketToGameLogic {
             let userID = list[index].userID;
             if (userID === this.player.getPlayerInfo.userID) {
                 this.updatePlayerInfo(this.player.getPlayerInfo, list[index]);
+                // Refresh player info on HUD.
+                updatePlayerInfo(this.player.getPlayerInfo);
             } else if (this.enemyMap.has(userID)) {
                 this.updatePlayerInfo(this.enemyMap.get(userID).getPlayerInfo, list[index]);
             } else {
@@ -179,6 +181,11 @@ export class PacketToGameLogic {
             this.player.setDead(true);
             showTicket(`${this.enemyMap.get(killerID).getPlayerInfo.userName} killed ${this.player.getPlayerInfo.userName}`);      
         } else {
+            // Fallback to prevent crash if victim isn't present in client-internal enemy map
+            if(!this.enemyMap.has(victimID) || this.enemyMap.get(victimID).getPlayerInfo == undefined){
+                console.error("Tried to get id " + victimID + "but was not present in enemy map!");
+                return;
+            }
             this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
         }
         if (killerID === this.player.getPlayerInfo.userID) {
