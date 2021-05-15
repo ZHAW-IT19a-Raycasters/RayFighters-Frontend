@@ -77,7 +77,7 @@ export class Player {
     // Retrieve player name from local storage
     if (typeof(Storage) !== 'undefined'){
       const playerName = localStorage.getItem('name');
-      this.playerInfo.userName = playerName;
+      this.playerInfo.setUserName = playerName;
     }
     
     this.walkTimer = 0;
