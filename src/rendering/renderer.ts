@@ -6,6 +6,7 @@ import { Room } from '../maps/room';
 import { Vec2D } from '../common/vec2d';
 import { Weapon } from '../player/weapon';
 import { Entity } from '../entities/entity';
+import { Enemy } from '../entities/enemy';
 
 /**
  * Data class: 2D image object for easier graphics handling.
@@ -20,9 +21,9 @@ export class Image2D {
       this.image.src = source;
     } else {
       // Workaround for undefined Image object errors when running in node (Jasmine testing)
-      this.image = { src : source };
+      this.image = { src: source };
     }
-    
+
   }
 }
 
@@ -65,6 +66,21 @@ export class Renderer {
    * Used for calculating this.fieldOfView
    */
   private static readonly SENSORWIDTH = 1;
+
+  /**
+   * Default font for player tags.
+   */
+  private static readonly FONT_NAME = 'ArcadeClassic';
+
+  /**
+   * Default font size for player tags.
+   */
+  private static readonly FONT_BASE_SIZE = 64;
+
+  /**
+   * Default font color for player tag
+   */
+  private static readonly FONT_COLOR = '#FFFFFF';
 
   /**
     * Canvas DOM element to draw in
@@ -292,6 +308,12 @@ export class Renderer {
     this.context.fillStyle = gradient;
   }
 
+  // TODO: Remove, because we removed sprites
+  /**
+   * Draws all sprites in the given list.
+   * @param entities list of {@link Entity} objects.
+   * @param player {@link Player} reference.
+   *
   private drawSpriteList(entities: Entity[], player: Player) {
     // Position at which we draw the sprite:
     const drawPos = new Vec2D(0, this.canvas.height / 2);
@@ -360,14 +382,106 @@ export class Renderer {
       }
     }
   }
+  */
+
+  /**
+   * Draws the {@link Enemy} name tag on screen.
+   * @param position 
+   * @param distanceFactor 
+   */
+  private drawNameTag(position: Vec2D, distanceFactor: number, enemyName: string) {
+    const effectiveFontSize = distanceFactor * Renderer.FONT_BASE_SIZE;
+    this.context.font = `${effectiveFontSize}px ${Renderer.FONT_NAME}`;
+    this.context.fillStyle = Renderer.FONT_COLOR;
+    this.context.fillText(enemyName, position.x, position.y);
+  }
+
+  /**
+   * Draws all enemies in the given list.
+   * @param enemies list of {@link Enemy} objects.
+   * @param player {@link Player} reference.
+   */
+  private drawEnemyList(enemies: Enemy[], player: Player) {
+    // Position at which we draw the sprite:
+    const drawPos = new Vec2D(0, this.canvas.height / 2);
+    let sprite: Enemy;
+    // distance between the player and the sprite:
+    let distance: number;
+    // note that the angle may not be set (===false) because sprite is outside our vision:
+    let angle: boolean | number;
+    // the factor with which we scale the size of the sprite (the more far away, the smaller it gets):
+    let distanceSizeScalingFactor: number;
+    // How much the sprite's x coordinate on screen deviates from the middle of the screen:
+    let horizontalDeviationFactor: number;
+
+    // Which bar we're checking against for depth:
+    let barIndex: number;
+
+    // Depth (distance) of the current bar at the current angle:
+    let currentBarDepth: number;
+
+    // Width and height of sprites to be drawn
+    let spriteWidth: number;
+    let spriteHeight: number;
+
+    this.context.globalAlpha = 1;
+
+    // Collect all sprites and iterate through them.
+    for (let i = 0, len = enemies.length; i < len; i++) {
+      sprite = enemies[i];
+      // Distance sprite<->player:
+      distance = MathHelper.euclideanDistance(sprite.getPosition, player.getPosition);
+      if (distance > this.drawDistance) {
+        // Sprite is beyond the drawing distance, so we totally skip drawing it:
+        continue;
+      }
+
+      if ((angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)) !== false) {
+        // Start out with middle of screen:
+        // How much the object deviates from our center of view on x:
+        horizontalDeviationFactor = (angle as number - player.getDirection);
+        // Deviation added to center of view:
+        drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
+
+        // distance to camera of bar at approximately drawPos.x
+        barIndex = drawPos.x - (drawPos.x % this.spacing);
+        currentBarDepth = this.barDepthBuffer[barIndex];
+
+        // Check if a bar was already drawn closer to the camera than the sprite.
+        // Or the angle where a bar would be is unset entirely
+        if (currentBarDepth < distance || currentBarDepth == undefined) {
+          continue; //<-- wall overlaps sprite, skip drawing sprite completely
+        }
+
+        // Zoom factor, the size of the sprite gets smaller the more far away it is:
+        distanceSizeScalingFactor = 1 / (distance * Math.cos(angle as number - player.getDirection));
+
+        // Update player viewing angle in sprite to help calculating which image will be sent back.
+        sprite.lastPlayerViewingAngle = angle as number;
+        spriteWidth = sprite.getSprite().width * distanceSizeScalingFactor;
+        spriteHeight = sprite.getSprite().height * distanceSizeScalingFactor;
+
+        // Finally, draw the image with the parameters above:
+        const drawPositionWithOffset = new Vec2D(drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3))
+        this.context.drawImage(sprite.getSprite().image,
+          drawPositionWithOffset.x, drawPositionWithOffset.y,
+          spriteWidth, spriteHeight
+        );
+
+        // Display name tag
+        if (sprite.getPlayerInfo.getUserName && !sprite.getPlayerInfo.isDead) {
+          this.drawNameTag(drawPositionWithOffset, distanceSizeScalingFactor, sprite.getPlayerInfo.getTruncatedUserName);
+        }
+      }
+    }
+  }
 
   /**
    * Draw sprites stored in a room in respect to the players position, direction, and the renderers drawing distance.
-   * TODO: Rendering order with walls
    */
   private drawSprites(room: Room, player: Player) {
-    this.drawSpriteList(room.getSprites, player);
-    this.drawSpriteList(room.getEnemies, player);
+    // this.drawSpriteList(room.getSprites, player); TODO: Remove because we removed sprites
+    this.drawEnemyList(room.getEnemies, player);
   }
 
   /**

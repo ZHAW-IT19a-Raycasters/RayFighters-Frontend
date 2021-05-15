@@ -48,7 +48,6 @@ export class Room {
                 this.sprites.push(this.map.getElements[index].getSprite);
             }
         }
-
     }
 
     public get getMap(): Map2D {
@@ -59,7 +58,7 @@ export class Room {
         return this.sprites;
     }
 
-    public get getEnemies(): Entity[] {
+    public get getEnemies(): Enemy[] {
         return this.enemies;
     }
 

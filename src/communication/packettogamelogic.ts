@@ -6,6 +6,7 @@ import { Packet } from "./packet";
 import { PlayerInfo } from "./playerinfo";
 import { displayRespawn, showTicket, updatePlayerInfo, updateScoreboard } from "../gameHud";
 import { loadPage } from "..";
+import { StringHelper } from "../common/stringhelper";
 
 /**
  * Class Purpose:
@@ -66,12 +67,12 @@ export class PacketToGameLogic {
             case OpCode.SERVER_PLAYERJOINED:
                 console.log("New player has joined: ID " + p.name);
                 this.addEnemy(p.userID, new PlayerInfo({userID: p.userID, userName: p.name, killCount: 0, deathCount: 0}))
-                showTicket(`${p.name} has joined`);
+                showTicket(`${StringHelper.truncateString(p.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has joined`);
                 break;
             case OpCode.SERVER_PLAYERLEFT:
                 console.log("Player has left: ID " + p.name);
                 this.removeEnemy(p.userID);
-                showTicket(`${p.name} has left`);
+                showTicket(`${StringHelper.truncateString(p.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has left`);
                 break;
             case OpCode.SERVER_SENDALLPLAYERINFO:
                 console.log("Server has sent all player info");
@@ -107,8 +108,8 @@ export class PacketToGameLogic {
         if (playerInfoNew.killCount) {
             playerInfoOld.killCount = playerInfoNew.killCount;
         }
-        if (playerInfoNew.userName) {
-            playerInfoOld.userName = playerInfoNew.userName;
+        if (playerInfoNew.getUserName) {
+            playerInfoOld.setUserName = playerInfoNew.getUserName;
         }
         if (playerInfoNew.isDead) {
             playerInfoOld.isDead = playerInfoNew.isDead;
@@ -163,10 +164,15 @@ export class PacketToGameLogic {
     private playerDeath(killerID: number, victimID: number){
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
-            updatePlayerInfo(this.player.getPlayerInfo);
             // TODO: displayRespawn();
             this.player.setDead(true);
-            showTicket(`${this.enemyMap.get(killerID).getPlayerInfo.userName} killed ${this.player.getPlayerInfo.userName}`);      
+            this.player.getPlayerInfo.deathCount++;
+            updatePlayerInfo(this.player.getPlayerInfo);
+            let killerName = this.enemyMap.get(killerID).getPlayerInfo.getUserName;
+            killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
+            let victimName = this.player.getPlayerInfo.getUserName;
+            victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
+            showTicket(`${killerName} killed ${victimName}`);      
         } else {
             // Fallback to prevent crash if victim isn't present in client-internal enemy map
             if(!this.enemyMap.has(victimID) || this.enemyMap.get(victimID).getPlayerInfo == undefined){
@@ -178,7 +184,11 @@ export class PacketToGameLogic {
         if (killerID === this.player.getPlayerInfo.userID) {
             this.player.getPlayerInfo.killCount++;
             updatePlayerInfo(this.player.getPlayerInfo);
-            showTicket(`${this.player.getPlayerInfo.userName} killed ${this.enemyMap.get(victimID).getPlayerInfo.userName}`);      
+            let killerName = this.player.getPlayerInfo.getUserName;
+            killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
+            let victimName = this.enemyMap.get(victimID).getPlayerInfo.getUserName;
+            victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
+            showTicket(`${killerName} killed ${victimName}`); 
         }
     }
 

@@ -64,7 +64,7 @@ export function initializeHud(map: string, player: PlayerInfo) {
  * @param playerInfo Info of the current Player
  */
 export function updatePlayerInfo(playerInfo: PlayerInfo): void {
-    playerName.innerText = playerInfo.userName;
+    playerName.innerText = playerInfo.getTruncatedUserName;
     kills.innerText = playerInfo.killCount.toString();
     deaths.innerText = playerInfo.deathCount.toString();
 }
@@ -145,7 +145,7 @@ export function updateScoreboard(ranking: Array<PlayerInfo>): void {
         row.appendChild(cellRank);
 
         const cellPlayerName = document.createElement("td");
-        const cellPlayerNameText = document.createTextNode(ranking[index].userName);
+        const cellPlayerNameText = document.createTextNode(ranking[index].getTruncatedUserName);
         cellPlayerName.appendChild(cellPlayerNameText);
         row.appendChild(cellPlayerName);
 
