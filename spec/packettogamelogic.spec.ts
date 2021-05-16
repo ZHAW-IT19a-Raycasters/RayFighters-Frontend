@@ -136,6 +136,6 @@ describe('Packet to game logic unit test', () => {
         // Verification
         expect(testPlayer.isDead).toBe(false);
         expect(logic.getEnemies[0].getPlayerInfo.isDead).toBe(true);
-    });
-    */
+    });*/
+    
 });
