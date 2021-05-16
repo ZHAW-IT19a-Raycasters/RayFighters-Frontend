@@ -14,10 +14,16 @@ export class StringHelper {
      */
     public static truncateString(input: string, maxLength: number): string {
         let truncated = input;
+
+        if(!input) {
+            return "";
+        }
+
         if (input.length > maxLength) {
             truncated = input.substring(0, maxLength);
             truncated += "...";
         }
+
         return truncated;
     }
 
