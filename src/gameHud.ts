@@ -1,5 +1,5 @@
-import { playSoundEffect, showAlert } from ".";
 import { PlayerInfo } from "./communication/playerinfo";
+import { playSoundEffect } from "./index";
 
 let tickerCon: HTMLElement;
 let timer: HTMLElement;
@@ -40,11 +40,6 @@ export function initializeHud(map: string, player: PlayerInfo) {
         item.addEventListener("click", (event) => {
             playSoundEffect("./assets/audio/menuEnter_1.mp3");
         });
-    });
-
-    document.querySelector("#respawnbtn").addEventListener("click", function (event) {
-        event.preventDefault();
-        respawn();
     });
 
     document.querySelector("#audio-setting").addEventListener("change", function (event) {
@@ -109,23 +104,19 @@ export function setTimer(): void {
 }
 
 /**
- * 
+ * @param isDead 
  */
-export function displayRespawn(): void {
+export function displayRespawn(isDead: boolean): void {
     settings.hidden = true;
     scoreboard.hidden = true;
-    respawnCon.hidden = false;
-    document.exitPointerLock();
-}
-
-// TODO:
-/**
- * 
- */
-export function respawn(): void {
-    respawnCon.hidden = true;
-    //player.setDeath(false);
-    document.body.requestPointerLock();
+    
+    if(isDead) {
+        respawnCon.hidden = false;
+        document.exitPointerLock();
+    } else {
+        respawnCon.hidden = true;
+        document.body.requestPointerLock();
+    }
 }
 
 /**
