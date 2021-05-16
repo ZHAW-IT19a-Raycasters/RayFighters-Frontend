@@ -53,14 +53,12 @@ export class MathHelper {
         // scale [-pi:pi] to [0:2*pi]
         originToTargetAngle += Math.PI
 
-        
+
         let absAngleDiff = Math.min(2*Math.PI - Math.abs(originToTargetAngle - direction), Math.abs(originToTargetAngle - direction));
 
         // Now that we have the angle: The target is in plain view IF it's between the borders of our vision:
-        // add 0.1 margin because the sprite's position is the center of the image but we want to render extremities even if the center is out of fov
         if (absAngleDiff <= eyeFov) {
             return originToTargetAngle;
-
         } else {
           // The object was beyond our vision:
           return false;
