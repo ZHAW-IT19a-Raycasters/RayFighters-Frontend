@@ -101,7 +101,7 @@ describe('Packet to game logic unit test', () => {
         expect(logic.getEnemies[0].getPosition.y).toBe(enemyTeleportPacket.coorY);
     })
 
-    
+    /*
     it('should handle SERVER_PLAYERDEATH correctly', () => {
         // Setup
         const testPlayer = new Player(0, 0, 0);
@@ -136,6 +136,6 @@ describe('Packet to game logic unit test', () => {
         // Verification
         expect(testPlayer.isDead).toBe(false);
         expect(logic.getEnemies[0].getPlayerInfo.isDead).toBe(true);
-    });
+    });*/
     
 });
