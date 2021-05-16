@@ -32,6 +32,10 @@ export class MathHelper {
       return Math.sqrt((pos1.x - pos2.x)**2 + (pos1.y - pos2.y)**2);
     }
 
+    public static signedAngleBetween(from: number, to: number): number {
+      return Math.atan2(Math.sin(to-from),Math.cos(to-from))
+    }
+
     /**
      * Check whether a Point (Vector) is within view and get the angle from our viewpoint.
      * 
@@ -55,20 +59,29 @@ export class MathHelper {
         // Angle between the origin (0, 0) and our target (look up unit circle with atan2 for help):
         let angle = Math.atan2(normalizedTargetPosition.y, normalizedTargetPosition.x);
 
+
+
+        let originToTargetVec = origin.getDifference(target)
+        let originToTargetAngle = Math.atan2(originToTargetVec.y, originToTargetVec.x);
+        // scale [-pi:pi] to [0:2*pi]
+        originToTargetAngle += Math.PI
+
+        let absAngleDiff = Math.min(2*Math.PI - Math.abs(originToTargetAngle - direction), Math.abs(originToTargetAngle - direction));
+
+        // document.getElementById('debug-window').innerText = `angle: ${(originToTargetAngle)}, direction: ${(direction)}, angle diff: ${(absAngleDiff)}`;
         // Extend the angle to 0-2pi (or 0-360°), we don't want to work with atans -pi to pi:
         if (normalizedTargetPosition.y < 0) {
-            angle += MathHelper.CIRCLE;
+            angle += MathHelper.CIRCLE/2;
         }
 
         // Now that we have the angle: The target is in plain view IF it's between the borders of our vision:
-        //document.getElementById('debug-window').innerText = `debug: ${(angle) * (180/Math.PI)}`;
-        if (angle >= leftAngle && angle <= rightAngle) {
-            return angle;
+        
+        if (absAngleDiff <= eyeFov) {
+            return originToTargetAngle;
 
         } else {
-          //document.getElementById('debug-window').innerText += ' NOT IN VIEW ';
+          // The object was beyond our vision:
+          return false;
         }
-        // The object was beyond our vision:
-        return false;
     }
 }
