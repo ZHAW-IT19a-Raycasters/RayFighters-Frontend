@@ -1,4 +1,4 @@
-import { loadPage, playSoundEffect } from ".";
+import { playSoundEffect, loadPage } from "./index";
 import { runGame } from "./logic/game";
 
 /**

@@ -5,7 +5,7 @@ import { OpCode } from "./opcode";
 import { Packet } from "./packet";
 import { PlayerInfo } from "./playerinfo";
 import { displayRespawn, showTicket, updatePlayerInfo, updateScoreboard } from "../gameHud";
-import { loadPage } from "..";
+import { loadPage } from "../index";
 import { StringHelper } from "../common/stringhelper";
 
 /**
@@ -161,7 +161,7 @@ export class PacketToGameLogic {
     private playerDeath(killerID: number, victimID: number){
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
-            // TODO: displayRespawn();
+            displayRespawn(true);
             this.player.setDead(true);
             this.player.getPlayerInfo.deathCount++;
             updatePlayerInfo(this.player.getPlayerInfo);
@@ -207,6 +207,7 @@ export class PacketToGameLogic {
     private teleport(p: Packet) {
         const newPosition = new Vec2D(p.coorX, p.coorY);
         if (p.userID === this.player.getPlayerInfo.userID) {
+            displayRespawn(false);
             // If player gets teleported (also happening when spawning), set player not not dead.
             this.player.setDead(false);
             // Transport player to new position.
