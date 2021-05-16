@@ -10,6 +10,16 @@ describe("Math helper module test", () => {
         expect(MathHelper.euclideanDistance(point1, point2)).toBeCloseTo(14.21267);
     })
 
+    it("should calculate the delta angle correctly.", () => {
+
+        const offset = 0.5
+        const from = Math.PI
+        const to = from + offset
+        expect(MathHelper.signedAngleBetween(from, to)).toBe(offset);
+        expect(MathHelper.signedAngleBetween(to, from)).toBe(-offset);
+        expect(MathHelper.signedAngleBetween(0.1, Math.PI*2 - 0.1)).toBeCloseTo(-0.2);
+    })
+
     it("should determine if an object is in view", () => {
         const origin: Vec2D = new Vec2D(0, 0);
         const positiveTarget: Vec2D = new Vec2D(0, 3);

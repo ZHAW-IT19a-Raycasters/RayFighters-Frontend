@@ -435,11 +435,14 @@ export class Renderer {
         // Sprite is beyond the drawing distance, so we totally skip drawing it:
         continue;
       }
-
-      if ((angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)) !== false) {
+      angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)
+      
+      if (angle !== false) {
         // Start out with middle of screen:
         // How much the object deviates from our center of view on x:
-        horizontalDeviationFactor = (angle as number - player.getDirection);
+        
+        horizontalDeviationFactor = MathHelper.signedAngleBetween(player.getDirection, angle as number);
+        
         // Deviation added to center of view:
         drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
 
