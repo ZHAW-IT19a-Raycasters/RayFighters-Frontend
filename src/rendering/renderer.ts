@@ -442,7 +442,7 @@ export class Renderer {
         // How much the object deviates from our center of view on x:
         
         horizontalDeviationFactor = MathHelper.signedAngleBetween(player.getDirection, angle as number);
-        document.getElementById('debug-window').innerText = `horizontalDeviationFactor: ${(horizontalDeviationFactor)}`;
+        
         // Deviation added to center of view:
         drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
 

@@ -46,36 +46,18 @@ export class MathHelper {
      * @returns Boolean === False IF target is not in view ELSE the angle between origin and target
      */
     public static vectorInViewCheck(origin: Vec2D, direction: number, target: Vec2D, eyeFov: number): boolean | number {
-        // First, we move the target down by the difference of the target,
-        // because we want to work based off of the origin (0,0).
-        const zeroedTargetPosition = target.getDifference(origin);
-        // The distance to target is now 1, we've normalized the problem into a unit circle:
-        const normalizedTargetPosition = zeroedTargetPosition.getNormalized;
-        // Leftmost angle border we still see
-        const leftAngle = direction - eyeFov;
-        // Rightmost angle border we still see
-        const rightAngle = direction + eyeFov;
 
-        // Angle between the origin (0, 0) and our target (look up unit circle with atan2 for help):
-        let angle = Math.atan2(normalizedTargetPosition.y, normalizedTargetPosition.x);
-
-
-
+        // direction from player to enemy
         let originToTargetVec = origin.getDifference(target)
         let originToTargetAngle = Math.atan2(originToTargetVec.y, originToTargetVec.x);
         // scale [-pi:pi] to [0:2*pi]
         originToTargetAngle += Math.PI
 
+        
         let absAngleDiff = Math.min(2*Math.PI - Math.abs(originToTargetAngle - direction), Math.abs(originToTargetAngle - direction));
 
-        // document.getElementById('debug-window').innerText = `angle: ${(originToTargetAngle)}, direction: ${(direction)}, angle diff: ${(absAngleDiff)}`;
-        // Extend the angle to 0-2pi (or 0-360°), we don't want to work with atans -pi to pi:
-        if (normalizedTargetPosition.y < 0) {
-            angle += MathHelper.CIRCLE/2;
-        }
-
         // Now that we have the angle: The target is in plain view IF it's between the borders of our vision:
-        
+        // add 0.1 margin because the sprite's position is the center of the image but we want to render extremities even if the center is out of fov
         if (absAngleDiff <= eyeFov) {
             return originToTargetAngle;
 
