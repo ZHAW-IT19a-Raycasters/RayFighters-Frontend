@@ -6,9 +6,11 @@ import { JSDOM } from 'jsdom';
 import * as fs from 'fs'
 import { Weapon } from "../src/player/weapon";
 import { Vec2D } from "../src/common/vec2d";
+import { GameHUD } from "./gamehudmock";
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document, Audio, HTMLAudioElement, Image } = (new JSDOM(index)).window;
 global.document = document;
+const HUDmock = new GameHUD();
 
 describe('Player module testing', () => {
   it('should instantiate the player correctly', () => {
@@ -16,7 +18,7 @@ describe('Player module testing', () => {
     const testPosition = new Vec2D(6, 9);
     const testAngle = 6.9;
     const testSpeed = 1;
-    let player = new Player(testPosition.x, testPosition.y, testAngle, testWeapon, testSpeed);
+    let player = new Player(testPosition.x, testPosition.y, testAngle, HUDmock, testWeapon, testSpeed);
     expect(player.getPosition.x).toBe(testPosition.x);
     expect(player.getPosition.y).toBe(testPosition.y);
     expect(player.getDirection).toBe(testAngle);
@@ -27,13 +29,13 @@ describe('Player module testing', () => {
   });
 
   it('should rotate the player by 90 degrees', () => {
-    let player = new Player(0, 0, 0);
+    let player = new Player(0, 0, 0, HUDmock);
     player.rotate(Math.PI / 2); // (0 + Math.PI/2 + Math.PI*2) % (Math.PI*2)
     expect(player.getDirection).toBe(Math.PI / 2);
   });
 
   it('should rotate the player to the left and walks forward for 3 seconds, then rotates player to the right and walks forward for 3 seconds', () => {
-    let player = new Player(0, 0, 0);
+    let player = new Player(0, 0, 0, HUDmock);
     let map = new Map2D(32);
     let controls = new Controls();
     let dummyCallback = function (p: Packet) { /* no implementation needed */ };

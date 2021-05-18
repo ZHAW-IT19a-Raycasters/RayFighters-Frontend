@@ -7,7 +7,7 @@ import { Command } from "../communication/command";
 import { PlayerInfo } from "../communication/playerinfo";
 import { Sound, SoundType } from "../sound/sound";
 import { Enemy } from "../entities/enemy";
-import { toggleFPS, toggleScoreboard, toggleSettings } from "../gameHud";
+import { GameHUD } from "../ui/gameHud";
 
 
 /**
@@ -65,7 +65,7 @@ export class Player {
    * @param weapon What weapon we're holding
    * @param walkSpeed Rate at which we're moving
    */
-  constructor(x: number, y: number, private angle: number, private weapon?: Weapon, private walkSpeed?: number) {
+  constructor(x: number, y: number, private angle: number, private gameHUD: GameHUD, private weapon?: Weapon, private walkSpeed?: number) {
     this.position = new Vec2D(x, y);
     this.paces = 0;
     if (!walkSpeed) {
@@ -224,15 +224,15 @@ export class Player {
     }
 
     if (controls.states.get(KeyCodes.SCOREBOARD)) {
-      toggleScoreboard();
+      this.gameHUD.toggleScoreboard();
     }
 
     if (controls.states.get(KeyCodes.SETTINGS)) {
-      toggleSettings();
+      this.gameHUD.toggleSettings();
     }
 
     if (controls.states.get(KeyCodes.FPS)) {
-      toggleFPS();
+      this.gameHUD.toggleFPS();
     }
   }
 

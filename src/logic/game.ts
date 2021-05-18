@@ -7,7 +7,7 @@ import { Room } from '../maps/room';
 import { Weapon } from '../player/weapon';
 import { SocketState } from '../communication/socket';
 import { PacketToGameLogic } from '../communication/packettogamelogic';
-import { initializeHud } from '../gameHud';
+import { GameHUD } from '../ui/gameHud';
 import { showAlert } from '..';
 
 /**
@@ -28,7 +28,9 @@ var player: Player;
 /**
  * Current room.
  */
-var room: Room
+var room: Room;
+
+var gameHUD: GameHUD;
 
 /**
  * Debug boolean for websocket state. 
@@ -63,14 +65,15 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   room = new Room({ mapSize: 32, loadMap: 'maps/desert.txt' });
 
   // Player Setup
-  player = new Player(6, 6, 0.3 * Math.PI,  new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4));
+  player = new Player(6, 6, 0.3 * Math.PI, this.gameHUD, new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4));
   initializeRenderer();
 
   // Display PlayerInfo and Mapname on HUD
-  initializeHud(room.getMap.getMapName, player.getPlayerInfo);
+  this.gameHUD = new GameHUD();
+  gameHUD.initializeHud(room.getMap.getMapName, player.getPlayerInfo);
 
   let controls = new Controls();
-  let loop = new GameLoop(SERVER_URL, fpsCounterName, (d: number) => { renderer.changeResolution(d) });
+  let loop = new GameLoop(SERVER_URL, fpsCounterName, (d: number) => { renderer.changeResolution(d) }, gameHUD);
 
   // Listen to window resizes, and in case of that, re-initialize renderer to prevent images from stretching.
   window.addEventListener('resize', function () {
@@ -78,7 +81,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
     loop.restartDynamicResolution();
   }, true);
 
-  serverConnection = new PacketToGameLogic(player);
+  serverConnection = new PacketToGameLogic(player, this.gameHUD);
 
   /**
    * Checks if the connection to the server is alive.
