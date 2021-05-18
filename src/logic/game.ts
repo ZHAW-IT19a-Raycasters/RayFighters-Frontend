@@ -18,7 +18,7 @@ var renderer: Renderer;
 /**
  * Where the magic happens.
  */
-var canvas: HTMLElement;
+var canvas: any;
 
 /**
  * Player instance.
@@ -68,7 +68,11 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   gameHUD = new GameHUD();
 
   // Player Setup
-  player = new Player(6, 6, 0.3 * Math.PI, gameHUD, new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4));
+  player = new Player(
+    6, 6,
+    0.3 * Math.PI,
+    gameHUD,
+    new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4));
   initializeRenderer();
 
   gameHUD.initializeHud(room.getMap.getMapName, player.getPlayerInfo);
@@ -80,6 +84,7 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   window.addEventListener('resize', function () {
     initializeRenderer();
     loop.restartDynamicResolution();
+    player.setScreenWidth(canvas.width);
   }, true);
 
   serverConnection = new PacketToGameLogic(player, gameHUD);

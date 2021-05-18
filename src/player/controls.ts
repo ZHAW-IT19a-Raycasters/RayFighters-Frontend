@@ -48,6 +48,11 @@ export class Controls {
     ]);
 
     /**
+     * Multiplyer for mouse look sensitivity
+     */
+    public static readonly MOUSE_LOOK_SENSITIVITY = 20;
+
+    /**
      * Shoot button on the html page.
      */
     private shootButton: any = document.getElementById('shootbutton');
@@ -56,6 +61,11 @@ export class Controls {
      * Vessel for location and dimensions of the shoot button on the html page.
      */
     private shootButtonRect: any;
+
+    /**
+     * How many pixels the mouse has moved since it's last moved
+     */
+    private lastMouseDeltaX: number;
 
     /**
      * Constructor of control class. Registers all event handlers.
@@ -79,6 +89,10 @@ export class Controls {
         for (let key of Array.from(this.states)) {
             this.states.set(key[0], false)
         }
+    }
+
+    public getMouseDelta(): number {
+        return this.lastMouseDeltaX;
     }
 
     /**
@@ -158,12 +172,14 @@ export class Controls {
         if (mousePositionX > 0) {
             this.keyHandler(true, { keyCode: KeyCodes.MOUSE_TURN_RIGHT });
             this.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
+            this.lastMouseDeltaX = mousePositionX;
         }
 
         // Left turn
         if (mousePositionX < 0) {
             this.keyHandler(true, { keyCode: KeyCodes.MOUSE_TURN_LEFT });
             this.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
+            this.lastMouseDeltaX = mousePositionX;
         }
     }
 
