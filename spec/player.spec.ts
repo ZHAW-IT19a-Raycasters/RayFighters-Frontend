@@ -8,25 +8,44 @@ import { Weapon } from "../src/player/weapon";
 import { Vec2D } from "../src/common/vec2d";
 import { GameHUD } from "./gamehudmock";
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
-const { document, Audio, HTMLAudioElement, Image } = (new JSDOM(index)).window;
+const { document } = (new JSDOM(index)).window;
 global.document = document;
 const HUDmock = new GameHUD();
 
+const testPosition = new Vec2D(6, 9);
+const testAngle = 6.9;
+const testSpeed = 1;
+const testWeapon = new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4);
+const dummyCallback = function (p: Packet) { /* no implementation needed */ };
+
+function setupPlayer(position: Vec2D, angle: number){
+  return new Player(position.x, position.y, angle, HUDmock, testWeapon, 1);
+}
+
 describe('Player module testing', () => {
-  it('should instantiate the player correctly', () => {
-    const testWeapon = new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4);
-    const testPosition = new Vec2D(6, 9);
-    const testAngle = 6.9;
-    const testSpeed = 1;
-    let player = new Player(testPosition.x, testPosition.y, testAngle, HUDmock, testWeapon, testSpeed);
+  it('should instantiate the player correctly', () => {    
+    const player = setupPlayer(testPosition, testAngle);
     expect(player.getPosition.x).toBe(testPosition.x);
     expect(player.getPosition.y).toBe(testPosition.y);
     expect(player.getDirection).toBe(testAngle);
     expect(player.getWalkSpeed).toBe(testSpeed);
-    expect(player.getWeapon).toBe(testWeapon);
+    expect(player.getWeapon).toEqual(testWeapon);
     expect(player.isDead).toBe(false);
     expect(player.getPlayerInfo).toBeUndefined;
   });
+
+  it('should react to controls correctly', () => {
+    /*
+    const player = setupPlayer(new Vec2D(1,1), 0);
+    let controls = new Controls();
+    controls.states.set(KeyCodes.SHOOT, true);
+    const seconds = 3;
+    let map = new Map2D(32);
+    player.update(controls, map, seconds, dummyCallback);
+    */
+  })
+
+  
 
   it('should rotate the player by 90 degrees', () => {
     let player = new Player(0, 0, 0, HUDmock);
@@ -38,7 +57,6 @@ describe('Player module testing', () => {
     let player = new Player(0, 0, 0, HUDmock);
     let map = new Map2D(32);
     let controls = new Controls();
-    let dummyCallback = function (p: Packet) { /* no implementation needed */ };
     controls.states.set(KeyCodes.FORWARD, true);
     controls.states.set(KeyCodes.TURN_LEFT, true);
     const seconds = 3;
