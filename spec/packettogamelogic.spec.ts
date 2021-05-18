@@ -24,13 +24,17 @@ playerKD[0] = new PlayerInfo({ userID: 2, killCount: 11, deathCount: 12 });
 playerKD[1] = new PlayerInfo({ userID: 3, killCount: 12, deathCount: 13 });
 playerKD[2] = new PlayerInfo({ userID: 4, killCount: 66, deathCount: 101 });
 
+function setupPlayer(id: number): Player {
+    const testPlayer = new Player(0, 0, 0, HUDmock);
+    const testPlayerInfo = new PlayerInfo({ userID: id, deathCount: 0, killCount: 0, isDead: false})
+    testPlayer.setPlayerInfo = testPlayerInfo;
+    return testPlayer;
+}
 
 describe('Packet to game logic unit test', () => {
     it('should handle SERVER_SENDALLPLAYERINFO correctly', () => {
         // Setup
-        const testPlayer = new Player(0, 0, 0, HUDmock);
-        const testPlayerInfo = new PlayerInfo({ userID: 1, deathCount: 0, killCount: 0, isDead: false})
-        testPlayer.setPlayerInfo = testPlayerInfo;
+        const testPlayer = setupPlayer(1);
         const playerInfoPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERINFO, playerCount: 3, playerInfoList: playerInfo });
         const logic = new PacketToGameLogic(testPlayer, HUDmock);
 
@@ -47,9 +51,7 @@ describe('Packet to game logic unit test', () => {
 
     it('should handle SERVER_SENDALLPLAYERKD correctly', () => {
         // Setup
-        const testPlayer = new Player(0, 0, 0, HUDmock);
-        const testPlayerInfo = new PlayerInfo({ userID: 1, deathCount: 0, killCount: 0, isDead: false})
-        testPlayer.setPlayerInfo = testPlayerInfo;
+        const testPlayer = setupPlayer(1);
         const playerInfoPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERINFO, playerCount: 3, playerInfoList: playerInfo });
         const playerKDPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERKD, playerCount: 3, playerKillDeathList: playerKD });
         const logic = new PacketToGameLogic(testPlayer, HUDmock);
@@ -67,7 +69,7 @@ describe('Packet to game logic unit test', () => {
     })
 
     it('should handle SERVER_MOVEMENT correctly', () => {
-        const testPlayer = new Player(0, 0, 0, HUDmock);
+        const testPlayer = setupPlayer(1);
         const playerInfoPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERINFO, playerCount: 3, playerInfoList: playerInfo });
         const enemyMovementPacket = new Packet({ opCode: OpCode.SERVER_MOVEMENT, userID: 0x02, coorX: 6, coorY: 7 });
         const logic = new PacketToGameLogic(testPlayer, HUDmock);
@@ -83,10 +85,8 @@ describe('Packet to game logic unit test', () => {
     })
 
     it('should handle SERVER_TELEPORT correctly', () => {
-        const testPlayer = new Player(0, 0, 0, HUDmock);
-        const testPlayerInfo = new PlayerInfo({ userID: 1, deathCount: 0, killCount: 0, isDead: false})
+        const testPlayer = setupPlayer(1);
         testPlayer.setPosition = new Vec2D(0,0);
-        testPlayer.setPlayerInfo = testPlayerInfo; 
         const playerInfoPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERINFO, playerCount: 3, playerInfoList: playerInfo });
         const playerTeleportPacket = new Packet({ opCode: OpCode.SERVER_TELEPORT, userID: 0x01, coorX: 4, coorY: 5 });
         const enemyTeleportPacket = new Packet({ opCode: OpCode.SERVER_TELEPORT, userID: 0x02, coorX: 6, coorY: 7 });
@@ -107,10 +107,7 @@ describe('Packet to game logic unit test', () => {
     
     it('should handle SERVER_PLAYERDEATH correctly', () => {
         // Setup
-        const testPlayer = new Player(0, 0, 0, HUDmock);
-        const testPlayerInfo = new PlayerInfo({ userID: 1, deathCount: 0, killCount: 0, isDead: false})
-        testPlayer.setPlayerInfo = testPlayerInfo;
-
+        const testPlayer = setupPlayer(1);
         let playerDeathPacket = new Packet({opCode: OpCode.SERVER_PLAYERDEATH, killerID: 2, victimID: 1});
         const playerInfoPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERINFO, playerCount: 3, playerInfoList: playerInfo });
         const logic = new PacketToGameLogic(testPlayer, HUDmock);
@@ -138,5 +135,56 @@ describe('Packet to game logic unit test', () => {
         // Verification
         expect(testPlayer.isDead).toBe(false);
         expect(logic.getEnemies[0].getPlayerInfo.isDead).toBe(true);
+
+        // Setup (negative test)
+        playerDeathPacket = new Packet({opCode: OpCode.SERVER_PLAYERDEATH, killerID: 77, victimID: 66});
+
+        // Test & Verification (negative test)
+        expect(logic.handlePacket(playerDeathPacket)).not.toThrowError;
     });
+
+    it('should handle SERVER_UNKNOWN without errors', () => {
+        // Setup
+        const testPlayer = setupPlayer(1);
+        const unknownPacket = new Packet({ opCode: OpCode.SERVER_UNKNOWN });
+        const logic = new PacketToGameLogic(testPlayer, HUDmock);
+        
+        // Test & Verification
+        expect(logic.handlePacket(unknownPacket)).not.toThrowError;
+    })
+
+    it('should handle SERVER_DISCONNECT without errors', () => {
+        // Setup
+        const testPlayer = setupPlayer(1);
+        const disconnectPacket = new Packet({ opCode: OpCode.SERVER_DISCONNECT });
+        const logic = new PacketToGameLogic(testPlayer, HUDmock);
+        
+        // Test & Verification
+        expect(logic.handlePacket(disconnectPacket)).not.toThrowError;
+    })
+
+    it('should handle SERVER_YOUARECALLED correctly', () => {
+        // Setup
+        const testPlayer = setupPlayer(1);
+        const youAreCalledPacket = new Packet({ opCode: OpCode.SERVER_YOUARECALLED, userID: 0x2 });
+        const logic = new PacketToGameLogic(testPlayer, HUDmock);
+        
+        // Test & Verification
+        expect(logic.handlePacket(youAreCalledPacket)).not.toThrowError;
+        expect(testPlayer.getPlayerInfo.userID).toBe(2);
+    })
+
+    it('should handle SERVER_SHOOTING correctly', () => {
+        // Setup
+        const testPlayer = setupPlayer(1);
+        const playerInfoPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERINFO, playerCount: 3, playerInfoList: playerInfo });
+        const shootPacket = new Packet({ opCode: OpCode.SERVER_SHOOTING, userID: 0x4, angle: 0.1 });
+        const logic = new PacketToGameLogic(testPlayer, HUDmock);
+        
+        // Test & Verification
+        logic.handlePacket(playerInfoPacket);
+        expect(logic.getEnemies[2].getShot).toBe(false);
+        logic.handlePacket(shootPacket);
+        expect(logic.getEnemies[2].getShot).toBe(true);
+    })
 });

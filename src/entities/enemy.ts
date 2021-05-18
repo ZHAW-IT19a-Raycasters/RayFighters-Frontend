@@ -297,4 +297,10 @@ export class Enemy extends Entity {
             }
         }
     }
+
+    
+    public get getShot() : boolean {
+        return this.hasShot;
+    }
+    
 }
