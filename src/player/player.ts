@@ -65,7 +65,7 @@ export class Player {
    * @param weapon What weapon we're holding
    * @param walkSpeed Rate at which we're moving
    */
-  constructor(x: number, y: number, private angle: number, private gameHUD: GameHUD, private weapon?: Weapon, private walkSpeed?: number) {
+  constructor(x: number, y: number, private angle: number, private gameHUD: any, private weapon?: Weapon, private walkSpeed?: number) {
     this.position = new Vec2D(x, y);
     this.paces = 0;
     if (!walkSpeed) {

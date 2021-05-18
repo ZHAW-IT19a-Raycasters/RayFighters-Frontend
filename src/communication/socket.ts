@@ -43,7 +43,7 @@ export class Socket {
      * Creates a new socket connection.
      * @param url Server address
      */
-    constructor(url: string, gameHUD: GameHUD, webSocket?: any) {
+    constructor(url: string, gameHUD: any, webSocket?: any) {
         this.sendQueue = new Queue<Packet>();
         this.receiveQueue = new Queue<Packet>();
         

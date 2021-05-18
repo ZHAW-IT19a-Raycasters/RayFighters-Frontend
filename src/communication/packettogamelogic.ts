@@ -33,7 +33,7 @@ export class PacketToGameLogic {
      * 
      * @param player Player reference
      */
-    constructor(player: Player, gameHUD: GameHUD) {
+    constructor(player: Player, gameHUD: any) {
         this.player = player;
         this.enemyMap = new Map<number, Enemy>();
         this.gameHUD = gameHUD

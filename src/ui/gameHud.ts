@@ -1,35 +1,38 @@
 import { PlayerInfo } from "../communication/playerinfo";
 import { playSoundEffect } from "../index";
 
-let tickerCon: HTMLElement;
-let timer: HTMLElement;
-let playerName: HTMLElement;
-let kills: HTMLElement;
-let deaths: HTMLElement;
-let mapName: HTMLElement;
-let respawnCon: HTMLElement;
-let scoreboard: HTMLElement;
-let settings: HTMLElement;
-let socketStatus: HTMLElement;
-let fps: HTMLElement;
+
 
 export class GameHUD {
-    constructor(){ /* Deliberately empty */ }
+
+    private tickerCon: HTMLElement;
+    private timer: HTMLElement;
+    private playerName: HTMLElement;
+    private kills: HTMLElement;
+    private deaths: HTMLElement;
+    private mapName: HTMLElement;
+    private respawnCon: HTMLElement;
+    private scoreboard: HTMLElement;
+    private settings: HTMLElement;
+    private socketStatus: HTMLElement;
+    private fps: HTMLElement;
+
+    constructor() { /* Deliberately empty */ }
     /***
      * Initialize all Hud HTMLElements
      */
     public initializeHud(map: string, player: PlayerInfo) {
-        tickerCon = document.querySelector("#ticker-container");
-        timer = document.querySelector("#timer");
-        playerName = document.querySelector("#playerName");
-        kills = document.querySelector("#kills");
-        deaths = document.querySelector("#deaths");
-        mapName = document.querySelector("#mapName");
-        respawnCon = document.querySelector("#respawn-container");
-        scoreboard = document.querySelector("#scoreboard-container");
-        settings = document.querySelector("#settings-container");
-        socketStatus = document.querySelector("#socket-status");
-        fps = document.querySelector("#fps-container");
+        this.tickerCon = document.querySelector("#ticker-container");
+        this.timer = document.querySelector("#timer");
+        this.playerName = document.querySelector("#playerName");
+        this.kills = document.querySelector("#kills");
+        this.deaths = document.querySelector("#deaths");
+        this.mapName = document.querySelector("#mapName");
+        this.respawnCon = document.querySelector("#respawn-container");
+        this.scoreboard = document.querySelector("#scoreboard-container");
+        this.settings = document.querySelector("#settings-container");
+        this.socketStatus = document.querySelector("#socket-status");
+        this.fps = document.querySelector("#fps-container");
 
         this.showMapInfo(map);
         //updatePlayerInfo(player); TODO we need to call this externally when the data is ready!
@@ -61,9 +64,9 @@ export class GameHUD {
      * @param playerInfo Info of the current Player
      */
     public updatePlayerInfo(playerInfo: PlayerInfo): void {
-        playerName.innerText = playerInfo.getTruncatedUserName;
-        kills.innerText = playerInfo.killCount.toString();
-        deaths.innerText = playerInfo.deathCount.toString();
+        this.playerName.innerText = playerInfo.getTruncatedUserName;
+        this.kills.innerText = playerInfo.killCount.toString();
+        this.deaths.innerText = playerInfo.deathCount.toString();
     }
 
     /**
@@ -71,7 +74,7 @@ export class GameHUD {
      * @param map Name of the current Map
      */
     public showMapInfo(map: string): void {
-        mapName.innerText = map;
+        this.mapName.innerText = map;
     }
 
     /**
@@ -82,7 +85,7 @@ export class GameHUD {
         const ticker = document.createElement('div');
         ticker.className = "ticker position-fixed p-3";
         ticker.innerText = msg;
-        tickerCon.append(ticker);
+        this.tickerCon.append(ticker);
         ticker.style.transition = "margin 0.5s ease-in-out";
         ticker.style.margin = "0px";
         ticker.style.visibility = "visible";
@@ -109,14 +112,14 @@ export class GameHUD {
      * @param isDead 
      */
     public displayRespawn(isDead: boolean): void {
-        settings.hidden = true;
-        scoreboard.hidden = true;
+        this.settings.hidden = true;
+        this.scoreboard.hidden = true;
 
         if (isDead) {
-            respawnCon.hidden = false;
+            this.respawnCon.hidden = false;
             document.exitPointerLock();
         } else {
-            respawnCon.hidden = true;
+            this.respawnCon.hidden = true;
             document.body.requestPointerLock();
         }
     }
@@ -127,7 +130,7 @@ export class GameHUD {
      */
     public updateScoreboard(ranking: Array<PlayerInfo>): void {
         // TODO: Nicer Method
-        const table: HTMLElement = scoreboard.querySelector("tbody");
+        const table: HTMLElement = this.scoreboard.querySelector("tbody");
         table.textContent = '';
         for (let index = 0; index < ranking.length; index++) {
             var row = document.createElement("tr");
@@ -160,22 +163,22 @@ export class GameHUD {
      * Show/Hide Scoreboard
      */
     public toggleScoreboard(): void {
-        settings.hidden = true;
-        scoreboard.hidden = scoreboard.hidden ? false : true;
+        this.settings.hidden = true;
+        this.scoreboard.hidden = this.scoreboard.hidden ? false : true;
     }
 
     /**
      * Show/Hide FPS information
      */
     public toggleFPS(): void {
-        if (fps.style.visibility == "hidden") {
-            fps.style.transition = "margin 0.5s ease-in-out";
-            fps.style.visibility = "visible";
-            fps.style.margin = "0px";
+        if (this.fps.style.visibility == "hidden") {
+            this.fps.style.transition = "margin 0.5s ease-in-out";
+            this.fps.style.visibility = "visible";
+            this.fps.style.margin = "0px";
         } else {
-            fps.style.transition = "margin 0.5s ease-in-out, visibility 0s ease-in-out 0.5s";
-            fps.style.margin = "-5em 0px 0px 0px";
-            fps.style.visibility = "hidden";
+            this.fps.style.transition = "margin 0.5s ease-in-out, visibility 0s ease-in-out 0.5s";
+            this.fps.style.margin = "-5em 0px 0px 0px";
+            this.fps.style.visibility = "hidden";
         }
     }
 
@@ -183,12 +186,12 @@ export class GameHUD {
      * 
      */
     public toggleSettings(): void {
-        scoreboard.hidden = true;
-        if (settings.hidden) {
-            settings.hidden = false;
+        this.scoreboard.hidden = true;
+        if (this.settings.hidden) {
+            this.settings.hidden = false;
             document.exitPointerLock();
         } else {
-            settings.hidden = true;
+            this.settings.hidden = true;
             document.body.requestPointerLock();
         }
     }
@@ -201,7 +204,7 @@ export class GameHUD {
         const statusMsg = document.createElement('span');
         statusMsg.innerText = `${msg}\n`;
         if (typeof process === 'undefined') {
-            socketStatus.append(statusMsg);
+            this.socketStatus.append(statusMsg);
 
             setTimeout(function () {
                 statusMsg.remove();

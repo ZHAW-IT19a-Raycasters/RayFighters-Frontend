@@ -4,6 +4,18 @@ import { PlayerInfo } from "../src/communication/playerinfo";
  * Mock for GameHUD.
  */
 export class GameHUD {
+    private tickerCon: HTMLElement;
+    private timer: HTMLElement;
+    private playerName: HTMLElement;
+    private kills: HTMLElement;
+    private deaths: HTMLElement;
+    private mapName: HTMLElement;
+    private respawnCon: HTMLElement;
+    private scoreboard: HTMLElement;
+    private settings: HTMLElement;
+    private socketStatus: HTMLElement;
+    private fps: HTMLElement;
+
     public initializeHud(map: string, player: PlayerInfo) { return; }
     public updatePlayerInfo(playerInfo: PlayerInfo): void  { return; }
     public showMapInfo(map: string): void  { return; }
