@@ -3,10 +3,13 @@ import { Socket, SocketState } from '../src/communication/socket'
 import { Packet } from '../src/communication/packet'
 import { ProtocolParser } from '../src/communication/protocolparser';
 import { OpCode } from '../src/communication/opcode';
+import { GameHUD } from './gamehudmock';
 
 const url = "ws://fakeurl.ch";
+const HUDmock = new GameHUD();
 const webSocket = new WebSocket(url);
-const testSocket = new Socket(url, webSocket);
+
+const testSocket = new Socket(url, HUDmock, webSocket );
 const testPacket = new Packet({ opCode: OpCode.CLIENT_DISCONNECT });
 const expectedContent = new Uint8Array([OpCode.CLIENT_DISCONNECT]);
 
@@ -30,7 +33,7 @@ describe('Socket method testing', () => {
   it('should send messages', () => {
     // Prepare new WebSocket and Socket
     let innerWebSocket = new WebSocket(url);
-    let innerSocket = new Socket(url, innerWebSocket);
+    let innerSocket = new Socket(url, HUDmock, innerWebSocket);
 
     // Set up Socket
     innerWebSocket.triggerOnOpen();
@@ -56,7 +59,7 @@ describe('Socket method testing', () => {
   it('should receive messages', () => {
     // Prepare new WebSocket and Socket
     let innerWebSocket = new WebSocket(url);
-    let innerSocket = new Socket(url, innerWebSocket);
+    let innerSocket = new Socket(url, HUDmock, innerWebSocket);
 
     // Define expected packet (SERVER_DISCONNECT message)
     const expectedPacket = new Packet({ opCode: OpCode.SERVER_DISCONNECT });
@@ -79,7 +82,7 @@ describe('Socket method testing', () => {
 
   it('should recognize the socket ready state', () => {
     let innerWebSocket = new WebSocket(url);
-    let innerSocket = new Socket(url, innerWebSocket);
+    let innerSocket = new Socket(url, HUDmock, innerWebSocket);
     innerWebSocket.readyState = 1;
 
     // Prepare SERVER_DISCONNECT message (1-byte array with content 0x64)
@@ -96,7 +99,7 @@ describe('Socket method testing', () => {
   it('should handle undefined messages correctly', () => {
     // Prepare new WebSocket and Socket
     let innerWebSocket = new WebSocket(url);
-    let innerSocket = new Socket(url, innerWebSocket);
+    let innerSocket = new Socket(url, HUDmock, innerWebSocket);
 
     // Prepare SERVER_DISCONNECT message (1-byte array with content 0x64)
     let message: any = undefined;

@@ -1,5 +1,6 @@
 import { Packet } from "../communication/packet";
 import { Socket, SocketState } from "../communication/socket";
+import { GameHUD } from "../ui/gameHud";
 
 export class GameLoop {
   /**
@@ -69,16 +70,16 @@ export class GameLoop {
    * @param fpsDivName HTML ID as string where we put how much FPS we got
    * @param changeResolutionCallback Callback function(deltaResolution) to change the raycaster resolution
    */
-  constructor(websocketServerUrl: string, fpsDivName: string, changeResolutionCallback: any) {
+  constructor(websocketServerUrl: string, fpsDivName: string, changeResolutionCallback: any, gameHUD: GameHUD) {
     this.frame.bind(this);
     this.lastTime = 0;
     this.secSum = 0;
     this.frameSum = 0; 
     this.fpsElem = document.getElementById(fpsDivName);
     if(window.location.host === 'localhost:9000' || window.location.host === '127.0.0.1:9000') {
-      this.socket = new Socket(websocketServerUrl);
+      this.socket = new Socket(websocketServerUrl, gameHUD);
     } else {
-      this.socket = new Socket("ws://" + window.location.host + "/server/ws/1");
+      this.socket = new Socket("ws://" + window.location.host + "/server/ws/1", gameHUD);
     }
     this.changeResolutionCallback = changeResolutionCallback;
   }

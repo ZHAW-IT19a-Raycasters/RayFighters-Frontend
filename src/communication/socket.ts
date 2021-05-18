@@ -1,6 +1,5 @@
 import { Queue } from 'queue-typescript';
-import { showAlert } from '..';
-import { showSocketStatus } from '../gameHud';
+import { GameHUD } from '../ui/gameHud';
 import { Packet } from './packet';
 import { ProtocolParser } from './protocolparser';
 
@@ -38,11 +37,13 @@ export class Socket {
      */
     public socketState: SocketState = SocketState.CLOSED;
 
+    private gameHUD: GameHUD;
+
     /**
      * Creates a new socket connection.
      * @param url Server address
      */
-    constructor(url: string, webSocket?: any) {
+    constructor(url: string, gameHUD: any, webSocket?: any) {
         this.sendQueue = new Queue<Packet>();
         this.receiveQueue = new Queue<Packet>();
         
@@ -52,10 +53,12 @@ export class Socket {
             this.socket = new WebSocket(url);
         }
 
+        this.gameHUD = gameHUD;
+
         this.socket.binaryType = "arraybuffer";
         
         this.socket.onopen = (e) => {
-            showSocketStatus("Connection established.");
+            this.gameHUD.showSocketStatus("Connection established.");
             this.socketState = SocketState.CONNECTED;
         };
 
@@ -70,13 +73,13 @@ export class Socket {
 
         this.socket.onclose = (e) => {
             // TODO: change to showAlert()
-            showSocketStatus("Connection from server closed.");
+            this.gameHUD.showSocketStatus("Connection from server closed.");
             this.socketState = SocketState.CLOSED;
         };
         
         this.socket.onerror = (e) => {
             // TODO: change to showAlert()
-            showSocketStatus("ERROR! Connection couldn't be established.");
+            this.gameHUD.showSocketStatus("ERROR! Connection couldn't be established.");
             this.socketState = SocketState.ERROR;
         };
     }
