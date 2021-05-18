@@ -14,6 +14,7 @@ let socketStatus: HTMLElement;
 let fps: HTMLElement;
 
 export class GameHUD {
+    constructor(){ /* Deliberately empty */ }
     /***
      * Initialize all Hud HTMLElements
      */
