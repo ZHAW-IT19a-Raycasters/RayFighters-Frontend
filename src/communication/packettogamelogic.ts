@@ -29,6 +29,10 @@ export class PacketToGameLogic {
 
     private gameHUD: GameHUD;
 
+    private currentMapID: number;
+
+    private currentTime: BigInt;
+
     /**
      * 
      * @param player Player reference
@@ -90,7 +94,9 @@ export class PacketToGameLogic {
                 this.enemyMap.get(p.userID).shoot(this.player.getPosition);
                 break;
             case OpCode.SERVER_MAPCHANGE:
-                // TODO 
+                // TODO: Call UI
+                this.currentMapID = p.mapID;
+                this.currentTime = p.time;
             default:
                 break;
         }
@@ -231,4 +237,15 @@ export class PacketToGameLogic {
     public get getEnemies() {
         return Array.from(this.enemyMap.values());
     }
+
+    
+    public get getCurrentTime() : BigInt {
+        return this.currentTime;
+    }
+
+    
+    public get getCurrentMapID() : number {
+        return this.currentMapID;
+    }
+    
 }
