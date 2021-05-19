@@ -94,9 +94,10 @@ export class PacketToGameLogic {
                 this.enemyMap.get(p.userID).shoot(this.player.getPosition);
                 break;
             case OpCode.SERVER_MAPCHANGE:
-                // TODO: Call UI
+                this.gameHUD.setTimer(p.time)
                 this.currentMapID = p.mapID;
                 this.currentTime = p.time;
+                break;
             default:
                 break;
         }

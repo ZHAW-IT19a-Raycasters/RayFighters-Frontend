@@ -192,6 +192,7 @@ function startGameLoop() {
         this.serverConnection.handlePacket(p);
       })
 
+      // Check if map has changed
       let newMapPath = game.checkMap();
       if (newMapPath != lastMapPath) {
         game.initializeRoom(newMapPath);

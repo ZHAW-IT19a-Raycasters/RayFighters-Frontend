@@ -103,9 +103,11 @@ export class GameHUD {
     // TODO:
     /**
      * Time left until end of round
-     * @param 
+     * @param time UNIX timestamp
      */
-    public setTimer(): void {
+    public setTimer(time: BigInt): void {
+        // TODO do stuff with time
+        // time is a unix timestamp in BigInt format
     }
 
     /**

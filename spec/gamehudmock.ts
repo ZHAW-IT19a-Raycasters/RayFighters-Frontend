@@ -20,7 +20,7 @@ export class GameHUD {
     public updatePlayerInfo(playerInfo: PlayerInfo): void  { return; }
     public showMapInfo(map: string): void  { return; }
     public showTicket(msg: string): void  { return; }
-    public setTimer(): void  { return; }
+    public setTimer(time: BigInt): void  { return; }
     public displayRespawn(isDead: boolean): void  { return; }
     public updateScoreboard(ranking: Array<PlayerInfo>): void  { return; }
     public toggleScoreboard(): void  { return; }
