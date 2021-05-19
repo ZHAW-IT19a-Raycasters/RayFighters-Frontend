@@ -9,10 +9,13 @@ import { SocketState } from '../communication/socket';
 import { PacketToGameLogic } from '../communication/packettogamelogic';
 import { GameHUD } from '../ui/gameHud';
 
+/**
+ * Main {@link Game} instance.
+ */
 let game: Game;
 
 /**
- * Runs the Game
+ * Runs the Game and entry point of the game logic
  * @param canvasName Id of the Canvas HTMLElement
  * @param fpsCounterName Id of the FPS Counter HTMLElement
   */
@@ -21,8 +24,20 @@ export function runGame(canvasName: string, fpsCounterName: string): void {
   game.initializeGame(canvasName, fpsCounterName);
 }
 
-
+/**
+ * Main Game class. Initializes the player, map, socket connection and anything else needed for gameplay.
+ */
 export class Game {
+  /**
+   * URL of the server.
+   */
+  private static readonly SERVER_URL = "ws://127.0.0.1:8080/ws/1";
+
+  /**
+   * Default wall resolution.
+   */
+  private static readonly DEFAULT_RAYCASTER_RESOLUTION = 500;
+
   /**
    * Renderer instance. Needs to be updated upon window resize.
    */
@@ -43,15 +58,41 @@ export class Game {
    */
   public room: Room;
 
+  /**
+   * GameHUD instance. Shows info relevant to the player
+   */
   public gameHUD: GameHUD;
-  public serverConnection: PacketToGameLogic;
-  private static readonly SERVER_URL = "ws://127.0.0.1:8080/ws/1";
-  private static readonly DEFAULT_RAYCASTER_RESOLUTION = 500;
+
+  /**
+   * Handles messages from server to game logic.
+   */
+  public packetToGameLogic: PacketToGameLogic;
+
+  /**
+   * Player input
+   */
   public controls = new Controls();
+
+  /**
+   * Game loop, runs the game and controls the timing.
+   */
   private loop: GameLoop;
+
+  /**
+   * Current map ID.
+   */
   private currentMapID: number;
+
+  /**
+   * Path to current map.
+   */
   private currentMapPath: string;
 
+  /**
+   * Initializes the {@link Game}.
+   * @param canvasName Name of {@link Canvas} instance.
+   * @param fpsCounterName ID of the FPS counter HTML element.
+   */
   public initializeGame(canvasName: string, fpsCounterName: string) {
     // Canvas Setup. 
     // The element that contains the canvas element to drawn in
@@ -60,11 +101,11 @@ export class Game {
     // Display PlayerInfo and Mapname on HUD
     this.gameHUD = new GameHUD();
     this.setupPlayer();
-    this.serverConnection = new PacketToGameLogic(this.player, this.gameHUD); // Map ID is gotten here, can be undefined!!
+    this.packetToGameLogic = new PacketToGameLogic(this.player, this.gameHUD); // Map ID is gotten here, can be undefined!!
     this.initializeRoom(this.checkMap());
     this.gameHUD.initializeHud(this.room.getMap.getMapName, this.player.getPlayerInfo);
 
-
+    // Initialize renderer.
     this.initializeRenderer();
 
     this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
@@ -73,11 +114,17 @@ export class Game {
     startGameLoop();
   }
 
-  // Room Setup. Creates a room
+  /**
+   * {@link Room} Setup. Creates a {@link Room}.
+   * @param mapPath Path to current map.
+   */
   public initializeRoom(mapPath: string) {
     this.room = new Room({ mapSize: 32, loadMap: mapPath });
   }
 
+  /**
+   * Creates a {@link Player}.
+   */
   private setupPlayer(): void {
     // Player Setup
     this.player = new Player(
@@ -87,26 +134,28 @@ export class Game {
       new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4));
   }
 
-
-
   /**
- * Initializes the renderer with its default settings.
- */
+   * Initializes the {@link Renderer} with its default settings.
+   */
   public initializeRenderer() {
     this.renderer = new Renderer(this.canvas, Game.DEFAULT_RAYCASTER_RESOLUTION, 32, 0.6, this.room.getMap.getFloorGradient, this.room.getMap.getCeilingGradient);
   }
 
+  /**
+   * Checks for the current map ID obtained from server.
+   * @returns The path to the current map.
+   */
   public checkMap(): string {
-    this.currentMapID = this.serverConnection.getCurrentMapID;
+    this.currentMapID = this.packetToGameLogic.getCurrentMapID;
     this.currentMapPath = this.mapIDToString(this.currentMapID);
     return this.currentMapPath;
   }
 
   /**
-   * Dumb solution for now. 
+   * Dumb solution for now. Translates map ID to map path.
    * TODO: Read from JSON file
-   * @param id 
-   * @returns 
+   * @param id map ID
+   * @returns map path
    */
   private mapIDToString(id: number) {
     let path: string;
@@ -123,7 +172,7 @@ export class Game {
 
   /**
    * Checks if the connection to the server is alive.
-   * @param state SocketState that will be checked. Needs to be passed from Game Loop.
+   * @param state {@link SocketState} that will be checked. Needs to be passed from {@link GameLoop}.
    * @returns True if alive, False if failed
    */
   public checkConnection(): boolean {
@@ -135,6 +184,10 @@ export class Game {
     return true;
   }
 
+  /**
+   * Checks if a map was received from server yet.
+   * @returns True if the map was loaded.
+   */
   public isMapLoaded(): boolean {
     if (this.currentMapID == undefined || this.currentMapPath == undefined) {
       return false;
@@ -163,8 +216,10 @@ export class Game {
   }
 }
 
+/**
+ * Listen to window resizes, and in case of that, re-initialize {@link Renderer} to prevent images from stretching.
+ */
 function startDynamicResolution() {
-  // Listen to window resizes, and in case of that, re-initialize renderer to prevent images from stretching.
   window.addEventListener('resize', function () {
     game.initializeRenderer();
     game.getLoop.restartDynamicResolution();
@@ -172,6 +227,9 @@ function startDynamicResolution() {
   }, true);
 }
 
+/**
+ * Initializes the {@link GameLoop}.
+ */
 function startGameLoop() {
   // Starts the game loop using this frame handler.
   game.getLoop.begin(function (time: number, receivedPackets: Array<Packet>, sendCallback: any) {
@@ -181,7 +239,7 @@ function startGameLoop() {
       let lastMapPath = game.getCurrentMapPath;
 
       // Refresh sprite array and cycle walk animation
-      game.room.updateEnemyEntities(game.serverConnection.getEnemies);
+      game.room.updateEnemyEntities(game.packetToGameLogic.getEnemies);
       game.room.updateEnemies(time);
 
       // Update player positions, controls, map, time and sendCallback for communicating with the server.
