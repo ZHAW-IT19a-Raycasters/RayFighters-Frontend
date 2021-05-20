@@ -48,9 +48,14 @@ export class Controls {
     ]);
 
     /**
-     * Multiplyer for mouse look sensitivity
+     * Multiplier for mouse look sensitivity
      */
     public static readonly MOUSE_LOOK_SENSITIVITY = 20;
+
+    /**
+     * Multiplier for touch look sensitivity
+     */
+    public static readonly TOUCH_LOOK_SENSITIVITY = 0.75;
 
     /**
      * Shoot button on the html page.
@@ -68,6 +73,11 @@ export class Controls {
     private lastMouseDeltaX: number;
 
     /**
+     * Are we currently on a mobile device? => Touch Controls!
+     */
+    private isMobileDevice: boolean;
+
+    /**
      * Constructor of control class. Registers all event handlers.
      */
     constructor() {
@@ -80,6 +90,14 @@ export class Controls {
         document.addEventListener('mousedown',      (event) => this.mouseDownHandler(event), false);
         document.addEventListener('mouseup',        (event) => this.mouseUpHandler(event), false);
         document.body.onclick = document.body.requestPointerLock
+
+        // Detect mobile devices with user agent check
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            this.isMobileDevice = true;
+        } else {
+            this.isMobileDevice = false;
+        }
+        console.log(`Controls: Detected ${this.isMobileDevice ? 'MOBILE' : 'DESKTOP'} inputs.`);
     }
 
     /**
@@ -93,6 +111,10 @@ export class Controls {
 
     public getMouseDelta(): number {
         return this.lastMouseDeltaX;
+    }
+
+    public get isMobile(): boolean {
+        return this.isMobileDevice;
     }
 
     /**
