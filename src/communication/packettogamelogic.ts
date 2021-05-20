@@ -7,6 +7,7 @@ import { PlayerInfo } from "./playerinfo";
 import { GameHUD } from "../ui/gameHud";
 import { loadPage } from "../index";
 import { StringHelper } from "../common/stringhelper";
+import { LogicHelper } from "../logic/logichelper";
 
 /**
  * Class Purpose:
@@ -55,7 +56,7 @@ export class PacketToGameLogic {
                 break;
             case OpCode.SERVER_DISCONNECT:
                 alert("Server has disconnected!");
-                this.cancelGame();
+                LogicHelper.exitGame();
                 break;
             case OpCode.SERVER_UNKNOWN:
                 alert("Server has sent unknown message");
@@ -227,13 +228,6 @@ export class PacketToGameLogic {
             this.enemyMap.get(p.userID).setPosition = newPosition;
             this.enemyMap.get(p.userID).getPlayerInfo.isDead = false;
         }
-    }
-    
-    /**
-     * Stops the game and returns the player to the landing page.
-     */
-    private cancelGame(){
-        loadPage('./index.html');
     }
 
     public get getEnemies() {

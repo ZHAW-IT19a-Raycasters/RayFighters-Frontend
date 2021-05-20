@@ -41,7 +41,7 @@ export class Game {
   /**
    * Renderer instance. Needs to be updated upon window resize.
    */
-  public renderer: Renderer;
+  private renderer: Renderer;
 
   /**
    * Where the magic happens. The element that contains the canvas element to drawn in
@@ -51,27 +51,27 @@ export class Game {
   /**
    * Player instance.
    */
-  public player: Player;
+  private player: Player;
 
   /**
    * Current room.
    */
-  public room: Room;
+  private room: Room;
 
   /**
    * GameHUD instance. Shows info relevant to the player
    */
-  public gameHUD: GameHUD;
+  private gameHUD: GameHUD;
 
   /**
    * Handles messages from server to game logic.
    */
-  public packetToGameLogic: PacketToGameLogic;
+  private packetToGameLogic: PacketToGameLogic;
 
   /**
    * Player input
    */
-  public controls = new Controls();
+  private controls = new Controls();
 
   /**
    * Game loop, runs the game and controls the timing.
@@ -93,7 +93,7 @@ export class Game {
    * @param canvasName Name of {@link Canvas} instance.
    * @param fpsCounterName ID of the FPS counter HTML element.
    */
-  constructor(canvasName: string, fpsCounterName: string){
+  constructor(canvasName: string, fpsCounterName: string) {
     // Canvas Setup. 
     this.canvas = document.getElementById(canvasName);
 
@@ -106,7 +106,6 @@ export class Game {
 
     // Initialize renderer.
     this.initializeRenderer();
-    startDynamicResolution();
 
     this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
   }
@@ -115,7 +114,7 @@ export class Game {
    * {@link Room} Setup. Creates a {@link Room}.
    * @param mapPath Path to current map.
    */
-  public initializeRoom(mapPath: string) {
+  public initializeRoom(mapPath: string) : void {
     this.room = new Room({ mapSize: 32, loadMap: mapPath });
   }
 
@@ -134,8 +133,19 @@ export class Game {
   /**
    * Initializes the {@link Renderer} with its default settings.
    */
-  public initializeRenderer() {
+  public initializeRenderer(): void {
     this.renderer = new Renderer(this.canvas, Game.DEFAULT_RAYCASTER_RESOLUTION, 32, 0.6, this.room.getMap.getFloorGradient, this.room.getMap.getCeilingGradient);
+    startDynamicResolution();
+  }
+
+  /**
+   * Loads a new map and re-initializes {@link Renderer} and {@link GameHUD}.
+   * @param newMapPath path to new map.
+   */
+  public loadMap(newMapPath: string): void {
+    game.initializeRoom(newMapPath);
+    game.initializeRenderer();
+    game.gameHUD.initializeHud(game.room.getMap.getMapName, game.player.getPlayerInfo);
   }
 
   /**
@@ -154,7 +164,7 @@ export class Game {
    * @param id map ID
    * @returns map path
    */
-  private mapIDToString(id: number) {
+  private mapIDToString(id: number): string {
     let path: string;
     switch (id) {
       case 0: path = "maps/city_yard.txt"; break;
@@ -211,6 +221,32 @@ export class Game {
   public get getCurrentMapPath(): string {
     return this.currentMapPath;
   }
+
+  
+  public get getRenderer() : Renderer {
+    return this.renderer;
+  }
+
+  public get getRoom(): Room {
+    return this.room;
+  }
+
+  
+  public get getGameHUD() : GameHUD {
+    return this.gameHUD;
+  }
+  
+  
+  public get getPacketToGameLogic() : PacketToGameLogic {
+    return this.packetToGameLogic;
+  }
+  
+  
+  public get getControls() : Controls {
+    return this.controls;
+  }
+  
+  
 }
 
 /**
@@ -236,39 +272,39 @@ function startGameLoop() {
       let lastMapPath = game.getCurrentMapPath;
 
       // Refresh sprite array and cycle walk animation
-      game.room.updateEnemyEntities(game.packetToGameLogic.getEnemies);
-      game.room.updateEnemies(time);
+      game.getRoom.updateEnemyEntities(game.getPacketToGameLogic.getEnemies);
+      game.getRoom.updateEnemies(time);
 
       // Update player positions, controls, map, time and sendCallback for communicating with the server.
-      game.player.update(game.controls, game.room.getMap, time, sendCallback);
+      game.getPlayer.update(game.getControls, game.getRoom.getMap, time, sendCallback);
 
-      game.renderer.render(game.room, game.player, time);
+      game.getRenderer.render(game.getRoom, game.getPlayer, time);
       receivedPackets.forEach(p => {
-        game.packetToGameLogic.handlePacket(p);
+        game.getPacketToGameLogic.handlePacket(p);
       })
 
-      // Check if map has changed
+      // Check if map has changed 
+      // TODO: solve with callback, this approach is a bit boneheaded
       let newMapPath = game.checkMap();
       if (newMapPath != lastMapPath) {
-        game.initializeRoom(newMapPath);
-        game.initializeRenderer();
-        game.gameHUD.initializeHud(game.room.getMap.getMapName, game.player.getPlayerInfo);
+        game.loadMap(newMapPath);
       }
     } else {
+      // Check for map change packet
       if (game.checkConnection()) {
         receivedPackets.forEach(p => {
-          game.packetToGameLogic.handlePacket(p);
+          game.getPacketToGameLogic.handlePacket(p);
         })
       }
-      game.gameHUD.showTicket('No map loaded yet.');
+      game.getGameHUD.showTicket('No map loaded yet.');
 
-      // Check for map as long as it takes
+      // Look if map ID was delivered by server
       let lastMapPath = game.getCurrentMapPath;
       let newMapPath = game.checkMap();
-      if (lastMapPath != newMapPath){
-        game.initializeRoom(newMapPath);
-        game.initializeRenderer();
-        game.gameHUD.initializeHud(game.room.getMap.getMapName, game.player.getPlayerInfo);
+
+      // If the map ID was received, load the map
+      if (lastMapPath != newMapPath) {
+        game.loadMap(newMapPath);
       }
     }
   });

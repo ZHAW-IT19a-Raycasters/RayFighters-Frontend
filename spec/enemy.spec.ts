@@ -6,7 +6,7 @@ import { Player } from "../src/player/player";
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document, Image } = (new JSDOM(index)).window;
 global.document = document;
-/*
+
 let testEntity: Enemy;
 const testAngle = 5.5;
 const testX = 99;
@@ -23,8 +23,10 @@ describe('Enemy unit test', () => {
         expect(testEntity.getPosition.y).toBe(testPosition.y);
     })
 
+    /*
+
     it('should move enemies correctly', () => {
-        const seconds = 3;
+        const seconds = 10;
         testEntity = new Enemy();
         testEntity.setPosition = testPosition;
         testEntity.update(seconds);
@@ -47,5 +49,5 @@ describe('Enemy unit test', () => {
             testEntity.setAngle = testEntity.getAngle + turningAngle;
         }
     });
+    */
 })
-*/
