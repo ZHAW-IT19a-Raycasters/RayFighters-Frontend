@@ -72,6 +72,7 @@ export class ProtocolParser {
                 packet = new Packet({ opCode: opCode, playerCount: message[1], playerKillDeathList: this.assemblePlayerList(opCode, message.slice(2), message[1]) });
                 break;
             case OpCode.SERVER_MAPCHANGE:
+                console.log("Map change! " + message[1])
                 packet = new Packet({ opCode: opCode, mapID: message[1], time: this.u8ArraytoBigInt(message, 2) });
                 break;
             default:

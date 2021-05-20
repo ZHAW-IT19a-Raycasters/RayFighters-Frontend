@@ -1,4 +1,5 @@
 import { Queue } from 'queue-typescript';
+import { LogicHelper } from '../logic/logichelper';
 import { GameHUD } from '../ui/gameHud';
 import { Packet } from './packet';
 import { ProtocolParser } from './protocolparser';
@@ -75,12 +76,14 @@ export class Socket {
             // TODO: change to showAlert()
             this.gameHUD.showSocketStatus("Connection from server closed.");
             this.socketState = SocketState.CLOSED;
+            LogicHelper.exitGame();
         };
         
         this.socket.onerror = (e) => {
             // TODO: change to showAlert()
             this.gameHUD.showSocketStatus("ERROR! Connection couldn't be established.");
             this.socketState = SocketState.ERROR;
+            LogicHelper.exitGame();
         };
     }
 

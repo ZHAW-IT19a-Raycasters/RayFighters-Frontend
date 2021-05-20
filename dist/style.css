@@ -64,9 +64,9 @@ body {
 
   /* Background */
   background-image: url("img/RaycasterLogo1.png");
-  background-size: cover;
-  background-position-y: 20%;
+  background-position: top center;
 
+  /* Text */
   letter-spacing: 0.1em;
   font-family: ArcadeClassic;
   color: #fff;

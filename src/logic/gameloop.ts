@@ -137,20 +137,6 @@ export class GameLoop {
 
     this.lastTime = currTime;
 
-    /**
-     * Example code for error handling. 
-     * TODO: implement error handling.
-     * Socket states can only be polled, the game isn't notified if something goes wrong.
-    
-    if (this.socket.socketState === SocketState.CLOSED) {
-      alert('Connection is closed!')
-    }
-
-    if (this.socket.socketState === SocketState.ERROR) {
-      alert('Connection error!')
-    }
-    */
-
     if (secs <= 1) {
       var that = this;
       this.callback(secs, this.socket.getReceived(), function (packet: Packet) { that.socket.send(packet) });
@@ -160,9 +146,7 @@ export class GameLoop {
     this.socket.sendAll();
   }
 
-  
   public get getSocketState() : SocketState {
     return this.socket.socketState;
   }
-  
 }
