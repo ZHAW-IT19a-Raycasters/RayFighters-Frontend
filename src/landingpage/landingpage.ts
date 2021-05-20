@@ -1,5 +1,6 @@
 import { playSoundEffect, loadPage } from "../index";
 import { runGame } from "../logic/game";
+import { GameHUD } from "../ui/gameHud";
 
 /**
  * Register all Evenlisteners for the Startmenu
@@ -111,8 +112,11 @@ function handleLogIn(form: HTMLFormElement): void {
     //load the html for the Game
     loadPage('html/game.html');
 
+    // Instantiate HUD
+    const gameHUD = new GameHUD();
+
     // run the Game
-    runGame("game-canvas", "fps-counter");
+    runGame("game-canvas", "fps-counter", gameHUD);
 }
 
 /**

@@ -19,8 +19,8 @@ let game: Game;
  * @param canvasName Id of the Canvas HTMLElement
  * @param fpsCounterName Id of the FPS Counter HTMLElement
   */
-export function runGame(canvasName: string, fpsCounterName: string): void {
-  game = new Game(canvasName, fpsCounterName);
+export function runGame(canvasName: string, fpsCounterName: string, gameHUD: GameHUD): void {
+  game = new Game(canvasName, fpsCounterName, gameHUD);
   startGameLoop();
 }
 
@@ -93,12 +93,12 @@ export class Game {
    * @param canvasName Name of {@link Canvas} instance.
    * @param fpsCounterName ID of the FPS counter HTML element.
    */
-  constructor(canvasName: string, fpsCounterName: string) {
+  constructor(canvasName: string, fpsCounterName: string, gameHUD: any) {
     // Canvas Setup. 
     this.canvas = document.getElementById(canvasName);
 
     // Display PlayerInfo and Mapname on HUD
-    this.gameHUD = new GameHUD();
+    this.gameHUD = gameHUD;
     this.setupPlayer();
     this.packetToGameLogic = new PacketToGameLogic(this.player, this.gameHUD); // Map ID is gotten here, can be undefined!!
     this.initializeRoom(this.checkMap());
