@@ -1,10 +1,7 @@
 import { PlayerInfo } from "../communication/playerinfo";
 import { playSoundEffect } from "../index";
 
-
-
 export class GameHUD {
-
     private tickerCon: HTMLElement;
     private timer: HTMLElement;
     private playerName: HTMLElement;
@@ -108,6 +105,7 @@ export class GameHUD {
     public setTimer(time: BigInt): void {
         // TODO do stuff with time
         // time is a unix timestamp in BigInt format
+        return;
     }
 
     /**

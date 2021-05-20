@@ -95,6 +95,7 @@ export class PacketToGameLogic {
                 break;
             case OpCode.SERVER_MAPCHANGE:
                 this.gameHUD.setTimer(p.time)
+                console.log("Map ID gotten: " + p.mapID)
                 this.currentMapID = p.mapID;
                 this.currentTime = p.time;
                 break;

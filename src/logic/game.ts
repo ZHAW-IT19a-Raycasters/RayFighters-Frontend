@@ -20,8 +20,8 @@ let game: Game;
  * @param fpsCounterName Id of the FPS Counter HTMLElement
   */
 export function runGame(canvasName: string, fpsCounterName: string): void {
-  game = new Game();
-  game.initializeGame(canvasName, fpsCounterName);
+  game = new Game(canvasName, fpsCounterName);
+  startGameLoop();
 }
 
 /**
@@ -44,7 +44,7 @@ export class Game {
   public renderer: Renderer;
 
   /**
-   * Where the magic happens.
+   * Where the magic happens. The element that contains the canvas element to drawn in
    */
   private canvas: any;
 
@@ -93,9 +93,8 @@ export class Game {
    * @param canvasName Name of {@link Canvas} instance.
    * @param fpsCounterName ID of the FPS counter HTML element.
    */
-  public initializeGame(canvasName: string, fpsCounterName: string) {
+  constructor(canvasName: string, fpsCounterName: string){
     // Canvas Setup. 
-    // The element that contains the canvas element to drawn in
     this.canvas = document.getElementById(canvasName);
 
     // Display PlayerInfo and Mapname on HUD
@@ -107,11 +106,9 @@ export class Game {
 
     // Initialize renderer.
     this.initializeRenderer();
+    startDynamicResolution();
 
     this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
-
-    startDynamicResolution();
-    startGameLoop();
   }
 
   /**
@@ -160,11 +157,11 @@ export class Game {
   private mapIDToString(id: number) {
     let path: string;
     switch (id) {
-      case 0: path = "city_yard.txt"; break;
-      case 1: path = "desert.txt"; break;
-      case 2: path = "sundown_resort.txt"; break;
-      case 3: path = "vapor_land.txt"; break;
-      case 4: path = "weeaboo_city.txt"; break;
+      case 0: path = "maps/city_yard.txt"; break;
+      case 1: path = "maps/desert.txt"; break;
+      case 2: path = "maps/sundown_resort.txt"; break;
+      case 3: path = "maps/vapor_land.txt"; break;
+      case 4: path = "maps/weeaboo_city.txt"; break;
       default: break;
     }
     return path;
@@ -247,7 +244,7 @@ function startGameLoop() {
 
       game.renderer.render(game.room, game.player, time);
       receivedPackets.forEach(p => {
-        this.serverConnection.handlePacket(p);
+        game.packetToGameLogic.handlePacket(p);
       })
 
       // Check if map has changed
@@ -255,15 +252,24 @@ function startGameLoop() {
       if (newMapPath != lastMapPath) {
         game.initializeRoom(newMapPath);
         game.initializeRenderer();
+        game.gameHUD.initializeHud(game.room.getMap.getMapName, game.player.getPlayerInfo);
       }
     } else {
+      if (game.checkConnection()) {
+        receivedPackets.forEach(p => {
+          game.packetToGameLogic.handlePacket(p);
+        })
+      }
       game.gameHUD.showTicket('No map loaded yet.');
 
       // Check for map as long as it takes
-      game.checkMap();
+      let lastMapPath = game.getCurrentMapPath;
+      let newMapPath = game.checkMap();
+      if (lastMapPath != newMapPath){
+        game.initializeRoom(newMapPath);
+        game.initializeRenderer();
+        game.gameHUD.initializeHud(game.room.getMap.getMapName, game.player.getPlayerInfo);
+      }
     }
   });
 }
-
-
-

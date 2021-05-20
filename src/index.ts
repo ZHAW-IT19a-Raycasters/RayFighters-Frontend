@@ -1,9 +1,8 @@
-import { initializeLandingPage } from "./landingpage";
+import { initializeLandingPage } from "./landingpage/landingpage";
 
 /**
  * load the html for the StartMenu
  */
-
 // Check if not running from node (Jasmine test)
 if (typeof process === 'undefined') {
     loadPage("html/startMenu.html");
