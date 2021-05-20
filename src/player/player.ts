@@ -171,14 +171,22 @@ export class Player {
     // Mouse look left
     if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
       ++hasRotated;
-      this.rotate(Math.PI * (seconds * (controls.getMouseDelta() / this.screenWidth)) * Controls.MOUSE_LOOK_SENSITIVITY);
+      if(controls.isMobile) {
+        this.rotate(-Math.PI * (seconds * Controls.TOUCH_LOOK_SENSITIVITY));
+      } else {
+        this.rotate(Math.PI * (seconds * (controls.getMouseDelta() / this.screenWidth)) * Controls.MOUSE_LOOK_SENSITIVITY);
+      }
       controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false);
     }
 
     // Mouse look right
     if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
       ++hasRotated;
-      this.rotate(Math.PI * (seconds * (controls.getMouseDelta() / this.screenWidth)) * Controls.MOUSE_LOOK_SENSITIVITY);
+      if(controls.isMobile) {
+        this.rotate(Math.PI * (seconds * Controls.TOUCH_LOOK_SENSITIVITY));
+      } else {
+        this.rotate(Math.PI * (seconds * (controls.getMouseDelta() / this.screenWidth)) * Controls.MOUSE_LOOK_SENSITIVITY);
+      }
       controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false);
     }
 
