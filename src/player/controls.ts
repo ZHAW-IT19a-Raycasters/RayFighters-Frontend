@@ -48,6 +48,16 @@ export class Controls {
     ]);
 
     /**
+     * Multiplier for mouse look sensitivity
+     */
+    public static readonly MOUSE_LOOK_SENSITIVITY = 20;
+
+    /**
+     * Multiplier for touch look sensitivity
+     */
+    public static readonly TOUCH_LOOK_SENSITIVITY = 0.75;
+
+    /**
      * Shoot button on the html page.
      */
     private shootButton: any = document.getElementById('shootbutton');
@@ -56,6 +66,16 @@ export class Controls {
      * Vessel for location and dimensions of the shoot button on the html page.
      */
     private shootButtonRect: any;
+
+    /**
+     * How many pixels the mouse has moved since it's last moved
+     */
+    private lastMouseDeltaX: number;
+
+    /**
+     * Are we currently on a mobile device? => Touch Controls!
+     */
+    private isMobileDevice: boolean;
 
     /**
      * Constructor of control class. Registers all event handlers.
@@ -70,6 +90,14 @@ export class Controls {
         document.addEventListener('mousedown',      (event) => this.mouseDownHandler(event), false);
         document.addEventListener('mouseup',        (event) => this.mouseUpHandler(event), false);
         document.body.onclick = document.body.requestPointerLock
+
+        // Detect mobile devices with user agent check
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            this.isMobileDevice = true;
+        } else {
+            this.isMobileDevice = false;
+        }
+        console.log(`Controls: Detected ${this.isMobileDevice ? 'MOBILE' : 'DESKTOP'} inputs.`);
     }
 
     /**
@@ -79,6 +107,14 @@ export class Controls {
         for (let key of Array.from(this.states)) {
             this.states.set(key[0], false)
         }
+    }
+
+    public getMouseDelta(): number {
+        return this.lastMouseDeltaX;
+    }
+
+    public get isMobile(): boolean {
+        return this.isMobileDevice;
     }
 
     /**
@@ -158,12 +194,14 @@ export class Controls {
         if (mousePositionX > 0) {
             this.keyHandler(true, { keyCode: KeyCodes.MOUSE_TURN_RIGHT });
             this.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
+            this.lastMouseDeltaX = mousePositionX;
         }
 
         // Left turn
         if (mousePositionX < 0) {
             this.keyHandler(true, { keyCode: KeyCodes.MOUSE_TURN_LEFT });
             this.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
+            this.lastMouseDeltaX = mousePositionX;
         }
     }
 

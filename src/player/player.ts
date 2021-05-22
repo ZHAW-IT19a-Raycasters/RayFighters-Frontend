@@ -29,6 +29,8 @@ export class Player {
    */
   private static readonly DEATH_SOUND_VOLUME = 0.5;
 
+  private static readonly DEFAULT_SCREEN_WIDTH = 1920;
+
   /**
    * Further meta informations about ourselves in the network context (what's
    * our player name and id). Note that enemies have this information aswell.
@@ -58,6 +60,11 @@ export class Player {
   private walkTimer: number;
 
   private gameHUD: GameHUD;
+
+  /**
+   * Used for determining screen width in mouselook code
+   */
+  private screenWidth: number;
   
   /***
    * @constructor
@@ -71,6 +78,7 @@ export class Player {
     this.position = new Vec2D(x, y);
     this.paces = 0;
     this.gameHUD = gameHUD;
+    this.screenWidth = Player.DEFAULT_SCREEN_WIDTH;
 
     if (!walkSpeed) {
       this.walkSpeed = Player.DEFAULT_WALK_SPEED;
@@ -93,6 +101,10 @@ export class Player {
 
   public setWeapon(weapon: Weapon): void {
     this.weapon = weapon;
+  }
+
+  public setScreenWidth(width: number): void {
+    this.screenWidth = width;
   }
 
   /***
@@ -159,15 +171,23 @@ export class Player {
     // Mouse look left
     if (controls.states.get(KeyCodes.MOUSE_TURN_LEFT)) {
       ++hasRotated;
-      this.rotate(-Math.PI * (seconds * 0.75));
-      controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
+      if(controls.isMobile) {
+        this.rotate(-Math.PI * (seconds * Controls.TOUCH_LOOK_SENSITIVITY));
+      } else {
+        this.rotate(Math.PI * (seconds * (controls.getMouseDelta() / this.screenWidth)) * Controls.MOUSE_LOOK_SENSITIVITY);
+      }
+      controls.states.set(KeyCodes.MOUSE_TURN_LEFT, false);
     }
 
     // Mouse look right
     if (controls.states.get(KeyCodes.MOUSE_TURN_RIGHT)) {
       ++hasRotated;
-      this.rotate(Math.PI * (seconds * 0.75));
-      controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
+      if(controls.isMobile) {
+        this.rotate(Math.PI * (seconds * Controls.TOUCH_LOOK_SENSITIVITY));
+      } else {
+        this.rotate(Math.PI * (seconds * (controls.getMouseDelta() / this.screenWidth)) * Controls.MOUSE_LOOK_SENSITIVITY);
+      }
+      controls.states.set(KeyCodes.MOUSE_TURN_RIGHT, false);
     }
 
     // Move forward

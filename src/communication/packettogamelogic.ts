@@ -7,6 +7,7 @@ import { PlayerInfo } from "./playerinfo";
 import { GameHUD } from "../ui/gameHud";
 import { loadPage } from "../index";
 import { StringHelper } from "../common/stringhelper";
+import { LogicHelper } from "../logic/logichelper";
 
 /**
  * Class Purpose:
@@ -29,6 +30,10 @@ export class PacketToGameLogic {
 
     private gameHUD: GameHUD;
 
+    private currentMapID: number;
+
+    private currentTime: BigInt;
+
     /**
      * 
      * @param player Player reference
@@ -50,8 +55,8 @@ export class PacketToGameLogic {
                 this.playerDeath(p.killerID, p.victimID);
                 break;
             case OpCode.SERVER_DISCONNECT:
-                this.gameHUD.showTicket("Server has disconnected!");
-                this.cancelGame();
+                alert("Server has disconnected!");
+                LogicHelper.exitGame();
                 break;
             case OpCode.SERVER_UNKNOWN:
                 this.gameHUD.showTicket("Server has sent unknown message");
@@ -90,7 +95,11 @@ export class PacketToGameLogic {
                 this.enemyMap.get(p.userID).shoot(this.player.getPosition);
                 break;
             case OpCode.SERVER_MAPCHANGE:
-            // TODO 
+                this.gameHUD.setTimer(p.time)
+                console.log("Map ID gotten: " + p.mapID)
+                this.currentMapID = p.mapID;
+                this.currentTime = p.time;
+                break;
             default:
                 break;
         }
@@ -221,16 +230,18 @@ export class PacketToGameLogic {
         }
     }
 
-    /**
-     * Stops the game and returns the player to the landing page.
-     */
-    private cancelGame() {
-        if (typeof process === 'undefined') {
-            loadPage('./index.html');
-        }
-    }
-
     public get getEnemies() {
         return Array.from(this.enemyMap.values());
     }
+
+    
+    public get getCurrentTime() : BigInt {
+        return this.currentTime;
+    }
+
+    
+    public get getCurrentMapID() : number {
+        return this.currentMapID;
+    }
+    
 }
