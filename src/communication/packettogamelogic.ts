@@ -5,7 +5,6 @@ import { OpCode } from "./opcode";
 import { Packet } from "./packet";
 import { PlayerInfo } from "./playerinfo";
 import { GameHUD } from "../ui/gameHud";
-import { loadPage } from "../index";
 import { StringHelper } from "../common/stringhelper";
 import { LogicHelper } from "../logic/logichelper";
 
@@ -55,7 +54,7 @@ export class PacketToGameLogic {
                 this.playerDeath(p.killerID, p.victimID);
                 break;
             case OpCode.SERVER_DISCONNECT:
-                alert("Server has disconnected!");
+                this.gameHUD.showTicket("Server has disconnected!");
                 LogicHelper.exitGame();
                 break;
             case OpCode.SERVER_UNKNOWN:
