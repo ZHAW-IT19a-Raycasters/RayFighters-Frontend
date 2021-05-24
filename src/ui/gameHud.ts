@@ -1,9 +1,17 @@
+import { StringHelper } from "../common/stringhelper";
 import { PlayerInfo } from "../communication/playerinfo";
 import { playSoundEffect } from "../index";
 
 export class GameHUD {
+    private static readonly SEC_TO_NANOSEC_FACTOR = BigInt(1_000_000_000);
+    private static readonly SEC_TO_MILLISEC_FACTOR = 1_000;
+    private static readonly ROUND_TIME_SEC = 5 * 60; 
     private tickerCon: HTMLElement;
     private timer: HTMLElement;
+    /*
+     * unix timestamp when the map shall change
+     */
+    private timerValue: number;
     private playerName: HTMLElement;
     private kills: HTMLElement;
     private deaths: HTMLElement;
@@ -103,9 +111,22 @@ export class GameHUD {
      * @param time UNIX timestamp
      */
     public setTimer(time: BigInt): void {
-        // TODO do stuff with time
-        // time is a unix timestamp in BigInt format
-        this.timer.innerText = `${time}`;
+        const timeBI = BigInt(time);
+        this.timerValue = Number(timeBI / GameHUD.SEC_TO_NANOSEC_FACTOR);
+    }
+
+    public updateTimer(): void {
+        const timeLeft = (this.timerValue - (Date.now() / GameHUD.SEC_TO_MILLISEC_FACTOR));
+        const diff =  GameHUD.ROUND_TIME_SEC + timeLeft;
+        const mins = Math.floor(diff / 60);
+        const secs = Math.floor(diff % 60);
+        // It's possible for mins/secs to be negative (game is still loading new
+        // map, so we just skip displaying that).
+        if(mins >= 0 && secs >= 0) {
+            const minsPadded = StringHelper.padLeadingZeros(mins, 2);
+            const secsPadded = StringHelper.padLeadingZeros(secs, 2);
+            this.timer.innerText = `${minsPadded}:${secsPadded}`;
+        }
     }
 
     /**

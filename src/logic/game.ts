@@ -279,6 +279,8 @@ function startGameLoop() {
       game.getPlayer.update(game.getControls, game.getRoom.getMap, time, sendCallback);
 
       game.getRenderer.render(game.getRoom, game.getPlayer, time);
+      game.getGameHUD.updateTimer();
+
       receivedPackets.forEach(p => {
         game.getPacketToGameLogic.handlePacket(p);
       })
