@@ -132,7 +132,9 @@ export class GameHUD {
             const secsPadded = StringHelper.padLeadingZeros(secs, 2);
             this.timer.innerText = `${minsPadded}:${secsPadded}`;
         }
-        console.log("updating timer"); // TODO remove me
+        if(mins == 0 && secs <= 5) {
+            this.showTicket('Round over. Changing map...');
+        }
     }
 
     /**

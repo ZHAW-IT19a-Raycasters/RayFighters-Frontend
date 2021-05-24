@@ -145,6 +145,7 @@ export class Game {
   public loadMap(newMapPath: string): void {
     game.initializeRoom(newMapPath);
     game.initializeRenderer();
+    game.getGameHUD.showTicket('Loading map...');
     game.gameHUD.initializeHud(game.room.getMap.getMapName, game.player.getPlayerInfo);
   }
 
@@ -297,7 +298,6 @@ function startGameLoop() {
           game.getPacketToGameLogic.handlePacket(p);
         })
       }
-      game.getGameHUD.showTicket('No map loaded yet.');
 
       // Look if map ID was delivered by server
       let lastMapPath = game.getCurrentMapPath;
