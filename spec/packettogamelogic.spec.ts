@@ -43,9 +43,9 @@ describe('Packet to game logic unit test', () => {
 
         // Verificatiion
         expect(logic.getEnemies.length).toBe(3);
-        for (let index = 0; index < playerInfo.length; index++) {
-            expect(logic.getEnemies[index].getPlayerInfo.userID).toBe(playerInfo[index].userID);
-            expect(logic.getEnemies[index].getPlayerInfo.getUserName).toBe(playerInfo[index].getUserName);
+        for (let i = 0; i < playerInfo.length; i++) {
+            expect(logic.getEnemies[i].getPlayerInfo.userID).toBe(playerInfo[i].userID);
+            expect(logic.getEnemies[i].getPlayerInfo.getUserName).toBe(playerInfo[i].getUserName);
         }
     });
 
@@ -62,9 +62,9 @@ describe('Packet to game logic unit test', () => {
 
         // Verificatiion
         expect(logic.getEnemies.length).toBe(3);
-        for (let index = 0; index < playerInfo.length; index++) {
-            expect(logic.getEnemies[index].getPlayerInfo.killCount).toBe(playerKD[index].killCount);
-            expect(logic.getEnemies[index].getPlayerInfo.deathCount).toBe(playerInfo[index].deathCount);
+        for (let i = 0; i < playerInfo.length; i++) {
+            expect(logic.getEnemies[i].getPlayerInfo.killCount).toBe(playerKD[i].killCount);
+            expect(logic.getEnemies[i].getPlayerInfo.deathCount).toBe(playerInfo[i].deathCount);
         }
     })
 

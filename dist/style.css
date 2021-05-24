@@ -22,6 +22,14 @@ th, td {
   padding: 1em;
 }
 
+.centered {
+  text-align: center;
+}
+
+.main-logo {
+  width: 300px !important;
+}
+
 #overlay-effect {
   background: repeating-linear-gradient(
     transparent,
@@ -68,14 +76,14 @@ body {
 
   /* Text */
   letter-spacing: 0.1em;
-  font-family: ArcadeClassic;
+  font-family: ArcadeClassic, 'Courier New', Courier, monospace;
   color: #fff;
   text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
   animation: textflicker 0.5s infinite;
 }
 
 #gameControls {
-  font-family: ArcadeClassic;
+  font-family: ArcadeClassic, 'Courier New', Courier, monospace;
   color: #fff;
   text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
   animation: textflicker 0.5s infinite;

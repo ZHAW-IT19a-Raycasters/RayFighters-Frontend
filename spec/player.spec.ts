@@ -7,6 +7,7 @@ import * as fs from 'fs'
 import { Weapon } from "../src/player/weapon";
 import { Vec2D } from "../src/common/vec2d";
 import { GameHUD } from "./gamehudmock";
+
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document, navigator } = (new JSDOM(index)).window;
 global.document = document;
@@ -66,11 +67,11 @@ describe('Player module testing', () => {
     const seconds = 3;
     let map = new Map2D(32);
     map.parseMapData('spec/maps/city_yard.txt', readFromFile)
-    for (let index = 0; index < inputs.length; index++) {
-      controls.states.set(inputs[index], true);
+    for (let i = 0; i < inputs.length; i++) {
+      controls.states.set(inputs[i], true);
       player.update(controls, map, seconds, dummyCallback);
-      expect(player.getPosition.x).toBeCloseTo(expectedPositons[index].x);
-      expect(player.getPosition.y).toBeCloseTo(expectedPositons[index].y);
+      expect(player.getPosition.x).toBeCloseTo(expectedPositons[i].x);
+      expect(player.getPosition.y).toBeCloseTo(expectedPositons[i].y);
       controls.clearInputs();
     }
   })

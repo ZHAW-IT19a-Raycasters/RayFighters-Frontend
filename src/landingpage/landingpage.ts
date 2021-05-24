@@ -35,7 +35,7 @@ export function initializeLandingPage(): void {
         menuFooter.hidden = true;
         ToggleMenuTab(startTab, aboutTab);
         const credits =
-            "CREDITS\nThis\u00A0awesome\u00A0game\u00A0was\u00A0created\u00A0as\u00A0a\u00A0software\u00A0project\u00A0at\u00A0the\u00A0Zürcher\u00A0Hochschule\u00A0für\nAngewandte\u00A0Wissenschaften.";
+            "CREDITS\nThis\u00A0awesome\u00A0game\u00A0was\u00A0created\nas\u00A0a\u00A0software\u00A0project\nat\u00A0ZHAW.";
         const outputTextAudio: HTMLAudioElement = new Audio("./assets/audio/outputText_1.mp3");
         outputTextAudio.volume = 0.1;
         outputTextAudio.loop = true;
@@ -181,7 +181,7 @@ function displayTextStyled(
         index++;
         setTimeout(function () {
             displayTextStyled(target, parent, soundEffect, message, index);
-        }, 80);
+        }, 20);
     } else {
         soundEffect.pause();
     }
