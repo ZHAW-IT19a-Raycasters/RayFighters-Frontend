@@ -174,6 +174,35 @@ describe('Packet to game logic unit test', () => {
         expect(testPlayer.getPlayerInfo.userID).toBe(2);
     })
 
+    it('should handle SERVER_PLAYERJOINED correctly', () => {
+        // Setup
+        const testPlayer = setupPlayer(1);
+        const playerJoinedPacket = new Packet({ opCode: OpCode.SERVER_PLAYERJOINED, userID: 0x2 });
+        const logic = new PacketToGameLogic(testPlayer, HUDmock);
+        
+        // Test & Verification
+        expect(logic.handlePacket(playerJoinedPacket)).not.toThrowError;
+        expect(logic.getEnemies[0].getPlayerInfo.userID).toBe(2);
+    })
+
+    it('should handle SERVER_PLAYERLEFT correctly', () => {
+        // Setup
+        const testPlayer = setupPlayer(1);
+        const playerJoinedPacket1 = new Packet({ opCode: OpCode.SERVER_PLAYERJOINED, userID: 0x2 });
+        const playerJoinedPacket2 = new Packet({ opCode: OpCode.SERVER_PLAYERJOINED, userID: 0x3 });
+        const playerLeftPacket = new Packet({ opCode: OpCode.SERVER_PLAYERLEFT, userID: 0x2 });
+        const logic = new PacketToGameLogic(testPlayer, HUDmock);
+        
+        // Test & Verification
+        expect(logic.handlePacket(playerJoinedPacket1)).not.toThrowError;
+        expect(logic.getEnemies[0].getPlayerInfo.userID).toBe(2);
+        expect(logic.handlePacket(playerJoinedPacket2)).not.toThrowError;
+        expect(logic.getEnemies[1].getPlayerInfo.userID).toBe(3);
+        expect(logic.handlePacket(playerLeftPacket)).not.toThrowError;
+        expect(logic.getEnemies[0].getPlayerInfo.userID).toBe(3);
+        expect(logic.getEnemies[1]).toBeUndefined;
+    })
+
     it('should handle SERVER_SHOOTING correctly', () => {
         // Setup
         const testPlayer = setupPlayer(1);
@@ -186,5 +215,21 @@ describe('Packet to game logic unit test', () => {
         expect(logic.getEnemies[2].getShot).toBe(false);
         logic.handlePacket(shootPacket);
         expect(logic.getEnemies[2].getShot).toBe(true);
+    })
+
+    it('should handle SERVER_MAPCHANGE correctly', () => {
+        // Setup
+        const mapID = 5;
+        const time = BigInt(10101010);
+        const testPlayer = setupPlayer(1);
+        const playerInfoPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERINFO, playerCount: 3, playerInfoList: playerInfo });
+        const mapChangePacket = new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID, time });
+        const logic = new PacketToGameLogic(testPlayer, HUDmock);
+
+        // Test & Verification
+        logic.handlePacket(playerInfoPacket);
+        logic.handlePacket(mapChangePacket);
+        expect(logic.getCurrentMapID).toBe(mapID);
+        expect(logic.getCurrentTime).toBe(time);  
     })
 });

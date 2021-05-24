@@ -1,0 +1,27 @@
+[
+	{
+		"id": 0,
+		"name": "Super gritty city backyard",
+		"filePath": "city_yard.txt"
+	},
+	{
+		"id": 1,
+		"name": "Desert",
+		"filePath": "desert.txt"
+	},
+	{
+		"id": 2,
+		"name": "Sundown Resort",
+		"filePath": "sundow_resort.txt"
+	},
+	{
+		"id": 3,
+		"name": "Vapor Land",
+		"filePath": "vapor_land.txt"
+	},
+	{
+		"id": 4,
+		"name": "Prease me notto throw away I give you happy poopy time",
+		"filePath": "weeaboo_city.txt"
+	}
+]

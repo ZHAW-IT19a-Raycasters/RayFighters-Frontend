@@ -5,7 +5,6 @@ import { Step } from './raycaster';
 import { Room } from '../maps/room';
 import { Vec2D } from '../common/vec2d';
 import { Weapon } from '../player/weapon';
-import { Entity } from '../entities/entity';
 import { Enemy } from '../entities/enemy';
 
 /**

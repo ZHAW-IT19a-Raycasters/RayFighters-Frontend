@@ -15,6 +15,14 @@ import { GameHUD } from '../ui/gameHud';
 let game: Game;
 
 /**
+ * Only for testing purposes.
+ * @param testGame Game instance to be overwritten.
+ */
+export function setGameInstance(testGame: Game){
+  game = testGame;
+}
+
+/**
  * Runs the {@link Game} and entry point of the game logic
  * @param canvasName Id of the Canvas HTMLElement
  * @param fpsCounterName Id of the FPS Counter HTMLElement
@@ -173,8 +181,14 @@ export class Game {
    * Loads a new map and re-initializes {@link Renderer} and {@link GameHUD}.
    * @param newMapPath path to new map.
    */
-  public loadMap(newMapPath: string): void {
+  public loadMap(newMapPath: string, windowMock?: any): void {
     game.initializeRoom(newMapPath);
+    
+    // Mocked window handling for unit tests.
+    if(windowMock) {
+      return;
+    }
+      
     game.initializeRenderer();
     game.getGameHUD.showTicket('Loading map...');
     game.gameHUD.initializeHud(game.room.getMap.getMapName, game.player.getPlayerInfo);
@@ -277,8 +291,6 @@ export class Game {
   public get getControls(): Controls {
     return this.controls;
   }
-
-
 }
 
 /**

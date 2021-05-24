@@ -69,15 +69,21 @@ export class Map2D {
      * @returns 
      */
     private readMap(filename: string): string {
-        var request = new XMLHttpRequest();
-        request.open('GET', filename, false);  // `false` makes the request synchronous
-        request.send(null);
+        // Normal routine
+        if (typeof process === 'undefined') {
+            var request = new XMLHttpRequest();
+            request.open('GET', filename, false);  // `false` makes the request synchronous
+            request.send(null);
 
-        if (request.status === 200) {
-            return request.responseText;
-        } else {
-            return "";
+            if (request.status === 200) {
+                return request.responseText;
+            } else {
+                return "";
+            }
         }
+        // Test handling. Only gets called if run from node (Jasmine tests)
+        var fs = require('fs');
+        return fs.readFileSync(filename, 'utf8');
     }
 
     /**
@@ -107,7 +113,7 @@ export class Map2D {
             const floorSplit = lines[3].split(";");
             this.floorGradient = new ColorGradient(floorSplit[0], floorSplit[1]);
         }
-        
+
         // Then comes the fog properties of the map
         if (lines[4].trim().length > 0) {
             const fogSplit = lines[4].split(";");
@@ -153,7 +159,7 @@ export class Map2D {
                         // "retry" next line
                         x--;
                         break;
-                    default:    
+                    default:
                         // At this location we've got a wall or floor
                         if (char.match("([1-9])|([A-Z])")) { // Check if it's a wall
                             this.map[x] = new MapElement(MapElementType.WALL);
@@ -279,7 +285,7 @@ export class Map2D {
         return this.floorGradient;
     }
 
-    public get getFog() : Fog {
+    public get getFog(): Fog {
         return this.fog
     }
 
@@ -328,7 +334,7 @@ export class MapElement {
     public get getWallImage(): Image2D {
         return this.wallImage;
     }
-    
+
     public set setWallImage(i: Image2D) {
         this.wallImage = i;
     }
