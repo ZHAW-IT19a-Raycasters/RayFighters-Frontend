@@ -2,9 +2,6 @@ import { Vec2D } from "../common/vec2d";
 import { Raycaster, Step } from "../rendering/raycaster";
 import { ColorGradient, Image2D } from "../rendering/renderer";
 import { Fog } from "../rendering/fog";
-import { HealthPickup } from "../entities/healthpickup";
-import { Sprite } from "../entities/sprite";
-import { WeaponPickup } from "../entities/weaponpickup";
 
 export class Map2D {
     private static readonly SKYBOX_WIDTH = 3512;
@@ -140,32 +137,18 @@ export class Map2D {
             let y = index - 6;
             const line = lines[index];
             for (const char of line) {
-                switch (char) {
-                    case '+':
-                        // Health pickup at this location
-                        const healthPickup = new HealthPickup();
-                        healthPickup.setPosition = new Vec2D(x % this.mapSize, y)
-                        this.map[x] = new MapElement(MapElementType.SPRITE, healthPickup);
-                        break;
-                    case '*':
-                        // Weapon pickup at this location
-                        const weaponPickup = new WeaponPickup();
-                        weaponPickup.setPosition = new Vec2D(x % this.mapSize, y);
-                        this.map[x] = new MapElement(MapElementType.SPRITE, weaponPickup);
-                        break;
-                    case '\r':
-                        // Newline, nothing happened here so we decrement x to
-                        // "retry" next line
-                        x--;
-                        break;
-                    default:
-                        // At this location we've got a wall or floor
-                        if (char.match("([1-9])|([A-Z])")) { // Check if it's a wall
-                            this.map[x] = new MapElement(MapElementType.WALL);
-                            this.map[x].setWallImage = this.wallTextures.get(char);
-                        } else if (char === "0") { // Else it's a floor
-                            this.map[x] = new MapElement(MapElementType.FLOOR);
-                        }
+                if (char === '\r') {
+                    // Newline, nothing happened here so we decrement x to
+                    // "retry" next line
+                    x--;
+                } else {
+                    // At this location we've got a wall or floor
+                    if (char.match("([1-9])|([A-Z])")) { // Check if it's a wall
+                        this.map[x] = new MapElement(MapElementType.WALL);
+                        this.map[x].setWallImage = this.wallTextures.get(char);
+                    } else if (char === "0") { // Else it's a floor
+                        this.map[x] = new MapElement(MapElementType.FLOOR);
+                    }
                 }
                 x++;
             }
@@ -302,7 +285,6 @@ export enum MapElementType {
     NONE = -1,  //< Outside of the map
     FLOOR = 0,  //< Floor, inside of the map
     WALL = 1,   //< Wall
-    SPRITE = 2  //< Sprite of any kind
 }
 
 /**
@@ -312,22 +294,14 @@ export enum MapElementType {
  */
 export class MapElement {
     private type: MapElementType;
-    // TODO: plenty of room to add more interesting properties to walls or
-    // floors!!
-    private sprite: Sprite;
     private wallImage: Image2D;
 
-    constructor(type: MapElementType, sprite?: Sprite) {
+    constructor(type: MapElementType, ) {
         this.type = type;
-        this.sprite = sprite;
     }
 
     public getType(): MapElementType {
         return this.type;
-    }
-
-    public get getSprite(): Sprite {
-        return this.sprite;
     }
 
     public get getWallImage(): Image2D {
