@@ -19,8 +19,13 @@ let game: Game;
  * @param canvasName Id of the Canvas HTMLElement
  * @param fpsCounterName Id of the FPS Counter HTMLElement
   */
-export function runGame(canvasName: string, fpsCounterName: string, gameHUD: GameHUD): void {
-  game = new Game(canvasName, fpsCounterName, gameHUD);
+export function runGame(canvasName: string, fpsCounterName: string, gameHUD: GameHUD, navigator?: any, canvas?: any, window?: any): void {
+  // Checks if it's running in node or browser. Needed to make the game class testable.
+  if (typeof process === 'undefined') {
+    game = new Game(canvasName, fpsCounterName, gameHUD);
+  } else {
+    game = new Game(canvasName, fpsCounterName, gameHUD, navigator, canvas, window);
+  }
   startGameLoop();
 }
 
@@ -71,7 +76,7 @@ export class Game {
   /**
    * Player input
    */
-  private controls = new Controls();
+  private controls;
 
   /**
    * Game loop, runs the game and controls the timing.
@@ -93,9 +98,15 @@ export class Game {
    * @param canvasName Name of {@link Canvas} instance.
    * @param fpsCounterName ID of the FPS counter HTML element.
    */
-  constructor(canvasName: string, fpsCounterName: string, gameHUD: any) {
-    // Canvas Setup. 
-    this.canvas = document.getElementById(canvasName);
+  constructor(canvasName: string, fpsCounterName: string, gameHUD: any, navigator?: any, canvas?: any, windowMock?: any) {
+    // Controls and canvas setup. Initializes with a mocked navigator & canvas object to make the class testable.
+    if (typeof process === 'undefined') {
+      this.controls = new Controls();
+      this.canvas = document.getElementById(canvasName);
+    } else {
+      this.controls = new Controls(navigator);
+      this.canvas = canvas;
+    }
 
     // Display PlayerInfo and Mapname on HUD
     this.gameHUD = gameHUD;
@@ -104,17 +115,22 @@ export class Game {
     this.initializeRoom(this.checkMap());
     this.gameHUD.initializeHud(this.room.getMap.getMapName, this.player.getPlayerInfo);
 
-    // Initialize renderer.
-    this.initializeRenderer();
+    // Initialize renderer. Initializes with a mocked window object to make the class testable.
+    if (typeof process === 'undefined') {
+      this.initializeRenderer();
+      this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
+    } else {
+      this.initializeRenderer(windowMock);
+      this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { return; }, this.gameHUD, windowMock);
+    }
 
-    this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
   }
 
   /**
    * {@link Room} Setup. Creates a {@link Room}.
    * @param mapPath Path to current map.
    */
-  public initializeRoom(mapPath: string) : void {
+  public initializeRoom(mapPath: string): void {
     this.room = new Room({ mapSize: 32, loadMap: mapPath });
   }
 
@@ -133,9 +149,14 @@ export class Game {
   /**
    * Initializes the {@link Renderer} with its default settings.
    */
-  public initializeRenderer(): void {
-    this.renderer = new Renderer(this.canvas, Game.DEFAULT_RAYCASTER_RESOLUTION, 32, 0.6, this.room.getMap.getFloorGradient, this.room.getMap.getCeilingGradient);
-    startDynamicResolution();
+  public initializeRenderer(windowMock?: any): void {
+    if (windowMock) {
+      this.renderer = new Renderer(this.canvas, Game.DEFAULT_RAYCASTER_RESOLUTION, 32, 0.6, this.room.getMap.getFloorGradient, this.room.getMap.getCeilingGradient, windowMock);
+      startDynamicResolution(windowMock);
+    } else {
+      this.renderer = new Renderer(this.canvas, Game.DEFAULT_RAYCASTER_RESOLUTION, 32, 0.6, this.room.getMap.getFloorGradient, this.room.getMap.getCeilingGradient);
+      startDynamicResolution();
+    }
   }
 
   /**
@@ -223,8 +244,8 @@ export class Game {
     return this.currentMapPath;
   }
 
-  
-  public get getRenderer() : Renderer {
+
+  public get getRenderer(): Renderer {
     return this.renderer;
   }
 
@@ -232,33 +253,39 @@ export class Game {
     return this.room;
   }
 
-  
-  public get getGameHUD() : GameHUD {
+
+  public get getGameHUD(): GameHUD {
     return this.gameHUD;
   }
-  
-  
-  public get getPacketToGameLogic() : PacketToGameLogic {
+
+
+  public get getPacketToGameLogic(): PacketToGameLogic {
     return this.packetToGameLogic;
   }
-  
-  
-  public get getControls() : Controls {
+
+
+  public get getControls(): Controls {
     return this.controls;
   }
-  
-  
+
+
 }
 
 /**
  * Listen to window resizes, and in case of that, re-initialize {@link Renderer} to prevent images from stretching.
  */
-function startDynamicResolution() {
+function startDynamicResolution(windowMock?: any) {
+  // Return if running in node (Jasmine testing)
+  if (windowMock) {
+    return;
+  }
+
   window.addEventListener('resize', function () {
     game.initializeRenderer();
     game.getLoop.restartDynamicResolution();
     game.getPlayer.setScreenWidth(game.getCanvas.width);
   }, true);
+
 }
 
 /**

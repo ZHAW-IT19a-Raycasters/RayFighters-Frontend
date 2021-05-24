@@ -2,9 +2,6 @@ import { Vec2D } from "../src/common/vec2d";
 import { Enemy } from "../src/entities/enemy"
 import { JSDOM } from 'jsdom';
 import * as fs from 'fs'
-import { Sprite } from "../src/entities/sprite";
-import { Image2D } from "./image2dmock";
-import { EntityType } from "../src/entities/entity";
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document } = (new JSDOM(index)).window;
 global.document = document;

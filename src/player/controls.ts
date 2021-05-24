@@ -80,7 +80,7 @@ export class Controls {
     /**
      * Constructor of control class. Registers all event handlers.
      */
-    constructor() {
+    constructor(navigator?: any) {
         document.addEventListener('keydown',        (event) => this.keyHandler(true, event), false);
         document.addEventListener('keyup',          (event) => this.keyHandler(false, event), false);
         document.addEventListener('touchstart',     (event) => this.touchHandler(event), false);
@@ -92,12 +92,12 @@ export class Controls {
         document.body.onclick = document.body.requestPointerLock
 
         // Detect mobile devices with user agent check
-        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        /*if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             this.isMobileDevice = true;
         } else {
             this.isMobileDevice = false;
         }
-        console.log(`Controls: Detected ${this.isMobileDevice ? 'MOBILE' : 'DESKTOP'} inputs.`);
+        console.log(`Controls: Detected ${this.isMobileDevice ? 'MOBILE' : 'DESKTOP'} inputs.`);*/
     }
 
     /**

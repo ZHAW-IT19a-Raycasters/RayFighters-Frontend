@@ -8,7 +8,7 @@ import { Weapon } from "../src/player/weapon";
 import { Vec2D } from "../src/common/vec2d";
 import { GameHUD } from "./gamehudmock";
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
-const { document } = (new JSDOM(index)).window;
+const { document, navigator } = (new JSDOM(index)).window;
 global.document = document;
 const HUDmock = new GameHUD();
 
@@ -56,7 +56,7 @@ describe('Player module testing', () => {
   it('should rotate the player to the left and walks forward for 3 seconds, then rotates player to the right and walks forward for 3 seconds', () => {
     let player = new Player(0, 0, 0, HUDmock);
     let map = new Map2D(32);
-    let controls = new Controls();
+    let controls = new Controls(navigator);
     controls.states.set(KeyCodes.FORWARD, true);
     controls.states.set(KeyCodes.TURN_LEFT, true);
     const seconds = 3;
