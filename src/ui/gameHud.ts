@@ -21,6 +21,7 @@ export class GameHUD {
     private settings: HTMLElement;
     private socketStatus: HTMLElement;
     private fps: HTMLElement;
+    private debug: HTMLElement;
 
     constructor() { /* Deliberately empty */ }
     /***
@@ -38,6 +39,10 @@ export class GameHUD {
         this.settings = document.querySelector("#settings-container");
         this.socketStatus = document.querySelector("#socket-status");
         this.fps = document.querySelector("#fps-container");
+        this.debug = document.querySelector("#debug-container");
+
+        // Don't display debug window for now (REMOVE FOR DEBUGGIN PURPOSES)
+        this.debug.style.display = 'none';
 
         this.showMapInfo(map);
         //updatePlayerInfo(player); TODO we need to call this externally when the data is ready!
@@ -127,6 +132,7 @@ export class GameHUD {
             const secsPadded = StringHelper.padLeadingZeros(secs, 2);
             this.timer.innerText = `${minsPadded}:${secsPadded}`;
         }
+        console.log("updating timer"); // TODO remove me
     }
 
     /**
