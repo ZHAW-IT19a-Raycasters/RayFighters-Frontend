@@ -1,5 +1,4 @@
-import { Map2D, MapElementType } from './map2d';
-import { Entity } from '../entities/entity';
+import { Map2D } from './map2d';
 import { Enemy } from '../entities/enemy';
 
 
