@@ -15,10 +15,14 @@ import { GameHUD } from '../ui/gameHud';
 let game: Game;
 
 /**
- * Runs the Game and entry point of the game logic
+ * Runs the {@link Game} and entry point of the game logic
  * @param canvasName Id of the Canvas HTMLElement
  * @param fpsCounterName Id of the FPS Counter HTMLElement
-  */
+ * @param gameHUD Heads-up display {@link GameHUD} to relay info to the user.
+ * @param navigator Mocked navigator for unit testing.
+ * @param canvas Mocked canvas for unit testing.
+ * @param window Mocked window for unit testing.
+ */
 export function runGame(canvasName: string, fpsCounterName: string, gameHUD: GameHUD, navigator?: any, canvas?: any, window?: any): void {
   // Checks if it's running in node or browser. Needed to make the game class testable.
   if (typeof process === 'undefined') {
@@ -97,13 +101,18 @@ export class Game {
    * Initializes the {@link Game}.
    * @param canvasName Name of {@link Canvas} instance.
    * @param fpsCounterName ID of the FPS counter HTML element.
+   * @param gameHUD Heads-up display {@link GameHUD} to relay info to the user.
+   * @param navigator Mocked navigator for unit testing.
+   * @param canvas Mocked canvas for unit testing.
+   * @param window Mocked window for unit testing.
    */
   constructor(canvasName: string, fpsCounterName: string, gameHUD: any, navigator?: any, canvas?: any, windowMock?: any) {
-    // Controls and canvas setup. Initializes with a mocked navigator & canvas object to make the class testable.
+    // Controls and canvas setup. 
     if (typeof process === 'undefined') {
       this.controls = new Controls();
       this.canvas = document.getElementById(canvasName);
     } else {
+      // Initializes with a mocked navigator & canvas object to make the class testable.
       this.controls = new Controls(navigator);
       this.canvas = canvas;
     }
@@ -115,11 +124,12 @@ export class Game {
     this.initializeRoom(this.checkMap());
     this.gameHUD.initializeHud(this.room.getMap.getMapName, this.player.getPlayerInfo);
 
-    // Initialize renderer. Initializes with a mocked window object to make the class testable.
+    // Initialize renderer. 
     if (typeof process === 'undefined') {
       this.initializeRenderer();
       this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
     } else {
+      // Initializes with a mocked window object to make the class testable.
       this.initializeRenderer(windowMock);
       this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { return; }, this.gameHUD, windowMock);
     }
@@ -273,6 +283,7 @@ export class Game {
 
 /**
  * Listen to window resizes, and in case of that, re-initialize {@link Renderer} to prevent images from stretching.
+ * @param windowMock Mocked window object used for testing.
  */
 function startDynamicResolution(windowMock?: any) {
   // Return if running in node (Jasmine testing)
@@ -280,6 +291,7 @@ function startDynamicResolution(windowMock?: any) {
     return;
   }
 
+  // Sett window resize listener
   window.addEventListener('resize', function () {
     game.initializeRenderer();
     game.getLoop.restartDynamicResolution();

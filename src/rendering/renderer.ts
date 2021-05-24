@@ -172,10 +172,14 @@ export class Renderer {
     * @param {number} drawDistance - How many units away do we stop drawing walls
     * @param {number} focalLen - focal length for our drawing calls
     * @param {ColorGradient} floorGradient - What color (gradient) the floor should be drawn in
+    * @param {ColorGradient} ceilGradient - What color (gradient) the ceiling should be drawn in
+    * @param {any} windowMock - Mocked window object, used exclusively for testing.
     */
   constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient, ceilGradient?: ColorGradient, windowMock?: any) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
+
+    // Case differentiation for testing. Initializes with a mocked window object to make this and other classes testable.
     if(windowMock) {
       this.canvas.width = windowMock.innerWidth;
       this.canvas.height = windowMock.innerHeight;
