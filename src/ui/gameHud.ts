@@ -149,7 +149,10 @@ export class GameHUD {
             document.exitPointerLock();
         } else {
             this.respawnCon.hidden = true;
-            document.body.requestPointerLock();
+            if(document.body.requestPointerLock) {
+                // Not mobile
+                document.body.requestPointerLock();
+            }
         }
     }
 
@@ -221,7 +224,10 @@ export class GameHUD {
             document.exitPointerLock();
         } else {
             this.settings.hidden = true;
-            document.body.requestPointerLock();
+            if(document.body.requestPointerLock) {
+                // Not mobile
+                document.body.requestPointerLock();
+            }
         }
     }
 
