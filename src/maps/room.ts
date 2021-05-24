@@ -1,5 +1,4 @@
 import { Map2D, MapElementType } from './map2d';
-import { Sprite } from '../entities/sprite';
 import { Entity } from '../entities/entity';
 import { Enemy } from '../entities/enemy';
 
@@ -15,11 +14,6 @@ export class Room {
     private map: Map2D;
 
     /**
-     * 2D decals shown on the map
-     */
-    private sprites: Sprite[];
-
-    /**
      * Enemies on the map
      */
     private enemies: Enemy[];
@@ -31,7 +25,6 @@ export class Room {
      */
     constructor({ mapSize, isRandomized = false, loadMap, readFromFile }: { mapSize: number; isRandomized?: boolean; loadMap?: string; readFromFile?: any }) {
         this.map = new Map2D(mapSize);
-        this.sprites = new Array<Sprite>();
 
         if (loadMap) {
             // Load map from file
@@ -41,21 +34,10 @@ export class Room {
         } else {
             this.map.initialize();
         }
-
-        // Add sprites from map to sprite array
-        for (let index = 0; index < this.map.getElements.length; index++) {
-            if (this.map.getElements[index].getType() === MapElementType.SPRITE) {
-                this.sprites.push(this.map.getElements[index].getSprite);
-            }
-        }
     }
 
     public get getMap(): Map2D {
         return this.map;
-    }
-
-    public get getSprites(): Entity[] {
-        return this.sprites;
     }
 
     public get getEnemies(): Enemy[] {

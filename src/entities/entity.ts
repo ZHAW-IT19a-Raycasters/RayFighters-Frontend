@@ -6,9 +6,6 @@ import { Image2D } from "../rendering/renderer";
  */
 export enum EntityType {
     ENEMY,
-    WEAPON_PICKUP,
-    HEALTH_PICKUP,
-    DECORATION
 }
 
 /**
