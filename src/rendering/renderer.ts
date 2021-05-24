@@ -22,7 +22,7 @@ export class Image2D {
       // Workaround for undefined Image object errors when running in node (Jasmine testing)
       this.image = { src: source };
     }
-
+    this.source = source;
   }
 }
 
