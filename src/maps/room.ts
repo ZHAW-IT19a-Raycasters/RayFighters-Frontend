@@ -29,13 +29,13 @@ export class Room {
      * @param param0 Mapsize (width=height) and whether we randomize the map.
      * Also allows the map to be loaded dynamically from file.
      */
-    constructor({ mapSize, isRandomized = false, loadMap }: { mapSize: number; isRandomized?: boolean; loadMap?: string; }) {
+    constructor({ mapSize, isRandomized = false, loadMap, readFromFile }: { mapSize: number; isRandomized?: boolean; loadMap?: string; readFromFile?: any }) {
         this.map = new Map2D(mapSize);
         this.sprites = new Array<Sprite>();
 
         if (loadMap) {
             // Load map from file
-            this.map.parseMapData(loadMap);
+            this.map.parseMapData(loadMap, readFromFile);
         } else if (isRandomized) {
             this.map.randomize();
         } else {

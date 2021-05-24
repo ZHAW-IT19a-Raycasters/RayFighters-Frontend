@@ -148,8 +148,8 @@ export class Game {
    * {@link Room} Setup. Creates a {@link Room}.
    * @param mapPath Path to current map.
    */
-  public initializeRoom(mapPath: string): void {
-    this.room = new Room({ mapSize: 32, loadMap: mapPath });
+  public initializeRoom(mapPath: string, readFromFile?: any): void {
+    this.room = new Room({ mapSize: 32, loadMap: mapPath, readFromFile: readFromFile });
   }
 
   /**
@@ -181,8 +181,8 @@ export class Game {
    * Loads a new map and re-initializes {@link Renderer} and {@link GameHUD}.
    * @param newMapPath path to new map.
    */
-  public loadMap(newMapPath: string, windowMock?: any): void {
-    game.initializeRoom(newMapPath);
+  public loadMap(newMapPath: string, windowMock?: any, readFromFile?: any): void {
+    game.initializeRoom(newMapPath, readFromFile);
     
     // Mocked window handling for unit tests.
     if(windowMock) {

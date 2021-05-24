@@ -3,8 +3,6 @@ import { GameHUD } from "./gamehudmock";
 import { JSDOM } from 'jsdom';
 import * as fs from 'fs';
 import { Canvas } from "./canvasmock";
-import { Player } from "../src/player/player";
-import { Enemy } from "../src/entities/enemy";
 import { Packet } from "../src/communication/packet";
 import { OpCode } from "../src/communication/opcode";
 
@@ -14,6 +12,10 @@ global.document = document;
 
 const mockHUD = new GameHUD();
 const canvas = new Canvas();
+
+var readFromFile = (filename: string) => {
+    return fs.readFileSync(filename, 'utf8');
+}
 
 describe('Game module test', () => {
     it('should instantiate the game correctly', () => {
@@ -55,15 +57,14 @@ describe('Game module test', () => {
 
         // Test & Verification
         expect(testGame.isMapLoaded()).toBe(false);
-        expect(testGame.initializeRoom(mapPath)).not.toThrowError;
+        expect(testGame.initializeRoom(mapPath, readFromFile)).not.toThrowError;
         
-        for (let index = 0; index < 4; index++) {
+        for (let index = 0; index < testMapNames.length; index++) {
             testGame.getPacketToGameLogic.handlePacket(new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: index, time: BigInt(0) }))
             testGame.checkMap();
-            testGame.loadMap(testMapNames[index], window);
+            testGame.loadMap(testMapNames[index], window, readFromFile);
             expect(testGame.getCurrentMapPath).toBe(realMapNames[index]);
         }
 
     })
 })
-

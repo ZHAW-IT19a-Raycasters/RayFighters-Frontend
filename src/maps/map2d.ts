@@ -68,7 +68,7 @@ export class Map2D {
      * @param filename Name of map file
      * @returns 
      */
-    private readMap(filename: string): string {
+    private readMap(filename: string, readFromFile?: any): string {
         // Normal routine
         if (typeof process === 'undefined') {
             var request = new XMLHttpRequest();
@@ -81,9 +81,8 @@ export class Map2D {
                 return "";
             }
         }
-        // Test handling. Only gets called if run from node (Jasmine tests)
-        var fs = require('fs');
-        return fs.readFileSync(filename, 'utf8');
+
+        return readFromFile(filename);
     }
 
     /**
@@ -93,8 +92,8 @@ export class Map2D {
      * 
      * @param filename Filepath to string
      */
-    public parseMapData(filename: string): void {
-        const map = this.readMap(filename)
+    public parseMapData(filename: string, readFromFile?: any): void {
+        const map = this.readMap(filename, readFromFile);
         const lines = map.split('\n');
 
         // First line is always the map name
