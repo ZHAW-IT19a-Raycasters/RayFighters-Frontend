@@ -16,4 +16,10 @@ describe('2D vector methods', () => {
         const point: Vec2D = new Vec2D(pointX, pointY);
         expect(point.toString()).toBe('(' + pointX.toString() + ', ' + pointY.toString() + ')')
     })
+
+    it('should normalize vectors correctly', () => {
+        const testVector: Vec2D = new Vec2D(4,5);
+        expect(testVector.getNormalized.x).toBeCloseTo(0.62);
+        expect(testVector.getNormalized.x).toBeCloseTo(0.62);
+    })
 });

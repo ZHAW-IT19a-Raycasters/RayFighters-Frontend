@@ -15,12 +15,29 @@ import { GameHUD } from '../ui/gameHud';
 let game: Game;
 
 /**
- * Runs the Game and entry point of the game logic
+ * Only for testing purposes.
+ * @param testGame Game instance to be overwritten.
+ */
+export function setGameInstance(testGame: Game){
+  game = testGame;
+}
+
+/**
+ * Runs the {@link Game} and entry point of the game logic
  * @param canvasName Id of the Canvas HTMLElement
  * @param fpsCounterName Id of the FPS Counter HTMLElement
-  */
-export function runGame(canvasName: string, fpsCounterName: string, gameHUD: GameHUD): void {
-  game = new Game(canvasName, fpsCounterName, gameHUD);
+ * @param gameHUD Heads-up display {@link GameHUD} to relay info to the user.
+ * @param navigator Mocked navigator for unit testing.
+ * @param canvas Mocked canvas for unit testing.
+ * @param window Mocked window for unit testing.
+ */
+export function runGame(canvasName: string, fpsCounterName: string, gameHUD: GameHUD, navigator?: any, canvas?: any, window?: any): void {
+  // Checks if it's running in node or browser. Needed to make the game class testable.
+  if (typeof process === 'undefined') {
+    game = new Game(canvasName, fpsCounterName, gameHUD);
+  } else {
+    game = new Game(canvasName, fpsCounterName, gameHUD, navigator, canvas, window);
+  }
   startGameLoop();
 }
 
@@ -71,7 +88,7 @@ export class Game {
   /**
    * Player input
    */
-  private controls = new Controls();
+  private controls;
 
   /**
    * Game loop, runs the game and controls the timing.
@@ -92,10 +109,21 @@ export class Game {
    * Initializes the {@link Game}.
    * @param canvasName Name of {@link Canvas} instance.
    * @param fpsCounterName ID of the FPS counter HTML element.
+   * @param gameHUD Heads-up display {@link GameHUD} to relay info to the user.
+   * @param navigator Mocked navigator for unit testing.
+   * @param canvas Mocked canvas for unit testing.
+   * @param window Mocked window for unit testing.
    */
-  constructor(canvasName: string, fpsCounterName: string, gameHUD: any) {
-    // Canvas Setup. 
-    this.canvas = document.getElementById(canvasName);
+  constructor(canvasName: string, fpsCounterName: string, gameHUD: any, navigator?: any, canvas?: any, windowMock?: any) {
+    // Controls and canvas setup. 
+    if (typeof process === 'undefined') {
+      this.controls = new Controls();
+      this.canvas = document.getElementById(canvasName);
+    } else {
+      // Initializes with a mocked navigator & canvas object to make the class testable.
+      this.controls = new Controls(navigator);
+      this.canvas = canvas;
+    }
 
     // Display PlayerInfo and Mapname on HUD
     this.gameHUD = gameHUD;
@@ -104,18 +132,24 @@ export class Game {
     this.initializeRoom(this.checkMap());
     this.gameHUD.initializeHud(this.room.getMap.getMapName, this.player.getPlayerInfo);
 
-    // Initialize renderer.
-    this.initializeRenderer();
+    // Initialize renderer. 
+    if (typeof process === 'undefined') {
+      this.initializeRenderer();
+      this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
+    } else {
+      // Initializes with a mocked window object to make the class testable.
+      this.initializeRenderer(windowMock);
+      this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { return; }, this.gameHUD, windowMock);
+    }
 
-    this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
   }
 
   /**
    * {@link Room} Setup. Creates a {@link Room}.
    * @param mapPath Path to current map.
    */
-  public initializeRoom(mapPath: string) : void {
-    this.room = new Room({ mapSize: 32, loadMap: mapPath });
+  public initializeRoom(mapPath: string, readFromFile?: any): void {
+    this.room = new Room({ mapSize: 32, loadMap: mapPath, readFromFile: readFromFile });
   }
 
   /**
@@ -133,17 +167,28 @@ export class Game {
   /**
    * Initializes the {@link Renderer} with its default settings.
    */
-  public initializeRenderer(): void {
-    this.renderer = new Renderer(this.canvas, Game.DEFAULT_RAYCASTER_RESOLUTION, 32, 0.6, this.room.getMap.getFloorGradient, this.room.getMap.getCeilingGradient);
-    startDynamicResolution();
+  public initializeRenderer(windowMock?: any): void {
+    if (windowMock) {
+      this.renderer = new Renderer(this.canvas, Game.DEFAULT_RAYCASTER_RESOLUTION, 32, 0.6, this.room.getMap.getFloorGradient, this.room.getMap.getCeilingGradient, windowMock);
+      startDynamicResolution(windowMock);
+    } else {
+      this.renderer = new Renderer(this.canvas, Game.DEFAULT_RAYCASTER_RESOLUTION, 32, 0.6, this.room.getMap.getFloorGradient, this.room.getMap.getCeilingGradient);
+      startDynamicResolution();
+    }
   }
 
   /**
    * Loads a new map and re-initializes {@link Renderer} and {@link GameHUD}.
    * @param newMapPath path to new map.
    */
-  public loadMap(newMapPath: string): void {
-    game.initializeRoom(newMapPath);
+  public loadMap(newMapPath: string, windowMock?: any, readFromFile?: any): void {
+    game.initializeRoom(newMapPath, readFromFile);
+    
+    // Mocked window handling for unit tests.
+    if(windowMock) {
+      return;
+    }
+      
     game.initializeRenderer();
     game.getGameHUD.showTicket('Loading map...');
     game.gameHUD.initializeHud(game.room.getMap.getMapName, game.player.getPlayerInfo);
@@ -223,8 +268,8 @@ export class Game {
     return this.currentMapPath;
   }
 
-  
-  public get getRenderer() : Renderer {
+
+  public get getRenderer(): Renderer {
     return this.renderer;
   }
 
@@ -232,33 +277,39 @@ export class Game {
     return this.room;
   }
 
-  
-  public get getGameHUD() : GameHUD {
+
+  public get getGameHUD(): GameHUD {
     return this.gameHUD;
   }
-  
-  
-  public get getPacketToGameLogic() : PacketToGameLogic {
+
+
+  public get getPacketToGameLogic(): PacketToGameLogic {
     return this.packetToGameLogic;
   }
-  
-  
-  public get getControls() : Controls {
+
+
+  public get getControls(): Controls {
     return this.controls;
   }
-  
-  
 }
 
 /**
  * Listen to window resizes, and in case of that, re-initialize {@link Renderer} to prevent images from stretching.
+ * @param windowMock Mocked window object used for testing.
  */
-function startDynamicResolution() {
+function startDynamicResolution(windowMock?: any) {
+  // Return if running in node (Jasmine testing)
+  if (windowMock) {
+    return;
+  }
+
+  // Sett window resize listener
   window.addEventListener('resize', function () {
     game.initializeRenderer();
     game.getLoop.restartDynamicResolution();
     game.getPlayer.setScreenWidth(game.getCanvas.width);
   }, true);
+
 }
 
 /**

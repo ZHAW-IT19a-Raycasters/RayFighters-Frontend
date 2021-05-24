@@ -47,11 +47,11 @@ export class Sound {
             this.audioMap.set(SoundType.DEATH, new Audio('./assets/audio/death.wav'));
         }
 
-
         // Prepare footstep sound array.
         this.stepSounds = new Array<HTMLAudioElement>();
+
+        // Only run if run from browser (Audio makes tests fail)
         if (typeof process === 'undefined') {
-            // early return if run from node (Audio makes tests fail)
             this.stepSounds.push(new Audio('./assets/audio/step_1.wav'));
             this.stepSounds.push(new Audio('./assets/audio/step_2.wav'));
             this.stepSounds.push(new Audio('./assets/audio/step_3.wav'));

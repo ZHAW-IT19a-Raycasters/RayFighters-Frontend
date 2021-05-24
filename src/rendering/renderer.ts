@@ -5,7 +5,6 @@ import { Step } from './raycaster';
 import { Room } from '../maps/room';
 import { Vec2D } from '../common/vec2d';
 import { Weapon } from '../player/weapon';
-import { Entity } from '../entities/entity';
 import { Enemy } from '../entities/enemy';
 
 /**
@@ -23,7 +22,7 @@ export class Image2D {
       // Workaround for undefined Image object errors when running in node (Jasmine testing)
       this.image = { src: source };
     }
-
+    this.source = source;
   }
 }
 
@@ -172,12 +171,21 @@ export class Renderer {
     * @param {number} drawDistance - How many units away do we stop drawing walls
     * @param {number} focalLen - focal length for our drawing calls
     * @param {ColorGradient} floorGradient - What color (gradient) the floor should be drawn in
+    * @param {ColorGradient} ceilGradient - What color (gradient) the ceiling should be drawn in
+    * @param {any} windowMock - Mocked window object, used exclusively for testing.
     */
-  constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient, ceilGradient?: ColorGradient) {
+  constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient, ceilGradient?: ColorGradient, windowMock?: any) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+
+    // Case differentiation for testing. Initializes with a mocked window object to make this and other classes testable.
+    if(windowMock) {
+      this.canvas.width = windowMock.innerWidth;
+      this.canvas.height = windowMock.innerHeight;
+    } else {
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
+    }
     this.resolution = resolution;
     this.spacing = canvas.width / resolution;
     this.drawDistance = drawDistance || Renderer.STANDARD_DRAWDISTANCE;

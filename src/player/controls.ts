@@ -79,8 +79,9 @@ export class Controls {
 
     /**
      * Constructor of control class. Registers all event handlers.
+     * @param navigatorMock Mocked navigator object used for testing.
      */
-    constructor() {
+    constructor(navigatorMock?: any) {
         document.addEventListener('keydown',        (event) => this.keyHandler(true, event), false);
         document.addEventListener('keyup',          (event) => this.keyHandler(false, event), false);
         document.addEventListener('touchstart',     (event) => this.touchHandler(event), false);
@@ -90,6 +91,12 @@ export class Controls {
         document.addEventListener('mousedown',      (event) => this.mouseDownHandler(event), false);
         document.addEventListener('mouseup',        (event) => this.mouseUpHandler(event), false);
         document.body.onclick = document.body.requestPointerLock
+
+        // Early return if the navigator was mocked.
+        if (navigatorMock) {
+            this.isMobileDevice = false;
+            return;
+        }
 
         // Detect mobile devices with user agent check
         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {

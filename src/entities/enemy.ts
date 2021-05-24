@@ -179,6 +179,7 @@ export class Enemy extends Entity {
         this.spriteMap.set(EnemySpriteState.WALK_2, this.walkSprites2);
         this.spriteMap.set(EnemySpriteState.SHOOTING, this.shootingSprites);
 
+        // Assign death sprite (after defeating the enemy)
         this.deathSprite = new Image2D('assets/enemies/gravestone.png', Enemy.ENEMY_SCALING * Enemy.ENEMY_WIDTH, Enemy.ENEMY_SCALING * Enemy.ENEMY_HEIGHT);
 
         // Initialization of all variables.
@@ -297,4 +298,8 @@ export class Enemy extends Entity {
             }
         }
     }
+ 
+    public get getShot() : boolean {
+        return this.hasShot;
+    }  
 }

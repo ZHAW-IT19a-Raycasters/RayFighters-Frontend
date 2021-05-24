@@ -138,9 +138,10 @@ export class Player {
    * Handles all the movement actions of the Player and communicates to the
    * server and plays sounds as needed.
    *
-   * @param controls  {@link Controls}
-   * @param map {@link Map}
-   * @param seconds
+   * @param controls {@link Controls} interface between user and player.
+   * @param map {@link Map} that the player is in.
+   * @param seconds Seconds that have passed.
+   * @param sendCallback 
    */
   public update(controls: Controls, map: Map2D, seconds: number, sendCallback: any): void {
     this.lastPaces = this.paces;
@@ -261,7 +262,7 @@ export class Player {
   }
 
   /**
-   * What happens when we die.
+   * Player death handling.
    */
   private die(){
     if(this.playerInfo.isDead){

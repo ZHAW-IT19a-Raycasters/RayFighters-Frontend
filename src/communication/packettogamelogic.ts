@@ -5,7 +5,6 @@ import { OpCode } from "./opcode";
 import { Packet } from "./packet";
 import { PlayerInfo } from "./playerinfo";
 import { GameHUD } from "../ui/gameHud";
-import { loadPage } from "../index";
 import { StringHelper } from "../common/stringhelper";
 import { LogicHelper } from "../logic/logichelper";
 
@@ -55,11 +54,11 @@ export class PacketToGameLogic {
                 this.playerDeath(p.killerID, p.victimID);
                 break;
             case OpCode.SERVER_DISCONNECT:
-                alert("Server has disconnected!");
+                this.gameHUD.showTicket("Server has disconnected!");
                 LogicHelper.exitGame();
                 break;
             case OpCode.SERVER_UNKNOWN:
-                alert("Server has sent unknown message");
+                this.gameHUD.showTicket("Server has sent unknown message");
                 break;
             case OpCode.SERVER_MOVEMENT:
                 this.movement(p);
@@ -71,7 +70,7 @@ export class PacketToGameLogic {
                 break;
             case OpCode.SERVER_PLAYERJOINED:
                 console.log("New player has joined: ID " + p.name);
-                this.addEnemy(p.userID, new PlayerInfo({userID: p.userID, userName: p.name, killCount: 0, deathCount: 0}))
+                this.addEnemy(p.userID, new PlayerInfo({ userID: p.userID, userName: p.name, killCount: 0, deathCount: 0 }))
                 this.gameHUD.showTicket(`${StringHelper.truncateString(p.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has joined`);
                 break;
             case OpCode.SERVER_PLAYERLEFT:
@@ -149,7 +148,7 @@ export class PacketToGameLogic {
      * @param userID ID of the {@link Enemy} to be removed.
      */
     private removeEnemy(userID: number) {
-        if (this.enemyMap.has(userID)){
+        if (this.enemyMap.has(userID)) {
             this.enemyMap.delete(userID);
         }
     }
@@ -159,7 +158,7 @@ export class PacketToGameLogic {
      * @param userID ID of the {@link Enemy} to be added.
      * @param playerInfo {@link PlayerInfo} instance containing all information of {@link Enemy}.
      */
-    private addEnemy(userID: number, playerInfo: PlayerInfo) {
+    private addEnemy(userID: number, playerInfo: PlayerInfo) {
         let enemyToAdd = new Enemy();
         enemyToAdd.setPlayerInfo = playerInfo;
         this.enemyMap.set(userID, enemyToAdd);
@@ -170,7 +169,7 @@ export class PacketToGameLogic {
      * @param killerID Who has defeated an {@link Player} or {@link Enemy}.
      * @param victimID {@link Player} or {@link Enemy} who has been defeated.
      */
-    private playerDeath(killerID: number, victimID: number){
+    private playerDeath(killerID: number, victimID: number) {
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
             this.gameHUD.displayRespawn(true);
@@ -181,10 +180,10 @@ export class PacketToGameLogic {
             killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
             let victimName = this.player.getPlayerInfo.getUserName;
             victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
-            this.gameHUD.showTicket(`${killerName} ${StringHelper.randomKillVerb()} ${victimName}`);      
+            this.gameHUD.showTicket(`${killerName} ${StringHelper.randomKillVerb()} ${victimName}`);
         } else {
             // Fallback to prevent crash if victim isn't present in client-internal enemy map
-            if(!this.enemyMap.has(victimID) || this.enemyMap.get(victimID).getPlayerInfo == undefined){
+            if (!this.enemyMap.has(victimID) || this.enemyMap.get(victimID).getPlayerInfo == undefined) {
                 console.error("Tried to get id " + victimID + "but was not present in enemy map!");
                 return;
             }
@@ -197,7 +196,7 @@ export class PacketToGameLogic {
             killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
             let victimName = this.enemyMap.get(victimID).getPlayerInfo.getUserName;
             victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
-            this.gameHUD.showTicket(`${killerName} ${StringHelper.randomKillVerb()} ${victimName}`); 
+            this.gameHUD.showTicket(`${killerName} ${StringHelper.randomKillVerb()} ${victimName}`);
         }
     }
 

@@ -1,3 +1,4 @@
+import { WebSocket } from "../../spec/websocketmock";
 import { Packet } from "../communication/packet";
 import { Socket, SocketState } from "../communication/socket";
 import { GameHUD } from "../ui/gameHud";
@@ -37,7 +38,7 @@ export class GameLoop {
    * FPS goal ideally met. If below, resolution gets toned down. By resolution we mean bar subdivision of walls rendered on-screen.
    */
   private static readonly FPS_GOAL: number = 50;
-  
+
   /**
    * Minimum FPS threshold. If the framerate dips below that, dynamic resolution iteration gets triggered.
    */
@@ -75,16 +76,22 @@ export class GameLoop {
    * @param fpsDivName HTML ID as string where we put how much FPS we got
    * @param changeResolutionCallback Callback function(deltaResolution) to change the raycaster resolution
    */
-  constructor(websocketServerUrl: string, fpsDivName: string, changeResolutionCallback: any, gameHUD: GameHUD) {
+  constructor(websocketServerUrl: string, fpsDivName: string, changeResolutionCallback: any, gameHUD: GameHUD, windowMock?: any) {
     this.frame.bind(this);
     this.lastTime = 0;
     this.secSum = 0;
-    this.frameSum = 0; 
+    this.frameSum = 0;
     this.fpsElem = document.getElementById(fpsDivName);
-    if(window.location.host === 'localhost:9000' || window.location.host === '127.0.0.1:9000') {
-      this.socket = new Socket(websocketServerUrl, gameHUD);
+
+    if (windowMock) {
+      this.socket = new Socket(websocketServerUrl, gameHUD, WebSocket);
     } else {
-      this.socket = new Socket("ws://" + window.location.host + "/server/ws/1", gameHUD);
+
+      if (window.location.host === 'localhost:9000' || window.location.host === '127.0.0.1:9000') {
+        this.socket = new Socket(websocketServerUrl, gameHUD);
+      } else {
+        this.socket = new Socket("ws://" + window.location.host + "/server/ws/1", gameHUD);
+      }
     }
     this.changeResolutionCallback = changeResolutionCallback;
     this.gameHudReference = gameHUD;
@@ -102,15 +109,15 @@ export class GameLoop {
   /**
    * Triggers dynamic resolution negotiation between game and browser / machine.
    */
-  private dynamicResolution(){
-    this.changeResolutionCallback(((this.frameSum <= GameLoop.FPS_GOAL) ? - 1 : 1 ) * GameLoop.DYNAMIC_RESOLUTION_AGGRESSIVENESS);
+  private dynamicResolution() {
+    this.changeResolutionCallback(((this.frameSum <= GameLoop.FPS_GOAL) ? - 1 : 1) * GameLoop.DYNAMIC_RESOLUTION_AGGRESSIVENESS);
     this.resolutionAdjustCounter++;
   }
 
   /**
    * Restart dynamic resolution negotiation.
    */
-  public restartDynamicResolution(){
+  public restartDynamicResolution() {
     this.resolutionAdjustCounter = 0;
   }
 
@@ -155,7 +162,7 @@ export class GameLoop {
     this.socket.sendAll();
   }
 
-  public get getSocketState() : SocketState {
+  public get getSocketState(): SocketState {
     return this.socket.socketState;
   }
 }
