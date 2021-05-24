@@ -66,6 +66,11 @@ export class GameLoop {
   private changeResolutionCallback: any;
 
   /**
+   * A reference to the gamehud
+   */
+  private gameHudReference: GameHUD;
+
+  /**
    * 
    * @param fpsDivName HTML ID as string where we put how much FPS we got
    * @param changeResolutionCallback Callback function(deltaResolution) to change the raycaster resolution
@@ -82,6 +87,7 @@ export class GameLoop {
       this.socket = new Socket("ws://" + window.location.host + "/server/ws/1", gameHUD);
     }
     this.changeResolutionCallback = changeResolutionCallback;
+    this.gameHudReference = gameHUD;
   }
 
   /**
@@ -124,6 +130,9 @@ export class GameLoop {
       if (this.frameSum < GameLoop.FPS_MINIMUM) {
         this.restartDynamicResolution();
       }
+
+      // Update round timer:
+      this.gameHudReference.updateTimer();
 
       this.fpsElem.innerText = `${this.frameSum}`;
       this.secSum = 0;
