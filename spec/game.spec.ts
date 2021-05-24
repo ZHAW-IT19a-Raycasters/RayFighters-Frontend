@@ -59,11 +59,11 @@ describe('Game module test', () => {
         expect(testGame.isMapLoaded()).toBe(false);
         expect(testGame.initializeRoom(mapPath, readFromFile)).not.toThrowError;
         
-        for (let index = 0; index < testMapNames.length; index++) {
-            testGame.getPacketToGameLogic.handlePacket(new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: index, time: BigInt(0) }))
+        for (let i = 0; i < testMapNames.length; i++) {
+            testGame.getPacketToGameLogic.handlePacket(new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: i, time: BigInt(0) }))
             testGame.checkMap();
-            testGame.loadMap(testMapNames[index], window, readFromFile);
-            expect(testGame.getCurrentMapPath).toBe(realMapNames[index]);
+            testGame.loadMap(testMapNames[i], window, readFromFile);
+            expect(testGame.getCurrentMapPath).toBe(realMapNames[i]);
         }
 
     })

@@ -1,46 +1,32 @@
 <div class="menuContainer container-fluid d-flex h-100 position-fixed">
     <div class="menuWrapper text-white p-5">
         <div class="row justify-content-center m-0">
-            <form id="logInForm">
-                <div class="form-row">
-                    <div class="form-group col-sm-8">
-                        <label>
-                            <h4 class="m-0">Player Name</h4>
-                        </label>
-                        <input type="text" class="form-control menu-item" name="inputPlayerName" minlength="1" maxlength="255" required />
-                    </div>
-                </div>
-                <div class="form-row justify-content-center">
-                    <div class="form-group m-4">
-                        <button type="submit" class="btn grow menu-item txt-btn" id="startbtn">
-                            Start Game
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div id="menuFooter" class="row justify-content-between m-0">
-            <div id="aboutbtn" class="grow menu-item txt-btn">
-                <span>
-                    <h6>About the Game</h6>
-                </span>
-            </div>
-            <div id="mutebtn" class="grow menu-item txt-btn">
-                <h5>
-                    <i class="bi bi-volume-up"></i>
-                </h5>
-            </div>
-            <div id="sharebtn" class="grow menu-item txt-btn">
-                <h6>
-                    <i class="bi-share"></i>
-                    Share Link
-                </h6>
+            <div class="col-sm-12">
+                <img src="assets/logo/logo_small.png" class="main-logo centered" alt="RayFighters Logo">
             </div>
         </div>
-
+        <div class="row justify-content-center m-0"></div>
+        <form id="logInForm">
+            <div class="form-row">
+                <div class="form-group col-sm-12 centered">
+                    <label>
+                        <h3 class="m-0">Player Name</h3>
+                    </label>
+                    <input type="text" class="form-control menu-item" name="inputPlayerName" minlength="1"
+                        maxlength="255" required />
+                </div>
+            </div>
+            <div class="form-row justify-content-center">
+                <div class="form-group m-4">
+                    <button type="submit" class="btn grow menu-item txt-btn" id="startbtn">
+                        Start Game
+                    </button>
+                </div>
+            </div>
+        </form>
         <div id="aboutTab" hidden>
             <div class="row justify-content-end m-0">
-                <div id="backbtn" class="m-0 px-2 grow menu-item txt-btn">
+                <div id="backbtn" class="col-sm-12 m-0 px-2 grow menu-item txt-btn">
                     <h6 class="m-0">
                         go Back
                         <i class="bi bi-arrow-right"></i>
@@ -48,8 +34,31 @@
                 </div>
             </div>
             <div class="row text-center text-break">
-                <p></p>
+                <div class="col-sm-12">
+                    <p></p>
+                </div>
             </div>
-        </div>      
+        </div>
     </div>
+    <div id="menuFooter" class="row justify-content-between m-0">
+        <div id="aboutbtn" class="grow menu-item txt-btn">
+            <span>
+                <h6>About the Game</h6>
+            </span>
+        </div>
+        <div id="mutebtn" class="grow menu-item txt-btn">
+            <h5>
+                <i class="bi bi-volume-up"></i>
+            </h5>
+        </div>
+        <div id="sharebtn" class="grow menu-item txt-btn">
+            <h6>
+                <i class="bi-share"></i>
+                Share Link
+            </h6>
+        </div>
+    </div>
+
+    
+</div>
 </div>
