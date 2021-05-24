@@ -34,4 +34,17 @@ export class StringHelper {
         const randInt = Math.floor(Math.random() * StringHelper.KILL_VERBS.length);
         return StringHelper.KILL_VERBS[randInt];
     }
+
+    /**
+     * 
+     * @param num The number to pad
+     * @param len The final length the padded string (number) should have
+     */
+    public static padLeadingZeros(num: number, len: number): string {
+        let str = '' + num;
+        while (str.length < len) {
+            str = '0' + str;
+        }
+        return str;
+    }
 }
