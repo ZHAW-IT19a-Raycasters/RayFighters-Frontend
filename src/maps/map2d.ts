@@ -134,7 +134,6 @@ export class Map2D {
         // Parse the actual map now
         let x = 0;
         for (let index = 6; index < 6 + this.mapSize; index++) {
-            let y = index - 6;
             const line = lines[index];
             for (const char of line) {
                 if (char === '\r') {
