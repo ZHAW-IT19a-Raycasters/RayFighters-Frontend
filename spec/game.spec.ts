@@ -1,17 +1,22 @@
-import { Game, setGameInstance } from "../src/logic/game"
+import { Game, setGameInstance, startGameLoop } from "../src/logic/game"
 import { GameHUD } from "./gamehudmock";
 import { JSDOM } from 'jsdom';
 import * as fs from 'fs';
 import { Canvas } from "./canvasmock";
 import { Packet } from "../src/communication/packet";
 import { OpCode } from "../src/communication/opcode";
+import { WebSocket } from "./websocketmock";
+import { Socket, SocketState } from "../src/communication/socket";
 
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document, navigator, window } = (new JSDOM(index)).window;
 global.document = document;
 
 const mockHUD = new GameHUD();
+const mockSocket = new Socket('localhost:8000', mockHUD, new WebSocket('localhost'));
+mockSocket.socketState = SocketState.CONNECTED;
 const canvas = new Canvas();
+const testPacket = new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: 2, time: BigInt(0) });
 
 var readFromFile = (filename: string) => {
     return fs.readFileSync(filename, 'utf8');
@@ -30,11 +35,11 @@ describe('Game module test', () => {
         expect(testGame.getLoop).toBeDefined;
         expect(testGame.getRenderer).toBeDefined;
         expect(testGame.getMapPath).toBeUndefined;
-        expect(testGame.checkConnection()).toBe(false);
         expect(testGame.getCanvas).toBe(canvas);
         expect(testGame.getCurrentMapPath).toBeUndefined;
         expect(testGame.getPacketToGameLogic).toBeDefined;
-    })
+    });
+
     it('should load maps correctly', () => {
         // Setup
         const testGame = new Game('canvas', 'fpscounter', mockHUD, navigator, canvas, window);
@@ -57,14 +62,38 @@ describe('Game module test', () => {
 
         // Test & Verification
         expect(testGame.isMapLoaded()).toBe(false);
+        testGame.checkMap(1);
+        expect(testGame.isMapLoaded()).toBe(true);
         expect(testGame.initializeRoom(mapPath, readFromFile)).not.toThrowError;
         
         for (let i = 0; i < testMapNames.length; i++) {
             testGame.getPacketToGameLogic.handlePacket(new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: i, time: BigInt(0) }))
-            testGame.checkMap();
+            testGame.checkMap(i);
             testGame.loadMap(testMapNames[i], window, readFromFile);
             expect(testGame.getCurrentMapPath).toBe(realMapNames[i]);
         }
 
+    });
+
+    it('should start the game loop correctly', () => {
+        // Setup
+        const testGame = new Game('canvas', 'fpscounter', mockHUD, navigator, canvas, window);
+        const mapPath = 'spec/test_map_2.txt';
+
+        // Test
+        setGameInstance(testGame);
+        testGame.checkMap(1);
+        testGame.initializeRoom(mapPath, readFromFile);
+        testGame.initializeRenderer(window);
+        testGame.loadMap(mapPath, window, readFromFile);
+        testGame.getLoop.overrrideSocket(mockSocket);
+
+        // Verification
+        expect(testGame.getLoop).toBeDefined;
+        expect(testGame.checkConnection()).toBe(true);
+        expect(testGame.isMapLoaded()).toBe(true);
+        expect(startGameLoop()).not.toThrowError;
+        expect(testGame.getLoop.getSocketState).toBe(SocketState.CONNECTED);
+        expect(testGame.getPacketToGameLogic.handlePacket(testPacket)).not.toThrowError;
     })
 })

@@ -78,7 +78,6 @@ export class Map2D {
                 return "";
             }
         }
-
         return readFromFile(filename);
     }
 
@@ -137,8 +136,7 @@ export class Map2D {
             const line = lines[index];
             for (const char of line) {
                 if (char === '\r') {
-                    // Newline, nothing happened here so we decrement x to
-                    // "retry" next line
+                    // Newline, nothing happened here so we decrement x to "retry" next line
                     x--;
                 } else {
                     // At this location we've got a wall or floor
@@ -184,23 +182,6 @@ export class Map2D {
 
         // Recursively build up steps until ray hits something:
         return this.raycaster.ray(initialStep);
-    }
-
-
-    /**
-     * Generate random MapElements in the map. Completely overrides existing
-     * elements.
-     */
-    public randomize(): void {
-        const WALL_THRESH = 0.25; // Probability for spawning a wall
-        for (var i = 0; i < this.getElementCount; i++) {
-            const rand = Math.random();
-            if (rand < WALL_THRESH) {
-                this.map[i] = new MapElement(MapElementType.WALL);
-            } else {
-                this.map[i] = new MapElement(MapElementType.FLOOR);
-            }
-        }
     }
 
     /**

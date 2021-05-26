@@ -14,6 +14,7 @@ export class GameLoop {
    * function(time, packetArray, sendCallback)
    */
   private callback: any;
+  
   /**
    * Timer sum to eventually check if a second has passed.
    */
@@ -72,9 +73,12 @@ export class GameLoop {
   private gameHudReference: GameHUD;
 
   /**
-   * 
+   * Constructs a new game loop.
+   * @param websocketServerUrl URL of the {@link WebSocket}
    * @param fpsDivName HTML ID as string where we put how much FPS we got
-   * @param changeResolutionCallback Callback function(deltaResolution) to change the raycaster resolution
+   * @param changeResolutionCallback Callback function ({@link deltaResolution}) to change the raycaster resolution
+   * @param gameHUD {@link GameHUD} instance.
+   * @param windowMock Mocked {@link window} instance for tests.
    */
   constructor(websocketServerUrl: string, fpsDivName: string, changeResolutionCallback: any, gameHUD: GameHUD, windowMock?: any) {
     this.frame.bind(this);
@@ -83,10 +87,12 @@ export class GameLoop {
     this.frameSum = 0;
     this.fpsElem = document.getElementById(fpsDivName);
 
+    // Check if test or running in production environment.
     if (windowMock) {
+      // Set up a partially mocked socket
       this.socket = new Socket(websocketServerUrl, gameHUD, WebSocket);
     } else {
-
+      // Set up a real socket
       if (window.location.host === 'localhost:9000' || window.location.host === '127.0.0.1:9000') {
         this.socket = new Socket(websocketServerUrl, gameHUD);
       } else {
@@ -103,13 +109,17 @@ export class GameLoop {
    */
   public begin(callb: any): void {
     this.callback = callb;
-    requestAnimationFrame(this.frame);
+
+    // Check if running in browser or node. Needed for testing.
+    if (typeof process === 'undefined') {
+      requestAnimationFrame(this.frame);
+    }
   }
 
   /**
    * Triggers dynamic resolution negotiation between game and browser / machine.
    */
-  private dynamicResolution() {
+  private dynamicResolution(): void {
     this.changeResolutionCallback(((this.frameSum <= GameLoop.FPS_GOAL) ? - 1 : 1) * GameLoop.DYNAMIC_RESOLUTION_AGGRESSIVENESS);
     this.resolutionAdjustCounter++;
   }
@@ -117,7 +127,7 @@ export class GameLoop {
   /**
    * Restart dynamic resolution negotiation.
    */
-  public restartDynamicResolution() {
+  public restartDynamicResolution(): void {
     this.resolutionAdjustCounter = 0;
   }
 
@@ -160,6 +170,14 @@ export class GameLoop {
     requestAnimationFrame(this.frame);
 
     this.socket.sendAll();
+  }
+
+  /**
+   * Override {@link Socket} instance with a partially mocked one. Needed for testing.
+   * @param socket Mocked {@link Socket}
+   */
+  public overrrideSocket(socket: Socket) {
+    this.socket = socket;
   }
 
   public get getSocketState(): SocketState {

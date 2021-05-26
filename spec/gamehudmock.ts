@@ -15,6 +15,9 @@ export class GameHUD {
     private settings: HTMLElement;
     private socketStatus: HTMLElement;
     private fps: HTMLElement;
+    private timerValue: number;
+    private debug: HTMLElement;
+
 
     public initializeHud(map: string, player: PlayerInfo) { return; }
     public updatePlayerInfo(playerInfo: PlayerInfo): void  { return; }
@@ -27,4 +30,5 @@ export class GameHUD {
     public toggleFPS(): void  { return; }
     public toggleSettings(): void  { return; }
     public showSocketStatus(msg: string): void  { return; }
+    public updateTimer(): void { return; }
 }

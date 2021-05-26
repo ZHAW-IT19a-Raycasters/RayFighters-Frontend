@@ -64,30 +64,24 @@ export class PacketToGameLogic {
                 this.movement(p);
                 break;
             case OpCode.SERVER_YOUARECALLED:
-                console.log("Your ID is: " + p.userID);
                 this.player.getPlayerInfo.userID = p.userID;
                 this.gameHUD.updatePlayerInfo(this.player.getPlayerInfo);
                 break;
             case OpCode.SERVER_PLAYERJOINED:
-                console.log("New player has joined: ID " + p.name);
                 this.addEnemy(p.userID, new PlayerInfo({ userID: p.userID, userName: p.name, killCount: 0, deathCount: 0 }))
                 this.gameHUD.showTicket(`${StringHelper.truncateString(p.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has joined`);
                 break;
             case OpCode.SERVER_PLAYERLEFT:
-                console.log("Player has left: ID " + p.name);
                 this.removeEnemy(p.userID);
                 this.gameHUD.showTicket(`${StringHelper.truncateString(p.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has left`);
                 break;
             case OpCode.SERVER_SENDALLPLAYERINFO:
-                console.log("Server has sent all player info");
                 this.synchronizeEnemyList(p.playerInfoList);
                 break;
             case OpCode.SERVER_SENDALLPLAYERKD:
-                console.log("Server has sent all player K/D");
                 this.synchronizeEnemyList(p.playerKillDeathList);
                 break;
             case OpCode.SERVER_TELEPORT:
-                console.log("Player with ID" + p.userID + "has been teleported to" + p.coorX + "|" + p.coorY);
                 this.teleport(p);
                 break;
             case OpCode.SERVER_SHOOTING:
@@ -95,7 +89,6 @@ export class PacketToGameLogic {
                 break;
             case OpCode.SERVER_MAPCHANGE:
                 this.gameHUD.setTimer(p.time);
-                console.log("Map ID gotten: " + p.mapID);
                 this.currentMapID = p.mapID;
                 this.currentTime = p.time;
                 break;

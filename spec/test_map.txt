@@ -1,2 +1,11 @@
+Test map
+assets/sceneries/skyline.jpg
+#000000;#111111
+#303030;#010101
+#123123;32;0.5
+2
 11
 10
+2
+1 = assets/walls/fence_high.png
+2 = assets/walls/concrete.jpg

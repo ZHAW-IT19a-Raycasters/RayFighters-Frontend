@@ -196,17 +196,25 @@ export class Game {
 
   /**
    * Checks for the current map ID obtained from server.
+   * @param overrideMapID Overridden map ID. Only needed for testing.
    * @returns The path to the current map.
    */
-  public checkMap(): string {
-    this.currentMapID = this.packetToGameLogic.getCurrentMapID;
+  public checkMap(overrideMapID?: number): string {
+    let mapID: number;
+
+    // Check for overridden map ID. Only needed for testing.
+    if(overrideMapID){
+      mapID = overrideMapID;
+    } else {
+      mapID = this.packetToGameLogic.getCurrentMapID;
+    }
+    this.currentMapID = mapID;
     this.currentMapPath = this.mapIDToString(this.currentMapID);
     return this.currentMapPath;
   }
 
   /**
-   * Dumb solution for now. Translates map ID to map path.
-   * TODO: Read from JSON file
+   * Translates map ID to map path.
    * @param id map ID
    * @returns map path
    */
@@ -282,11 +290,9 @@ export class Game {
     return this.gameHUD;
   }
 
-
   public get getPacketToGameLogic(): PacketToGameLogic {
     return this.packetToGameLogic;
   }
-
 
   public get getControls(): Controls {
     return this.controls;
@@ -315,7 +321,7 @@ function startDynamicResolution(windowMock?: any) {
 /**
  * Initializes the {@link GameLoop}.
  */
-function startGameLoop() {
+export function startGameLoop() {
   // Starts the game loop using this frame handler.
   game.getLoop.begin(function (time: number, receivedPackets: Array<Packet>, sendCallback: any) {
     // Detect if server connection has encountered an error
