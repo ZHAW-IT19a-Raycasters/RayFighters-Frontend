@@ -95,14 +95,6 @@ export class Player {
     this.walkTimer = 0;
   }
 
-  public setWalkSpeed(speed: number): void {
-    this.walkSpeed = speed;
-  }
-
-  public setWeapon(weapon: Weapon): void {
-    this.weapon = weapon;
-  }
-
   public setScreenWidth(width: number): void {
     this.screenWidth = width;
   }
@@ -276,25 +268,6 @@ export class Player {
    */
   public hasMoved(): boolean {
     return this.lastPaces !== this.paces;
-  }
-
-  /**
-   * Change health based on given delta. Calls death handling if health falls below zero.
-   * @param delta positive or negative health deviation.
-   */
-  public changeHealth(delta: number) {
-    if (this.health + delta < 0) {
-      this.playerInfo.isDead = true;
-      return; 
-    } else if (this.health + delta >= Player.MAX_HEALTH) {
-      this.health = Player.MAX_HEALTH;
-    } else {
-      this.health += delta;
-    }
-  }
-
-  public set setDirection(d: number) {
-    this.angle = d;
   }
 
   public set setPosition(p: Vec2D) {

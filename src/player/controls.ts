@@ -147,13 +147,9 @@ export class Controls {
      * @param event Event that gets passed from the listener. 
      */
     private touchHandler(event: any): void {
-
         if (event.touches.length <= 3) {
-
             for (var i = 0; i < event.touches.length; i++) {
-                
                 var touch = event.touches[i];
-
                 this.shootButtonRect = this.shootButton.getBoundingClientRect() // Update position of shoot button in case the device was rotated
         
                 if (touch.pageY >= this.shootButtonRect.y && touch.pageY <= this.shootButtonRect.y + this.shootButtonRect.height &&
@@ -187,7 +183,6 @@ export class Controls {
      */
     private touchReleaseHandler(event: any): void {
         this.clearInputs();
-        // event.preventDefault(); // TODO Throws error on console - Only test with a real mobile can tell if this line can be removed
         event.stopPropagation();
     }
 
