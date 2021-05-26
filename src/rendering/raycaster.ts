@@ -55,6 +55,10 @@ export class Raycaster {
         this.currentDir = dir;
     }
 
+    /**
+      * Setter for how far we want to cast rays
+      * @param {number} range
+      */
     public set range(range: number) {
         this.currentRange = range;
         this.rayBuffer.length = 0;
@@ -63,7 +67,8 @@ export class Raycaster {
 
     /**
      * Calculate the next step in a ray
-     * @param currentStep 
+     *
+     * @param {Step} currentStep
      * @returns next step after the current step
      */
     private calculateCurrentStep(currentStep: Step): Step {
@@ -83,7 +88,7 @@ export class Raycaster {
     /**
      * Casts a ray based off of origin parameters and this.map
      * 
-     * @param origin Starting step from where the ray is cast
+     * @param {Step} origin - Starting step from where the ray is cast
      * @returns An array of steps up to the point where a wall is hit
      */
     public ray(origin: Step): Step[] {
@@ -108,9 +113,9 @@ export class Raycaster {
      * Calculate step for the next MapElement to be reached
      * 
      * @param {number} ySlope - y component of the ray slope
-     * @param {number xSlope - x component of the ray slope
+     * @param {number} xSlope - x component of the ray slope
      * @param {Vec2D} pos - From where the ray originates
-     * @param isInverted 
+     * @param {boolean} isInverted 
      * @returns Next step that has reached the next MapElement
      */
     public step(ySlope: number, xSlope: number, pos: Vec2D, isInverted: boolean) {
@@ -128,7 +133,7 @@ export class Raycaster {
                 isInverted ? pos.x + dx : pos.y + dy
             );
 
-            step.length = (dx ** 2) + (dy ** 2);
+            step.length = (dx**2) + (dy**2);
         }
         return step;
     }
@@ -154,8 +159,6 @@ export class Raycaster {
 
         // Distance we've traveled plus the new ray:
         step.distance = distance + Math.sqrt(step.length);
-
-        // TODO shading determined by looking angle?
 
         // Offset from the gridline:
         step.offset = offset - Math.floor(offset);
