@@ -1,33 +1,33 @@
-import { Command } from "../src/communication/command";
+import { PacketFactory } from "../src/communication/packetfactory";
 import { Packet } from "../src/communication/packet";
 import { ProtocolParser } from "../src/communication/protocolparser";
 
-describe('Command wrapper test', () => {
+describe('PacketFactory wrapper test', () => {
     it('should generate a packet representing disconnect, unknown, who am i, request player info and request player kill/death data correctly', () => {
         let byteData: Uint8Array;
         let packet: Packet;
 
-        packet = Command.disconnect();
+        packet = PacketFactory.disconnect();
         byteData = ProtocolParser.get.serialize(packet);
         expect(byteData[0]).toBe(0x00);
         expect(byteData.length).toBe(1);
 
-        packet = Command.unknown();
+        packet = PacketFactory.unknown();
         byteData = ProtocolParser.get.serialize(packet);
         expect(byteData[0]).toBe(0x01);
         expect(byteData.length).toBe(1);
 
-        packet = Command.whoAmI();
+        packet = PacketFactory.whoAmI();
         byteData = ProtocolParser.get.serialize(packet);
         expect(byteData[0]).toBe(0x02);
         expect(byteData.length).toBe(1);
 
-        packet = Command.requestPlayerInfo();
+        packet = PacketFactory.requestPlayerInfo();
         byteData = ProtocolParser.get.serialize(packet);
         expect(byteData[0]).toBe(0x1E);
         expect(byteData.length).toBe(1);
 
-        packet = Command.requestPlayerKillDeathCount();
+        packet = PacketFactory.requestPlayerKillDeathCount();
         byteData = ProtocolParser.get.serialize(packet);
         expect(byteData[0]).toBe(0x1F);
         expect(byteData.length).toBe(1);
@@ -40,7 +40,7 @@ describe('Command wrapper test', () => {
             0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40,     // Y movement (999.999)
             0xA2, 0x45, 0xB6, 0xF3, 0xFD, 0x3F, 0x8F, 0x40      // angle (999.999)
         ];    
-        const packet: Packet = Command.move(666.0, 999.999, 999.999)
+        const packet: Packet = PacketFactory.move(666.0, 999.999, 999.999)
         const byteData = ProtocolParser.get.serialize(packet);
         expect(byteData.length).toBe(expectedData.length);
         for (let index = 0; index < expectedData.length; index++) {
@@ -53,7 +53,7 @@ describe('Command wrapper test', () => {
             0x14,                                               // Opcode
             0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0x1B, 0x40      // Angle (6.9)
         ];
-        const packet: Packet = Command.shoot(6.9)
+        const packet: Packet = PacketFactory.shoot(6.9)
         const byteData = ProtocolParser.get.serialize(packet);
         expect(byteData.length).toBe(expectedData.length);
         for (let index = 0; index < expectedData.length; index++) {
