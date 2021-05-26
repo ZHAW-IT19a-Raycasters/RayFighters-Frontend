@@ -9,9 +9,7 @@ export class WebSocket{
     public sendMessages: Queue<ArrayBuffer> = new Queue<ArrayBuffer>();
     public binaryType: string;
 
-    constructor(url: string) {
-        // deliberately empty
-    }
+    constructor(url: string) { /* No implementation */ }
 
     public send(message: ArrayBuffer) {
         this.sendMessages.enqueue(message);

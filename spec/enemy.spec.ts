@@ -4,10 +4,15 @@ import { JSDOM } from 'jsdom';
 import * as fs from 'fs'
 import { PlayerInfo } from "../src/communication/playerinfo";
 
+// JSDOM Setup
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document } = (new JSDOM(index)).window;
 global.document = document;
+
+// Variables
 let testEntity: Enemy;
+
+// Constants
 const testAngle = 5.5;
 const testX = 99;
 const testY = 88;
@@ -63,10 +68,14 @@ describe('Enemy unit test', () => {
         const baseAssetPath = "assets/enemies/female/";
         const turningAngle = Math.PI / 2;
 
-        // Test & Verification
         for (let entry of new Array<string>("back_0.png", "side_l_0.png", "front_0.png", "side_r_0.png")) {
+            // Test
             testEntity.update(1);
+            
+            // Verification
             expect(testEntity.getSprite().source).toBe(baseAssetPath + entry);
+            
+            // Turn enemy 90°
             testEntity.setAngle = testEntity.getAngle + turningAngle;
         }
 
@@ -74,7 +83,10 @@ describe('Enemy unit test', () => {
         testEntity.cycleSpriteState();
 
         for (let entry of new Array<string>("back_1.png", "side_l_1.png", "front_1.png", "side_r_1.png")) {
+            // Test
             testEntity.update(1);
+            
+            // Verification
             expect(testEntity.getSprite().source).toBe(baseAssetPath + entry);
             testEntity.setAngle = testEntity.getAngle + turningAngle;
         }
@@ -83,8 +95,13 @@ describe('Enemy unit test', () => {
         testEntity.cycleSpriteState();
 
         for (let entry of new Array<string>("back_0.png", "side_l_0.png", "front_0.png", "side_r_0.png")) {
+            // Test
             testEntity.update(1);
+            
+            // Verification
             expect(testEntity.getSprite().source).toBe(baseAssetPath + entry);
+            
+            // Turn enemy 90°
             testEntity.setAngle = testEntity.getAngle + turningAngle;
         }
 
@@ -92,8 +109,13 @@ describe('Enemy unit test', () => {
         testEntity.cycleSpriteState();
 
         for (let entry of new Array<string>("back_2.png", "side_l_2.png", "front_2.png", "side_r_2.png")) {
+            // Test
             testEntity.update(1);
+            
+            // Verification
             expect(testEntity.getSprite().source).toBe(baseAssetPath + entry);
+            
+            // Turn enemy 90°
             testEntity.setAngle = testEntity.getAngle + turningAngle;
         }
     });
@@ -104,7 +126,11 @@ describe('Enemy unit test', () => {
         const testPlayerInfo = new PlayerInfo({isDead: false});
         testEntity.setPlayerInfo = testPlayerInfo;
         resetEnemyPosition();
+
+        // Test
         testEntity.shoot(new Vec2D(-1, -1));
+
+        // Verification
         expect(testEntity.getShot).toBe(true);
     })
 })
