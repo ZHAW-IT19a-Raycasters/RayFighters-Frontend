@@ -1,5 +1,10 @@
 import { Vec2D } from "../src/common/vec2d";
 import { Map2D, MapElement, MapElementType } from "../src/maps/map2d";
+import * as fs from 'fs';
+
+var readFromFile = (filename: string) => {
+  return fs.readFileSync(filename, 'utf8');
+}
 
 describe('Testing Map2D methods', () => {
   it('should generate the map array to be square of "size"', () => {
@@ -109,19 +114,31 @@ describe('Testing Map2D methods', () => {
     map.setElement(new Vec2D(1, 1), new MapElement(MapElementType.FLOOR));
     expect(map.toString()).toBe(expected);
   });
-  /*
+  
   it('should read map from a file', () => {
     //TODO
     const map = new Map2D(2);
-    map.fromText('TODO');
+    map.parseMapData('spec/test_map.txt', readFromFile)
     let el00 = map.getElementByPosition(new Vec2D(0, 0));
     let el10 = map.getElementByPosition(new Vec2D(1, 0));
     let el01 = map.getElementByPosition(new Vec2D(0, 1));
     let el11 = map.getElementByPosition(new Vec2D(1, 1));
-    expect(el00.getType()).toBe(MapElementType.FLOOR);
-    expect(el10.getType()).toBe(MapElementType.FLOOR);
-    expect(el01.getType()).toBe(MapElementType.FLOOR);
+    expect(el00.getType()).toBe(MapElementType.WALL);
+    expect(el10.getType()).toBe(MapElementType.WALL);
+    expect(el01.getType()).toBe(MapElementType.WALL);
     expect(el11.getType()).toBe(MapElementType.FLOOR);
+    expect(map.getFloorGradient.near).toBe('#303030');
+    expect(map.getFloorGradient.far).toBe('#010101');
+    expect(map.getCeilingGradient.near).toBe('#000000');
+    expect(map.getCeilingGradient.far).toBe('#111111');
+    expect(map.getMapName).toBe('Test map');
+    expect(map.getSize).toBe(2);
+    expect(map.getFog.color).toBe('#123123');
+    expect(map.getFog.distance).toBe(32);
+    expect(map.getFog.engage).toBe(0.5);
+    expect(map.getSkyBox.source).toBe('assets/sceneries/skyline.jpg');
+    expect(el00.getWallImage.source).toBe('assets/walls/fence_high.png');
+
   });
-  */
+  
 });

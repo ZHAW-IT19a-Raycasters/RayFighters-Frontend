@@ -17,7 +17,6 @@ const mockSocket = new Socket('localhost:8000', mockHUD, new WebSocket('localhos
 mockSocket.socketState = SocketState.CONNECTED;
 const canvas = new Canvas();
 const testPacket = new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: 2, time: BigInt(0) });
-//const dummyCallback = function (secs: number, packets: Array<Packet>) { return; }
 
 var readFromFile = (filename: string) => {
     return fs.readFileSync(filename, 'utf8');
@@ -88,7 +87,6 @@ describe('Game module test', () => {
         testGame.initializeRenderer(window);
         testGame.loadMap(mapPath, window, readFromFile);
         testGame.getLoop.overrrideSocket(mockSocket);
-        //testGame.getLoop.overrideCallback(dummyCallback);
 
         // Verification
         expect(testGame.getLoop).toBeDefined;
@@ -97,6 +95,5 @@ describe('Game module test', () => {
         expect(startGameLoop()).not.toThrowError;
         expect(testGame.getLoop.getSocketState).toBe(SocketState.CONNECTED);
         expect(testGame.getPacketToGameLogic.handlePacket(testPacket)).not.toThrowError;
-        //expect(testGame.getLoop.frame(0)).not.toThrowError;
     })
 })

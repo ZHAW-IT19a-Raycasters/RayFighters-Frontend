@@ -1,7 +1,6 @@
 import { Map2D } from './map2d';
 import { Enemy } from '../entities/enemy';
 
-
 /**
  * Managing class of a map, adds functionality used for the game such as
  * raycasting.
@@ -18,18 +17,17 @@ export class Room {
     private enemies: Enemy[];
 
     /**
-     * 
-     * @param param0 Mapsize (width=height) and whether we randomize the map.
-     * Also allows the map to be loaded dynamically from file.
+     * Creates a new {@link Room} instance.
+     * @param mapSize: Size of map (x-axis)
+     * @param loadMap: Path to map to be loaded
+     * @param readFromFile: Lambda just used for testing.
      */
-    constructor({ mapSize, isRandomized = false, loadMap, readFromFile }: { mapSize: number; isRandomized?: boolean; loadMap?: string; readFromFile?: any }) {
+    constructor({ mapSize, loadMap, readFromFile }: { mapSize: number; loadMap?: string; readFromFile?: any }) {
         this.map = new Map2D(mapSize);
-
+        
         if (loadMap) {
             // Load map from file
             this.map.parseMapData(loadMap, readFromFile);
-        } else if (isRandomized) {
-            this.map.randomize();
         } else {
             this.map.initialize();
         }

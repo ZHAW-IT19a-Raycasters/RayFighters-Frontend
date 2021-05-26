@@ -180,14 +180,6 @@ export class GameLoop {
     this.socket = socket;
   }
 
-  /**
-   * Override callback with a mocked one. Needed for testing.
-   * @param callback Mocked callback
-   */
-  public overrideCallback(callback: any) {
-    this.callback = callback;
-  }
-
   public get getSocketState(): SocketState {
     return this.socket.socketState;
   }
