@@ -13,13 +13,17 @@ const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document, navigator, window } = (new JSDOM(index)).window;
 global.document = document;
 
+// Constants
 const mockHUD = new GameHUD();
 const mockSocket = new Socket('localhost:8000', mockHUD, new WebSocket('localhost'));
-mockSocket.socketState = SocketState.CONNECTED;
 const canvas = new Canvas();
 const testPacket = new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: 2, time: BigInt(0) });
 const testMapPath = 'spec/maps/test_map_2.txt';
 
+// Connection setup
+mockSocket.socketState = SocketState.CONNECTED;
+
+// Read from file lambda. Needed for loading a map without XMLHttpRequests.
 var readFromFile = (filename: string) => {
     return fs.readFileSync(filename, 'utf8');
 }

@@ -39,7 +39,7 @@ const guiInputs = new Array<KeyCodes>(
 );
 
 
-function setupPlayer(position: Vec2D, angle: number) {
+export function setupPlayer(position: Vec2D, angle: number) {
   return new Player(position.x, position.y, angle, HUDmock, testWeapon, 1);
 }
 
