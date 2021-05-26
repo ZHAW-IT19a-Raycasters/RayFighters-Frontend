@@ -3,6 +3,9 @@ import { Packet } from "../communication/packet";
 import { Socket, SocketState } from "../communication/socket";
 import { GameHUD } from "../ui/gameHud";
 
+/**
+ *
+ */
 export class GameLoop {
   /**
    * Last frame time in seconds
@@ -74,11 +77,11 @@ export class GameLoop {
 
   /**
    * Constructs a new game loop.
-   * @param websocketServerUrl URL of the {@link WebSocket}
-   * @param fpsDivName HTML ID as string where we put how much FPS we got
-   * @param changeResolutionCallback Callback function ({@link deltaResolution}) to change the raycaster resolution
-   * @param gameHUD {@link GameHUD} instance.
-   * @param windowMock Mocked {@link window} instance for tests.
+   * @param {string} websocketServerUrl - URL of the {@link WebSocket}
+   * @param {string} fpsDivName - HTML ID as string where we put how much FPS we got
+   * @param changeResolutionCallback - Callback function ({@link deltaResolution}) to change the raycaster resolution
+   * @param gameHUD - {@link GameHUD} instance.
+   * @param windowMock - Mocked {@link window} instance for tests.
    */
   constructor(websocketServerUrl: string, fpsDivName: string, changeResolutionCallback: any, gameHUD: GameHUD, windowMock?: any) {
     this.frame.bind(this);
@@ -133,7 +136,7 @@ export class GameLoop {
 
   /**
    * Handling of each frame.
-   * @param currTime Current time.
+   * @param {number} currTime - Current time.
    */
   public frame = (currTime: number) => {
     // How many seconds have passed, is probably a small fraction:
@@ -174,12 +177,15 @@ export class GameLoop {
 
   /**
    * Override {@link Socket} instance with a partially mocked one. Needed for testing.
-   * @param socket Mocked {@link Socket}
+   * @param {Socket} socket - Mocked {@link Socket}
    */
   public overrrideSocket(socket: Socket) {
     this.socket = socket;
   }
 
+  /**
+    * Getter for socket state
+    */
   public get getSocketState(): SocketState {
     return this.socket.socketState;
   }

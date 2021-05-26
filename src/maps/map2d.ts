@@ -3,6 +3,12 @@ import { Raycaster, Step } from "../rendering/raycaster";
 import { ColorGradient, Image2D } from "../rendering/renderer";
 import { Fog } from "../rendering/fog";
 
+/**
+ * Map class contains the map elements and the skybox. Has the ability to do
+ * raycasting on itself.
+ * 
+ * Consult the Map Wiki: {@link https://github.zhaw.ch/raycasters/docs/wiki/Map}
+ */
 export class Map2D {
     private static readonly SKYBOX_WIDTH = 3512;
     private static readonly SKYBOX_HEIGHT = 1440;
@@ -23,15 +29,41 @@ export class Map2D {
      * Map data according to wiki, see https://github.zhaw.ch/raycasters/docs/wiki/Map
      */
     private mapName: string;
+
+    /**
+     * Skybox image
+     */
     private skyBox: Image2D;
+
+    /**
+     * Gradient for the ceiling
+     */
     private ceilingGradient: ColorGradient;
+
+    /**
+     * Gradient for the floor
+     */
     private floorGradient: ColorGradient;
+
+    /**
+     * Mapsize (side length)
+     */
     private mapSize: number;
+    /**
+     * Map of wall textures. Example entry:
+     * '2' -> Image2D("brick_wall.png")
+     */
     private wallTextures: Map<string, Image2D>;
+
+    /**
+     * Fog instance to set fogging properties. Remember that each map can have
+     * different fogging distances and colors.
+     */
     private fog: Fog;
 
     /**
-     * Size refers to the height and width of the map (it's square)
+     * @param {number} size - Size refers to the height and width of the map
+     * (it's square)
      */
     constructor(private size?: number) {
         if (size) {
@@ -46,8 +78,7 @@ export class Map2D {
      * Queries the element of a map at clamped coordinate (x,y), could be wall,
      * floor, etc..
      * 
-     * @param x horizontal coordinate of the map
-     * @param y vertical coordinate of the map
+     * @param {Vec2D} pos - We want to get the element at this position
      * @returns The ELEMENT of map at (x,y) ONLY if it's inside the map, othertype MapElementType.NONE (!)
      */
     public getElementByPosition(pos: Vec2D): MapElement {
@@ -62,8 +93,9 @@ export class Map2D {
 
     /**
      * Asynchronous method to read the map file.
-     * @param filename Name of map file
-     * @returns 
+     * @param {string} filename - Name of map file
+     * @param readFromFile callback for testing
+     * @returns map data file (see wiki for syntax)
      */
     private readMap(filename: string, readFromFile?: any): string {
         // Normal routine

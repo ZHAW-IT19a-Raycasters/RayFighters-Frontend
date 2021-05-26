@@ -32,6 +32,9 @@ export abstract class Entity {
      */
     private entityType: EntityType;
 
+    /**
+     * @param {EntityType} entityType - The type of entity we're instantiating
+     */
     constructor(entityType: EntityType) {
         this.lastPlayerViewingAngle = 0;
         this.angle = 0;
@@ -39,21 +42,41 @@ export abstract class Entity {
         this.entityType = entityType;
     }
 
+    /**
+     * Getter for position
+     */
     public get getPosition(): Vec2D {
         return this.position;
     }
 
+    /**
+     * Getter for the looking angle
+     */
     public get getAngle(): number {
-        return this.angle /*+ (Math.PI / 2)*/;
+        return this.angle;
     }
 
+    /**
+     * Setter for the looking angle
+     * @param {number} angle - angle the entity's looking at
+     */
     public set setAngle(angle: number) {
         this.angle = angle;
     }
 
+    /**
+     * Setter for position
+     * @param {Vec2D} position
+     */
     public set setPosition(position: Vec2D) {
         this.position = position;
     }
 
+    /**
+     * Since each entity has a unique appearance (or should have for
+     * aesthetics), this method should be customized!
+     * Reason being that an entity can have custom animations and/or behavior.
+     * @returns The current sprite this entity shall appear as.
+     */
     public abstract getSprite(): Image2D;
 }

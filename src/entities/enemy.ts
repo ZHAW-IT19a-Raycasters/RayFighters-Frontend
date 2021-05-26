@@ -223,10 +223,16 @@ export class Enemy extends Entity {
         return this.spriteMap.get(this.spriteState)[EnemySpriteDirection.NORTH];
     }
 
+    /**
+      * Getter for Player Info
+      */
     public get getPlayerInfo(): PlayerInfo {
         return this.playerInfo
     }
 
+    /**
+      * Setter for player info
+      */
     public set setPlayerInfo(playerInfo: PlayerInfo) {
         this.playerInfo = playerInfo;
     }
@@ -246,6 +252,7 @@ export class Enemy extends Entity {
 
     /**
      * Triggers shooting animation.
+     * @param {Vec2D} playerPosition - The position from which the player has shot his gun
      */
     public shoot(playerPosition: Vec2D): void {
         this.hasShot = true;
@@ -261,7 +268,7 @@ export class Enemy extends Entity {
 
     /**
      * Updates distance to {@link Player}.
-     * @param playerPosition {@link Vec2D} position of {@link Player}.
+     * @param {Vec2D} playerPosition - {@link Vec2D} position of {@link Player}.
      */
     public updateDistanceToPlayer(playerPosition: Vec2D) {
         this.distanceToPlayer = MathHelper.euclideanDistance(playerPosition, this.position);
@@ -269,7 +276,11 @@ export class Enemy extends Entity {
 
     /**
      * Update method for walking animation.
-     * @param time how much time has passed. [seconds]
+     * 
+     * This is mainly a finite state machine cycling between animations until
+     * the time has run out.
+     *
+     * @param {number} time - how much time has passed. [seconds]
      */
     public update(time: number): void {
         if (this.hasShot) {
@@ -299,7 +310,11 @@ export class Enemy extends Entity {
         }
     }
  
-    public get getShot() : boolean {
+    /**
+      * Getter for has shot
+      * @returns true if the player has just shot his gun
+      */
+    public get getShot(): boolean {
         return this.hasShot;
     }  
 }
