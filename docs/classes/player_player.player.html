@@ -1,0 +1,898 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Player | raycaster-game</title>
+	<meta name="description" content="Documentation for raycaster-game">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">raycaster-game</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">raycaster-game</a>
+				</li>
+				<li>
+					<a href="../modules/player_player.html">player/player</a>
+				</li>
+				<li>
+					<a href="player_player.player.html">Player</a>
+				</li>
+			</ul>
+			<h1>Class Player</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Player class, handling all the Player actions.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">Player</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="player_player.player.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="player_player.player.html#gamehud" class="tsd-kind-icon">gameHUD</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="player_player.player.html#health" class="tsd-kind-icon">health</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="player_player.player.html#lastpaces" class="tsd-kind-icon">last<wbr>Paces</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="player_player.player.html#paces" class="tsd-kind-icon">paces</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="player_player.player.html#playerinfo" class="tsd-kind-icon">player<wbr>Info</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="player_player.player.html#position" class="tsd-kind-icon">position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="player_player.player.html#screenwidth" class="tsd-kind-icon">screen<wbr>Width</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="player_player.player.html#walktimer" class="tsd-kind-icon">walk<wbr>Timer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="player_player.player.html#death_sound_volume" class="tsd-kind-icon">DEATH_<wbr>SOUND_<wbr>VOLUME</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="player_player.player.html#default_screen_width" class="tsd-kind-icon">DEFAULT_<wbr>SCREEN_<wbr>WIDTH</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="player_player.player.html#default_walk_speed" class="tsd-kind-icon">DEFAULT_<wbr>WALK_<wbr>SPEED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="player_player.player.html#max_health" class="tsd-kind-icon">MAX_<wbr>HEALTH</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="player_player.player.html#getdirection" class="tsd-kind-icon">get<wbr>Direction</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="player_player.player.html#getpaces" class="tsd-kind-icon">get<wbr>Paces</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="player_player.player.html#getplayerinfo" class="tsd-kind-icon">get<wbr>Player<wbr>Info</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="player_player.player.html#getposition" class="tsd-kind-icon">get<wbr>Position</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="player_player.player.html#getwalkspeed" class="tsd-kind-icon">get<wbr>Walk<wbr>Speed</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="player_player.player.html#getweapon" class="tsd-kind-icon">get<wbr>Weapon</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="player_player.player.html#isdead" class="tsd-kind-icon">is<wbr>Dead</a></li>
+								<li class="tsd-kind-set-signature tsd-parent-kind-class"><a href="player_player.player.html#setplayerinfo" class="tsd-kind-icon">set<wbr>Player<wbr>Info</a></li>
+								<li class="tsd-kind-set-signature tsd-parent-kind-class"><a href="player_player.player.html#setposition" class="tsd-kind-icon">set<wbr>Position</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="player_player.player.html#die" class="tsd-kind-icon">die</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="player_player.player.html#hasmoved" class="tsd-kind-icon">has<wbr>Moved</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="player_player.player.html#rotate" class="tsd-kind-icon">rotate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="player_player.player.html#setdead" class="tsd-kind-icon">set<wbr>Dead</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="player_player.player.html#setscreenwidth" class="tsd-kind-icon">set<wbr>Screen<wbr>Width</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="player_player.player.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="player_player.player.html#walk" class="tsd-kind-icon">walk</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Player<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, angle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, gameHUD<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, weapon<span class="tsd-signature-symbol">?: </span><a href="player_weapon.weapon.html" class="tsd-signature-type" data-tsd-kind="Class">Weapon</a>, walkSpeed<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="player_player.player.html" class="tsd-signature-type" data-tsd-kind="Class">Player</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L67">player/player.ts:67</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Player postition on the x-axis</p>
+									</div>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Player postition on the y-axis</p>
+									</div>
+								</li>
+								<li>
+									<h5>angle: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Starting angle/direction in radians</p>
+									</div>
+								</li>
+								<li>
+									<h5>gameHUD: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> weapon: <a href="player_weapon.weapon.html" class="tsd-signature-type" data-tsd-kind="Class">Weapon</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>What weapon we&#39;re holding</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> walkSpeed: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Rate at which we&#39;re moving</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="player_player.player.html" class="tsd-signature-type" data-tsd-kind="Class">Player</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="gamehud" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> gameHUD</h3>
+					<div class="tsd-signature tsd-kind-icon">gameHUD<span class="tsd-signature-symbol">:</span> <a href="ui_gamehud.gamehud.html" class="tsd-signature-type" data-tsd-kind="Class">GameHUD</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L62">player/player.ts:62</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="health" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> health</h3>
+					<div class="tsd-signature tsd-kind-icon">health<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L40">player/player.ts:40</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="lastpaces" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> last<wbr>Paces</h3>
+					<div class="tsd-signature tsd-kind-icon">last<wbr>Paces<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L55">player/player.ts:55</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Tied to this.paces. Used to determine whether we&#39;ve moved.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="paces" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> paces</h3>
+					<div class="tsd-signature tsd-kind-icon">paces<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L50">player/player.ts:50</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>How far we&#39;ve moved. This is used for the weapon bobbing animation.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="playerinfo" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> player<wbr>Info</h3>
+					<div class="tsd-signature tsd-kind-icon">player<wbr>Info<span class="tsd-signature-symbol">:</span> <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L38">player/player.ts:38</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Further meta informations about ourselves in the network context (what&#39;s
+							our player name and id). Note that enemies have this information aswell.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="position" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> position</h3>
+					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L45">player/player.ts:45</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Where we are on a 2d plane</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="screenwidth" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> screen<wbr>Width</h3>
+					<div class="tsd-signature tsd-kind-icon">screen<wbr>Width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L67">player/player.ts:67</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Used for determining screen width in mouselook code</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="walktimer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> walk<wbr>Timer</h3>
+					<div class="tsd-signature tsd-kind-icon">walk<wbr>Timer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L60">player/player.ts:60</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Timer for walking sounds.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="death_sound_volume" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> DEATH_<wbr>SOUND_<wbr>VOLUME</h3>
+					<div class="tsd-signature tsd-kind-icon">DEATH_<wbr>SOUND_<wbr>VOLUME<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0.5</span><span class="tsd-signature-symbol"> = 0.5</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L30">player/player.ts:30</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Volume of audio clip of when we&#39;re shot dead</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="default_screen_width" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> DEFAULT_<wbr>SCREEN_<wbr>WIDTH</h3>
+					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>SCREEN_<wbr>WIDTH<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1920</span><span class="tsd-signature-symbol"> = 1920</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L32">player/player.ts:32</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="default_walk_speed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> DEFAULT_<wbr>WALK_<wbr>SPEED</h3>
+					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>WALK_<wbr>SPEED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">2</span><span class="tsd-signature-symbol"> = 2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L20">player/player.ts:20</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>How fast we&#39;re moving</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="max_health" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> MAX_<wbr>HEALTH</h3>
+					<div class="tsd-signature tsd-kind-icon">MAX_<wbr>HEALTH<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">150</span><span class="tsd-signature-symbol"> = 150</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L25">player/player.ts:25</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Maximum player life</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getdirection" class="tsd-anchor"></a>
+					<h3>get<wbr>Direction</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getDirection<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L294">player/player.ts:294</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getpaces" class="tsd-anchor"></a>
+					<h3>get<wbr>Paces</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getPaces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L302">player/player.ts:302</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getplayerinfo" class="tsd-anchor"></a>
+					<h3>get<wbr>Player<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getPlayerInfo<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L277">player/player.ts:277</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getposition" class="tsd-anchor"></a>
+					<h3>get<wbr>Position</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getPosition<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L290">player/player.ts:290</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getwalkspeed" class="tsd-anchor"></a>
+					<h3>get<wbr>Walk<wbr>Speed</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getWalkSpeed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L306">player/player.ts:306</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getweapon" class="tsd-anchor"></a>
+					<h3>get<wbr>Weapon</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getWeapon<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="player_weapon.weapon.html" class="tsd-signature-type" data-tsd-kind="Class">Weapon</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L298">player/player.ts:298</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="player_weapon.weapon.html" class="tsd-signature-type" data-tsd-kind="Class">Weapon</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="isdead" class="tsd-anchor"></a>
+					<h3>is<wbr>Dead</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isDead<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L286">player/player.ts:286</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-set-signature tsd-parent-kind-class">
+					<a name="setplayerinfo" class="tsd-anchor"></a>
+					<h3>set<wbr>Player<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-set-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> setPlayerInfo<span class="tsd-signature-symbol">(</span>playerInfo<span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L310">player/player.ts:310</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>playerInfo: <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-set-signature tsd-parent-kind-class">
+					<a name="setposition" class="tsd-anchor"></a>
+					<h3>set<wbr>Position</h3>
+					<ul class="tsd-signatures tsd-kind-set-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> setPosition<span class="tsd-signature-symbol">(</span>p<span class="tsd-signature-symbol">: </span><a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L273">player/player.ts:273</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>p: <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="die" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> die</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">die<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L259">player/player.ts:259</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Player death handling.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="hasmoved" class="tsd-anchor"></a>
+					<h3>has<wbr>Moved</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">has<wbr>Moved<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L269">player/player.ts:269</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Check if player has moved in last tick. Used to prevent weapon bob.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True if player has moved.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="rotate" class="tsd-anchor"></a>
+					<h3>rotate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>angle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L107">player/player.ts:107</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Rotates Player: Simulates head turning. Wraps infinitely.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>angle: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Delta angle by how much the player rotates.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setdead" class="tsd-anchor"></a>
+					<h3>set<wbr>Dead</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Dead<span class="tsd-signature-symbol">(</span>dead<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L281">player/player.ts:281</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>dead: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setscreenwidth" class="tsd-anchor"></a>
+					<h3>set<wbr>Screen<wbr>Width</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Screen<wbr>Width<span class="tsd-signature-symbol">(</span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L98">player/player.ts:98</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="update" class="tsd-anchor"></a>
+					<h3>update</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>controls<span class="tsd-signature-symbol">: </span><a href="player_controls.controls.html" class="tsd-signature-type" data-tsd-kind="Class">Controls</a>, map<span class="tsd-signature-symbol">: </span><a href="maps_map2d.map2d.html" class="tsd-signature-type" data-tsd-kind="Class">Map2D</a>, seconds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, sendCallback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L138">player/player.ts:138</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Handles all the movement actions of the Player and communicates to the
+									server and plays sounds as needed.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>controls: <a href="player_controls.controls.html" class="tsd-signature-type" data-tsd-kind="Class">Controls</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p><a href="player_controls.controls.html">Controls</a> interface between user and player.</p>
+									</div>
+								</li>
+								<li>
+									<h5>map: <a href="maps_map2d.map2d.html" class="tsd-signature-type" data-tsd-kind="Class">Map2D</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>{@link Map} that the player is in.</p>
+									</div>
+								</li>
+								<li>
+									<h5>seconds: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Seconds that have passed.</p>
+									</div>
+								</li>
+								<li>
+									<h5>sendCallback: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="walk" class="tsd-anchor"></a>
+					<h3>walk</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">walk<span class="tsd-signature-symbol">(</span>distance<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, map<span class="tsd-signature-symbol">: </span><a href="maps_map2d.map2d.html" class="tsd-signature-type" data-tsd-kind="Class">Map2D</a>, direction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/player/player.ts#L118">player/player.ts:118</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The Player walks distance on WorldMap</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>distance: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>how far the player walks</p>
+									</div>
+								</li>
+								<li>
+									<h5>map: <a href="maps_map2d.map2d.html" class="tsd-signature-type" data-tsd-kind="Class">Map2D</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>{@link Map}</p>
+									</div>
+								</li>
+								<li>
+									<h5>direction: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>which direction to walk</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/player_player.html">player/player</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="player_player.player.html" class="tsd-kind-icon">Player</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="player_player.player.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="player_player.player.html#gamehud" class="tsd-kind-icon">gameHUD</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="player_player.player.html#health" class="tsd-kind-icon">health</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="player_player.player.html#lastpaces" class="tsd-kind-icon">last<wbr>Paces</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="player_player.player.html#paces" class="tsd-kind-icon">paces</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="player_player.player.html#playerinfo" class="tsd-kind-icon">player<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="player_player.player.html#position" class="tsd-kind-icon">position</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="player_player.player.html#screenwidth" class="tsd-kind-icon">screen<wbr>Width</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="player_player.player.html#walktimer" class="tsd-kind-icon">walk<wbr>Timer</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="player_player.player.html#death_sound_volume" class="tsd-kind-icon">DEATH_<wbr>SOUND_<wbr>VOLUME</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="player_player.player.html#default_screen_width" class="tsd-kind-icon">DEFAULT_<wbr>SCREEN_<wbr>WIDTH</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="player_player.player.html#default_walk_speed" class="tsd-kind-icon">DEFAULT_<wbr>WALK_<wbr>SPEED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="player_player.player.html#max_health" class="tsd-kind-icon">MAX_<wbr>HEALTH</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="player_player.player.html#getdirection" class="tsd-kind-icon">get<wbr>Direction</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="player_player.player.html#getpaces" class="tsd-kind-icon">get<wbr>Paces</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="player_player.player.html#getplayerinfo" class="tsd-kind-icon">get<wbr>Player<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="player_player.player.html#getposition" class="tsd-kind-icon">get<wbr>Position</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="player_player.player.html#getwalkspeed" class="tsd-kind-icon">get<wbr>Walk<wbr>Speed</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="player_player.player.html#getweapon" class="tsd-kind-icon">get<wbr>Weapon</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="player_player.player.html#isdead" class="tsd-kind-icon">is<wbr>Dead</a>
+							</li>
+							<li class=" tsd-kind-set-signature tsd-parent-kind-class">
+								<a href="player_player.player.html#setplayerinfo" class="tsd-kind-icon">set<wbr>Player<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-set-signature tsd-parent-kind-class">
+								<a href="player_player.player.html#setposition" class="tsd-kind-icon">set<wbr>Position</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="player_player.player.html#die" class="tsd-kind-icon">die</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="player_player.player.html#hasmoved" class="tsd-kind-icon">has<wbr>Moved</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="player_player.player.html#rotate" class="tsd-kind-icon">rotate</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="player_player.player.html#setdead" class="tsd-kind-icon">set<wbr>Dead</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="player_player.player.html#setscreenwidth" class="tsd-kind-icon">set<wbr>Screen<wbr>Width</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="player_player.player.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="player_player.player.html#walk" class="tsd-kind-icon">walk</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,787 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>GameHUD | raycaster-game</title>
+	<meta name="description" content="Documentation for raycaster-game">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">raycaster-game</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">raycaster-game</a>
+				</li>
+				<li>
+					<a href="../modules/ui_gamehud.html">ui/gameHud</a>
+				</li>
+				<li>
+					<a href="ui_gamehud.gamehud.html">GameHUD</a>
+				</li>
+			</ul>
+			<h1>Class GameHUD</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The GameHUD is a class for displaying heads up information on the screen
+						such as the map name, player name, and time left.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">GameHUD</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#deaths" class="tsd-kind-icon">deaths</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#debug" class="tsd-kind-icon">debug</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#fps" class="tsd-kind-icon">fps</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#kills" class="tsd-kind-icon">kills</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#mapname" class="tsd-kind-icon">map<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#playername" class="tsd-kind-icon">player<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#respawncon" class="tsd-kind-icon">respawn<wbr>Con</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#scoreboard" class="tsd-kind-icon">scoreboard</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#settings" class="tsd-kind-icon">settings</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#socketstatus" class="tsd-kind-icon">socket<wbr>Status</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#tickercon" class="tsd-kind-icon">ticker<wbr>Con</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#timer" class="tsd-kind-icon">timer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ui_gamehud.gamehud.html#timervalue" class="tsd-kind-icon">timer<wbr>Value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="ui_gamehud.gamehud.html#round_time_sec" class="tsd-kind-icon">ROUND_<wbr>TIME_<wbr>SEC</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="ui_gamehud.gamehud.html#sec_to_millisec_factor" class="tsd-kind-icon">SEC_<wbr>TO_<wbr>MILLISEC_<wbr>FACTOR</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="ui_gamehud.gamehud.html#sec_to_nanosec_factor" class="tsd-kind-icon">SEC_<wbr>TO_<wbr>NANOSEC_<wbr>FACTOR</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#displayrespawn" class="tsd-kind-icon">display<wbr>Respawn</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#initializehud" class="tsd-kind-icon">initialize<wbr>Hud</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#settimer" class="tsd-kind-icon">set<wbr>Timer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#showmapinfo" class="tsd-kind-icon">show<wbr>Map<wbr>Info</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#showsocketstatus" class="tsd-kind-icon">show<wbr>Socket<wbr>Status</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#showticket" class="tsd-kind-icon">show<wbr>Ticket</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#togglefps" class="tsd-kind-icon">toggleFPS</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#togglescoreboard" class="tsd-kind-icon">toggle<wbr>Scoreboard</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#togglesettings" class="tsd-kind-icon">toggle<wbr>Settings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#updateplayerinfo" class="tsd-kind-icon">update<wbr>Player<wbr>Info</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#updatescoreboard" class="tsd-kind-icon">update<wbr>Scoreboard</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ui_gamehud.gamehud.html#updatetimer" class="tsd-kind-icon">update<wbr>Timer</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>GameHUD<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ui_gamehud.gamehud.html" class="tsd-signature-type" data-tsd-kind="Class">GameHUD</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L28">ui/gameHud.ts:28</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="ui_gamehud.gamehud.html" class="tsd-signature-type" data-tsd-kind="Class">GameHUD</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="deaths" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> deaths</h3>
+					<div class="tsd-signature tsd-kind-icon">deaths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L21">ui/gameHud.ts:21</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="debug" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> debug</h3>
+					<div class="tsd-signature tsd-kind-icon">debug<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L28">ui/gameHud.ts:28</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="fps" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> fps</h3>
+					<div class="tsd-signature tsd-kind-icon">fps<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L27">ui/gameHud.ts:27</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="kills" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> kills</h3>
+					<div class="tsd-signature tsd-kind-icon">kills<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L20">ui/gameHud.ts:20</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="mapname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> map<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">map<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L22">ui/gameHud.ts:22</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="playername" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> player<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">player<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L19">ui/gameHud.ts:19</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="respawncon" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> respawn<wbr>Con</h3>
+					<div class="tsd-signature tsd-kind-icon">respawn<wbr>Con<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L23">ui/gameHud.ts:23</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="scoreboard" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> scoreboard</h3>
+					<div class="tsd-signature tsd-kind-icon">scoreboard<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L24">ui/gameHud.ts:24</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="settings" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> settings</h3>
+					<div class="tsd-signature tsd-kind-icon">settings<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L25">ui/gameHud.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="socketstatus" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> socket<wbr>Status</h3>
+					<div class="tsd-signature tsd-kind-icon">socket<wbr>Status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L26">ui/gameHud.ts:26</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="tickercon" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> ticker<wbr>Con</h3>
+					<div class="tsd-signature tsd-kind-icon">ticker<wbr>Con<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L13">ui/gameHud.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="timer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> timer</h3>
+					<div class="tsd-signature tsd-kind-icon">timer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L14">ui/gameHud.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="timervalue" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> timer<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">timer<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L18">ui/gameHud.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="round_time_sec" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> ROUND_<wbr>TIME_<wbr>SEC</h3>
+					<div class="tsd-signature tsd-kind-icon">ROUND_<wbr>TIME_<wbr>SEC<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L12">ui/gameHud.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="sec_to_millisec_factor" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> SEC_<wbr>TO_<wbr>MILLISEC_<wbr>FACTOR</h3>
+					<div class="tsd-signature tsd-kind-icon">SEC_<wbr>TO_<wbr>MILLISEC_<wbr>FACTOR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1000</span><span class="tsd-signature-symbol"> = 1_000</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L11">ui/gameHud.ts:11</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="sec_to_nanosec_factor" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> SEC_<wbr>TO_<wbr>NANOSEC_<wbr>FACTOR</h3>
+					<div class="tsd-signature tsd-kind-icon">SEC_<wbr>TO_<wbr>NANOSEC_<wbr>FACTOR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L10">ui/gameHud.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="displayrespawn" class="tsd-anchor"></a>
+					<h3>display<wbr>Respawn</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">display<wbr>Respawn<span class="tsd-signature-symbol">(</span>isDead<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L150">ui/gameHud.ts:150</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>isDead: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="initializehud" class="tsd-anchor"></a>
+					<h3>initialize<wbr>Hud</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">initialize<wbr>Hud<span class="tsd-signature-symbol">(</span>map<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, player<span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L34">ui/gameHud.ts:34</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initialize all Hud HTMLElements</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>map: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>player: <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="settimer" class="tsd-anchor"></a>
+					<h3>set<wbr>Timer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Timer<span class="tsd-signature-symbol">(</span>time<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BigInt</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L121">ui/gameHud.ts:121</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Time left until end of round</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>time: <span class="tsd-signature-type">BigInt</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>UNIX timestamp</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="showmapinfo" class="tsd-anchor"></a>
+					<h3>show<wbr>Map<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">show<wbr>Map<wbr>Info<span class="tsd-signature-symbol">(</span>map<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L90">ui/gameHud.ts:90</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Displays current Map Name and PlayerName</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>map: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Name of the current Map</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="showsocketstatus" class="tsd-anchor"></a>
+					<h3>show<wbr>Socket<wbr>Status</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">show<wbr>Socket<wbr>Status<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L244">ui/gameHud.ts:244</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Message to show about the socket status</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="showticket" class="tsd-anchor"></a>
+					<h3>show<wbr>Ticket</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">show<wbr>Ticket<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L98">ui/gameHud.ts:98</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Ticker in corner</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Message that should be displayed</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="togglefps" class="tsd-anchor"></a>
+					<h3>toggleFPS</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">toggleFPS<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L211">ui/gameHud.ts:211</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Show/Hide FPS information</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="togglescoreboard" class="tsd-anchor"></a>
+					<h3>toggle<wbr>Scoreboard</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">toggle<wbr>Scoreboard<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L203">ui/gameHud.ts:203</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Show/Hide Scoreboard</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="togglesettings" class="tsd-anchor"></a>
+					<h3>toggle<wbr>Settings</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">toggle<wbr>Settings<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L226">ui/gameHud.ts:226</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p> Toggle scoreboard</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updateplayerinfo" class="tsd-anchor"></a>
+					<h3>update<wbr>Player<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Player<wbr>Info<span class="tsd-signature-symbol">(</span>playerInfo<span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L80">ui/gameHud.ts:80</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Displays Kill Count and Death Count of current Player</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>playerInfo: <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Info of the current Player</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updatescoreboard" class="tsd-anchor"></a>
+					<h3>update<wbr>Scoreboard</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Scoreboard<span class="tsd-signature-symbol">(</span>ranking<span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L170">ui/gameHud.ts:170</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ranking: <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Array of <a href="communication_playerinfo.playerinfo.html">PlayerInfo</a></p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updatetimer" class="tsd-anchor"></a>
+					<h3>update<wbr>Timer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Timer<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/ui/gameHud.ts#L130">ui/gameHud.ts:130</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Calculates human readable time from unix time and displays on HUD.
+									If 5 seconds before round end, shows a ticket about map changing.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/ui_gamehud.html">ui/game<wbr>Hud</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="ui_gamehud.gamehud.html" class="tsd-kind-icon">GameHUD</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#deaths" class="tsd-kind-icon">deaths</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#debug" class="tsd-kind-icon">debug</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#fps" class="tsd-kind-icon">fps</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#kills" class="tsd-kind-icon">kills</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#mapname" class="tsd-kind-icon">map<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#playername" class="tsd-kind-icon">player<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#respawncon" class="tsd-kind-icon">respawn<wbr>Con</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#scoreboard" class="tsd-kind-icon">scoreboard</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#settings" class="tsd-kind-icon">settings</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#socketstatus" class="tsd-kind-icon">socket<wbr>Status</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#tickercon" class="tsd-kind-icon">ticker<wbr>Con</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#timer" class="tsd-kind-icon">timer</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ui_gamehud.gamehud.html#timervalue" class="tsd-kind-icon">timer<wbr>Value</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="ui_gamehud.gamehud.html#round_time_sec" class="tsd-kind-icon">ROUND_<wbr>TIME_<wbr>SEC</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="ui_gamehud.gamehud.html#sec_to_millisec_factor" class="tsd-kind-icon">SEC_<wbr>TO_<wbr>MILLISEC_<wbr>FACTOR</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="ui_gamehud.gamehud.html#sec_to_nanosec_factor" class="tsd-kind-icon">SEC_<wbr>TO_<wbr>NANOSEC_<wbr>FACTOR</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#displayrespawn" class="tsd-kind-icon">display<wbr>Respawn</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#initializehud" class="tsd-kind-icon">initialize<wbr>Hud</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#settimer" class="tsd-kind-icon">set<wbr>Timer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#showmapinfo" class="tsd-kind-icon">show<wbr>Map<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#showsocketstatus" class="tsd-kind-icon">show<wbr>Socket<wbr>Status</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#showticket" class="tsd-kind-icon">show<wbr>Ticket</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#togglefps" class="tsd-kind-icon">toggleFPS</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#togglescoreboard" class="tsd-kind-icon">toggle<wbr>Scoreboard</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#togglesettings" class="tsd-kind-icon">toggle<wbr>Settings</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#updateplayerinfo" class="tsd-kind-icon">update<wbr>Player<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#updatescoreboard" class="tsd-kind-icon">update<wbr>Scoreboard</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ui_gamehud.gamehud.html#updatetimer" class="tsd-kind-icon">update<wbr>Timer</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

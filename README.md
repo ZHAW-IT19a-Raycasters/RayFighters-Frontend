@@ -15,6 +15,8 @@ The dev server will now serve the landing page. To join a game a local server in
 
 Please look at the [full documentation](https://github.zhaw.ch/raycasters/docs/wiki) for the rest.
 
+The source code documentation can be viewed in the `./docs` folder. It can be generated using `npm run docs`.
+
 ### Useful links
 - [Frontend documentation (the rest of the readme is here!)](https://github.zhaw.ch/raycasters/docs/wiki/Frontend)
 - [Sonarqube Code Analysis](http://160.85.252.133:9000/dashboard?id=pm4-game)

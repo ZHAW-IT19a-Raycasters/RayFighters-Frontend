@@ -1,0 +1,689 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>PacketToGameLogic | raycaster-game</title>
+	<meta name="description" content="Documentation for raycaster-game">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">raycaster-game</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">raycaster-game</a>
+				</li>
+				<li>
+					<a href="../modules/communication_packettogamelogic.html">communication/packettogamelogic</a>
+				</li>
+				<li>
+					<a href="communication_packettogamelogic.packettogamelogic.html">PacketToGameLogic</a>
+				</li>
+			</ul>
+			<h1>Class PacketToGameLogic</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Class Purpose:
+							Packet -&gt; Game Logic
+						Given a packet, generate gamelogic that should result from whatever the packet tells us.</p>
+					</div>
+					<p>Example: Server generated a MOVEMENT packet. Thus, we want to update the
+					movements of an enemy because he&#39;s evidently moved.</p>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">PacketToGameLogic</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="communication_packettogamelogic.packettogamelogic.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#currentmapid" class="tsd-kind-icon">current<wbr>MapID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#currenttime" class="tsd-kind-icon">current<wbr>Time</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#enemymap" class="tsd-kind-icon">enemy<wbr>Map</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#gamehud" class="tsd-kind-icon">gameHUD</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#player" class="tsd-kind-icon">player</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="communication_packettogamelogic.packettogamelogic.html#getcurrentmapid" class="tsd-kind-icon">get<wbr>Current<wbr>MapID</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="communication_packettogamelogic.packettogamelogic.html#getcurrenttime" class="tsd-kind-icon">get<wbr>Current<wbr>Time</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="communication_packettogamelogic.packettogamelogic.html#getenemies" class="tsd-kind-icon">get<wbr>Enemies</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#addenemy" class="tsd-kind-icon">add<wbr>Enemy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="communication_packettogamelogic.packettogamelogic.html#handlepacket" class="tsd-kind-icon">handle<wbr>Packet</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#movement" class="tsd-kind-icon">movement</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#playerdeath" class="tsd-kind-icon">player<wbr>Death</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#removeenemy" class="tsd-kind-icon">remove<wbr>Enemy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#synchronizeenemylist" class="tsd-kind-icon">synchronize<wbr>Enemy<wbr>List</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#teleport" class="tsd-kind-icon">teleport</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="communication_packettogamelogic.packettogamelogic.html#updateplayerinfo" class="tsd-kind-icon">update<wbr>Player<wbr>Info</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Packet<wbr>ToGame<wbr>Logic<span class="tsd-signature-symbol">(</span>player<span class="tsd-signature-symbol">: </span><a href="player_player.player.html" class="tsd-signature-type" data-tsd-kind="Class">Player</a>, gameHUD<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="communication_packettogamelogic.packettogamelogic.html" class="tsd-signature-type" data-tsd-kind="Class">PacketToGameLogic</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L43">communication/packettogamelogic.ts:43</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>player: <a href="player_player.player.html" class="tsd-signature-type" data-tsd-kind="Class">Player</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Player reference</p>
+									</div>
+								</li>
+								<li>
+									<h5>gameHUD: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="communication_packettogamelogic.packettogamelogic.html" class="tsd-signature-type" data-tsd-kind="Class">PacketToGameLogic</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="currentmapid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> current<wbr>MapID</h3>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>MapID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L38">communication/packettogamelogic.ts:38</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The ID of the current map</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="currenttime" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> current<wbr>Time</h3>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>Time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">BigInt</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L43">communication/packettogamelogic.ts:43</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Timer for map change</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="enemymap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> enemy<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">enemy<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="entities_enemy.enemy.html" class="tsd-signature-type" data-tsd-kind="Class">Enemy</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L28">communication/packettogamelogic.ts:28</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Map of all enemies (other players), mapped from userID to PlayerInfo instance.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="gamehud" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> gameHUD</h3>
+					<div class="tsd-signature tsd-kind-icon">gameHUD<span class="tsd-signature-symbol">:</span> <a href="ui_gamehud.gamehud.html" class="tsd-signature-type" data-tsd-kind="Class">GameHUD</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L33">communication/packettogamelogic.ts:33</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Instance of the game hud</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="player" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> player</h3>
+					<div class="tsd-signature tsd-kind-icon">player<span class="tsd-signature-symbol">:</span> <a href="player_player.player.html" class="tsd-signature-type" data-tsd-kind="Class">Player</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L23">communication/packettogamelogic.ts:23</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Current player instance</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getcurrentmapid" class="tsd-anchor"></a>
+					<h3>get<wbr>Current<wbr>MapID</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getCurrentMapID<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L253">communication/packettogamelogic.ts:253</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for the current map id</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getcurrenttime" class="tsd-anchor"></a>
+					<h3>get<wbr>Current<wbr>Time</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getCurrentTime<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BigInt</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L245">communication/packettogamelogic.ts:245</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for current time (purpose: when map change happens)</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">BigInt</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getenemies" class="tsd-anchor"></a>
+					<h3>get<wbr>Enemies</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getEnemies<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="entities_enemy.enemy.html" class="tsd-signature-type" data-tsd-kind="Class">Enemy</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L237">communication/packettogamelogic.ts:237</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for enemies currently occupying the map according to the server</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="entities_enemy.enemy.html" class="tsd-signature-type" data-tsd-kind="Class">Enemy</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="addenemy" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> add<wbr>Enemy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Enemy<span class="tsd-signature-symbol">(</span>userID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, playerInfo<span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L163">communication/packettogamelogic.ts:163</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds an <a href="entities_enemy.enemy.html">Enemy</a> to the map.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>userID: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>ID of the <a href="entities_enemy.enemy.html">Enemy</a> to be added.</p>
+									</div>
+								</li>
+								<li>
+									<h5>playerInfo: <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p><a href="communication_playerinfo.playerinfo.html">PlayerInfo</a> instance containing all information of <a href="entities_enemy.enemy.html">Enemy</a>.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="handlepacket" class="tsd-anchor"></a>
+					<h3>handle<wbr>Packet</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">handle<wbr>Packet<span class="tsd-signature-symbol">(</span>pkt<span class="tsd-signature-symbol">: </span><a href="communication_packet.packet.html" class="tsd-signature-type" data-tsd-kind="Class">Packet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L60">communication/packettogamelogic.ts:60</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generate gameplay actions through packets received from the server.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>pkt: <a href="communication_packet.packet.html" class="tsd-signature-type" data-tsd-kind="Class">Packet</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the parsed packet received from the server.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="movement" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> movement</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">movement<span class="tsd-signature-symbol">(</span>pkt<span class="tsd-signature-symbol">: </span><a href="communication_packet.packet.html" class="tsd-signature-type" data-tsd-kind="Class">Packet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L209">communication/packettogamelogic.ts:209</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Handles movement</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>pkt: <a href="communication_packet.packet.html" class="tsd-signature-type" data-tsd-kind="Class">Packet</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Packet received from the server.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="playerdeath" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> player<wbr>Death</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">player<wbr>Death<span class="tsd-signature-symbol">(</span>killerID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, victimID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L174">communication/packettogamelogic.ts:174</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Handles death of player or enemy.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>killerID: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Who has defeated an <a href="player_player.player.html">Player</a> or <a href="entities_enemy.enemy.html">Enemy</a>.</p>
+									</div>
+								</li>
+								<li>
+									<h5>victimID: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p><a href="player_player.player.html">Player</a> or <a href="entities_enemy.enemy.html">Enemy</a> who has been defeated.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="removeenemy" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> remove<wbr>Enemy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Enemy<span class="tsd-signature-symbol">(</span>userID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L152">communication/packettogamelogic.ts:152</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes an <a href="entities_enemy.enemy.html">Enemy</a> from the map.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>userID: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>ID of the <a href="entities_enemy.enemy.html">Enemy</a> to be removed.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="synchronizeenemylist" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> synchronize<wbr>Enemy<wbr>List</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">synchronize<wbr>Enemy<wbr>List<span class="tsd-signature-symbol">(</span>list<span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L133">communication/packettogamelogic.ts:133</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Synchronises the <a href="communication_packettogamelogic.packettogamelogic.html#enemymap">enemyMap</a> with joining or leaving <a href="entities_enemy.enemy.html">Enemy</a> instances.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>list: <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Array of <a href="communication_playerinfo.playerinfo.html">PlayerInfo</a> to be processed.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="teleport" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> teleport</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">teleport<span class="tsd-signature-symbol">(</span>pkt<span class="tsd-signature-symbol">: </span><a href="communication_packet.packet.html" class="tsd-signature-type" data-tsd-kind="Class">Packet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L220">communication/packettogamelogic.ts:220</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Handles teleportation, as well as respawning.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>pkt: <a href="communication_packet.packet.html" class="tsd-signature-type" data-tsd-kind="Class">Packet</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Packet received from the server.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="updateplayerinfo" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Player<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Player<wbr>Info<span class="tsd-signature-symbol">(</span>playerInfoOld<span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a>, playerInfoNew<span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/communication/packettogamelogic.ts#L114">communication/packettogamelogic.ts:114</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Updates Player or Enemy information.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>playerInfoOld: <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Old <a href="communication_playerinfo.playerinfo.html">PlayerInfo</a> to be processed.</p>
+									</div>
+								</li>
+								<li>
+									<h5>playerInfoNew: <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>New <a href="communication_playerinfo.playerinfo.html">PlayerInfo</a> to be processed.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/communication_packettogamelogic.html">communication/packettogamelogic</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="communication_packettogamelogic.packettogamelogic.html" class="tsd-kind-icon">Packet<wbr>ToGame<wbr>Logic</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="communication_packettogamelogic.packettogamelogic.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#currentmapid" class="tsd-kind-icon">current<wbr>MapID</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#currenttime" class="tsd-kind-icon">current<wbr>Time</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#enemymap" class="tsd-kind-icon">enemy<wbr>Map</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#gamehud" class="tsd-kind-icon">gameHUD</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#player" class="tsd-kind-icon">player</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="communication_packettogamelogic.packettogamelogic.html#getcurrentmapid" class="tsd-kind-icon">get<wbr>Current<wbr>MapID</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="communication_packettogamelogic.packettogamelogic.html#getcurrenttime" class="tsd-kind-icon">get<wbr>Current<wbr>Time</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="communication_packettogamelogic.packettogamelogic.html#getenemies" class="tsd-kind-icon">get<wbr>Enemies</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#addenemy" class="tsd-kind-icon">add<wbr>Enemy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="communication_packettogamelogic.packettogamelogic.html#handlepacket" class="tsd-kind-icon">handle<wbr>Packet</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#movement" class="tsd-kind-icon">movement</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#playerdeath" class="tsd-kind-icon">player<wbr>Death</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#removeenemy" class="tsd-kind-icon">remove<wbr>Enemy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#synchronizeenemylist" class="tsd-kind-icon">synchronize<wbr>Enemy<wbr>List</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#teleport" class="tsd-kind-icon">teleport</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="communication_packettogamelogic.packettogamelogic.html#updateplayerinfo" class="tsd-kind-icon">update<wbr>Player<wbr>Info</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
