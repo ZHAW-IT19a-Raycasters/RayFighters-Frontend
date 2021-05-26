@@ -8,7 +8,6 @@ import { GameHUD } from './gamehudmock';
 const url = "ws://fakeurl.ch";
 const HUDmock = new GameHUD();
 const webSocket = new WebSocket(url);
-
 const testSocket = new Socket(url, HUDmock, webSocket );
 const testPacket = new Packet({ opCode: OpCode.CLIENT_DISCONNECT });
 const expectedContent = new Uint8Array([OpCode.CLIENT_DISCONNECT]);
