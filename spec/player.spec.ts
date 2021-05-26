@@ -8,11 +8,12 @@ import { Weapon } from "../src/player/weapon";
 import { Vec2D } from "../src/common/vec2d";
 import { GameHUD } from "./gamehudmock";
 
+// Setup JSDOM
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document, navigator } = (new JSDOM(index)).window;
 global.document = document;
-const HUDmock = new GameHUD();
 
+const HUDmock = new GameHUD();
 const testPosition = new Vec2D(6, 9);
 const testAngle = 6.9;
 const testSpeed = 1;

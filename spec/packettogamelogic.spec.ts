@@ -3,14 +3,8 @@ import { Packet } from "../src/communication/packet";
 import { PacketToGameLogic } from "../src/communication/packettogamelogic";
 import { PlayerInfo } from "../src/communication/playerinfo";
 import { Player } from "../src/player/player"
-import { JSDOM } from 'jsdom';
-import * as fs from 'fs'
 import { Vec2D } from "../src/common/vec2d";
 import { GameHUD } from "./gamehudmock";
-
-const index = fs.readFileSync('./dist/index.html', 'utf-8');
-const { document } = (new JSDOM(index)).window;
-global.document = document;
 
 const HUDmock = new GameHUD();
 

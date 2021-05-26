@@ -8,6 +8,7 @@ import { OpCode } from "../src/communication/opcode";
 import { WebSocket } from "./websocketmock";
 import { Socket, SocketState } from "../src/communication/socket";
 
+// Setup JSDOM
 const index = fs.readFileSync('./dist/index.html', 'utf-8');
 const { document, navigator, window } = (new JSDOM(index)).window;
 global.document = document;
@@ -17,6 +18,7 @@ const mockSocket = new Socket('localhost:8000', mockHUD, new WebSocket('localhos
 mockSocket.socketState = SocketState.CONNECTED;
 const canvas = new Canvas();
 const testPacket = new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: 2, time: BigInt(0) });
+const testMapPath = 'spec/maps/test_map_2.txt';
 
 var readFromFile = (filename: string) => {
     return fs.readFileSync(filename, 'utf8');
@@ -44,7 +46,6 @@ describe('Game module test', () => {
         // Setup
         const testGame = new Game('canvas', 'fpscounter', mockHUD, navigator, canvas, window);
         setGameInstance(testGame);
-        const mapPath = 'spec/test_map_2.txt';
         const testMapNames = new Array<string>(
             "./dist/maps/city_yard.txt",
             "./dist/maps/desert.txt",
@@ -64,7 +65,7 @@ describe('Game module test', () => {
         expect(testGame.isMapLoaded()).toBe(false);
         testGame.checkMap(1);
         expect(testGame.isMapLoaded()).toBe(true);
-        expect(testGame.initializeRoom(mapPath, readFromFile)).not.toThrowError;
+        expect(testGame.initializeRoom(testMapPath, readFromFile)).not.toThrowError;
         
         for (let i = 0; i < testMapNames.length; i++) {
             testGame.getPacketToGameLogic.handlePacket(new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: i, time: BigInt(0) }))
@@ -78,14 +79,13 @@ describe('Game module test', () => {
     it('should start the game loop correctly', () => {
         // Setup
         const testGame = new Game('canvas', 'fpscounter', mockHUD, navigator, canvas, window);
-        const mapPath = 'spec/test_map_2.txt';
 
         // Test
         setGameInstance(testGame);
         testGame.checkMap(1);
-        testGame.initializeRoom(mapPath, readFromFile);
+        testGame.initializeRoom(testMapPath, readFromFile);
         testGame.initializeRenderer(window);
-        testGame.loadMap(mapPath, window, readFromFile);
+        testGame.loadMap(testMapPath, window, readFromFile);
         testGame.getLoop.overrrideSocket(mockSocket);
 
         // Verification
