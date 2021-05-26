@@ -2,7 +2,10 @@ import { OpCode } from "./opcode";
 import { PlayerInfo } from "./playerinfo";
 
 /**
- * Abstract data structure containing the opcode and parameters.
+ * Data structure containing the opcode and parameters.
+ * This is essentialy the pretty version of what gets sent back and forth
+ * between the client and server. Note that a Packet instance could very well
+ * have only very few fields defined, sometimes just the opCode.
  */
 export class Packet {
     /**

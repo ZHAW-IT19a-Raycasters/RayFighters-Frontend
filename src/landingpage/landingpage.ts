@@ -87,7 +87,7 @@ function getJWT(content: any): void {
 
 /**
  * Starts the game and requests a JWT
- * @param form
+ * @param {HTMLFormElement} form
  */
 function handleLogIn(form: HTMLFormElement): void {
     const formData = new FormData(form);

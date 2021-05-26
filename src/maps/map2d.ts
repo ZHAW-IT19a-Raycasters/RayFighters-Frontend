@@ -3,6 +3,12 @@ import { Raycaster, Step } from "../rendering/raycaster";
 import { ColorGradient, Image2D } from "../rendering/renderer";
 import { Fog } from "../rendering/fog";
 
+/**
+ * Map class contains the map elements and the skybox. Has the ability to do
+ * raycasting on itself.
+ * 
+ * Consult the Map Wiki: {@link https://github.zhaw.ch/raycasters/docs/wiki/Map}
+ */
 export class Map2D {
     private static readonly SKYBOX_WIDTH = 3512;
     private static readonly SKYBOX_HEIGHT = 1440;
@@ -23,15 +29,41 @@ export class Map2D {
      * Map data according to wiki, see https://github.zhaw.ch/raycasters/docs/wiki/Map
      */
     private mapName: string;
+
+    /**
+     * Skybox image
+     */
     private skyBox: Image2D;
+
+    /**
+     * Gradient for the ceiling
+     */
     private ceilingGradient: ColorGradient;
+
+    /**
+     * Gradient for the floor
+     */
     private floorGradient: ColorGradient;
+
+    /**
+     * Mapsize (side length)
+     */
     private mapSize: number;
+    /**
+     * Map of wall textures. Example entry:
+     * '2' -> Image2D("brick_wall.png")
+     */
     private wallTextures: Map<string, Image2D>;
+
+    /**
+     * Fog instance to set fogging properties. Remember that each map can have
+     * different fogging distances and colors.
+     */
     private fog: Fog;
 
     /**
-     * Size refers to the height and width of the map (it's square)
+     * @param {number} size - Size refers to the height and width of the map
+     * (it's square)
      */
     constructor(private size?: number) {
         if (size) {
@@ -46,8 +78,7 @@ export class Map2D {
      * Queries the element of a map at clamped coordinate (x,y), could be wall,
      * floor, etc..
      * 
-     * @param x horizontal coordinate of the map
-     * @param y vertical coordinate of the map
+     * @param {Vec2D} pos - Position at which we want to get the map element
      * @returns The ELEMENT of map at (x,y) ONLY if it's inside the map, othertype MapElementType.NONE (!)
      */
     public getElementByPosition(pos: Vec2D): MapElement {
@@ -62,8 +93,9 @@ export class Map2D {
 
     /**
      * Asynchronous method to read the map file.
-     * @param filename Name of map file
-     * @returns 
+     * @param {string} filename - Name of map file
+     * @param readFromFile callback for testing
+     * @returns map data file (see wiki for syntax)
      */
     private readMap(filename: string, readFromFile?: any): string {
         // Normal routine
@@ -86,7 +118,8 @@ export class Map2D {
      * Don't edit this method unless you know the map syntax:
      * https://github.zhaw.ch/raycasters/docs/wiki/Map#example
      * 
-     * @param filename Filepath to string
+     * @param {string} filename - Filepath to string
+     * @param readFromFile - Testing callback for reading file
      */
     public parseMapData(filename: string, readFromFile?: any): void {
         const map = this.readMap(filename, readFromFile);
@@ -165,9 +198,9 @@ export class Map2D {
     /**
      * Cast a ray from an origin point in a certain direction with a range cutoff.
      * 
-     * @param origin Origin position. The player's standing position.
-     * @param angle Ray shooting angle in radians. The player's direction.
-     * @param range Maximum drawing distance. 1 unit = 1 MapElement.
+     * @param {Vec2D} origin - Origin position. The player's standing position.
+     * @param {number} angle - Ray shooting angle in radians. The player's direction.
+     * @param {number} range - Maximum drawing distance. 1 unit = 1 MapElement.
      * @returns Array of steps composing the ray casted.
      */
     public rayCast(origin: Vec2D, angle: number, range: number): Step[] {
@@ -208,10 +241,16 @@ export class Map2D {
         return str;
     }
 
+    /**
+     * Get all map elements
+     */
     public get getElements() {
         return this.map;
     }
 
+    /** 
+      * Get all map element counts (square of side with of the map)
+      */
     public get getElementCount(): number {
         return this.map.length;
     }
@@ -219,8 +258,8 @@ export class Map2D {
     /**
      * Overwrite mapelement at position in this map.
      * 
-     * @param pos Position of map element
-     * @param newElem New map element
+     * @param {Vec2D} pos - Position of map element
+     * @param {MapElement} newElem - New map element
      */
     public setElement(pos: Vec2D, newElem: MapElement): void {
         pos.floor();
@@ -229,28 +268,44 @@ export class Map2D {
         }
     }
 
+    /**
+      * Getter for map size
+      */
     public get getSize(): number {
         return this.size;
     }
 
-
+    /**
+      * Getter for skybox
+      */
     public get getSkyBox(): Image2D {
         return this.skyBox
     }
 
-
+    /**
+      * Getter for ceil gradient
+      */
     public get getCeilingGradient(): ColorGradient {
         return this.ceilingGradient;
     }
 
+    /**
+      * Getter for floor gradient
+      */
     public get getFloorGradient(): ColorGradient {
         return this.floorGradient;
     }
 
+    /**
+     * Getter for fog instance
+     */
     public get getFog(): Fog {
         return this.fog
     }
 
+    /**
+     * Getter for map name
+     */
     public get getMapName(): string {
         return this.mapName;
     }
@@ -258,8 +313,6 @@ export class Map2D {
 
 /**
  * Used to descripe the map elements
- * TODO: If there's enough time, expand this into a class to make the map more
- * interactive.
  */
 export enum MapElementType {
     NONE = -1,  //< Outside of the map

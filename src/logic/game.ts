@@ -15,8 +15,9 @@ import { GameHUD } from '../ui/gameHud';
 let game: Game;
 
 /**
- * Only for testing purposes.
- * @param testGame Game instance to be overwritten.
+ * Only for testing and mocking purposes.
+ * This is only used if ran from Node (Jasmin)
+ * @param {Game} testGame - Game instance to be overwritten.
  */
 export function setGameInstance(testGame: Game){
   game = testGame;
@@ -24,12 +25,12 @@ export function setGameInstance(testGame: Game){
 
 /**
  * Runs the {@link Game} and entry point of the game logic
- * @param canvasName Id of the Canvas HTMLElement
- * @param fpsCounterName Id of the FPS Counter HTMLElement
- * @param gameHUD Heads-up display {@link GameHUD} to relay info to the user.
- * @param navigator Mocked navigator for unit testing.
- * @param canvas Mocked canvas for unit testing.
- * @param window Mocked window for unit testing.
+ * @param {string} canvasName - Id of the Canvas HTMLElement
+ * @param {string} fpsCounterName - Id of the FPS Counter HTMLElement
+ * @param {GameHud} gameHUD - Heads-up display {@link GameHUD} to relay info to the user.
+ * @param navigator - Mocked navigator for unit testing.
+ * @param canvas - Mocked canvas for unit testing.
+ * @param window - Mocked window for unit testing.
  */
 export function runGame(canvasName: string, fpsCounterName: string, gameHUD: GameHUD, navigator?: any, canvas?: any, window?: any): void {
   // Checks if it's running in node or browser. Needed to make the game class testable.
@@ -46,12 +47,13 @@ export function runGame(canvasName: string, fpsCounterName: string, gameHUD: Gam
  */
 export class Game {
   /**
-   * URL of the server.
+   * URL of the server. In this case 
    */
-  private static readonly SERVER_URL = "ws://127.0.0.1:8080/ws/1";
+  private static readonly DEV_SERVER_URL = "ws://127.0.0.1:8080/ws/1";
 
   /**
-   * Default wall resolution.
+   * Default raycasting resolution. (How many strips/bars are rendered).
+   * We've found 500 to be an OK compromise between performance and graphics.
    */
   private static readonly DEFAULT_RAYCASTER_RESOLUTION = 500;
 
@@ -61,7 +63,7 @@ export class Game {
   private renderer: Renderer;
 
   /**
-   * Where the magic happens. The element that contains the canvas element to drawn in
+   * HTML canvas element reference
    */
   private canvas: any;
 
@@ -71,7 +73,7 @@ export class Game {
   private player: Player;
 
   /**
-   * Current room.
+   * Current room (contains map and other things, see {@link Room}).
    */
   private room: Room;
 
@@ -86,7 +88,7 @@ export class Game {
   private packetToGameLogic: PacketToGameLogic;
 
   /**
-   * Player input
+   * Player input from the browser
    */
   private controls;
 
@@ -107,19 +109,21 @@ export class Game {
 
   /**
    * Initializes the {@link Game}.
-   * @param canvasName Name of {@link Canvas} instance.
-   * @param fpsCounterName ID of the FPS counter HTML element.
-   * @param gameHUD Heads-up display {@link GameHUD} to relay info to the user.
-   * @param navigator Mocked navigator for unit testing.
-   * @param canvas Mocked canvas for unit testing.
-   * @param window Mocked window for unit testing.
+   * @param {string} canvasName - Name of {@link Canvas} instance.
+   * @param {string} fpsCounterName - ID of the FPS counter HTML element.
+   * @param {GameHUD} gameHUD - Heads-up display {@link GameHUD} to relay info to the user.
+   * @param navigator - Mocked navigator for unit testing.
+   * @param canvas - Mocked canvas for unit testing.
+   * @param window - Mocked window for unit testing.
    */
   constructor(canvasName: string, fpsCounterName: string, gameHUD: any, navigator?: any, canvas?: any, windowMock?: any) {
     // Controls and canvas setup. 
     if (typeof process === 'undefined') {
+      // If we're in the browser, then we proceed as normal
       this.controls = new Controls();
       this.canvas = document.getElementById(canvasName);
     } else {
+      // We're in node, so some things are not available.
       // Initializes with a mocked navigator & canvas object to make the class testable.
       this.controls = new Controls(navigator);
       this.canvas = canvas;
@@ -132,36 +136,47 @@ export class Game {
     this.initializeRoom(this.checkMap());
     this.gameHUD.initializeHud(this.room.getMap.getMapName, this.player.getPlayerInfo);
 
-    // Initialize renderer. 
+    // Initialize renderer.
     if (typeof process === 'undefined') {
+      // Browser environment, proceed as productive
       this.initializeRenderer();
-      this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
+      this.loop = new GameLoop(Game.DEV_SERVER_URL, fpsCounterName, (d: number) => { this.renderer.changeResolution(d) }, this.gameHUD);
     } else {
-      // Initializes with a mocked window object to make the class testable.
+      // Initializes with a mocked window object to make the class testable. (we're ran from node instead of the browser)
       this.initializeRenderer(windowMock);
-      this.loop = new GameLoop(Game.SERVER_URL, fpsCounterName, (d: number) => { return; }, this.gameHUD, windowMock);
+      this.loop = new GameLoop(Game.DEV_SERVER_URL, fpsCounterName, (d: number) => { return; }, this.gameHUD, windowMock);
     }
 
   }
 
   /**
    * {@link Room} Setup. Creates a {@link Room}.
-   * @param mapPath Path to current map.
+   * @param {string} mapPath - Path to current map.
+   * @param readFromFile - Reading from file method for testing purposes
    */
   public initializeRoom(mapPath: string, readFromFile?: any): void {
     this.room = new Room({ mapSize: 32, loadMap: mapPath, readFromFile: readFromFile });
   }
 
   /**
-   * Creates a {@link Player}.
+   * Initializes the single {@link Player} instance.
    */
   private setupPlayer(): void {
+    // Just initial values for the players X,Y. Note that these are overwritten
+    // from the server later anyways.
+    const initPlayerX = 6;
+    const initPlayerY = 6;
+    // Direction we're first looking in. Also overwritten on successful connection
+    const initAngle = 0.3 * Math.PI;
+    // For now, we just give the same hitscan one-hit-kill weapon to all the players
+    const initWeapon = new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4);
+
     // Player Setup
     this.player = new Player(
-      6, 6,
-      0.3 * Math.PI,
+      initPlayerX, initPlayerY,
+      initAngle,
       this.gameHUD,
-      new Weapon('./assets/weapons/9mm/9mm_idle.png', ['./assets/weapons/9mm/9mm_s1.png', './assets/weapons/9mm/9mm_s2.png'], 180, 180, true, 0.4));
+      initWeapon);
   }
 
   /**
@@ -179,7 +194,8 @@ export class Game {
 
   /**
    * Loads a new map and re-initializes {@link Renderer} and {@link GameHUD}.
-   * @param newMapPath path to new map.
+   * 
+   * @param {string} newMapPath - path to new map.
    */
   public loadMap(newMapPath: string, windowMock?: any, readFromFile?: any): void {
     game.initializeRoom(newMapPath, readFromFile);
@@ -196,7 +212,11 @@ export class Game {
 
   /**
    * Checks for the current map ID obtained from server.
-   * @param overrideMapID Overridden map ID. Only needed for testing.
+   * 
+   * We get the current map ID from PacketToGameLogic and set the map indicated
+   * by that ID
+   * 
+   * @param {number} overrideMapID - Overridden map ID. Only needed for testing (for jasmin environment).
    * @returns The path to the current map.
    */
   public checkMap(overrideMapID?: number): string {
@@ -214,9 +234,12 @@ export class Game {
   }
 
   /**
-   * Translates map ID to map path.
-   * @param id map ID
-   * @returns map path
+   * Translates map ID to map path. Must be adjusted when adding a new map.
+   *
+   * Note that we hard coded this for now. In the future this could be solved with a JSON
+   *
+   * @param {number} id - map ID
+   * @returns {Map} path
    */
   private mapIDToString(id: number): string {
     let path: string;
@@ -233,16 +256,12 @@ export class Game {
 
   /**
    * Checks if the connection to the server is alive.
-   * @param state {@link SocketState} that will be checked. Needs to be passed from {@link GameLoop}.
+   *
+   * @param {boolean} state - {@link SocketState} that will be checked. Needs to be passed from {@link GameLoop}.
    * @returns True if alive, False if failed
    */
   public checkConnection(): boolean {
-    if (this.loop.getSocketState !== SocketState.CONNECTED) {
-      // Error case
-      return false;
-    }
-    // Success case
-    return true;
+    return (this.loop.getSocketState === SocketState.CONNECTED);
   }
 
   /**
@@ -256,60 +275,85 @@ export class Game {
     return true;
   }
 
+  /**
+   * Getter for gameloop instance
+   */
   public get getLoop(): GameLoop {
     return this.loop;
   }
 
-  public get getMapPath(): string {
-    return this.currentMapPath;
-  }
-
+  /**
+   * Getter for player instance
+   */
   public get getPlayer(): Player {
     return this.player;
   }
 
+  /**
+   * Getter for canvas reference
+   */
   public get getCanvas(): any {
     return this.canvas
   }
 
+  /**
+   * Getter for map path
+   */
   public get getCurrentMapPath(): string {
     return this.currentMapPath;
   }
 
 
+  /**
+   * Getter for renderer instance
+   */
   public get getRenderer(): Renderer {
     return this.renderer;
   }
 
+  /**
+   * Getter for room instance
+   */
   public get getRoom(): Room {
     return this.room;
   }
 
 
+  /**
+   * Getter for gamehud instance
+   */ 
   public get getGameHUD(): GameHUD {
     return this.gameHUD;
   }
 
+  /**
+   * Getter for PacketToGameLogic instance
+   */
   public get getPacketToGameLogic(): PacketToGameLogic {
     return this.packetToGameLogic;
   }
 
+  /**
+   * Getter for controls instance
+   */
   public get getControls(): Controls {
     return this.controls;
   }
 }
 
 /**
- * Listen to window resizes, and in case of that, re-initialize {@link Renderer} to prevent images from stretching.
- * @param windowMock Mocked window object used for testing.
+ * Listen to window resizes, and in case of that, re-initialize
+ * {@link Renderer} to prevent images from stretching.
+
+ * @param windowMock - Mocked window object used for testing.
  */
 function startDynamicResolution(windowMock?: any) {
-  // Return if running in node (Jasmine testing)
   if (windowMock) {
+    // Return if running in node (Jasmine testing)
     return;
   }
 
-  // Sett window resize listener
+  // This should happen when the browser window has been resized
   window.addEventListener('resize', function () {
     game.initializeRenderer();
     game.getLoop.restartDynamicResolution();
@@ -319,7 +363,10 @@ function startDynamicResolution(windowMock?: any) {
 }
 
 /**
- * Initializes the {@link GameLoop}.
+ * Sets up the {@link GameLoop}. If you were looking for the core gameloop,
+ * well, this is it.
+ * 
+ * Here we set what happens in a frame (or rather, game tick). 
  */
 export function startGameLoop() {
   // Starts the game loop using this frame handler.
@@ -336,14 +383,15 @@ export function startGameLoop() {
       // Update player positions, controls, map, time and sendCallback for communicating with the server.
       game.getPlayer.update(game.getControls, game.getRoom.getMap, time, sendCallback);
 
+      // Draw the frame using the renderer
       game.getRenderer.render(game.getRoom, game.getPlayer, time);
 
-      receivedPackets.forEach(p => {
-        game.getPacketToGameLogic.handlePacket(p);
+      receivedPackets.forEach(pkt => {
+        game.getPacketToGameLogic.handlePacket(pkt);
       })
 
       // Check if map has changed 
-      // TODO: solve with callback, this approach is a bit boneheaded
+      // TODO: solve with callback, this approach is a bit boneheaded (but works)
       let newMapPath = game.checkMap();
       if (newMapPath != lastMapPath) {
         game.loadMap(newMapPath);
@@ -351,8 +399,8 @@ export function startGameLoop() {
     } else {
       // Check for map change packet
       if (game.checkConnection()) {
-        receivedPackets.forEach(p => {
-          game.getPacketToGameLogic.handlePacket(p);
+        receivedPackets.forEach(pkt => {
+          game.getPacketToGameLogic.handlePacket(pkt);
         })
       }
 

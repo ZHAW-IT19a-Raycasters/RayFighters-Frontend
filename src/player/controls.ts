@@ -104,7 +104,6 @@ export class Controls {
         } else {
             this.isMobileDevice = false;
         }
-        console.log(`Controls: Detected ${this.isMobileDevice ? 'MOBILE' : 'DESKTOP'} inputs.`);
     }
 
     /**
@@ -116,17 +115,23 @@ export class Controls {
         }
     }
 
+    /**
+     * @returns how much the mouse has moved on the x axis
+     */
     public getMouseDelta(): number {
         return this.lastMouseDeltaX;
     }
 
+    /**
+      * @returns true if we're on mobile
+      */
     public get isMobile(): boolean {
         return this.isMobileDevice;
     }
 
     /**
      * Handles key presses.
-     * @param value Key code that was pressed.
+     * @param {boolean} value - Key code that was pressed.
      * @param event Event that gets passed from the listener. 
      * @returns 
      */
@@ -148,7 +153,7 @@ export class Controls {
      */
     private touchHandler(event: any): void {
         if (event.touches.length <= 3) {
-            for (var i = 0; i < event.touches.length; i++) {
+            for (let i = 0; i < event.touches.length; i++) {
                 var touch = event.touches[i];
                 this.shootButtonRect = this.shootButton.getBoundingClientRect() // Update position of shoot button in case the device was rotated
         
@@ -191,7 +196,7 @@ export class Controls {
      * @param event Event that gets passed from the listener. 
      */
     private mouseMoveHandler(event: any): void {
-        var mousePositionX = (event.movementX || event.mozMovementX || event.webkitMovementX || 0);
+        let mousePositionX = (event.movementX || event.mozMovementX || event.webkitMovementX || 0);
         // Right turn
         if (mousePositionX > 0) {
             this.keyHandler(true, { keyCode: KeyCodes.MOUSE_TURN_RIGHT });

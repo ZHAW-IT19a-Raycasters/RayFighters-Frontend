@@ -3,7 +3,7 @@ import { KeyCodes, Controls } from "./controls";
 import { Vec2D } from "../common/vec2d";
 import { MathHelper } from "../common/mathhelper";
 import { Weapon, WeaponState } from "./weapon";
-import { Command } from "../communication/command";
+import { PacketFactory } from "../communication/packetfactory";
 import { PlayerInfo } from "../communication/playerinfo";
 import { Sound, SoundType } from "../sound/sound";
 import { Enemy } from "../entities/enemy";
@@ -219,7 +219,7 @@ export class Player {
         this.walkTimer = 0;
         Sound.get.play(SoundType.STEP, Sound.STEP_MAX_VOLUME);
       }
-      sendCallback(Command.move(this.position.x, this.position.y, this.angle));
+      sendCallback(PacketFactory.move(this.position.x, this.position.y, this.angle));
     }
 
     // Player-side weapon handling and communication to server.
@@ -228,7 +228,7 @@ export class Player {
         this.weapon.shoot();
 
         // Send shoot message to server
-        sendCallback(Command.shoot(this.angle));
+        sendCallback(PacketFactory.shoot(this.angle));
 
         // If the weapon is semiautomatic, the player isn't able to hold down the button to shoot continuously.
         if (this.weapon.isSemiautomatic) {

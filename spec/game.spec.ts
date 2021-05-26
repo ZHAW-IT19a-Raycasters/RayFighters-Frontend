@@ -40,7 +40,7 @@ describe('Game module test', () => {
         expect(testGame.getPlayer.getPosition.y).toBe(6);
         expect(testGame.getLoop).toBeDefined;
         expect(testGame.getRenderer).toBeDefined;
-        expect(testGame.getMapPath).toBeUndefined;
+        expect(testGame.getCurrentMapPath).toBeUndefined;
         expect(testGame.getCanvas).toBe(canvas);
         expect(testGame.getCurrentMapPath).toBeUndefined;
         expect(testGame.getPacketToGameLogic).toBeDefined;

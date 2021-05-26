@@ -33,10 +33,17 @@ export class Room {
         }
     }
 
+    /**
+     * Getter for map
+     */
     public get getMap(): Map2D {
         return this.map;
     }
 
+    /**
+     * Getter for enemies in this room
+     * @returns array of enemies
+     */
     public get getEnemies(): Enemy[] {
         return this.enemies;
     }
@@ -44,7 +51,7 @@ export class Room {
     /**
      * Since this is a multiplayer game, we want to let someone external (eg
      * server) update the enemies.
-     * @param enemies Array of updated enemies
+     * @param {Enemy[]} enemies - Array of updated enemies
      */
     public updateEnemyEntities(enemies: Array<Enemy>){
         this.enemies = enemies;
@@ -53,7 +60,7 @@ export class Room {
     /**
      * Run timekeeping updates in our enemies.
      * 
-     * @param time Time passed in seconds
+     * @param {number} time - Time passed in seconds
      */
     public updateEnemies(time: number){
         for (let index = 0; index < this.enemies.length; index++) {

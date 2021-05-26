@@ -4,6 +4,8 @@ import { StringHelper } from "../common/stringhelper";
  * Container class for player info.
  * This is especially used for the SendAllPlayerInfo and SendAllPlayerKD
  * OpCodes as a pure data container class.
+ * 
+ * Also consult our Protocol Wiki {@link https://github.zhaw.ch/raycasters/docs/wiki/Protocol}.
  */
 export class PlayerInfo {
     /**
@@ -36,10 +38,16 @@ export class PlayerInfo {
         this.truncatedUserName = StringHelper.truncateString(name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
     }
 
+    /**
+     * Getter for the user's name
+     */
     public get getUserName(): string {
         return this.userName;
     }
 
+    /**
+     * Getter for the user's truncated name
+     */
     public get getTruncatedUserName(): string {
         return this.truncatedUserName;
     }

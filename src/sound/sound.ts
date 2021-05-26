@@ -9,6 +9,9 @@ export enum SoundType {
 
 /**
  * Sound class. Makes it easy to play sound.
+ * 
+ * This class is implemented using the Singleton Pattern.
+ * See {@link https://en.wikipedia.org/wiki/Singleton_pattern}
  */
 export class Sound {
     /**
@@ -62,7 +65,8 @@ export class Sound {
 
     /**
      * Plays the shoot sound effect.
-     * @param volume how loud the sound plays. Ranges from 0 to 1.
+     * @param {SoundType} type - what type of sound are we playing
+     * @param {number} volume - how loud the sound plays. Ranges from 0 to 1.
      */
     public play(type: SoundType, volume: number) {
         // early return if run from node (Audio makes tests fail)
