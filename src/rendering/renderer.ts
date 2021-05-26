@@ -302,8 +302,8 @@ export class Renderer {
    */
   private drawWeapon(player: Player, time: number) {
     const weapon = player.getWeapon;
-    const bobSway = 20; //<-- a factor, how much the weapon sways from left ot right.
-    const bobSpeed = 3; //<-- a factor, how fast the weapon sways.
+    const bobSway = Weapon.WEAPON_BOB_SWAY; //<-- a factor, how much the weapon sways from left ot right.
+    const bobSpeed = Weapon.WEAPON_BOB_SPEED; //<-- a factor, how fast the weapon sways.
 
     // Positioning. We want the weapon to be on the bottom, middle.
     const screenHeightFraction = this.canvas.height / weapon.getCurrentImage2D.height;

@@ -10,7 +10,20 @@ export class Weapon {
     /**
      * magnification of weapon images on the screen
      */ 
-    public static WEAPON_ZOOM = 0.5;
+    public static readonly WEAPON_ZOOM = 0.5;
+
+    /**
+      * A factor used in the renderer to animate the weapon swaying (bobbing)
+      * from left to right. This effectively sets the "radius", kind of like a
+      * stride length.
+      */ 
+    public static readonly WEAPON_BOB_SWAY = 20;
+
+    /**
+      * How fast the weapon bobs. A faster factor here may be used to animate faster walking speeds
+      */
+    public static readonly WEAPON_BOB_SPEED = 3;
+
 
     /**
      * Also corresponds with shoot frequency. Determines after which timespan a
