@@ -20,38 +20,47 @@ export class PacketToGameLogic {
     /**
      * Current player instance
      */
-    private player: Player
+    private player: Player;
 
     /**
      * Map of all enemies (other players), mapped from userID to PlayerInfo instance.
      */
     private enemyMap: Map<number, Enemy>;
 
+    /** 
+      * Instance of the game hud
+      */
     private gameHUD: GameHUD;
 
+    /**
+      * The ID of the current map
+      */
     private currentMapID: number;
 
+    /**
+      * Timer for map change
+      */
     private currentTime: BigInt;
 
     /**
      * 
-     * @param player Player reference
+     * @param {Player} player - Player reference
      */
     constructor(player: Player, gameHUD: any) {
         this.player = player;
         this.enemyMap = new Map<number, Enemy>();
-        this.gameHUD = gameHUD
+        this.gameHUD = gameHUD;
     }
 
     /**
      * Generate gameplay actions through packets received from the server.
      * 
-     * @param p the parsed packet received from the server.
+     * @param {Packet} pkt - the parsed packet received from the server.
      */
-    public handlePacket(p: Packet) {
-        switch (p.opCode) {
+    public handlePacket(pkt: Packet) {
+        switch (pkt.opCode) {
             case OpCode.SERVER_PLAYERDEATH:
-                this.playerDeath(p.killerID, p.victimID);
+                this.playerDeath(pkt.killerID, pkt.victimID);
                 break;
             case OpCode.SERVER_DISCONNECT:
                 this.gameHUD.showTicket("Server has disconnected!");
@@ -61,36 +70,36 @@ export class PacketToGameLogic {
                 this.gameHUD.showTicket("Server has sent unknown message");
                 break;
             case OpCode.SERVER_MOVEMENT:
-                this.movement(p);
+                this.movement(pkt);
                 break;
             case OpCode.SERVER_YOUARECALLED:
-                this.player.getPlayerInfo.userID = p.userID;
+                this.player.getPlayerInfo.userID = pkt.userID;
                 this.gameHUD.updatePlayerInfo(this.player.getPlayerInfo);
                 break;
             case OpCode.SERVER_PLAYERJOINED:
-                this.addEnemy(p.userID, new PlayerInfo({ userID: p.userID, userName: p.name, killCount: 0, deathCount: 0 }))
-                this.gameHUD.showTicket(`${StringHelper.truncateString(p.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has joined`);
+                this.addEnemy(pkt.userID, new PlayerInfo({ userID: pkt.userID, userName: pkt.name, killCount: 0, deathCount: 0 }))
+                this.gameHUD.showTicket(`${StringHelper.truncateString(pkt.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has joined`);
                 break;
             case OpCode.SERVER_PLAYERLEFT:
-                this.removeEnemy(p.userID);
-                this.gameHUD.showTicket(`${StringHelper.truncateString(p.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has left`);
+                this.removeEnemy(pkt.userID);
+                this.gameHUD.showTicket(`${StringHelper.truncateString(pkt.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has left`);
                 break;
             case OpCode.SERVER_SENDALLPLAYERINFO:
-                this.synchronizeEnemyList(p.playerInfoList);
+                this.synchronizeEnemyList(pkt.playerInfoList);
                 break;
             case OpCode.SERVER_SENDALLPLAYERKD:
-                this.synchronizeEnemyList(p.playerKillDeathList);
+                this.synchronizeEnemyList(pkt.playerKillDeathList);
                 break;
             case OpCode.SERVER_TELEPORT:
-                this.teleport(p);
+                this.teleport(pkt);
                 break;
             case OpCode.SERVER_SHOOTING:
-                this.enemyMap.get(p.userID).shoot(this.player.getPosition);
+                this.enemyMap.get(pkt.userID).shoot(this.player.getPosition);
                 break;
             case OpCode.SERVER_MAPCHANGE:
-                this.gameHUD.setTimer(p.time);
-                this.currentMapID = p.mapID;
-                this.currentTime = p.time;
+                this.gameHUD.setTimer(pkt.time);
+                this.currentMapID = pkt.mapID;
+                this.currentTime = pkt.time;
                 break;
             default:
                 break;
@@ -99,8 +108,8 @@ export class PacketToGameLogic {
 
     /**
      * Updates Player or Enemy information.
-     * @param playerInfoOld Old {@link PlayerInfo} to be processed.
-     * @param playerInfoNew New {@link PlayerInfo} to be processed.
+     * @param {PlayerInfo} playerInfoOld - Old {@link PlayerInfo} to be processed.
+     * @param {PlayerInfo} playerInfoNew - New {@link PlayerInfo} to be processed.
      */
     private updatePlayerInfo(playerInfoOld: PlayerInfo, playerInfoNew: PlayerInfo) {
         if (playerInfoNew.deathCount) {
@@ -138,7 +147,7 @@ export class PacketToGameLogic {
 
     /**
      * Removes an {@link Enemy} from the map.
-     * @param userID ID of the {@link Enemy} to be removed.
+     * @param {number} userID - ID of the {@link Enemy} to be removed.
      */
     private removeEnemy(userID: number) {
         if (this.enemyMap.has(userID)) {
@@ -148,8 +157,8 @@ export class PacketToGameLogic {
 
     /**
      * Adds an {@link Enemy} to the map.
-     * @param userID ID of the {@link Enemy} to be added.
-     * @param playerInfo {@link PlayerInfo} instance containing all information of {@link Enemy}.
+     * @param {number} userID - ID of the {@link Enemy} to be added.
+     * @param {PlayerInfo} playerInfo - {@link PlayerInfo} instance containing all information of {@link Enemy}.
      */
     private addEnemy(userID: number, playerInfo: PlayerInfo) {
         let enemyToAdd = new Enemy();
@@ -159,8 +168,8 @@ export class PacketToGameLogic {
 
     /**
      * Handles death of player or enemy.
-     * @param killerID Who has defeated an {@link Player} or {@link Enemy}.
-     * @param victimID {@link Player} or {@link Enemy} who has been defeated.
+     * @param {number} killerID - Who has defeated an {@link Player} or {@link Enemy}.
+     * @param {number} victimID - {@link Player} or {@link Enemy} who has been defeated.
      */
     private playerDeath(killerID: number, victimID: number) {
         // Has player been defeated?
@@ -195,44 +204,53 @@ export class PacketToGameLogic {
 
     /**
      * Handles movement
-     * @param p Packet received from the server.
+     * @param {Packet} pkt - Packet received from the server.
      */
-    private movement(p: Packet) {
-        this.enemyMap.get(p.userID).setPosition = new Vec2D(p.coorX, p.coorY);
-        this.enemyMap.get(p.userID).setAngle = p.angle;
-        this.enemyMap.get(p.userID).walk();
-        this.enemyMap.get(p.userID).updateDistanceToPlayer(this.player.getPosition);
+    private movement(pkt: Packet) {
+        this.enemyMap.get(pkt.userID).setPosition = new Vec2D(pkt.coorX, pkt.coorY);
+        this.enemyMap.get(pkt.userID).setAngle = pkt.angle;
+        this.enemyMap.get(pkt.userID).walk();
+        this.enemyMap.get(pkt.userID).updateDistanceToPlayer(this.player.getPosition);
     }
 
     /**
      * Handles teleportation, as well as respawning.
-     * @param p Packet received from the server.
+     * @param {Packet} pkt - Packet received from the server.
      */
-    private teleport(p: Packet) {
-        const newPosition = new Vec2D(p.coorX, p.coorY);
-        if (p.userID === this.player.getPlayerInfo.userID) {
+    private teleport(pkt: Packet) {
+        const newPosition = new Vec2D(pkt.coorX, pkt.coorY);
+        if (pkt.userID === this.player.getPlayerInfo.userID) {
             this.gameHUD.displayRespawn(false);
             // If player gets teleported (also happening when spawning), set player not not dead.
             this.player.setDead(false);
             // Transport player to new position.
             this.player.setPosition = newPosition;
         } else {
-            this.enemyMap.get(p.userID).setPosition = newPosition;
-            this.enemyMap.get(p.userID).getPlayerInfo.isDead = false;
+            this.enemyMap.get(pkt.userID).setPosition = newPosition;
+            this.enemyMap.get(pkt.userID).getPlayerInfo.isDead = false;
         }
     }
 
-    public get getEnemies() {
+    /**
+     * Getter for enemies currently occupying the map according to the server
+     */
+    public get getEnemies(): Enemy[] {
         return Array.from(this.enemyMap.values());
     }
 
     
-    public get getCurrentTime() : BigInt {
+    /**
+     * Getter for current time (purpose: when map change happens)
+     */
+    public get getCurrentTime(): BigInt {
         return this.currentTime;
     }
 
     
-    public get getCurrentMapID() : number {
+    /**
+     * Getter for the current map id
+     */
+    public get getCurrentMapID(): number {
         return this.currentMapID;
     }
     

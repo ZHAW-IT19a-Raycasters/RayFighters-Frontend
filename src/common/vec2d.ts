@@ -1,5 +1,6 @@
 /**
  * A 2D vector data class containing an x and a y coordinate.
+ * Example usages: Position of the player, the enemy, or a wall.
  */
 export class Vec2D {
     constructor(public x: number = 0, public y: number = 0) { }
