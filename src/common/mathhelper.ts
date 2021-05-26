@@ -15,7 +15,10 @@ export class MathHelper {
      public static readonly EIGHTH_OF_CIRCLE = Math.PI / 4;
 
     /**
-     * Pre-Calculated NWSE directions in radiants.
+     * Pre-Calculated N-W-S-E directions in radiants.
+     * Why is that? Because our coordinate system x-axis grows to the right,
+     * thus is 0 degrees at that point, visually EAST. The y-axis grows
+     * downwards. So from that we deducted the following 4 directions.
      */
      public static readonly NORTH = (3 / 2) * Math.PI;
      public static readonly WEST = Math.PI;
@@ -23,17 +26,28 @@ export class MathHelper {
      public static readonly EAST = 0;
 
     /**
-     * 
-     * @param pos1 Point A
-     * @param pos2 Point B
+     * The scalar distance between two points (x1,y1) and (x2,y2).
+     * See {@link https://en.wikipedia.org/wiki/Euclidean_distance}
+     *
+     * We might use this to calculate the distance an enemy has to the player.
+     *
+     * @param {pos1} Point A
+     * @param {pos2} Point B
      * @returns Scalar, euclidean distance between two points
      */
     public static euclideanDistance(pos1: Vec2D, pos2: Vec2D): number {
       return Math.sqrt((pos1.x - pos2.x)**2 + (pos1.y - pos2.y)**2);
     }
 
+    /**
+      * Calculates the angle difference between two angles. Kind of like a
+      * pizza slice.
+      *
+      * @param {from} angle in radians on the left
+      * @param {to} angle in radians on the right
+      */
     public static signedAngleBetween(from: number, to: number): number {
-      return Math.atan2(Math.sin(to-from),Math.cos(to-from))
+      return Math.atan2(Math.sin(to - from), Math.cos(to - from));
     }
 
     /**
