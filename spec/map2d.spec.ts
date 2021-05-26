@@ -116,9 +116,8 @@ describe('Testing Map2D methods', () => {
   });
   
   it('should read map from a file', () => {
-    //TODO
     const map = new Map2D(2);
-    map.parseMapData('spec/test_map.txt', readFromFile)
+    map.parseMapData('spec/maps/test_map.txt', readFromFile)
     let el00 = map.getElementByPosition(new Vec2D(0, 0));
     let el10 = map.getElementByPosition(new Vec2D(1, 0));
     let el01 = map.getElementByPosition(new Vec2D(0, 1));

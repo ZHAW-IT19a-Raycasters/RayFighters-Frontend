@@ -2,10 +2,7 @@ import { OpCode } from "../src/communication/opcode";
 import { Packet } from "../src/communication/packet";
 import { PlayerInfo } from "../src/communication/playerinfo";
 import { ProtocolParser } from "../src/communication/protocolparser";
-import { PreTest } from "./pretest";
 const { TextEncoder } = require("fastestsmallesttextencoderdecoder");
-
-const preTest = new PreTest();
 
 let serverMessage: Uint8Array;
 let expectedPacket: Packet;

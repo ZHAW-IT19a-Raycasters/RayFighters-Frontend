@@ -17,7 +17,7 @@ export class GameLoop {
    * function(time, packetArray, sendCallback)
    */
   private callback: any;
-  
+
   /**
    * Timer sum to eventually check if a second has passed.
    */
@@ -112,11 +112,7 @@ export class GameLoop {
    */
   public begin(callb: any): void {
     this.callback = callb;
-
-    // Check if running in browser or node. Needed for testing.
-    if (typeof process === 'undefined') {
-      requestAnimationFrame(this.frame);
-    }
+    this.requestFrame();
   }
 
   /**
@@ -170,9 +166,16 @@ export class GameLoop {
       var that = this;
       this.callback(secs, this.socket.getReceived(), function (packet: Packet) { that.socket.send(packet) });
     }
-    requestAnimationFrame(this.frame);
+    this.requestFrame();
 
     this.socket.sendAll();
+  }
+
+  private requestFrame(): void {
+    // Check if running in browser or node. Needed for testing.
+    if (typeof process === 'undefined') {
+      requestAnimationFrame(this.frame);
+    }
   }
 
   /**
@@ -188,5 +191,9 @@ export class GameLoop {
     */
   public get getSocketState(): SocketState {
     return this.socket.socketState;
+  }
+
+  public get getSocket() : Socket {
+    return this.socket;
   }
 }

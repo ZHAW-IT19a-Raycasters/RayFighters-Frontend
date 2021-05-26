@@ -6,7 +6,8 @@ import { Packet } from "./packet";
  * See {@link https://en.wikipedia.org/wiki/Factory_method_pattern#Example_implementations}
  *
  * Creates new Packets and returns them through static Command instance (factory pattern).
- * Using this wrapper to create commands to the server is super easy. Just call its methods with 'Command.whoAmI()', 'Command.move(1.0, 2.0)' and so on.
+ * Using this wrapper to create commands to the server is super easy. Just call
+ * its methods with 'Command.whoAmI()', 'Command.move(1.0, 2.0)' and so on.
  */
 export class PacketFactory {
     /**

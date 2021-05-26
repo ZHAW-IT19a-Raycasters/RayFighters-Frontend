@@ -1,10 +1,5 @@
 import { Vec2D } from "../src/common/vec2d";
 import { Enemy } from "../src/entities/enemy"
-import { JSDOM } from 'jsdom';
-import * as fs from 'fs'
-const index = fs.readFileSync('./dist/index.html', 'utf-8');
-const { document } = (new JSDOM(index)).window;
-global.document = document;
 
 describe('Entity module testing', () => {
     it('should instantiate an entity object correctly', () => {

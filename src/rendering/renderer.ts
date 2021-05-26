@@ -663,4 +663,8 @@ export class Renderer {
     this.context.globalAlpha = Renderer.DEATH_SCREEN_MAX_OPACITY;
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
+
+  public get getResolution() : number {
+    return this.resolution;
+  }
 }

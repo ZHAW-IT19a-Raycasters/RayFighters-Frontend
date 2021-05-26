@@ -2,6 +2,10 @@ import { StringHelper } from "../common/stringhelper";
 import { PlayerInfo } from "../communication/playerinfo";
 import { playSoundEffect } from "../index";
 
+/**
+ * The GameHUD is a class for displaying heads up information on the screen
+ * such as the map name, player name, and time left.
+ */
 export class GameHUD {
     private static readonly SEC_TO_NANOSEC_FACTOR = BigInt(1_000_000_000);
     private static readonly SEC_TO_MILLISEC_FACTOR = 1_000;
@@ -71,7 +75,7 @@ export class GameHUD {
 
     /**
      * Displays Kill Count and Death Count of current Player
-     * @param playerInfo Info of the current Player
+     * @param {PlayerInfo} playerInfo - Info of the current Player
      */
     public updatePlayerInfo(playerInfo: PlayerInfo): void {
         this.playerName.innerText = playerInfo.getTruncatedUserName;
@@ -81,7 +85,7 @@ export class GameHUD {
 
     /**
      * Displays current Map Name and PlayerName
-     * @param map Name of the current Map
+     * @param {string} map - Name of the current Map
      */
     public showMapInfo(map: string): void {
         this.mapName.innerText = map;
@@ -89,7 +93,7 @@ export class GameHUD {
 
     /**
      * Ticker in corner
-     * @param msg Message that should be displayed
+     * @param {string} msg - Message that should be displayed
      */
     public showTicket(msg: string): void {
         const ticker = document.createElement('div');
@@ -110,16 +114,19 @@ export class GameHUD {
         }, 2000);
     }
 
-    // TODO:
     /**
      * Time left until end of round
-     * @param time UNIX timestamp
+     * @param {BigInt} time - UNIX timestamp
      */
     public setTimer(time: BigInt): void {
         const timeBI = BigInt(time);
         this.timerValue = Number(timeBI / GameHUD.SEC_TO_NANOSEC_FACTOR);
     }
 
+    /**
+      * Calculates human readable time from unix time and displays on HUD.
+      * If 5 seconds before round end, shows a ticket about map changing.
+      */
     public updateTimer(): void {
         const timeLeft = (this.timerValue - (Date.now() / GameHUD.SEC_TO_MILLISEC_FACTOR));
         const diff =  GameHUD.ROUND_TIME_SEC + timeLeft;
@@ -138,7 +145,7 @@ export class GameHUD {
     }
 
     /**
-     * @param isDead 
+     * @param {boolean} isDead 
      */
     public displayRespawn(isDead: boolean): void {
         this.settings.hidden = true;
@@ -158,10 +165,9 @@ export class GameHUD {
 
     /**
      * 
-     * @param ranking Array of {@link PlayerInfo}
+     * @param {PlayerInfo[]} ranking - Array of {@link PlayerInfo}
      */
     public updateScoreboard(ranking: Array<PlayerInfo>): void {
-        // TODO: Nicer Method
         const table: HTMLElement = this.scoreboard.querySelector("tbody");
         table.textContent = '';
         for (let index = 0; index < ranking.length; index++) {
@@ -215,7 +221,7 @@ export class GameHUD {
     }
 
     /**
-     * 
+     *  Toggle scoreboard
      */
     public toggleSettings(): void {
         this.scoreboard.hidden = true;
@@ -233,7 +239,7 @@ export class GameHUD {
 
     /**
      * 
-     * @param msg
+     * @param {string} msg - Message to show about the socket status
      */
     public showSocketStatus(msg: string): void {
         const statusMsg = document.createElement('span');

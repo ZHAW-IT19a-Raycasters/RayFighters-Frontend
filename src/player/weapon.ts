@@ -6,6 +6,9 @@ export enum WeaponState {
     IDLE, SHOOTING
 }
 
+/**
+ * The weapon that is show for the user's player
+ */
 export class Weapon {
     /**
      * magnification of weapon images on the screen
@@ -97,14 +100,14 @@ export class Weapon {
 
     /**
      * 
-     * @param imgPath Path to the idle weapon image
-     * @param shootImgPaths Array of paths to the weapon images for the shooting animations (can be of any length > 0)
-     * @param width Width in px of the weapon images
-     * @param height Height in px of the weapon images
-     * @param semiAutomatic Is non automatic eg. pistol, revolver, etc
-     * @param shootDuration How long a shot lasts in second
-     * @param muzzFlashCol Color of the muzzle flash (#RRGGBB)
-     * @param testingImage2DClass Mocking class of Image2D for testing purposes
+     * @param {string} imgPath - Path to the idle weapon image
+     * @param {string[]} - shootImgPaths Array of paths to the weapon images for the shooting animations (can be of any length > 0)
+     * @param {width} width - Width in px of the weapon images
+     * @param {height} height - Height in px of the weapon images
+     * @param {boolean} semiAutomatic - Is non automatic eg. pistol, revolver, etc
+     * @param {number} shootDuration - How long a shot lasts in second
+     * @param {string} muzzFlashCol - Color of the muzzle flash (#RRGGBB)
+     * @param testingImage2DClass - Mocking class of Image2D for testing purposes
      */
     constructor(
         private imgPath: string, 
@@ -146,17 +149,27 @@ export class Weapon {
 
     }
 
+    /**
+     * Getter for muzzle flash color
+     */
     public get getMuzzleFlashColor(): string {
         return this.muzzleFlashColor;
     }
 
-    public get getCurrentImage2D() {
+    /**
+      * Getter for current image of the weapon. Note: this method considers the
+      * animations!
+      */
+    public get getCurrentImage2D(): Image2D {
         if(this.weaponState == WeaponState.SHOOTING) {
             return this.shootImages[this.currentShootImage];
         }
         return this.idleImage;
     }
 
+    /**
+     * @returns whether or not the muzzle flash should be animated or not
+     */
     public get isMuzzleFlashOngoing(): boolean {
         return this.muzzleFlashOngoing;
     }
@@ -177,7 +190,7 @@ export class Weapon {
     /**
      * Timekeeping method to cycle the weapon shoot animation and set muzzle
      * flash status.
-     * @param time Time passed in seconds (probably taken from the gameloop)
+     * @param {number} time - Time passed in seconds (probably taken from the gameloop)
      */
     public update(time: number): void {
         if(this.weaponState == WeaponState.SHOOTING) {
@@ -195,10 +208,16 @@ export class Weapon {
         }
     }
 
-    public get getWeaponState() : WeaponState {
-        return this.weaponState
+    /**
+     * Get the state the weapon's in right now
+     */
+    public get getWeaponState(): WeaponState {
+        return this.weaponState;
     }
 
+    /**
+     * @returns true if this weapon is semi auto
+     */
     public get isSemiautomatic(): boolean {
         return this.semiAutomatic;
     }

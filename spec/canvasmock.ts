@@ -5,7 +5,12 @@ export class Canvas {
     }
 }
 
-class Context {
+class Context {
+    public drawImageCount: number = 0;
+    public drawGradientCount: number = 0;
+    public saveCount: number = 0;
+    public restoreCount: number = 0;
+
     public fillRect() { /* No implementation */ }
     public clearRect() { /* No implementation */ }
     public getImageData(x: any, y: any, w: number, h: number) {
@@ -16,10 +21,10 @@ class Context {
     public putImageData() { /* No implementation */ }
     public createImageData(): any[] { return [] }
     public setTransform() { /* No implementation */ }
-    public drawImage() { /* No implementation */ }
-    public save() { /* No implementation */ }
+    public drawImage() { this.drawImageCount++; }
+    public save() { this.saveCount++; }
     public fillText() { /* No implementation */ }
-    public restore() { /* No implementation */ }
+    public restore() { this.restoreCount++; }
     public beginPath() { /* No implementation */ }
     public moveTo() { /* No implementation */ }
     public lineTo() { /* No implementation */ }
@@ -30,4 +35,12 @@ class Context {
     public rotate() { /* No implementation */ }
     public arc() { /* No implementation */ }
     public fill() { /* No implementation */ }
+    public createLinearGradient(x0: number, y0: number, x1: number, y1: number) {
+        this.drawGradientCount++;
+        return new MockGradient();
+    }
+}
+
+class MockGradient {
+    public addColorStop(arg1: number, arg2: string) { /* No implementation */ }
 }
