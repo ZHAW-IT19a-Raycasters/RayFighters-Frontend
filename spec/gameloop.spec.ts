@@ -5,8 +5,6 @@ import * as fs from 'fs';
 import { Game } from "../src/logic/game";
 import { Canvas } from "./canvasmock";
 import { Socket } from "../src/communication/socket";
-import { Packet } from "../src/communication/packet";
-import { OpCode } from "../src/communication/opcode";
 import { WebSocket } from "./websocketmock";
 
 // Setup JSDOM
