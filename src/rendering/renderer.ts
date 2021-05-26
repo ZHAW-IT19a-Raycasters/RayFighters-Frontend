@@ -35,6 +35,18 @@ export class ColorGradient {
   constructor(public near: string, public far: string) { }
 }
 
+/**
+ * The renderer class takes in map data and enemy entities and displays it on
+ * the user's screen from the perspective of the player.
+ * 
+ * It does so by using the browser's Canvas Context Graphics API:
+ * See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+ * 
+ * It uses the RayCaster class to render pseudo 3D using only 2D elements. The
+ * enemies are rendered separately, NOT using raycasting, but as whole sprites
+ * using trigonometry from MathHelper.
+ * The first person weapon is drawn as a whole image aswell.
+ */
 export class Renderer {
   /**
    * Color of the death screen (if the {@link Player} dies)
@@ -82,11 +94,11 @@ export class Renderer {
   private static readonly FONT_COLOR = '#FFFFFF';
 
   /**
-    * Canvas DOM element to draw in
+    * Canvas DOM element to draw in (reference)
     */
   private canvas: any;
   /**
-   * Javascript Graphics Context 2D
+   * Javascript Graphics Context 2D (reference)
    */
   private context: any;
 
@@ -162,12 +174,16 @@ export class Renderer {
     */
   private barDepthBuffer: Array<number>;
 
+  /**
+   * Screen width to FOV ratio. Necessary for drawing the enemy on screen on the
+   * x-axis.
+   */
   private screenRatio: number;
 
   /**
     * @constructor
     * @param {DOM} canv - Canvas element to draw game in
-    * @param {number} resolution - Resolution to render the game in (pixels). Canvas sizes may differ.
+    * @param {number} resolution - Amount of vertical bars to raycast. canvas_sizes > resolution.
     * @param {number} drawDistance - How many units away do we stop drawing walls
     * @param {number} focalLen - focal length for our drawing calls
     * @param {ColorGradient} floorGradient - What color (gradient) the floor should be drawn in
@@ -175,28 +191,36 @@ export class Renderer {
     * @param {any} windowMock - Mocked window object, used exclusively for testing.
     */
   constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient, ceilGradient?: ColorGradient, windowMock?: any) {
+    // set references
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
 
-    // Case differentiation for testing. Initializes with a mocked window object to make this and other classes testable.
+    // Case differentiation for testing. Initializes with a mocked window object
+    // to make this and other classes testable.
     if(windowMock) {
+      // In jasmin test:
       this.canvas.width = windowMock.innerWidth;
       this.canvas.height = windowMock.innerHeight;
     } else {
+      // We're in the browser:
       this.canvas.width = window.innerWidth;
       this.canvas.height = window.innerHeight;
     }
+
     this.resolution = resolution;
+    // Bar wideness in px
     this.spacing = canvas.width / resolution;
     this.drawDistance = drawDistance || Renderer.STANDARD_DRAWDISTANCE;
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
     this.floorGradient = floorGradient;
     this.ceilingGradient = ceilGradient;
 
+    // FOV in rad the player has:
     this.fieldOfView = 2 * Math.atan(Renderer.SENSORWIDTH / (2 * this.focalLength)) // 2 * ARCTAN (SENSOR WIDTH / (2 X FOCAL LENGTH)) * (180/Π)
     this.halfFieldOfView = 0.5 * this.fieldOfView;
     this.screenRatio = this.canvas.width / this.fieldOfView;
 
+    // if provided, set gradients
     if (ceilGradient) {
       this.originalCeilingNearColor = ceilGradient.near;
     }
@@ -204,6 +228,7 @@ export class Renderer {
       this.originalFloorNearColor = floorGradient.near;
     }
 
+    // Init array for bar depth buffer
     this.barDepthBuffer = new Array<number>(this.canvas.width);
   }
 
@@ -248,9 +273,9 @@ export class Renderer {
   }
 
   /**
-   * See if the player shot his gun and overwrite the floor and ceiling gradient
+   * See if the player shot his gun and overwrite the floor and ceiling gradient.
    */
-  private muzzleFlashGradientCheck(weapon: Weapon) {
+  private muzzleFlashGradientCheck(weapon: Weapon): void {
     if (weapon.isMuzzleFlashOngoing) {
       if (this.ceilingGradient) {
         this.ceilingGradient.near = weapon.getMuzzleFlashColor;
@@ -269,15 +294,16 @@ export class Renderer {
   }
 
   /**
-   * Draw the player's weapon with a bobbing animation.
+   * Draw the player's weapon with a "bobbing" animation (weapon swaying from
+   * left to right to simulate walking from the players perspective).
    * 
    * @param player Pass the player to get his weapon
    * @param time Needed for time synchronization of the bobbing animation
    */
   private drawWeapon(player: Player, time: number) {
     const weapon = player.getWeapon;
-    const bobSway = 20; //<-- How much the weapon sways from left ot right
-    const bobSpeed = 3; //<-- How fast the weapon sways
+    const bobSway = 20; //<-- a factor, how much the weapon sways from left ot right.
+    const bobSpeed = 3; //<-- a factor, how fast the weapon sways.
 
     // Positioning. We want the weapon to be on the bottom, middle.
     const screenHeightFraction = this.canvas.height / weapon.getCurrentImage2D.height;
@@ -288,6 +314,7 @@ export class Renderer {
     let wy = this.canvas.height - weaponHeight;
 
     if (player.hasMoved()) {
+      // deviations from the weapon center 
       wx += (Math.sin(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
       wy += Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
     }
@@ -403,7 +430,7 @@ export class Renderer {
           spriteWidth, spriteHeight
         );
 
-        // Display name tag
+        // Display name tag above players head
         if (sprite.getPlayerInfo.getUserName && !sprite.getPlayerInfo.isDead) {
           this.drawNameTag(drawPositionWithOffset, distanceSizeScalingFactor, sprite.getPlayerInfo.getTruncatedUserName);
         }
@@ -415,7 +442,6 @@ export class Renderer {
    * Draw sprites stored in a room in respect to the players position, direction, and the renderers drawing distance.
    */
   private drawSprites(room: Room, player: Player) {
-    // this.drawSpriteList(room.getSprites, player); TODO: Remove because we removed sprites
     this.drawEnemyList(room.getEnemies, player);
   }
 
@@ -450,13 +476,19 @@ export class Renderer {
     this.context.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2);
   }
 
+  /**
+   * Counterpart to drawFloor, but drawn in the top half of the screen
+   */
   private drawCeiling(): void {
     this.setUpCeilingGradient(this.ceilingGradient);
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height / 2);
   }
 
   /**
-   * Draw a single bar. Remember that multiple bars add up to a wall
+   * Draw a single bar. Remember that multiple bars add up to a wall.
+   * How "tall" a bar is rendered is determined by how far away the ray has hit
+   * (the more steps, the smaller the bar appears).
+   * 
    * @param {Room} room - Needed for wall texture resources
    * @param {number} bar - The n'th bar we're drawing up to this.resolution
    * @param {Step[]} steps - The individual steps the ray took
@@ -508,7 +540,8 @@ export class Renderer {
           }
         }
 
-
+        // The player just shot his gun, so we should be seeing a bright light
+        // on the floor and floor/ceiling
         if (player.getWeapon.isMuzzleFlashOngoing) {
           this.context.fillStyle = player.getWeapon.getMuzzleFlashColor;
           this.context.globalAlpha = (1 / (1 + step.distance));
@@ -533,7 +566,7 @@ export class Renderer {
     const playerHeight = 1;
 
     // Player looks straight, parallel to the floor. This can be adjusted from a range of -1 to 1:
-    /* TODO
+    /* 
       if we decide playerLookPitch is non-zero, then we must adjust the
       floor's y-axis accordingly because it'll result in the walls lookin
       like they're floating in the air.
@@ -543,7 +576,8 @@ export class Renderer {
     // Calculate distance with fisheye correction.
     // The idea behind this: by multiplying by the cosine of the angle, we'll end up with the bars closer to edges of the screen appearing smaller, and thus corrected.
     // Without this, we'll get the fisheye effect where the peripheral vision looks bloated (think of the skating videos from the 90s)up
-    const fishEyeCorrection = distance * Math.cos(angle) /*skyscraper mode: * 0.1*/;
+    const fishEyeCorrection = distance * Math.cos(angle);
+    /* ^^^ multiply with a number below 1 for taller walls if wanted */
 
     // Calculate wall height (fisheye corrected).
     const wallHeight = this.canvas.height * height / fishEyeCorrection;
@@ -553,8 +587,8 @@ export class Renderer {
 
     return {
       top: wallFloor - wallHeight,
-      height: wallHeight /*skyscraper mode: /1.8*/
-    }
+      height: wallHeight /* may be divided by smt. like 1.8 for taller walls */
+    };
   }
 
   /**
@@ -562,11 +596,13 @@ export class Renderer {
    * @param {number direction - Viewing angle in radients. (Totally rad)
    */
   private drawSkyBox(skybox: Image2D, direction: number): void {
+    // skybox width
     const width = skybox.width * (this.canvas.height / skybox.height) * 2;
     // Calculate where the skybox texture starts, note that this allows for infinitely repeated skyboxes
     const left = (direction / MathHelper.CIRCLE) * -width;
 
     this.context.save();
+
     this.context.drawImage(skybox.image, left, 0, width, this.canvas.height);
 
     // Check for background scroll repeat
@@ -577,25 +613,38 @@ export class Renderer {
     this.context.restore();
   }
 
+  /**
+    * (Dimensional units in px)
+    * @param {radius} How far the horizontal lines are from the center
+    * @param {size} How wide the horizontal crosshair line is
+    * @param {thickness} How thick the lines are
+    * @param {color} Color of the whole crosshair (example: '#AABBCC')
+    */
   private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 3, color: string = Renderer.CROSSHAIR_COLOR): void {
     this.context.save();
+
     this.context.fillStyle = color;
+
+    // Left whisker
     this.context.fillRect(this.canvas.width / 2 - radius - size, this.canvas.height / 2,
       size, thickness
     );
+    // Right whisker
     this.context.fillRect(this.canvas.width / 2 + radius, this.canvas.height / 2,
       size, thickness
     );
 
+    // Vertical line bottom
     this.context.fillRect(this.canvas.width / 2 - (thickness / 2), this.canvas.height / 2 + radius,
       thickness, size
     );
+
     this.context.restore();
   }
 
   /**
    * Changes the resolution to enable dynamic resolution scaling.
-   * @param delta By how much we change the current resolution.
+   * @param {delta} By how much we change the current resolution.
    */
   public changeResolution(delta: number) {
     const newResolution = this.resolution + delta;
