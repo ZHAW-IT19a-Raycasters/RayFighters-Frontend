@@ -182,7 +182,7 @@ export class Renderer {
 
   /**
     * @constructor
-    * @param {DOM} canv - Canvas element to draw game in
+    * @param canv - Canvas element to draw game in
     * @param {number} resolution - Amount of vertical bars to raycast. canvas_sizes > resolution.
     * @param {number} drawDistance - How many units away do we stop drawing walls
     * @param {number} focalLen - focal length for our drawing calls
@@ -234,8 +234,8 @@ export class Renderer {
 
   /**
    * Main render call to be called each gameloop tick
-   * @param room Room to be drawn with it's skybox, etc
-   * @param player 
+   * @param {Room} room - Room to be drawn with it's skybox, etc
+   * @param {Player} player - player instance
    */
   public render(room: Room, player: Player, time: number): void {
     this.context.save();
@@ -297,8 +297,8 @@ export class Renderer {
    * Draw the player's weapon with a "bobbing" animation (weapon swaying from
    * left to right to simulate walking from the players perspective).
    * 
-   * @param player Pass the player to get his weapon
-   * @param time Needed for time synchronization of the bobbing animation
+   * @param {Player} player - Pass the player to get his weapon
+   * @param {number} time - Needed for time synchronization of the bobbing animation
    */
   private drawWeapon(player: Player, time: number) {
     const weapon = player.getWeapon;
@@ -345,8 +345,8 @@ export class Renderer {
 
   /**
    * Draws the {@link Enemy} name tag on screen.
-   * @param position 
-   * @param distanceFactor 
+   * @param {Vec2D} position - Position of the enemy
+   * @param {number} distanceFactor - Factor for how far away the player is
    */
   private drawNameTag(position: Vec2D, distanceFactor: number, enemyName: string) {
     const effectiveFontSize = distanceFactor * Renderer.FONT_BASE_SIZE;
@@ -357,8 +357,8 @@ export class Renderer {
 
   /**
    * Draws all enemies in the given list.
-   * @param enemies list of {@link Enemy} objects.
-   * @param player {@link Player} reference.
+   * @param {Enemy[]} enemies - list of {@link Enemy} objects.
+   * @param {Player} player - {@link Player} reference.
    */
   private drawEnemyList(enemies: Enemy[], player: Player) {
     // Position at which we draw the sprite:
@@ -593,7 +593,7 @@ export class Renderer {
 
   /**
    * Drawing the skybox which encompasses both sky and floor.
-   * @param {number direction - Viewing angle in radients. (Totally rad)
+   * @param {number} direction - Viewing angle in radients. (Totally rad)
    */
   private drawSkyBox(skybox: Image2D, direction: number): void {
     // skybox width
@@ -615,10 +615,10 @@ export class Renderer {
 
   /**
     * (Dimensional units in px)
-    * @param {radius} How far the horizontal lines are from the center
-    * @param {size} How wide the horizontal crosshair line is
-    * @param {thickness} How thick the lines are
-    * @param {color} Color of the whole crosshair (example: '#AABBCC')
+    * @param {number} radius - How far the horizontal lines are from the center
+    * @param {number} size - How wide the horizontal crosshair line is
+    * @param {number} thickness - How thick the lines are
+    * @param {string} color - Color of the whole crosshair (example: '#AABBCC')
     */
   private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 3, color: string = Renderer.CROSSHAIR_COLOR): void {
     this.context.save();
@@ -644,7 +644,7 @@ export class Renderer {
 
   /**
    * Changes the resolution to enable dynamic resolution scaling.
-   * @param {delta} By how much we change the current resolution.
+   * @param {number} delta - By how much we change the current resolution.
    */
   public changeResolution(delta: number) {
     const newResolution = this.resolution + delta;

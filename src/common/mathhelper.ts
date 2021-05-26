@@ -31,8 +31,8 @@ export class MathHelper {
      *
      * We might use this to calculate the distance an enemy has to the player.
      *
-     * @param {pos1} Point A
-     * @param {pos2} Point B
+     * @param {Vec2D} pos1 - Point A
+     * @param {Vec2D} pos1 - Point B
      * @returns Scalar, euclidean distance between two points
      */
     public static euclideanDistance(pos1: Vec2D, pos2: Vec2D): number {
@@ -43,8 +43,8 @@ export class MathHelper {
       * Calculates the angle difference between two angles. Kind of like a
       * pizza slice.
       *
-      * @param {from} angle in radians on the left
-      * @param {to} angle in radians on the right
+      * @param {number} from - angle in radians on the left
+      * @param {number} to - angle in radians on the right
       */
     public static signedAngleBetween(from: number, to: number): number {
       return Math.atan2(Math.sin(to - from), Math.cos(to - from));
@@ -53,10 +53,10 @@ export class MathHelper {
     /**
      * Check whether a Point (Vector) is within view and get the angle from our viewpoint.
      * 
-     * @param origin The viewpoint from which we're looking at the target at, usually the player
-     * @param direction Direction in radians (0-2pi) which we're looking in
-     * @param target The target which we want to check IF we're looking at
-     * @param eyeFov The field of view OF ONE EYE. This represents HALF THE FOV of the screen
+     * @param {Vec2D} origin - The viewpoint from which we're looking at the target at, usually the player
+     * @param {number} direction - Direction in radians (0-2pi) which we're looking in
+     * @param {Vec2D} target - The target which we want to check IF we're looking at
+     * @param {number} eyeFov - The field of view OF ONE EYE. This represents HALF THE FOV of the screen
      * @returns Boolean === False IF target is not in view ELSE the angle between origin and target
      */
     public static vectorInViewCheck(origin: Vec2D, direction: number, target: Vec2D, eyeFov: number): boolean | number {

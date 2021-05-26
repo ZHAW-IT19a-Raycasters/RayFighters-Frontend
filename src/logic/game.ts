@@ -17,7 +17,7 @@ let game: Game;
 /**
  * Only for testing and mocking purposes.
  * This is only used if ran from Node (Jasmin)
- * @param {testGame} Game instance to be overwritten.
+ * @param {Game} testGame - Game instance to be overwritten.
  */
 export function setGameInstance(testGame: Game){
   game = testGame;
@@ -25,12 +25,12 @@ export function setGameInstance(testGame: Game){
 
 /**
  * Runs the {@link Game} and entry point of the game logic
- * @param {canvasName} Id of the Canvas HTMLElement
- * @param {fpsCounterName} Id of the FPS Counter HTMLElement
- * @param {gameHUD} Heads-up display {@link GameHUD} to relay info to the user.
- * @param {navigator} Mocked navigator for unit testing.
- * @param {canvas} Mocked canvas for unit testing.
- * @param {window} Mocked window for unit testing.
+ * @param {string} canvasName - Id of the Canvas HTMLElement
+ * @param {string} fpsCounterName - Id of the FPS Counter HTMLElement
+ * @param {GameHud} gameHUD - Heads-up display {@link GameHUD} to relay info to the user.
+ * @param navigator - Mocked navigator for unit testing.
+ * @param canvas - Mocked canvas for unit testing.
+ * @param window - Mocked window for unit testing.
  */
 export function runGame(canvasName: string, fpsCounterName: string, gameHUD: GameHUD, navigator?: any, canvas?: any, window?: any): void {
   // Checks if it's running in node or browser. Needed to make the game class testable.
@@ -109,12 +109,12 @@ export class Game {
 
   /**
    * Initializes the {@link Game}.
-   * @param {canvasName} Name of {@link Canvas} instance.
-   * @param {fpsCounterName} ID of the FPS counter HTML element.
-   * @param {gameHUD} Heads-up display {@link GameHUD} to relay info to the user.
-   * @param {navigator} Mocked navigator for unit testing.
-   * @param {canvas} Mocked canvas for unit testing.
-   * @param {window} Mocked window for unit testing.
+   * @param {string} canvasName - Name of {@link Canvas} instance.
+   * @param {string} fpsCounterName - ID of the FPS counter HTML element.
+   * @param {GameHUD} gameHUD - Heads-up display {@link GameHUD} to relay info to the user.
+   * @param navigator - Mocked navigator for unit testing.
+   * @param canvas - Mocked canvas for unit testing.
+   * @param window - Mocked window for unit testing.
    */
   constructor(canvasName: string, fpsCounterName: string, gameHUD: any, navigator?: any, canvas?: any, windowMock?: any) {
     // Controls and canvas setup. 
@@ -151,7 +151,8 @@ export class Game {
 
   /**
    * {@link Room} Setup. Creates a {@link Room}.
-   * @param mapPath Path to current map.
+   * @param {string} mapPath - Path to current map.
+   * @param readFromFile - Reading from file method for testing purposes
    */
   public initializeRoom(mapPath: string, readFromFile?: any): void {
     this.room = new Room({ mapSize: 32, loadMap: mapPath, readFromFile: readFromFile });
@@ -193,7 +194,8 @@ export class Game {
 
   /**
    * Loads a new map and re-initializes {@link Renderer} and {@link GameHUD}.
-   * @param newMapPath path to new map.
+   * 
+   * @param {string} newMapPath - path to new map.
    */
   public loadMap(newMapPath: string, windowMock?: any, readFromFile?: any): void {
     game.initializeRoom(newMapPath, readFromFile);
@@ -214,7 +216,7 @@ export class Game {
    * We get the current map ID from PacketToGameLogic and set the map indicated
    * by that ID
    * 
-   * @param {overrideMapID} Overridden map ID. Only needed for testing (for jasmin environment).
+   * @param {number} overrideMapID - Overridden map ID. Only needed for testing (for jasmin environment).
    * @returns The path to the current map.
    */
   public checkMap(overrideMapID?: number): string {
@@ -236,8 +238,8 @@ export class Game {
    *
    * Note that we hard coded this for now. In the future this could be solved with a JSON
    *
-   * @param {id} map ID
-   * @returns {map} path
+   * @param {number} id - map ID
+   * @returns {Map} path
    */
   private mapIDToString(id: number): string {
     let path: string;
@@ -255,7 +257,7 @@ export class Game {
   /**
    * Checks if the connection to the server is alive.
    *
-   * @param state {@link SocketState} that will be checked. Needs to be passed from {@link GameLoop}.
+   * @param {boolean} state - {@link SocketState} that will be checked. Needs to be passed from {@link GameLoop}.
    * @returns True if alive, False if failed
    */
   public checkConnection(): boolean {
@@ -343,7 +345,7 @@ export class Game {
  * Listen to window resizes, and in case of that, re-initialize
  * {@link Renderer} to prevent images from stretching.
 
- * @param windowMock Mocked window object used for testing.
+ * @param windowMock - Mocked window object used for testing.
  */
 function startDynamicResolution(windowMock?: any) {
   if (windowMock) {

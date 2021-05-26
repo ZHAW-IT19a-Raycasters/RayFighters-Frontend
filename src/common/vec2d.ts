@@ -16,6 +16,7 @@ export class Vec2D {
 
     /**
      * Normalize vector to length = 1
+     * @returns the normalized 2d vector
      */
     public get getNormalized(): Vec2D {
         const norm = Math.sqrt(this.x**2 + this.y**2);
@@ -27,13 +28,17 @@ export class Vec2D {
 
     /**
      * 
-     * @param minuend The vector which we use to subtract from (this)
+     * @param {Vec2D} minuend - The vector which we use to subtract from (this)
      * @returns Subtrahend: Copy of difference of vectors
      */
     public getDifference(minuend: Vec2D): Vec2D {
         return new Vec2D(this.x - minuend.x, this.y - minuend.y);
     }
 
+    /**
+      * To String method
+      * @returns string with x and y elements
+      */
     public toString(): string {
         return `(${this.x}, ${this.y})`;
     }
