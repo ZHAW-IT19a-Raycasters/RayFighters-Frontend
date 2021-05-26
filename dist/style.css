@@ -141,6 +141,12 @@ body {
   }
 }
 
+@media screen and (max-device-width: 768px) {
+  #video {
+    display: none;
+  }
+}
+
 img {
   height: 100%;
   width: 100%;

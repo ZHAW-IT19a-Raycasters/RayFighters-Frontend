@@ -9,14 +9,14 @@ The web based game client for the Raycaster FPS with Dedicated Multiplayer!
 Make sure you have Node and NPM installed.
 
 1. Install dependencies: `npm install`
-2. Update dependencies: `npm update`
-3. Build the files: `npm run build`
-4. Serve the files: `npm run server`. Built files like `index.html` are in `./dist/`. 
+2. start dev server: `npm run server`
 
-Please look at the [full documentation](https://github.zhaw.ch/raycasters/docs/wiki/Frontend) for the rest.
+The dev server will now serve the landing page. To join a game a local server instance must be running. [Instructions](https://github.zhaw.ch/raycasters/server)
+
+Please look at the [full documentation](https://github.zhaw.ch/raycasters/docs/wiki) for the rest.
 
 ### Useful links
-- [Documentation (the rest of the readme is here!)](https://github.zhaw.ch/raycasters/docs/wiki/Frontend)
+- [Frontend documentation (the rest of the readme is here!)](https://github.zhaw.ch/raycasters/docs/wiki/Frontend)
 - [Sonarqube Code Analysis](http://160.85.252.133:9000/dashboard?id=pm4-game)
 - [Appveyor Build Status](https://ci.cloudlab.zhaw.ch/project/fuerbsev/game)
 

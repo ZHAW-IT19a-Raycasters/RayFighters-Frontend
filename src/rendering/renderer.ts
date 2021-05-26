@@ -604,7 +604,6 @@ export class Renderer {
       this.spacing = this.canvas.width / newResolution;
       this.barDepthBuffer = new Array<number>(this.canvas.width);
     }
-    document.getElementById('fps-counter').innerText += " - Dynamic resolution engaged (" + newResolution + ")";
   }
 
   /**
