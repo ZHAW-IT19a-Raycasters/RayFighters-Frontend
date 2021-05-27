@@ -11,7 +11,6 @@ export enum SocketState{
     CLOSED,
     CONNECTED,
     ERROR
-    // TODO: Maybe add TIMEOUT
 }
 
 /**
@@ -78,14 +77,12 @@ export class Socket {
         };
 
         this.socket.onclose = (event) => {
-            // TODO: change to showAlert()
             this.gameHUD.showSocketStatus("Connection from server closed.");
             this.socketState = SocketState.CLOSED;
             LogicHelper.exitGame();
         };
         
         this.socket.onerror = (event) => {
-            // TODO: change to showAlert()
             this.gameHUD.showSocketStatus("ERROR! Connection couldn't be established.");
             this.socketState = SocketState.ERROR;
             LogicHelper.exitGame();

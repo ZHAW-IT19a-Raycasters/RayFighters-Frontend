@@ -391,7 +391,7 @@ export function startGameLoop() {
       })
 
       // Check if map has changed 
-      // TODO: solve with callback, this approach is a bit boneheaded (but works)
+      // TODO: solve with callback, this approach is a bit primitive (but works like a charm)
       let newMapPath = game.checkMap();
       if (newMapPath != lastMapPath) {
         game.loadMap(newMapPath);
