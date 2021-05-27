@@ -170,6 +170,7 @@ export class PacketToGameLogic {
     private playerDeath(killerID: number, victimID: number) {
         let killerName = "";
         let victimName = "";
+
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
             // Kill player
@@ -193,12 +194,15 @@ export class PacketToGameLogic {
                 return;
             }
 
-            // Kill player
+            // Has an enemy defeated another enemy?
+            // Kill enemy
             this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
 
-            // Prepare ticket on screen. Failsafe for undefined victim & killer ID
+            // Prepare ticket on screen. 
             const killerInfo = this.enemyMap.get(killerID);
             const victimInfo = this.enemyMap.get(victimID);
+
+            // Failsafe. Prevents crash for undefined victim & killer ID and prepares the ticket message
             if(killerInfo && victimInfo) {
                 killerName = killerInfo.getPlayerInfo.getUserName;
                 killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
@@ -207,6 +211,8 @@ export class PacketToGameLogic {
             }
             
         }
+        
+        // Has player killed an enemy?
         if (killerID === this.player.getPlayerInfo.userID) {
             // Increment player kill count
             this.player.getPlayerInfo.killCount++;
