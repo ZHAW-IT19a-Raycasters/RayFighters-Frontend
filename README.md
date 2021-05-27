@@ -4,9 +4,9 @@
 
 The official client of the retro inspired first person shooter **RayFighters: The Game**.
 
-## Screenshot
+## Teaser
 
-![in-game screenshots](/screenshot.png)
+![in-game teaser](/teaser.gif)
 
 ## Quickstart Development
 
