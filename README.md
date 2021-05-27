@@ -2,7 +2,11 @@
 
 [![Build status](https://ci.cloudlab.zhaw.ch/api/projects/status/82fopwb0u5be64tg?svg=true)](https://ci.cloudlab.zhaw.ch/project/fuerbsev/game)
 
-The web based game client for the Raycaster FPS with Dedicated Multiplayer!
+The official client of the retro inspired first person shooter **RayFighters: The Game**.
+
+## Screenshot
+
+![in-game screenshots](/screenshot.png)
 
 ## Quickstart Development
 
