@@ -131,7 +131,6 @@ export class PacketToGameLogic {
      * @param list Array of {@link PlayerInfo} to be processed.
      */
     private synchronizeEnemyList(list: Array<PlayerInfo>) {
-        //var ranking:  Array<PlayerInfo>;
         for (let index = 0; index < list.length; index++) {
             let userID = list[index].userID;
             if (this.enemyMap.has(userID)) {
@@ -139,10 +138,7 @@ export class PacketToGameLogic {
             } else {
                 this.addEnemy(userID, list[index]);
             }
-            //ranking.push(list[index]);
         }
-        //ranking.sort((a, b) => (b.killCount-b.deathCount) - (a.killCount-a.deathCount));
-        //updateScoreboard(ranking);
     }
 
     /**
@@ -167,39 +163,66 @@ export class PacketToGameLogic {
     }
 
     /**
-     * Handles death of player or enemy.
+     * Handles death of player or enemy and prepares info for the on-screen kill feed.
      * @param {number} killerID - Who has defeated an {@link Player} or {@link Enemy}.
      * @param {number} victimID - {@link Player} or {@link Enemy} who has been defeated.
      */
     private playerDeath(killerID: number, victimID: number) {
+        let killerName = "";
+        let victimName = "";
         // Has player been defeated?
         if (victimID === this.player.getPlayerInfo.userID) {
-            this.gameHUD.displayRespawn(true);
+            // Kill player
             this.player.setDead(true);
             this.player.getPlayerInfo.deathCount++;
+
+            // Update HUD
+            this.gameHUD.displayRespawn(true);
             this.gameHUD.updatePlayerInfo(this.player.getPlayerInfo);
-            let killerName = this.enemyMap.get(killerID).getPlayerInfo.getUserName;
+
+            // Prepare ticket on screen
+            killerName = this.enemyMap.get(killerID).getPlayerInfo.getUserName;
             killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
-            let victimName = this.player.getPlayerInfo.getUserName;
+            victimName = this.player.getPlayerInfo.getUserName;
             victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
-            this.gameHUD.showTicket(`${killerName} ${StringHelper.randomKillVerb()} ${victimName}`);
+            
         } else {
             // Fallback to prevent crash if victim isn't present in client-internal enemy map
             if (!this.enemyMap.has(victimID) || this.enemyMap.get(victimID).getPlayerInfo == undefined) {
                 console.error("Tried to get id " + victimID + "but was not present in enemy map!");
                 return;
             }
+
+            // Kill player
             this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
+
+            // Prepare ticket on screen. Failsafe for undefined victim & killer ID
+            const killerInfo = this.enemyMap.get(killerID);
+            const victimInfo = this.enemyMap.get(victimID);
+            if(killerInfo && victimInfo) {
+                killerName = killerInfo.getPlayerInfo.getUserName;
+                killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
+                victimName = victimInfo.getPlayerInfo.getUserName;
+                victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
+            }
+            
         }
         if (killerID === this.player.getPlayerInfo.userID) {
+            // Increment player kill count
             this.player.getPlayerInfo.killCount++;
+
+            // Update HUD
             this.gameHUD.updatePlayerInfo(this.player.getPlayerInfo);
-            let killerName = this.player.getPlayerInfo.getUserName;
+            
+            // Prepare ticket on screen
+            killerName = this.player.getPlayerInfo.getUserName;
             killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
-            let victimName = this.enemyMap.get(victimID).getPlayerInfo.getUserName;
+            victimName = this.enemyMap.get(victimID).getPlayerInfo.getUserName;
             victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
-            this.gameHUD.showTicket(`${killerName} ${StringHelper.randomKillVerb()} ${victimName}`);
         }
+
+        // Show ticket on screen
+        this.gameHUD.showTicket(`${killerName} ${StringHelper.randomKillVerb()} ${victimName}`);
     }
 
     /**
@@ -238,7 +261,6 @@ export class PacketToGameLogic {
         return Array.from(this.enemyMap.values());
     }
 
-    
     /**
      * Getter for current time (purpose: when map change happens)
      */
@@ -246,12 +268,10 @@ export class PacketToGameLogic {
         return this.currentTime;
     }
 
-    
     /**
      * Getter for the current map id
      */
     public get getCurrentMapID(): number {
         return this.currentMapID;
     }
-    
 }
