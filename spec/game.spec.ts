@@ -30,7 +30,10 @@ var readFromFile = (filename: string) => {
 
 describe('Game module test', () => {
     it('should instantiate the game correctly', () => {
+        // Setup
         const testGame = new Game('canvas', 'fpscounter', mockHUD, navigator, canvas, window);
+
+        // Test & Verification
         expect(testGame.checkConnection()).toBe(false);
         expect(testGame.getGameHUD).toBeDefined;
         expect(testGame.getControls).toBeDefined;
@@ -72,9 +75,12 @@ describe('Game module test', () => {
         expect(testGame.initializeRoom(testMapPath, readFromFile)).not.toThrowError;
         
         for (let i = 0; i < testMapNames.length; i++) {
+            // Test
             testGame.getPacketToGameLogic.handlePacket(new Packet({ opCode: OpCode.SERVER_MAPCHANGE, mapID: i, time: BigInt(0) }))
             testGame.checkMap(i);
             testGame.loadMap(testMapNames[i], window, readFromFile);
+            
+            // Verification
             expect(testGame.getCurrentMapPath).toBe(realMapNames[i]);
         }
 

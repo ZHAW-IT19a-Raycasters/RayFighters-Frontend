@@ -18,7 +18,6 @@ const mockHUD = new GameHUD();
 const canvas = new Canvas();
 const mockSocket = new Socket('localhost:8000', mockHUD, new WebSocket('localhost'));
 
-
 // Variables
 var testLoop: GameLoop;
 

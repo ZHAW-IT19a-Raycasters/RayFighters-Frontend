@@ -2,6 +2,7 @@ import { OpCode } from "../src/communication/opcode"
 import { Packet } from "../src/communication/packet"
 import { PlayerInfo } from "../src/communication/playerinfo"
 
+// Constants
 const testPlayerInfo = new Array<PlayerInfo>();
 testPlayerInfo.push(new PlayerInfo(
     {
@@ -16,10 +17,16 @@ testPlayerInfo.push(new PlayerInfo(
 describe('Packet unit test', () => {
     it('should instantiate a Packet object correctly', () => {
         // Minimal packet:
+
+        // Setup
         let testPacket = new Packet({opCode: OpCode.CLIENT_DISCONNECT})
+
+        // Test & Verification
         expect(testPacket.opCode).toBe(OpCode.CLIENT_DISCONNECT);
 
         // Maximal packet:
+
+        // Setup
         testPacket = new Packet(
             {
                 opCode: OpCode.SERVER_DISCONNECT, 
@@ -37,6 +44,7 @@ describe('Packet unit test', () => {
             }
         );
 
+        // Test & Verification
         expect(testPacket.opCode).toBe(OpCode.SERVER_DISCONNECT);
         expect(testPacket.coorX).toBe(1);
         expect(testPacket.coorY).toBe(2);

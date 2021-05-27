@@ -6,6 +6,7 @@ import { Player } from "../src/player/player"
 import { Vec2D } from "../src/common/vec2d";
 import { GameHUD } from "./gamehudmock";
 
+// Constants
 const HUDmock = new GameHUD();
 
 const playerInfo: Array<PlayerInfo> = new Array<PlayerInfo>(3);
@@ -18,6 +19,11 @@ playerKD[0] = new PlayerInfo({ userID: 2, killCount: 11, deathCount: 12 });
 playerKD[1] = new PlayerInfo({ userID: 3, killCount: 12, deathCount: 13 });
 playerKD[2] = new PlayerInfo({ userID: 4, killCount: 66, deathCount: 101 });
 
+/**
+ * Sets up a standard {@link Player}.
+ * @param id Player ID embedded in {@link PlayerInfo}
+ * @returns a new {@link Player} instance.
+ */
 function setupPlayer(id: number): Player {
     const testPlayer = new Player(0, 0, 0, HUDmock);
     const testPlayerInfo = new PlayerInfo({ userID: id, deathCount: 0, killCount: 0, isDead: false})
@@ -79,6 +85,7 @@ describe('Packet to game logic unit test', () => {
     })
 
     it('should handle SERVER_TELEPORT correctly', () => {
+        // Setup
         const testPlayer = setupPlayer(1);
         testPlayer.setPosition = new Vec2D(0,0);
         const playerInfoPacket = new Packet({ opCode: OpCode.SERVER_SENDALLPLAYERINFO, playerCount: 3, playerInfoList: playerInfo });

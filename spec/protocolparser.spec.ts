@@ -174,7 +174,3 @@ describe('Client side protocol serialize unit test', () => {
         expect(function () { ProtocolParser.get.serialize(packet) }).toThrowError;
     })
 })
-
-describe("Protocol parser helper methods", () => {
-    // TODO not sure if i want to test them
-});

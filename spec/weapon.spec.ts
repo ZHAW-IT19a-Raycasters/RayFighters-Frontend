@@ -1,6 +1,7 @@
 import { Weapon } from '../src/player/weapon'
 import { Image2D } from './image2dmock'
 
+// Constants
 const expectedMuzzleColor = '#FF0000';
 const idleImagePath = '../dist/assets/weapon.png';
 const shootImage1Path = '../dist/assets/weapon_shoot_1.png';

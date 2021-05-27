@@ -1,3 +1,6 @@
+/**
+ * Mock for Javascript 2D Canvas.
+ */
 export class Canvas {
     private context = new Context();
     public getContext(): Context {
@@ -5,6 +8,10 @@ export class Canvas {
     }
 }
 
+/**
+ * Mocked context class.
+ * Also provides methods to check if the rendering engine does its job correctly.
+ */
 class Context {
     public drawImageCount: number = 0;
     public drawGradientCount: number = 0;
@@ -41,6 +48,9 @@ class Context {
     }
 }
 
+/**
+ * Mocked Gradient class.
+ */
 class MockGradient {
     public addColorStop(arg1: number, arg2: string) { /* No implementation */ }
 }
