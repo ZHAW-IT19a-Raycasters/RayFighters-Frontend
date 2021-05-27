@@ -81,8 +81,8 @@ export class PacketToGameLogic {
                 this.gameHUD.showTicket(`${StringHelper.truncateString(pkt.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has joined`);
                 break;
             case OpCode.SERVER_PLAYERLEFT:
+                this.gameHUD.showTicket(`${StringHelper.truncateString(this.enemyMap.get(pkt.userID).getPlayerInfo.getUserName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has left`);
                 this.removeEnemy(pkt.userID);
-                this.gameHUD.showTicket(`${StringHelper.truncateString(pkt.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has left`);
                 break;
             case OpCode.SERVER_SENDALLPLAYERINFO:
                 this.synchronizeEnemyList(pkt.playerInfoList);
