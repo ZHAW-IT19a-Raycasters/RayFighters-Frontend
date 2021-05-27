@@ -1,0 +1,1093 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Enemy | raycaster-game</title>
+	<meta name="description" content="Documentation for raycaster-game">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">raycaster-game</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">raycaster-game</a>
+				</li>
+				<li>
+					<a href="../modules/entities_enemy.html">entities/enemy</a>
+				</li>
+				<li>
+					<a href="entities_enemy.enemy.html">Enemy</a>
+				</li>
+			</ul>
+			<h1>Class Enemy</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Dedicated enemy class for other players. Provides all methods the game uses to display competitors on the playfield.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="entities_entity.entity.html" class="tsd-signature-type" data-tsd-kind="Class">Entity</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">Enemy</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="entities_enemy.enemy.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="entities_enemy.enemy.html#angle" class="tsd-kind-icon">angle</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#deathsprite" class="tsd-kind-icon">death<wbr>Sprite</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#distancetoplayer" class="tsd-kind-icon">distance<wbr>ToPlayer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#hasshot" class="tsd-kind-icon">has<wbr>Shot</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#idlesprites" class="tsd-kind-icon">idle<wbr>Sprites</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#iswalking" class="tsd-kind-icon">is<wbr>Walking</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="entities_enemy.enemy.html#lastplayerviewingangle" class="tsd-kind-icon">last<wbr>Player<wbr>Viewing<wbr>Angle</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#playerinfo" class="tsd-kind-icon">player<wbr>Info</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="entities_enemy.enemy.html#position" class="tsd-kind-icon">position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#shootingsprites" class="tsd-kind-icon">shooting<wbr>Sprites</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#spritemap" class="tsd-kind-icon">sprite<wbr>Map</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#spritestate" class="tsd-kind-icon">sprite<wbr>State</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#timeelapsedsincestartedwalking" class="tsd-kind-icon">time<wbr>Elapsed<wbr>Since<wbr>Started<wbr>Walking</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#timesinceshotinterval" class="tsd-kind-icon">time<wbr>Since<wbr>Shot<wbr>Interval</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#timesincewalkinterval" class="tsd-kind-icon">time<wbr>Since<wbr>Walk<wbr>Interval</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#walkanimationcounter" class="tsd-kind-icon">walk<wbr>Animation<wbr>Counter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#walksprites1" class="tsd-kind-icon">walk<wbr>Sprites1</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entities_enemy.enemy.html#walksprites2" class="tsd-kind-icon">walk<wbr>Sprites2</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="entities_enemy.enemy.html#enemy_height" class="tsd-kind-icon">ENEMY_<wbr>HEIGHT</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="entities_enemy.enemy.html#enemy_scaling" class="tsd-kind-icon">ENEMY_<wbr>SCALING</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="entities_enemy.enemy.html#enemy_width" class="tsd-kind-icon">ENEMY_<wbr>WIDTH</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="entities_enemy.enemy.html#step_sound_divider" class="tsd-kind-icon">STEP_<wbr>SOUND_<wbr>DIVIDER</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="entities_enemy.enemy.html#walking_cycle" class="tsd-kind-icon">WALKING_<wbr>CYCLE</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="entities_enemy.enemy.html#walk_cooldown" class="tsd-kind-icon">WALK_<wbr>COOLDOWN</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="entities_enemy.enemy.html#walk_interval" class="tsd-kind-icon">WALK_<wbr>INTERVAL</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="entities_enemy.enemy.html#getangle" class="tsd-kind-icon">get<wbr>Angle</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="entities_enemy.enemy.html#getplayerinfo" class="tsd-kind-icon">get<wbr>Player<wbr>Info</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="entities_enemy.enemy.html#getposition" class="tsd-kind-icon">get<wbr>Position</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="entities_enemy.enemy.html#getshot" class="tsd-kind-icon">get<wbr>Shot</a></li>
+								<li class="tsd-kind-set-signature tsd-parent-kind-class tsd-is-inherited"><a href="entities_enemy.enemy.html#setangle" class="tsd-kind-icon">set<wbr>Angle</a></li>
+								<li class="tsd-kind-set-signature tsd-parent-kind-class"><a href="entities_enemy.enemy.html#setplayerinfo" class="tsd-kind-icon">set<wbr>Player<wbr>Info</a></li>
+								<li class="tsd-kind-set-signature tsd-parent-kind-class tsd-is-inherited"><a href="entities_enemy.enemy.html#setposition" class="tsd-kind-icon">set<wbr>Position</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="entities_enemy.enemy.html#cyclespritestate" class="tsd-kind-icon">cycle<wbr>Sprite<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="entities_enemy.enemy.html#getsprite" class="tsd-kind-icon">get<wbr>Sprite</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="entities_enemy.enemy.html#shoot" class="tsd-kind-icon">shoot</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="entities_enemy.enemy.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="entities_enemy.enemy.html#updatedistancetoplayer" class="tsd-kind-icon">update<wbr>Distance<wbr>ToPlayer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="entities_enemy.enemy.html#walk" class="tsd-kind-icon">walk</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Enemy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="entities_enemy.enemy.html" class="tsd-signature-type" data-tsd-kind="Class">Enemy</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="entities_entity.entity.html">Entity</a>.<a href="entities_entity.entity.html#constructor">constructor</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L138">entities/enemy.ts:138</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructor of the enemy class. Instantiates an <a href="entities_entity.entity.html">Entity</a> instance and prerepares all sprite arrays and adds it to the <a href="entities_enemy.enemy.html#spritemap">spriteMap</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="entities_enemy.enemy.html" class="tsd-signature-type" data-tsd-kind="Class">Enemy</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="angle" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> angle</h3>
+					<div class="tsd-signature tsd-kind-icon">angle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="entities_entity.entity.html">Entity</a>.<a href="entities_entity.entity.html#angle">angle</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/entity.ts#L23">entities/entity.ts:23</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Direction the sprite is facing in radiants.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="deathsprite" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> death<wbr>Sprite</h3>
+					<div class="tsd-signature tsd-kind-icon">death<wbr>Sprite<span class="tsd-signature-symbol">:</span> <a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L98">entities/enemy.ts:98</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>What sprite to show when this enemy is dead</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="distancetoplayer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> distance<wbr>ToPlayer</h3>
+					<div class="tsd-signature tsd-kind-icon">distance<wbr>ToPlayer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L138">entities/enemy.ts:138</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The distance from the player.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="hasshot" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> has<wbr>Shot</h3>
+					<div class="tsd-signature tsd-kind-icon">has<wbr>Shot<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L128">entities/enemy.ts:128</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Determines if the enemy has shot recently.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="idlesprites" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> idle<wbr>Sprites</h3>
+					<div class="tsd-signature tsd-kind-icon">idle<wbr>Sprites<span class="tsd-signature-symbol">:</span> <a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L73">entities/enemy.ts:73</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Array of idling sprites of the enemy. (Front / Back / Left / Right)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="iswalking" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> is<wbr>Walking</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Walking<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L133">entities/enemy.ts:133</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Determines if the enemy is currently walking.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="lastplayerviewingangle" class="tsd-anchor"></a>
+					<h3>last<wbr>Player<wbr>Viewing<wbr>Angle</h3>
+					<div class="tsd-signature tsd-kind-icon">last<wbr>Player<wbr>Viewing<wbr>Angle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="entities_entity.entity.html">Entity</a>.<a href="entities_entity.entity.html#lastplayerviewingangle">lastPlayerViewingAngle</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/entity.ts#L28">entities/entity.ts:28</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Last angle this sprite was viewed from the perspective of the player.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="playerinfo" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> player<wbr>Info</h3>
+					<div class="tsd-signature tsd-kind-icon">player<wbr>Info<span class="tsd-signature-symbol">:</span> <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L68">entities/enemy.ts:68</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>All player informaton of the enemy. See <a href="communication_playerinfo.playerinfo.html">PlayerInfo</a></p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="position" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> position</h3>
+					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="entities_entity.entity.html">Entity</a>.<a href="entities_entity.entity.html#position">position</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/entity.ts#L18">entities/entity.ts:18</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Position on the map.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="shootingsprites" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> shooting<wbr>Sprites</h3>
+					<div class="tsd-signature tsd-kind-icon">shooting<wbr>Sprites<span class="tsd-signature-symbol">:</span> <a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L88">entities/enemy.ts:88</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Array of shooting sprites of the enemy. (Front / Back / Left / Right)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="spritemap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> sprite<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">sprite<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">EnemySpriteState</span><span class="tsd-signature-symbol">, </span><a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L93">entities/enemy.ts:93</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Map collection of all sprites of the enemy. Makes organizing and loading the correct sprite for the situation easier.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="spritestate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> sprite<wbr>State</h3>
+					<div class="tsd-signature tsd-kind-icon">sprite<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EnemySpriteState</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L103">entities/enemy.ts:103</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Current walking state of the enemy. See {@link EnemySpriteState}</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="timeelapsedsincestartedwalking" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> time<wbr>Elapsed<wbr>Since<wbr>Started<wbr>Walking</h3>
+					<div class="tsd-signature tsd-kind-icon">time<wbr>Elapsed<wbr>Since<wbr>Started<wbr>Walking<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L113">entities/enemy.ts:113</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time that has passed since the player started walking. Needed for walking animation.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="timesinceshotinterval" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> time<wbr>Since<wbr>Shot<wbr>Interval</h3>
+					<div class="tsd-signature tsd-kind-icon">time<wbr>Since<wbr>Shot<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L123">entities/enemy.ts:123</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time that passes between shooting animation intervals. Needed for shooting animation.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="timesincewalkinterval" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> time<wbr>Since<wbr>Walk<wbr>Interval</h3>
+					<div class="tsd-signature tsd-kind-icon">time<wbr>Since<wbr>Walk<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L118">entities/enemy.ts:118</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time that passes between walking animation intervals. Needed for walking animation.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="walkanimationcounter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> walk<wbr>Animation<wbr>Counter</h3>
+					<div class="tsd-signature tsd-kind-icon">walk<wbr>Animation<wbr>Counter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L108">entities/enemy.ts:108</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Counter of the walking animation. Needed for walking animation. Needed for counting until the next animation is triggered.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="walksprites1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> walk<wbr>Sprites1</h3>
+					<div class="tsd-signature tsd-kind-icon">walk<wbr>Sprites1<span class="tsd-signature-symbol">:</span> <a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L78">entities/enemy.ts:78</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Array of left stepping walking sprites of the enemy. (Front / Back / Left / Right)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="walksprites2" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> walk<wbr>Sprites2</h3>
+					<div class="tsd-signature tsd-kind-icon">walk<wbr>Sprites2<span class="tsd-signature-symbol">:</span> <a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L83">entities/enemy.ts:83</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Array of right stepping walking sprites of the enemy. (Front / Back / Left / Right)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="enemy_height" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> ENEMY_<wbr>HEIGHT</h3>
+					<div class="tsd-signature tsd-kind-icon">ENEMY_<wbr>HEIGHT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">2048</span><span class="tsd-signature-symbol"> = 2048</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L32">entities/enemy.ts:32</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Height of enemy sprite.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="enemy_scaling" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> ENEMY_<wbr>SCALING</h3>
+					<div class="tsd-signature tsd-kind-icon">ENEMY_<wbr>SCALING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0.4</span><span class="tsd-signature-symbol"> = 0.4</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L42">entities/enemy.ts:42</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Scaling of enemy sprite (relative to the walls)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="enemy_width" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> ENEMY_<wbr>WIDTH</h3>
+					<div class="tsd-signature tsd-kind-icon">ENEMY_<wbr>WIDTH<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1024</span><span class="tsd-signature-symbol"> = 1024</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L37">entities/enemy.ts:37</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Width of enemy sprite.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="step_sound_divider" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> STEP_<wbr>SOUND_<wbr>DIVIDER</h3>
+					<div class="tsd-signature tsd-kind-icon">STEP_<wbr>SOUND_<wbr>DIVIDER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">2</span><span class="tsd-signature-symbol"> = 2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L52">entities/enemy.ts:52</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Determines by which divisor the step sound volume is calculated.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="walking_cycle" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> WALKING_<wbr>CYCLE</h3>
+					<div class="tsd-signature tsd-kind-icon">WALKING_<wbr>CYCLE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EnemySpriteState</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L62">entities/enemy.ts:62</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Fixed array that defines the order of the walking animation.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="walk_cooldown" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> WALK_<wbr>COOLDOWN</h3>
+					<div class="tsd-signature tsd-kind-icon">WALK_<wbr>COOLDOWN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0.5</span><span class="tsd-signature-symbol"> = 0.5</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L57">entities/enemy.ts:57</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time in [seconds] how long the walking animation cooldown lasts.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="walk_interval" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> WALK_<wbr>INTERVAL</h3>
+					<div class="tsd-signature tsd-kind-icon">WALK_<wbr>INTERVAL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0.2</span><span class="tsd-signature-symbol"> = 0.2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L47">entities/enemy.ts:47</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time in [seconds] how long the walking animation interval lasts.</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="getangle" class="tsd-anchor"></a>
+					<h3>get<wbr>Angle</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getAngle<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/entity.ts#L55">entities/entity.ts:55</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for the looking angle</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getplayerinfo" class="tsd-anchor"></a>
+					<h3>get<wbr>Player<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getPlayerInfo<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L229">entities/enemy.ts:229</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for Player Info</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="getposition" class="tsd-anchor"></a>
+					<h3>get<wbr>Position</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getPosition<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/entity.ts#L48">entities/entity.ts:48</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for position</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getshot" class="tsd-anchor"></a>
+					<h3>get<wbr>Shot</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getShot<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L317">entities/enemy.ts:317</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for has shot</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if the player has just shot his gun</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-set-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="setangle" class="tsd-anchor"></a>
+					<h3>set<wbr>Angle</h3>
+					<ul class="tsd-signatures tsd-kind-set-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> setAngle<span class="tsd-signature-symbol">(</span>angle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/entity.ts#L63">entities/entity.ts:63</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Setter for the looking angle</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>angle: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>angle the entity&#39;s looking at</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-set-signature tsd-parent-kind-class">
+					<a name="setplayerinfo" class="tsd-anchor"></a>
+					<h3>set<wbr>Player<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-set-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> setPlayerInfo<span class="tsd-signature-symbol">(</span>playerInfo<span class="tsd-signature-symbol">: </span><a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L236">entities/enemy.ts:236</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Setter for player info</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>playerInfo: <a href="communication_playerinfo.playerinfo.html" class="tsd-signature-type" data-tsd-kind="Class">PlayerInfo</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-set-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="setposition" class="tsd-anchor"></a>
+					<h3>set<wbr>Position</h3>
+					<ul class="tsd-signatures tsd-kind-set-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> setPosition<span class="tsd-signature-symbol">(</span>position<span class="tsd-signature-symbol">: </span><a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/entity.ts#L71">entities/entity.ts:71</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Setter for position</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>position: <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="cyclespritestate" class="tsd-anchor"></a>
+					<h3>cycle<wbr>Sprite<wbr>State</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">cycle<wbr>Sprite<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L243">entities/enemy.ts:243</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Cycle between different walking cycle states.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="getsprite" class="tsd-anchor"></a>
+					<h3>get<wbr>Sprite</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Sprite<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="entities_entity.entity.html">Entity</a>.<a href="entities_entity.entity.html#getsprite">getSprite</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L199">entities/enemy.ts:199</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the correct sprite depending on the viewing angle of the player.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a></h4>
+							<p>an <a href="rendering_renderer.image2d.html">Image2D</a> instance with the correct image.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="shoot" class="tsd-anchor"></a>
+					<h3>shoot</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">shoot<span class="tsd-signature-symbol">(</span>playerPosition<span class="tsd-signature-symbol">: </span><a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L257">entities/enemy.ts:257</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Triggers shooting animation.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>playerPosition: <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The position from which the player has shot his gun</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="update" class="tsd-anchor"></a>
+					<h3>update</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>time<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L285">entities/enemy.ts:285</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Update method for walking animation.</p>
+								</div>
+								<p>This is mainly a finite state machine cycling between animations until
+								the time has run out.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>time: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>how much time has passed. [seconds]</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updatedistancetoplayer" class="tsd-anchor"></a>
+					<h3>update<wbr>Distance<wbr>ToPlayer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Distance<wbr>ToPlayer<span class="tsd-signature-symbol">(</span>playerPosition<span class="tsd-signature-symbol">: </span><a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L273">entities/enemy.ts:273</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Updates distance to <a href="player_player.player.html">Player</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>playerPosition: <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p><a href="common_vec2d.vec2d.html">Vec2D</a> position of <a href="player_player.player.html">Player</a>.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="walk" class="tsd-anchor"></a>
+					<h3>walk</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">walk<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/entities/enemy.ts#L265">entities/enemy.ts:265</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Triggers walking animation.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/entities_enemy.html">entities/enemy</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="entities_enemy.enemy.html" class="tsd-kind-icon">Enemy</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+								<a href="entities_enemy.enemy.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="entities_enemy.enemy.html#angle" class="tsd-kind-icon">angle</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#deathsprite" class="tsd-kind-icon">death<wbr>Sprite</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#distancetoplayer" class="tsd-kind-icon">distance<wbr>ToPlayer</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#hasshot" class="tsd-kind-icon">has<wbr>Shot</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#idlesprites" class="tsd-kind-icon">idle<wbr>Sprites</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#iswalking" class="tsd-kind-icon">is<wbr>Walking</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="entities_enemy.enemy.html#lastplayerviewingangle" class="tsd-kind-icon">last<wbr>Player<wbr>Viewing<wbr>Angle</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#playerinfo" class="tsd-kind-icon">player<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="entities_enemy.enemy.html#position" class="tsd-kind-icon">position</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#shootingsprites" class="tsd-kind-icon">shooting<wbr>Sprites</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#spritemap" class="tsd-kind-icon">sprite<wbr>Map</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#spritestate" class="tsd-kind-icon">sprite<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#timeelapsedsincestartedwalking" class="tsd-kind-icon">time<wbr>Elapsed<wbr>Since<wbr>Started<wbr>Walking</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#timesinceshotinterval" class="tsd-kind-icon">time<wbr>Since<wbr>Shot<wbr>Interval</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#timesincewalkinterval" class="tsd-kind-icon">time<wbr>Since<wbr>Walk<wbr>Interval</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#walkanimationcounter" class="tsd-kind-icon">walk<wbr>Animation<wbr>Counter</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#walksprites1" class="tsd-kind-icon">walk<wbr>Sprites1</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entities_enemy.enemy.html#walksprites2" class="tsd-kind-icon">walk<wbr>Sprites2</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="entities_enemy.enemy.html#enemy_height" class="tsd-kind-icon">ENEMY_<wbr>HEIGHT</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="entities_enemy.enemy.html#enemy_scaling" class="tsd-kind-icon">ENEMY_<wbr>SCALING</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="entities_enemy.enemy.html#enemy_width" class="tsd-kind-icon">ENEMY_<wbr>WIDTH</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="entities_enemy.enemy.html#step_sound_divider" class="tsd-kind-icon">STEP_<wbr>SOUND_<wbr>DIVIDER</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="entities_enemy.enemy.html#walking_cycle" class="tsd-kind-icon">WALKING_<wbr>CYCLE</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="entities_enemy.enemy.html#walk_cooldown" class="tsd-kind-icon">WALK_<wbr>COOLDOWN</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="entities_enemy.enemy.html#walk_interval" class="tsd-kind-icon">WALK_<wbr>INTERVAL</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="entities_enemy.enemy.html#getangle" class="tsd-kind-icon">get<wbr>Angle</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="entities_enemy.enemy.html#getplayerinfo" class="tsd-kind-icon">get<wbr>Player<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="entities_enemy.enemy.html#getposition" class="tsd-kind-icon">get<wbr>Position</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="entities_enemy.enemy.html#getshot" class="tsd-kind-icon">get<wbr>Shot</a>
+							</li>
+							<li class=" tsd-kind-set-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="entities_enemy.enemy.html#setangle" class="tsd-kind-icon">set<wbr>Angle</a>
+							</li>
+							<li class=" tsd-kind-set-signature tsd-parent-kind-class">
+								<a href="entities_enemy.enemy.html#setplayerinfo" class="tsd-kind-icon">set<wbr>Player<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-set-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="entities_enemy.enemy.html#setposition" class="tsd-kind-icon">set<wbr>Position</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="entities_enemy.enemy.html#cyclespritestate" class="tsd-kind-icon">cycle<wbr>Sprite<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="entities_enemy.enemy.html#getsprite" class="tsd-kind-icon">get<wbr>Sprite</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="entities_enemy.enemy.html#shoot" class="tsd-kind-icon">shoot</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="entities_enemy.enemy.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="entities_enemy.enemy.html#updatedistancetoplayer" class="tsd-kind-icon">update<wbr>Distance<wbr>ToPlayer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="entities_enemy.enemy.html#walk" class="tsd-kind-icon">walk</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

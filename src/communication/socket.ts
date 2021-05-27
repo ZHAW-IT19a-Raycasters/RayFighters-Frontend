@@ -1,4 +1,6 @@
 import { Queue } from 'queue-typescript';
+import { LogicHelper } from '../logic/logichelper';
+import { GameHUD } from '../ui/gameHud';
 import { Packet } from './packet';
 import { ProtocolParser } from './protocolparser';
 
@@ -37,10 +39,17 @@ export class Socket {
     public socketState: SocketState = SocketState.CLOSED;
 
     /**
+      * Game HUD instance because we need to show updates to the user on the
+      * HUD about the connection.
+      */
+    private gameHUD: GameHUD;
+
+    /**
      * Creates a new socket connection.
-     * @param url Server address
+     * @param {string} url - Server address
+     * @param gameHUD - GameHUD instance
      */
-    constructor(url: string, webSocket?: any) {
+    constructor(url: string, gameHUD: any, webSocket?: any) {
         this.sendQueue = new Queue<Packet>();
         this.receiveQueue = new Queue<Packet>();
         
@@ -50,15 +59,17 @@ export class Socket {
             this.socket = new WebSocket(url);
         }
 
+        this.gameHUD = gameHUD;
+
         this.socket.binaryType = "arraybuffer";
         
-        this.socket.onopen = (e) => {
-            // console.log("Connection established.");
+        this.socket.onopen = (event) => {
+            this.gameHUD.showSocketStatus("Connection established.");
             this.socketState = SocketState.CONNECTED;
         };
 
-        this.socket.onmessage = async (e) => {
-            let messageBuffer: ArrayBuffer = e.data;
+        this.socket.onmessage = async (event) => {
+            let messageBuffer: ArrayBuffer = event.data;
             if (messageBuffer == undefined) {
                 return;
             }
@@ -66,14 +77,18 @@ export class Socket {
             this.receiveQueue.enqueue(ProtocolParser.get.parse(messageArray));
         };
 
-        this.socket.onclose = (e) => {
-            // console.log("Connection from server closed.");
+        this.socket.onclose = (event) => {
+            // TODO: change to showAlert()
+            this.gameHUD.showSocketStatus("Connection from server closed.");
             this.socketState = SocketState.CLOSED;
+            LogicHelper.exitGame();
         };
         
-        this.socket.onerror = (e) => {
-            // console.log("ERROR! Connection couldn't be established.");
+        this.socket.onerror = (event) => {
+            // TODO: change to showAlert()
+            this.gameHUD.showSocketStatus("ERROR! Connection couldn't be established.");
             this.socketState = SocketState.ERROR;
+            LogicHelper.exitGame();
         };
     }
 
@@ -91,7 +106,7 @@ export class Socket {
 
     /**
      * Enqueues a Packet to be sent to the server.
-     * @param packet Packet to be sent to the server.
+     * @param {Packet} packet - Packet to be sent to the server.
      */
     public send(packet: Packet): void {
         if (!this.readyCheck()){
@@ -103,7 +118,7 @@ export class Socket {
     /**
      * Sends all enqueued Packets heading to the server.
      */
-    public sendAll() {
+    public sendAll(): void {
         if (!this.readyCheck()){
             return;
         }

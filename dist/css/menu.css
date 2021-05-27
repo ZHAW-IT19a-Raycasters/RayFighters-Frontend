@@ -3,7 +3,7 @@
   justify-content: center;
   align-content: center;
 
-  font-family: ArcadeClassic;
+  font-family: ArcadeClassic, 'Courier New', Courier, monospace;
   color: #fff;
   text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
   animation: textflicker 0.5s infinite;
@@ -12,24 +12,22 @@
 .menuWrapper {
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 25px;
+  box-shadow: 0.06rem 0 0.06rem #ea36af, 0.06rem -0.06rem 0.06rem #ea36af,
+    -0.125rem 0 0.06rem #75fa69, -0.125rem 0.125rem 0.06rem #75fa69;
 }
 
-#logInForm input,
-#logInForm select,
-#logInForm option {
+#logInForm input {
   border: 1px solid rgba(216, 36, 177, 0.4);
   background-color: transparent;
 
-  font-family: ArcadeClassic;
+  font-family: ArcadeClassic, 'Courier New', Courier, monospace;
   color: #fff;
   text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
   animation: textflicker 0.5s infinite;
 }
 
 #logInForm input:focus,
-#logInForm input:hover,
-#logInForm select:focus,
-#logInForm select:hover {
+#logInForm input:hover {
   box-shadow: 0 0 0 0.2em rgba(216, 36, 177, 0.1);
 }
 
@@ -45,7 +43,7 @@
     rgba(216, 36, 177, 0.1) -20px 20px, rgba(216, 36, 177, 0.05) -25px 25px;
   cursor: pointer;
 
-  font-family: ArcadeClassic;
+  font-family: ArcadeClassic, 'Courier New', Courier, monospace;
   color: #fff;
   text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
   animation: textflicker 0.5s infinite;

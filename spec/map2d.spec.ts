@@ -1,34 +1,39 @@
 import { Vec2D } from "../src/common/vec2d";
 import { Map2D, MapElement, MapElementType } from "../src/maps/map2d";
+import * as fs from 'fs';
+
+// Read from file lambda. Needed for loading a map without XMLHttpRequests.
+var readFromFile = (filename: string) => {
+  return fs.readFileSync(filename, 'utf8');
+}
 
 describe('Testing Map2D methods', () => {
   it('should generate the map array to be square of "size"', () => {
+    // Setup
     const size = 32; //< 32x32 map
+
+    // Test
     let map = new Map2D(size);
-    /**
-     *    map size = size * size
-     * => size = sqrt(map size)
-     */
+
+    // Verification
     expect(Math.sqrt(map.getElementCount)).toBe(size);
   });
 
   it('should correctly set and get map elements', () => {
+    // Setup
     let map = new Map2D(2);
-    /*
-     Test Map:
-     F W
-     F W
-    */
     map.setElement(new Vec2D(0, 0), new MapElement(MapElementType.FLOOR));
     map.setElement(new Vec2D(0, 1), new MapElement(MapElementType.FLOOR));
     map.setElement(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
     map.setElement(new Vec2D(1, 1), new MapElement(MapElementType.WALL));
 
+    // Test
     let el00 = map.getElementByPosition(new Vec2D(0, 0));
     let el01 = map.getElementByPosition(new Vec2D(0, 1));
     let el10 = map.getElementByPosition(new Vec2D(1, 0));
     let el11 = map.getElementByPosition(new Vec2D(1, 1));
 
+    // Verification
     try {
       // Test map getters of existing walls/floors
       expect(el00.getType()).toBe(MapElementType.FLOOR);
@@ -39,16 +44,20 @@ describe('Testing Map2D methods', () => {
       fail("Map2D.getElem() is unable to correctly return MapElements.");
     }
 
-    // Test map getters of elements outside of the map
+    // Verification. Test map getters of elements outside of the map
     expect(map.getElementByPosition(new Vec2D(-1, 1)).getType()).toBe(MapElementType.NONE);
     expect(map.getElementByPosition(new Vec2D(-1, -3)).getType()).toBe(MapElementType.NONE);
   });
 
   it('should correctly handle getting elements at fractional coordinates', () => {
+    // Setup
     let map = new Map2D(16);
-    map.setElement(new Vec2D(0.55123, 8 + 1E-6), new MapElement(MapElementType.FLOOR));
 
+    // Test
+    map.setElement(new Vec2D(0.55123, 8 + 1E-6), new MapElement(MapElementType.FLOOR));
     let elem = map.getElementByPosition(new Vec2D(0, 8));
+
+    // Verification
     try {
       expect(elem.getType()).toBe(MapElementType.FLOOR);
     } catch (error) {
@@ -57,13 +66,17 @@ describe('Testing Map2D methods', () => {
   });
 
   it('should be able to raycast outside of the map', () => {
+    // Setup
     const maxSteps = 4;
     const rayOrigin = new Vec2D(1.5, 1.5);
     const rayAngle = -0.5 * Math.PI; // looking straight up
     const map = new Map2D(4); // 4x4 map
     map.initialize(); // Map with no walls
+
+    // Test
     const steps = map.rayCast(rayOrigin, rayAngle, maxSteps);
 
+    // Verification
     expect(steps.length).toBe(maxSteps + 2);
     expect(steps[0].pos).toEqual(rayOrigin);
     expect(steps[0].mapElement.getType()).toBe(MapElementType.NONE);
@@ -78,15 +91,18 @@ describe('Testing Map2D methods', () => {
   });
 
   it('should raycast and hit a wall', () => {
+    // Setup
     const maxSteps = 4;
     const rayOrigin = new Vec2D(3.5, 3.5); // we're on the bottom right of the map
     const rayAngle = -0.75 * Math.PI; // looking up-left (135°)
     const map = new Map2D(4); // 4x4 map
     map.initialize(); // Map with no walls
-    // Put a wall at the top left:
+
+    // Test. Put a wall at the top left:
     map.setElement(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
     const steps = map.rayCast(rayOrigin, rayAngle, maxSteps);
 
+    // Verification
     expect(steps.length <= maxSteps + 1).toBeTruthy();
     expect(steps[0].pos).toEqual(rayOrigin);
     expect(steps[0].mapElement.getType()).toBe(MapElementType.NONE);
@@ -99,29 +115,49 @@ describe('Testing Map2D methods', () => {
   });
 
   it('should provide a string through toString', () => {
-    const expected = "   0 1 \n" +  
-                   "0 [1 1]\n" +
-                   "1 [1 0]\n";
+    // Setup
+    const expected =
+      "   0 1 \n" +
+      "0 [1 1]\n" +
+      "1 [1 0]\n";
     const map = new Map2D(2);
+
+    // Test
     map.setElement(new Vec2D(0, 0), new MapElement(MapElementType.WALL));
     map.setElement(new Vec2D(0, 1), new MapElement(MapElementType.WALL));
     map.setElement(new Vec2D(1, 0), new MapElement(MapElementType.WALL));
     map.setElement(new Vec2D(1, 1), new MapElement(MapElementType.FLOOR));
+
+    // Verification
     expect(map.toString()).toBe(expected);
   });
-  /*
+
   it('should read map from a file', () => {
-    //TODO
+    // Setup
     const map = new Map2D(2);
-    map.fromText('TODO');
+    map.parseMapData('spec/maps/test_map.txt', readFromFile);
+
+    // Test
     let el00 = map.getElementByPosition(new Vec2D(0, 0));
     let el10 = map.getElementByPosition(new Vec2D(1, 0));
     let el01 = map.getElementByPosition(new Vec2D(0, 1));
     let el11 = map.getElementByPosition(new Vec2D(1, 1));
-    expect(el00.getType()).toBe(MapElementType.FLOOR);
-    expect(el10.getType()).toBe(MapElementType.FLOOR);
-    expect(el01.getType()).toBe(MapElementType.FLOOR);
+
+    // Verification
+    expect(el00.getType()).toBe(MapElementType.WALL);
+    expect(el10.getType()).toBe(MapElementType.WALL);
+    expect(el01.getType()).toBe(MapElementType.WALL);
     expect(el11.getType()).toBe(MapElementType.FLOOR);
+    expect(map.getFloorGradient.near).toBe('#303030');
+    expect(map.getFloorGradient.far).toBe('#010101');
+    expect(map.getCeilingGradient.near).toBe('#000000');
+    expect(map.getCeilingGradient.far).toBe('#111111');
+    expect(map.getMapName).toBe('Test map');
+    expect(map.getSize).toBe(2);
+    expect(map.getFog.color).toBe('#123123');
+    expect(map.getFog.distance).toBe(32);
+    expect(map.getFog.engage).toBe(0.5);
+    expect(map.getSkyBox.source).toBe('assets/sceneries/skyline.jpg');
+    expect(el00.getWallImage.source).toBe('assets/walls/fence_high.png');
   });
-  */
 });

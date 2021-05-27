@@ -7,8 +7,11 @@ import { PlayerInfo } from "./playerinfo";
  * Parses messages from the server and compiles messages to the server.
  * This parser shall adhere to the latest definition of our network protocol
  * found here:
+ *
+ * Implemented as Singleton Pattern. See {@link https://en.wikipedia.org/wiki/Singleton_pattern}
  * 
  * https://github.zhaw.ch/raycasters/docs/wiki/Protocol#byte-stream
+ *  
  */
 export class ProtocolParser {
     /**
@@ -34,7 +37,7 @@ export class ProtocolParser {
      * Parse a chunk of byte stream received from the server. We'll use this in
      * our gameloop to make things happen such as show where other players have
      * moved or who has shot, etc.
-     * @param message Array of bytes sent from server.
+     * @param {Uint8Array} message - Array of bytes sent from server.
      * @returns a new Packet object containing the opcode and optional parameters.
      */
     public parse(message: Uint8Array): Packet {
@@ -56,7 +59,7 @@ export class ProtocolParser {
                 packet = new Packet({ opCode: opCode, userID: message[1], angle: this.u8ArraytoFloat(message, 2) });
                 break;
             case OpCode.SERVER_PLAYERDEATH:
-                packet = new Packet({ opCode: opCode, victimID: message[1], killerID: message[2] });
+                packet = new Packet({ opCode: opCode, killerID: message[1], victimID: message[2] });
                 break;
             case OpCode.SERVER_PLAYERJOINED:
                 packet = new Packet({ opCode: opCode, userID: message[1], name: this.assembleString(message, 2) });
@@ -71,6 +74,9 @@ export class ProtocolParser {
             case OpCode.SERVER_SENDALLPLAYERKD:
                 packet = new Packet({ opCode: opCode, playerCount: message[1], playerKillDeathList: this.assemblePlayerList(opCode, message.slice(2), message[1]) });
                 break;
+            case OpCode.SERVER_MAPCHANGE:
+                packet = new Packet({ opCode: opCode, mapID: message[1], time: this.u8ArraytoBigInt(message, 2) });
+                break;
             default:
                 throw Error("Opcode not recognized! Can't parse!");
         }
@@ -79,8 +85,8 @@ export class ProtocolParser {
 
     /**
      * Assembles a string from given byte array.
-     * @param byteData raw byte data from server.
-     * @param startIndex starting index from byte array message.
+     * @param {Uint8Array} byteData - raw byte data from server.
+     * @param {number} startIndex - starting index from byte array message.
      * @returns a fully assembled string.
      */
     private assembleString(byteData: Uint8Array, startIndex: number): string {
@@ -90,8 +96,8 @@ export class ProtocolParser {
 
     /**
      * Assembles a float64 number from a given byte array.
-     * @param byteData raw byte data from server.
-     * @param startIndex starting index from byte array message.
+     * @param {Uint8Array} byteData - raw byte data from server.
+     * @param {number} startIndex - starting index from byte array message.
      * @returns a fully assembled float number.
      */
     private u8ArraytoFloat(byteData: Uint8Array, startIndex: number): number {
@@ -109,8 +115,27 @@ export class ProtocolParser {
     }
 
     /**
+     * Assembles an BigInt (64 bit) number from a given byte array.
+     * @param {Uint8Array} byteData - raw byte data from server.
+     * @param {number} startIndex - starting index from byte array message.
+     * @returns a fully assembled BigInt (64 bit) number.
+     */
+    private u8ArraytoBigInt(byteData: Uint8Array, startIndex: number): BigInt {
+        const zero = BigInt(0);
+        const one = BigInt(1);
+        const n256 = BigInt(256);
+        let result = zero;
+        let base = one;
+        for (let index = 0; index < 8; index++) {
+            result += (base * (BigInt(byteData[startIndex + index])));
+            base *= (n256);
+        }
+        return result;
+    }
+
+    /**
      * Assembles an unsigned 8-bit integer array from a number type (float)
-     * @param floatToConvert number type float to be converted.
+     * @param {number} floatToConvert - number type float to be converted.
      * @returns a fully assembled unsigned 8-bit integer array.
      */
     private floatToU8Array(floatToConvert: number): Uint8Array {
@@ -121,8 +146,8 @@ export class ProtocolParser {
 
     /**
      * Helper method to convert an unsigned 16-bit value from the byte stream to numbers.
-     * @param byteData raw byte data from server.
-     * @param byteOffset starting index from byte array message.
+     * @param {Uint8Array} byteData - raw byte data from server.
+     * @param {number} byteOffset - starting index from byte array message.
      * @returns a converter number type value.
      */
     private u8ArrayToU16(byteData: Uint8Array, byteOffset: number): number {
@@ -132,6 +157,14 @@ export class ProtocolParser {
         return data.getUint16(0, true);
     }
 
+    /**
+      * Parse SENDALLPLAYER* packet types and generate PlayerInfos
+      *
+      * @param {OpCode} opCode - The type of packet (what just happened)
+      * @param {Uint8Array} byteData - Raw data from server we have to convert
+      * @param {number} playerCount - How many players present (eg. how many PlayerInfos to generate)
+      * @returns an array of PlayerInfo instances
+      */
     private assemblePlayerList(opCode: OpCode, byteData: Uint8Array, playerCount: number): PlayerInfo[] {
         let playerInfos = new Array<PlayerInfo>(playerCount);
         let byteOffset: number = 0;
@@ -157,11 +190,11 @@ export class ProtocolParser {
     /**
      * Convert a packet to a binary array compatible with our protocl
      * 
-     * @param packet The packet we want to send over to the server
+     * @param {Packet} packet - The packet we want to send over to the server
      * @returns Byte Array of protocol data to be sent to the server
      */
     public serialize(packet: Packet): Uint8Array {
-        let byteData: Uint8Array; //= new Uint8Array(); Todo: initialize
+        let byteData: Uint8Array; 
 
         switch (packet.opCode) {
             case OpCode.CLIENT_DISCONNECT:
@@ -194,7 +227,7 @@ export class ProtocolParser {
                     byteData[index + 1] = convertedFloat[index];
                 }
                 break;
-                
+                        
             default:
                 throw Error("Opcode not recognized! Can't serialize!");
         }
@@ -203,6 +236,7 @@ export class ProtocolParser {
 
     /**
      * Singleton getter, enabling singleton pattern.
+     *
      * @returns a singleton ProtocolParser instance.
      */
     public static get get(): ProtocolParser {

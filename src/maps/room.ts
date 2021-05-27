@@ -1,57 +1,70 @@
-import { Map2D, MapElementType } from './map2d';
-import { Image2D } from '../rendering/renderer';
-import { Enemy } from '../sprites/enemy';
-import { Sprite } from '../sprites/sprite';
-import { Vec2D } from '../common/vec2d';
-import { PlayerInfo } from '../communication/playerinfo';
-
+import { Map2D } from './map2d';
+import { Enemy } from '../entities/enemy';
 
 /**
  * Managing class of a map, adds functionality used for the game such as
  * raycasting.
  */
 export class Room {
+    /**
+     * Map (walls, etc) this room has
+     */
     private map: Map2D;
-    private skyBox: Image2D;
-    private sprites: Sprite[];
+
+    /**
+     * Enemies on the map
+     */
     private enemies: Enemy[];
-    // private enemies: Enemy[]; TODO Maybe keep?
 
-    constructor({ mapSize, isRandomized = false, loadMap }: { mapSize: number; isRandomized?: boolean; loadMap?: string; }) {
+    /**
+     * Creates a new {@link Room} instance.
+     * @param mapSize: Size of map (x-axis)
+     * @param loadMap: Path to map to be loaded
+     * @param readFromFile: Lambda just used for testing.
+     */
+    constructor({ mapSize, loadMap, readFromFile }: { mapSize: number; loadMap?: string; readFromFile?: any }) {
         this.map = new Map2D(mapSize);
-        this.sprites = new Array<Sprite>();
-
+        
         if (loadMap) {
-            this.map.parseMapData(loadMap);
-        } else if (isRandomized) {
-            this.map.randomize();
+            // Load map from file
+            this.map.parseMapData(loadMap, readFromFile);
         } else {
             this.map.initialize();
         }
-
-        // Add sprites from map to sprite array
-        for (let index = 0; index < this.map.getElements.length; index++) {
-            if (this.map.getElements[index].getType() === MapElementType.SPRITE) {
-                this.sprites.push(this.map.getElements[index].getSprite);
-                // console.log("Sprite added. Position:" + this.map.getElements[index].getSprite.getPosition.toString())
-            }
-        }
-
     }
 
+    /**
+     * Getter for map
+     */
     public get getMap(): Map2D {
         return this.map;
     }
 
-    public get getSprites(): Sprite[] {
-        return this.sprites;
-    }
-
+    /**
+     * Getter for enemies in this room
+     * @returns array of enemies
+     */
     public get getEnemies(): Enemy[] {
         return this.enemies;
     }
 
-    public updateSpriteMap(enemies: Array<Enemy>){
+    /**
+     * Since this is a multiplayer game, we want to let someone external (eg
+     * server) update the enemies.
+     * @param {Enemy[]} enemies - Array of updated enemies
+     */
+    public updateEnemyEntities(enemies: Array<Enemy>){
         this.enemies = enemies;
+    }
+
+    /**
+     * Run timekeeping updates in our enemies.
+     * 
+     * @param {number} time - Time passed in seconds
+     */
+    public updateEnemies(time: number){
+        for (let index = 0; index < this.enemies.length; index++) {
+            this.enemies[index].update(time);            
+        }
     }
 }

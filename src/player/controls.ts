@@ -9,15 +9,17 @@
  */
 export enum KeyCodes {
     FORWARD = 87,       // W
-    BACKWARD = 83,      // A
+    BACKWARD = 83,      // S
     TURN_LEFT = 81,     // Q
     TURN_RIGHT = 69,    // E
-    STRAFE_LEFT = 65,   // S
+    STRAFE_LEFT = 65,   // A
     STRAFE_RIGHT = 68,  // D
     SHOOT = 32,         // SPACE
     MOUSE_TURN_LEFT,
     MOUSE_TURN_RIGHT,
-    SCOREBOARD = 9      // TAB
+    SCOREBOARD = 9,     // TAB
+    SETTINGS = 78,      // N
+    FPS = 70            // F
 }
 
 
@@ -40,8 +42,20 @@ export class Controls {
         [KeyCodes.SHOOT, false],
         [KeyCodes.MOUSE_TURN_LEFT, false],
         [KeyCodes.MOUSE_TURN_RIGHT, false],
-        [KeyCodes.SCOREBOARD, false]
+        [KeyCodes.SCOREBOARD, false],
+        [KeyCodes.SETTINGS, false],
+        [KeyCodes.FPS, false]
     ]);
+
+    /**
+     * Multiplier for mouse look sensitivity
+     */
+    public static readonly MOUSE_LOOK_SENSITIVITY = 20;
+
+    /**
+     * Multiplier for touch look sensitivity
+     */
+    public static readonly TOUCH_LOOK_SENSITIVITY = 0.75;
 
     /**
      * Shoot button on the html page.
@@ -54,9 +68,20 @@ export class Controls {
     private shootButtonRect: any;
 
     /**
-     * Constructor of control class. Registers all event handlers.
+     * How many pixels the mouse has moved since it's last moved
      */
-    constructor() {
+    private lastMouseDeltaX: number;
+
+    /**
+     * Are we currently on a mobile device? => Touch Controls!
+     */
+    private isMobileDevice: boolean;
+
+    /**
+     * Constructor of control class. Registers all event handlers.
+     * @param navigatorMock Mocked navigator object used for testing.
+     */
+    constructor(navigatorMock?: any) {
         document.addEventListener('keydown',        (event) => this.keyHandler(true, event), false);
         document.addEventListener('keyup',          (event) => this.keyHandler(false, event), false);
         document.addEventListener('touchstart',     (event) => this.touchHandler(event), false);
@@ -66,6 +91,19 @@ export class Controls {
         document.addEventListener('mousedown',      (event) => this.mouseDownHandler(event), false);
         document.addEventListener('mouseup',        (event) => this.mouseUpHandler(event), false);
         document.body.onclick = document.body.requestPointerLock
+
+        // Early return if the navigator was mocked.
+        if (navigatorMock) {
+            this.isMobileDevice = false;
+            return;
+        }
+
+        // Detect mobile devices with user agent check
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            this.isMobileDevice = true;
+        } else {
+            this.isMobileDevice = false;
+        }
     }
 
     /**
@@ -78,8 +116,22 @@ export class Controls {
     }
 
     /**
+     * @returns how much the mouse has moved on the x axis
+     */
+    public getMouseDelta(): number {
+        return this.lastMouseDeltaX;
+    }
+
+    /**
+      * @returns true if we're on mobile
+      */
+    public get isMobile(): boolean {
+        return this.isMobileDevice;
+    }
+
+    /**
      * Handles key presses.
-     * @param value Key code that was pressed.
+     * @param {boolean} value - Key code that was pressed.
      * @param event Event that gets passed from the listener. 
      * @returns 
      */
@@ -100,13 +152,9 @@ export class Controls {
      * @param event Event that gets passed from the listener. 
      */
     private touchHandler(event: any): void {
-
         if (event.touches.length <= 3) {
-
-            for (var i = 0; i < event.touches.length; i++) {
-                
+            for (let i = 0; i < event.touches.length; i++) {
                 var touch = event.touches[i];
-
                 this.shootButtonRect = this.shootButton.getBoundingClientRect() // Update position of shoot button in case the device was rotated
         
                 if (touch.pageY >= this.shootButtonRect.y && touch.pageY <= this.shootButtonRect.y + this.shootButtonRect.height &&
@@ -140,7 +188,6 @@ export class Controls {
      */
     private touchReleaseHandler(event: any): void {
         this.clearInputs();
-        // event.preventDefault(); // TODO Throws error on console - Only test with a real mobile can tell if this line can be removed
         event.stopPropagation();
     }
 
@@ -149,17 +196,19 @@ export class Controls {
      * @param event Event that gets passed from the listener. 
      */
     private mouseMoveHandler(event: any): void {
-        var mousePositionX = (event.movementX || event.mozMovementX || event.webkitMovementX || 0);
+        let mousePositionX = (event.movementX || event.mozMovementX || event.webkitMovementX || 0);
         // Right turn
         if (mousePositionX > 0) {
             this.keyHandler(true, { keyCode: KeyCodes.MOUSE_TURN_RIGHT });
             this.states.set(KeyCodes.MOUSE_TURN_LEFT, false)
+            this.lastMouseDeltaX = mousePositionX;
         }
 
         // Left turn
         if (mousePositionX < 0) {
             this.keyHandler(true, { keyCode: KeyCodes.MOUSE_TURN_LEFT });
             this.states.set(KeyCodes.MOUSE_TURN_RIGHT, false)
+            this.lastMouseDeltaX = mousePositionX;
         }
     }
 

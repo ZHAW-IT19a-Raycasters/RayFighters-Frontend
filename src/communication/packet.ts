@@ -2,7 +2,10 @@ import { OpCode } from "./opcode";
 import { PlayerInfo } from "./playerinfo";
 
 /**
- * Abstract data structure containing the opcode and parameters.
+ * Data structure containing the opcode and parameters.
+ * This is essentialy the pretty version of what gets sent back and forth
+ * between the client and server. Note that a Packet instance could very well
+ * have only very few fields defined, sometimes just the opCode.
  */
 export class Packet {
     /**
@@ -21,6 +24,8 @@ export class Packet {
     public playerCount?: number;    // PlCount
     public playerInfoList?: PlayerInfo[];
     public playerKillDeathList?: PlayerInfo[];
+    public mapID: number;
+    public time: BigInt;
 
     constructor
         (
@@ -35,7 +40,9 @@ export class Packet {
                 name,
                 playerCount,
                 playerInfoList,
-                playerKillDeathList
+                playerKillDeathList,
+                mapID,
+                time
             }: {
                 opCode: OpCode,
                 coorX?: number,
@@ -47,7 +54,9 @@ export class Packet {
                 name?: string,
                 playerCount?: number,
                 playerInfoList?: PlayerInfo[],
-                playerKillDeathList?: PlayerInfo[]
+                playerKillDeathList?: PlayerInfo[],
+                mapID?: number,
+                time?: BigInt
             }
         ) {
         this.opCode = opCode;
@@ -61,6 +70,8 @@ export class Packet {
         this.playerCount = playerCount;
         this.playerInfoList = playerInfoList;
         this.playerKillDeathList = playerKillDeathList;
+        this.mapID = mapID;
+        this.time = time;
     }
 }
 

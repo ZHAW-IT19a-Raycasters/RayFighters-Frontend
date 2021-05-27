@@ -3,41 +3,102 @@ import { MathHelper } from '../common/mathhelper';
 import { Player } from '../player/player';
 import { Step } from './raycaster';
 import { Room } from '../maps/room';
-import { Sprite } from '../sprites/sprite';
 import { Vec2D } from '../common/vec2d';
 import { Weapon } from '../player/weapon';
-import { Fog } from './fog';
+import { Enemy } from '../entities/enemy';
 
 /**
- * 2D image object class for easier graphics handling.
+ * Data class: 2D image object for easier graphics handling.
  */
 export class Image2D {
-  image: HTMLImageElement;
+  image: any;
   source: string;
 
   constructor(source: string, public width: number, public height: number) {
-    this.image = new Image(width, height);
-    this.image.src = source;
+    if (typeof process === 'undefined') {
+      this.image = new Image(width, height);
+      this.image.src = source;
+    } else {
+      // Workaround for undefined Image object errors when running in node (Jasmine testing)
+      this.image = { src: source };
+    }
+    this.source = source;
   }
 }
 
+/**
+ * Data class used to store color gradients. In our case, floors and ceilings.
+ * Near refers to the color closer to the player. Far the color far away in the
+ * horizon.
+ */
 export class ColorGradient {
   constructor(public near: string, public far: string) { }
 }
 
+/**
+ * The renderer class takes in map data and enemy entities and displays it on
+ * the user's screen from the perspective of the player.
+ * 
+ * It does so by using the browser's Canvas Context Graphics API:
+ * See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+ * 
+ * It uses the RayCaster class to render pseudo 3D using only 2D elements. The
+ * enemies are rendered separately, NOT using raycasting, but as whole sprites
+ * using trigonometry from MathHelper.
+ * The first person weapon is drawn as a whole image aswell.
+ */
 export class Renderer {
-  static STANDARD_DRAWDISTANCE = 16;
-  static STANDARD_FOCAL = 0.75;
-  static SENSORWIDTH = 1;
-  static STANDARD_FLOOR_GRADIENT = new ColorGradient('#777777', '#111111');
-  static STANDARD_CEILING_GRADIENT = new ColorGradient('#777777', '#111111');
+  /**
+   * Color of the death screen (if the {@link Player} dies)
+   */
+  private static readonly DEATH_SCREEN_COLOR = '#a714a2';
 
   /**
-    * Canvas DOM element to draw in
+   * Maximum opacity of the death screen (if the {@link Player} dies)
+   */
+  private static readonly DEATH_SCREEN_MAX_OPACITY = 0.5;
+
+  /**
+   * Color of the crosshair.
+   */
+  private static readonly CROSSHAIR_COLOR = '#a714a2';
+
+  /**
+   * Default value for this.drawDistance
+   */
+  private static readonly STANDARD_DRAWDISTANCE = 16;
+
+  /**
+   * Default value for this.focalLength
+   */
+  private static readonly STANDARD_FOCAL = 0.75;
+
+  /**
+   * Used for calculating this.fieldOfView
+   */
+  private static readonly SENSORWIDTH = 1;
+
+  /**
+   * Default font for player tags.
+   */
+  private static readonly FONT_NAME = 'ArcadeClassic';
+
+  /**
+   * Default font size for player tags.
+   */
+  private static readonly FONT_BASE_SIZE = 64;
+
+  /**
+   * Default font color for player tag
+   */
+  private static readonly FONT_COLOR = '#FFFFFF';
+
+  /**
+    * Canvas DOM element to draw in (reference)
     */
   private canvas: any;
   /**
-   * Javascript Graphics Context 2D
+   * Javascript Graphics Context 2D (reference)
    */
   private context: any;
 
@@ -47,10 +108,14 @@ export class Renderer {
    * The bigger this is, the more detailed the walls are since they have more
    * bars to represent them.
    */
-  private resolution: number; // TODO create dynamic resolution based of FPS (super based idea)
+  private resolution: number;
 
   /**
    * Bar spacing. Determines how wide the bars are are.
+   * Example: If our resolution is 500 and our canvas is 1000,
+   * then spacing is 2, so walls are made of vertical bars 2px wide each.
+   * Note that the higher this (and thus resolution), the more rays are being
+   * cast.
    */
   private spacing: number;
 
@@ -63,7 +128,7 @@ export class Renderer {
   private drawDistance: number;
 
   /**
-   * Field of view. Ranges from 0 to 1.
+   * Determines the field of view. Ranges from 0 to 1.
    * This refers to the y-vector length in the unit circle. The shorter it is,the more you see.
    * https://en.wikipedia.org/wiki/Focal_length
    */
@@ -71,21 +136,35 @@ export class Renderer {
 
   /**
    * Field of view of the player.
+   * Note that this is in radians and set depending on sensor width and the
+   * focal length.
    */
   private fieldOfView: number;
+
+  /**
+   * Shall equal 0.5 * this.fieldOfView. Why as variable?: Because it's used
+   * frequently and we want to save ourselves the divisions.
+   */
   private halfFieldOfView: number;
 
   /**
-   * 
+   * The color gradient to be shown below (floor)
    */
   private floorGradient: ColorGradient;
 
   /**
-   * 
+   * The color gradient to be shown above (ceiling)
    */
   private ceilingGradient: ColorGradient;
 
+  /**
+   * The near color (#RRGGBB) for resetting the ceiling
+   */
   private originalCeilingNearColor: string;
+
+  /**
+   * The near color (#RRGGBB) for resetting the floor
+   */
   private originalFloorNearColor: string;
 
   /**
@@ -95,32 +174,53 @@ export class Renderer {
     */
   private barDepthBuffer: Array<number>;
 
+  /**
+   * Screen width to FOV ratio. Necessary for drawing the enemy on screen on the
+   * x-axis.
+   */
   private screenRatio: number;
 
   /**
     * @constructor
-    * @param {DOM} canv - Canvas element to draw game in
-    * @param {number} resolution - Resolution to render the game in (pixels). Canvas sizes may differ.
+    * @param canv - Canvas element to draw game in
+    * @param {number} resolution - Amount of vertical bars to raycast. canvas_sizes > resolution.
     * @param {number} drawDistance - How many units away do we stop drawing walls
     * @param {number} focalLen - focal length for our drawing calls
     * @param {ColorGradient} floorGradient - What color (gradient) the floor should be drawn in
+    * @param {ColorGradient} ceilGradient - What color (gradient) the ceiling should be drawn in
+    * @param {any} windowMock - Mocked window object, used exclusively for testing.
     */
-  constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient, ceilGradient?: ColorGradient) {
+  constructor(canvas: any, resolution: number, drawDistance?: number, focalLen?: number, floorGradient?: ColorGradient, ceilGradient?: ColorGradient, windowMock?: any) {
+    // set references
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+
+    // Case differentiation for testing. Initializes with a mocked window object
+    // to make this and other classes testable.
+    if(windowMock) {
+      // In jasmin test:
+      this.canvas.width = windowMock.innerWidth;
+      this.canvas.height = windowMock.innerHeight;
+    } else {
+      // We're in the browser:
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
+    }
+
     this.resolution = resolution;
+    // Bar wideness in px
     this.spacing = canvas.width / resolution;
     this.drawDistance = drawDistance || Renderer.STANDARD_DRAWDISTANCE;
     this.focalLength = focalLen || Renderer.STANDARD_FOCAL;
     this.floorGradient = floorGradient;
     this.ceilingGradient = ceilGradient;
 
+    // FOV in rad the player has:
     this.fieldOfView = 2 * Math.atan(Renderer.SENSORWIDTH / (2 * this.focalLength)) // 2 * ARCTAN (SENSOR WIDTH / (2 X FOCAL LENGTH)) * (180/Π)
     this.halfFieldOfView = 0.5 * this.fieldOfView;
     this.screenRatio = this.canvas.width / this.fieldOfView;
 
+    // if provided, set gradients
     if (ceilGradient) {
       this.originalCeilingNearColor = ceilGradient.near;
     }
@@ -128,13 +228,14 @@ export class Renderer {
       this.originalFloorNearColor = floorGradient.near;
     }
 
+    // Init array for bar depth buffer
     this.barDepthBuffer = new Array<number>(this.canvas.width);
   }
 
   /**
    * Main render call to be called each gameloop tick
-   * @param room Room to be drawn with it's skybox, etc
-   * @param player 
+   * @param {Room} room - Room to be drawn with it's skybox, etc
+   * @param {Player} player - player instance
    */
   public render(room: Room, player: Player, time: number): void {
     this.context.save();
@@ -155,21 +256,26 @@ export class Renderer {
 
     this.drawWalls(room, player)
 
-
     this.drawSprites(room, player);
 
-    if (player.getWeapon) {
+    // When the player is dead, we don't show his weapon
+    if (player.getWeapon && !player.isDead) {
       this.drawWeapon(player, time);
       this.drawCrosshair();
+    }
+
+    // Show the death screen overlay when dead
+    if (player.isDead) {
+      this.deathScreen();
     }
 
     this.context.restore();
   }
 
   /**
-   * See if the player shot his gun and overwrite the floor and ceiling gradient
+   * See if the player shot his gun and overwrite the floor and ceiling gradient.
    */
-  private muzzleFlashGradientCheck(weapon: Weapon) {
+  private muzzleFlashGradientCheck(weapon: Weapon): void {
     if (weapon.isMuzzleFlashOngoing) {
       if (this.ceilingGradient) {
         this.ceilingGradient.near = weapon.getMuzzleFlashColor;
@@ -188,15 +294,16 @@ export class Renderer {
   }
 
   /**
-   * Draw the player's weapon with a bobbing animation.
+   * Draw the player's weapon with a "bobbing" animation (weapon swaying from
+   * left to right to simulate walking from the players perspective).
    * 
-   * @param player Pass the player to get his weapon
-   * @param time Needed for time synchronization of the bobbing animation
+   * @param {Player} player - Pass the player to get his weapon
+   * @param {number} time - Needed for time synchronization of the bobbing animation
    */
   private drawWeapon(player: Player, time: number) {
     const weapon = player.getWeapon;
-    const bobSway = 20; //<-- How much the weapon sways from left ot right
-    const bobSpeed = 3; //<-- How fast the weapon sways
+    const bobSway = Weapon.WEAPON_BOB_SWAY; //<-- a factor, how much the weapon sways from left ot right.
+    const bobSpeed = Weapon.WEAPON_BOB_SPEED; //<-- a factor, how fast the weapon sways.
 
     // Positioning. We want the weapon to be on the bottom, middle.
     const screenHeightFraction = this.canvas.height / weapon.getCurrentImage2D.height;
@@ -207,6 +314,7 @@ export class Renderer {
     let wy = this.canvas.height - weaponHeight;
 
     if (player.hasMoved()) {
+      // deviations from the weapon center 
       wx += (Math.sin(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
       wy += Math.abs(Math.cos(bobSpeed * time * player.getPaces * (1 / time)) * bobSway);
     }
@@ -235,10 +343,27 @@ export class Renderer {
     this.context.fillStyle = gradient;
   }
 
-  private drawSpriteList(sprites: Sprite[], player: Player){
+  /**
+   * Draws the {@link Enemy} name tag on screen.
+   * @param {Vec2D} position - Position of the enemy
+   * @param {number} distanceFactor - Factor for how far away the player is
+   */
+  private drawNameTag(position: Vec2D, distanceFactor: number, enemyName: string) {
+    const effectiveFontSize = distanceFactor * Renderer.FONT_BASE_SIZE;
+    this.context.font = `${effectiveFontSize}px ${Renderer.FONT_NAME}`;
+    this.context.fillStyle = Renderer.FONT_COLOR;
+    this.context.fillText(enemyName, position.x, position.y);
+  }
+
+  /**
+   * Draws all enemies in the given list.
+   * @param {Enemy[]} enemies - list of {@link Enemy} objects.
+   * @param {Player} player - {@link Player} reference.
+   */
+  private drawEnemyList(enemies: Enemy[], player: Player) {
     // Position at which we draw the sprite:
     const drawPos = new Vec2D(0, this.canvas.height / 2);
-    let sprite: Sprite;
+    let sprite: Enemy;
     // distance between the player and the sprite:
     let distance: number;
     // note that the angle may not be set (===false) because sprite is outside our vision:
@@ -248,57 +373,76 @@ export class Renderer {
     // How much the sprite's x coordinate on screen deviates from the middle of the screen:
     let horizontalDeviationFactor: number;
 
+    // Which bar we're checking against for depth:
+    let barIndex: number;
+
+    // Depth (distance) of the current bar at the current angle:
     let currentBarDepth: number;
+
+    // Width and height of sprites to be drawn
+    let spriteWidth: number;
+    let spriteHeight: number;
 
     this.context.globalAlpha = 1;
 
     // Collect all sprites and iterate through them.
-    for (let i = 0; i < sprites.length; i++) {
-      sprite = sprites[i];
+    for (let i = 0, len = enemies.length; i < len; i++) {
+      sprite = enemies[i];
       // Distance sprite<->player:
       distance = MathHelper.euclideanDistance(sprite.getPosition, player.getPosition);
       if (distance > this.drawDistance) {
         // Sprite is beyond the drawing distance, so we totally skip drawing it:
         continue;
       }
-
-      if ((angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)) !== false) {
+      angle = MathHelper.vectorInViewCheck(player.getPosition, player.getDirection, sprite.getPosition, this.halfFieldOfView)
+      
+      if (angle !== false) {
         // Start out with middle of screen:
         // How much the object deviates from our center of view on x:
-        horizontalDeviationFactor = (angle as number - player.getDirection);
+        
+        horizontalDeviationFactor = MathHelper.signedAngleBetween(player.getDirection, angle as number);
+        
         // Deviation added to center of view:
         drawPos.x = (this.canvas.width / 2) + this.screenRatio * horizontalDeviationFactor;
 
         // distance to camera of bar at approximately drawPos.x
-        currentBarDepth = this.barDepthBuffer[drawPos.x - (drawPos.x % this.spacing)];
+        barIndex = drawPos.x - (drawPos.x % this.spacing);
+        currentBarDepth = this.barDepthBuffer[barIndex];
 
-        // Check if a bar was already drawn closer to the camera than the sprite:
-        if(currentBarDepth < distance /* maybe cosine corrected?*/) {
+        // Check if a bar was already drawn closer to the camera than the sprite.
+        // Or the angle where a bar would be is unset entirely
+        if (currentBarDepth < distance || currentBarDepth == undefined) {
           continue; //<-- wall overlaps sprite, skip drawing sprite completely
         }
-        
+
         // Zoom factor, the size of the sprite gets smaller the more far away it is:
         distanceSizeScalingFactor = 1 / (distance * Math.cos(angle as number - player.getDirection));
+
         // Update player viewing angle in sprite to help calculating which image will be sent back.
         sprite.lastPlayerViewingAngle = angle as number;
-        const spriteWidth = sprite.getSprite().width * distanceSizeScalingFactor
-        const spriteHeight = sprite.getSprite().height * distanceSizeScalingFactor
+        spriteWidth = sprite.getSprite().width * distanceSizeScalingFactor;
+        spriteHeight = sprite.getSprite().height * distanceSizeScalingFactor;
+
         // Finally, draw the image with the parameters above:
+        const drawPositionWithOffset = new Vec2D(drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3))
         this.context.drawImage(sprite.getSprite().image,
-          drawPos.x - (spriteWidth / 2), drawPos.y - (spriteHeight / 3),
+          drawPositionWithOffset.x, drawPositionWithOffset.y,
           spriteWidth, spriteHeight
         );
+
+        // Display name tag above players head
+        if (sprite.getPlayerInfo.getUserName && !sprite.getPlayerInfo.isDead) {
+          this.drawNameTag(drawPositionWithOffset, distanceSizeScalingFactor, sprite.getPlayerInfo.getTruncatedUserName);
+        }
       }
     }
   }
 
   /**
    * Draw sprites stored in a room in respect to the players position, direction, and the renderers drawing distance.
-   * TODO: Rendering order with walls
    */
   private drawSprites(room: Room, player: Player) {
-    this.drawSpriteList(room.getSprites, player);
-    this.drawSpriteList(room.getEnemies, player);
+    this.drawEnemyList(room.getEnemies, player);
   }
 
   /**
@@ -332,13 +476,19 @@ export class Renderer {
     this.context.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2);
   }
 
+  /**
+   * Counterpart to drawFloor, but drawn in the top half of the screen
+   */
   private drawCeiling(): void {
     this.setUpCeilingGradient(this.ceilingGradient);
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height / 2);
   }
 
   /**
-   * Draw a single bar. Remember that multiple bars add up to a wall
+   * Draw a single bar. Remember that multiple bars add up to a wall.
+   * How "tall" a bar is rendered is determined by how far away the ray has hit
+   * (the more steps, the smaller the bar appears).
+   * 
    * @param {Room} room - Needed for wall texture resources
    * @param {number} bar - The n'th bar we're drawing up to this.resolution
    * @param {Step[]} steps - The individual steps the ray took
@@ -390,7 +540,8 @@ export class Renderer {
           }
         }
 
-
+        // The player just shot his gun, so we should be seeing a bright light
+        // on the floor and floor/ceiling
         if (player.getWeapon.isMuzzleFlashOngoing) {
           this.context.fillStyle = player.getWeapon.getMuzzleFlashColor;
           this.context.globalAlpha = (1 / (1 + step.distance));
@@ -415,7 +566,7 @@ export class Renderer {
     const playerHeight = 1;
 
     // Player looks straight, parallel to the floor. This can be adjusted from a range of -1 to 1:
-    /* TODO
+    /* 
       if we decide playerLookPitch is non-zero, then we must adjust the
       floor's y-axis accordingly because it'll result in the walls lookin
       like they're floating in the air.
@@ -425,7 +576,8 @@ export class Renderer {
     // Calculate distance with fisheye correction.
     // The idea behind this: by multiplying by the cosine of the angle, we'll end up with the bars closer to edges of the screen appearing smaller, and thus corrected.
     // Without this, we'll get the fisheye effect where the peripheral vision looks bloated (think of the skating videos from the 90s)up
-    const fishEyeCorrection = distance * Math.cos(angle) /*skyscraper mode: * 0.1*/;
+    const fishEyeCorrection = distance * Math.cos(angle);
+    /* ^^^ multiply with a number below 1 for taller walls if wanted */
 
     // Calculate wall height (fisheye corrected).
     const wallHeight = this.canvas.height * height / fishEyeCorrection;
@@ -435,20 +587,22 @@ export class Renderer {
 
     return {
       top: wallFloor - wallHeight,
-      height: wallHeight /*skyscraper mode: /1.8*/
-    }
+      height: wallHeight /* may be divided by smt. like 1.8 for taller walls */
+    };
   }
 
   /**
    * Drawing the skybox which encompasses both sky and floor.
-   * @param {number direction - Viewing angle in radients. (Totally rad)
+   * @param {number} direction - Viewing angle in radients. (Totally rad)
    */
   private drawSkyBox(skybox: Image2D, direction: number): void {
+    // skybox width
     const width = skybox.width * (this.canvas.height / skybox.height) * 2;
     // Calculate where the skybox texture starts, note that this allows for infinitely repeated skyboxes
     const left = (direction / MathHelper.CIRCLE) * -width;
 
     this.context.save();
+
     this.context.drawImage(skybox.image, left, 0, width, this.canvas.height);
 
     // Check for background scroll repeat
@@ -459,25 +613,38 @@ export class Renderer {
     this.context.restore();
   }
 
-  private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 3, color: string = '#a714a2'): void {
+  /**
+    * (Dimensional units in px)
+    * @param {number} radius - How far the horizontal lines are from the center
+    * @param {number} size - How wide the horizontal crosshair line is
+    * @param {number} thickness - How thick the lines are
+    * @param {string} color - Color of the whole crosshair (example: '#AABBCC')
+    */
+  private drawCrosshair(radius: number = 15, size: number = 10, thickness: number = 3, color: string = Renderer.CROSSHAIR_COLOR): void {
     this.context.save();
+
     this.context.fillStyle = color;
+
+    // Left whisker
     this.context.fillRect(this.canvas.width / 2 - radius - size, this.canvas.height / 2,
       size, thickness
     );
+    // Right whisker
     this.context.fillRect(this.canvas.width / 2 + radius, this.canvas.height / 2,
       size, thickness
     );
 
+    // Vertical line bottom
     this.context.fillRect(this.canvas.width / 2 - (thickness / 2), this.canvas.height / 2 + radius,
       thickness, size
     );
+
     this.context.restore();
   }
 
   /**
    * Changes the resolution to enable dynamic resolution scaling.
-   * @param delta By how much we change the current resolution.
+   * @param {number} delta - By how much we change the current resolution.
    */
   public changeResolution(delta: number) {
     const newResolution = this.resolution + delta;
@@ -486,6 +653,18 @@ export class Renderer {
       this.spacing = this.canvas.width / newResolution;
       this.barDepthBuffer = new Array<number>(this.canvas.width);
     }
-    document.getElementById('fps-counter').innerText += " - Dynamic resolution engaged (" + newResolution + ")";
+  }
+
+  /**
+   * Shows an animation in case the {@link Player} is defeated.
+   */
+  public deathScreen() {
+    this.context.fillStyle = Renderer.DEATH_SCREEN_COLOR;
+    this.context.globalAlpha = Renderer.DEATH_SCREEN_MAX_OPACITY;
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  public get getResolution() : number {
+    return this.resolution;
   }
 }

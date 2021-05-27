@@ -1,5 +1,8 @@
 import { Vec2D } from "./vec2d";
 
+/**
+ * Pure functions and variable definitions to aid in mathy calculations.
+ */
 export class MathHelper {
     /**
      * Distance from start to end in the unit circle
@@ -12,7 +15,10 @@ export class MathHelper {
      public static readonly EIGHTH_OF_CIRCLE = Math.PI / 4;
 
     /**
-     * Pre-Calculated NWSE directions in radiants.
+     * Pre-Calculated N-W-S-E directions in radiants.
+     * Why is that? Because our coordinate system x-axis grows to the right,
+     * thus is 0 degrees at that point, visually EAST. The y-axis grows
+     * downwards. So from that we deducted the following 4 directions.
      */
      public static readonly NORTH = (3 / 2) * Math.PI;
      public static readonly WEST = Math.PI;
@@ -20,9 +26,13 @@ export class MathHelper {
      public static readonly EAST = 0;
 
     /**
-     * 
-     * @param pos1 Point A
-     * @param pos2 Point B
+     * The scalar distance between two points (x1,y1) and (x2,y2).
+     * See {@link https://en.wikipedia.org/wiki/Euclidean_distance}
+     *
+     * We might use this to calculate the distance an enemy has to the player.
+     *
+     * @param {Vec2D} pos1 - Point A
+     * @param {Vec2D} pos1 - Point B
      * @returns Scalar, euclidean distance between two points
      */
     public static euclideanDistance(pos1: Vec2D, pos2: Vec2D): number {
@@ -30,41 +40,42 @@ export class MathHelper {
     }
 
     /**
+      * Calculates the angle difference between two angles. Kind of like a
+      * pizza slice.
+      *
+      * @param {number} from - angle in radians on the left
+      * @param {number} to - angle in radians on the right
+      */
+    public static signedAngleBetween(from: number, to: number): number {
+      return Math.atan2(Math.sin(to - from), Math.cos(to - from));
+    }
+
+    /**
      * Check whether a Point (Vector) is within view and get the angle from our viewpoint.
      * 
-     * @param origin The viewpoint from which we're looking at the target at, usually the player
-     * @param direction Direction in radians (0-2pi) which we're looking in
-     * @param target The target which we want to check IF we're looking at
-     * @param eyeFov The field of view OF ONE EYE. This represents HALF THE FOV of the screen
+     * @param {Vec2D} origin - The viewpoint from which we're looking at the target at, usually the player
+     * @param {number} direction - Direction in radians (0-2pi) which we're looking in
+     * @param {Vec2D} target - The target which we want to check IF we're looking at
+     * @param {number} eyeFov - The field of view OF ONE EYE. This represents HALF THE FOV of the screen
      * @returns Boolean === False IF target is not in view ELSE the angle between origin and target
      */
     public static vectorInViewCheck(origin: Vec2D, direction: number, target: Vec2D, eyeFov: number): boolean | number {
-        // First, we move the target down by the difference of the target,
-        // because we want to work based off of the origin (0,0).
-        const zeroedTargetPosition = target.getDifference(origin);
-        // The distance to target is now 1, we've normalized the problem into a unit circle:
-        const normalizedTargetPosition = zeroedTargetPosition.getNormalized;
-        // Leftmost angle border we still see
-        const leftAngle = direction - eyeFov;
-        // Rightmost angle border we still see
-        const rightAngle = direction + eyeFov;
 
-        // Angle between the origin (0, 0) and our target (look up unit circle with atan2 for help):
-        let angle = Math.atan2(normalizedTargetPosition.y, normalizedTargetPosition.x);
+        // direction from player to enemy
+        let originToTargetVec = origin.getDifference(target)
+        let originToTargetAngle = Math.atan2(originToTargetVec.y, originToTargetVec.x);
+        // scale [-pi:pi] to [0:2*pi]
+        originToTargetAngle += Math.PI
 
-        // Extend the angle to 0-2pi (or 0-360°), we don't want to work with atans -pi to pi:
-        if (normalizedTargetPosition.y < 0) {
-            angle += MathHelper.CIRCLE;
-        }
+
+        let absAngleDiff = Math.min(2*Math.PI - Math.abs(originToTargetAngle - direction), Math.abs(originToTargetAngle - direction));
 
         // Now that we have the angle: The target is in plain view IF it's between the borders of our vision:
-        document.getElementById('debug-window').innerText = `debug: ${(angle) * (180/Math.PI)}`;
-        if (angle >= leftAngle && angle <= rightAngle) {
-            return angle;
+        if (absAngleDiff <= eyeFov) {
+            return originToTargetAngle;
         } else {
-          document.getElementById('debug-window').innerText += ' NOT IN VIEW ';
+          // The object was beyond our vision:
+          return false;
         }
-        // The object was beyond our vision:
-        return false;
     }
 }

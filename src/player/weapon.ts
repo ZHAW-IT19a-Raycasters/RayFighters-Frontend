@@ -1,39 +1,125 @@
 import { Image2D } from "../rendering/renderer";
+import { Sound, SoundType } from "../sound/sound";
 
-enum WeaponState {
+
+export enum WeaponState {
     IDLE, SHOOTING
 }
 
+/**
+ * The weapon that is show for the user's player
+ */
 export class Weapon {
-    public static WEAPON_ZOOM = 0.5; // magnification of weapon images
-    private static readonly SHOOT_ANIM_DURATION = 0.2; // seconds
-    private static readonly MUZZLE_FLASH_DURATION = 0.1; // seconds
+    /**
+     * magnification of weapon images on the screen
+     */ 
+    public static readonly WEAPON_ZOOM = 0.5;
+
+    /**
+      * A factor used in the renderer to animate the weapon swaying (bobbing)
+      * from left to right. This effectively sets the "radius", kind of like a
+      * stride length.
+      */ 
+    public static readonly WEAPON_BOB_SWAY = 20;
+
+    /**
+      * How fast the weapon bobs. A faster factor here may be used to animate faster walking speeds
+      */
+    public static readonly WEAPON_BOB_SPEED = 3;
+
+
+    /**
+     * Also corresponds with shoot frequency. Determines after which timespan a
+     * shot can be fired.
+     */
+    private static readonly DEFAULT_SHOOT_DURATION = 0.4; // seconds
+
+    /**
+     * Color of the muzzle flash that's going to be rendered on the floor near
+     * color gradient.
+     */
     public static readonly DEFAULT_MUZZLE_FLASH_COLOR = '#baba82';
 
     /**
-     * Image shown when the gun's not being shot
+     * Determines if the weapon is semi-automatic. If false, it's automatic.
+     * The idea when a weapon is semi-automatic is that you have to click for
+     * each shot (as opposed to an automatic weapon where you can just hold
+     * down the button and keep shooting).
+     */
+    private semiAutomatic: boolean;
+
+    /**
+     * Determines how long the shooting animation lasts in seconds.
+     */
+    private shootDuration: number;
+
+    /**
+     * Image shown when the gun's not being shot (idle)
      */
     private idleImage: Image2D;
+
     /**
      * Image set used to animate when the gun is shot
      */
     private shootImages: Image2D[];
+
+    /**
+     * Index for this.shootImages
+     */
     private currentShootImage: number;
 
+    /**
+     * In which state the weapon animation is
+     */
     private weaponState: WeaponState;
+
+    /**
+     * Time elapsed since the last shooting animation image in seconds.
+     * Used as an animation timekeeping variable. So if a certain time has
+     * passed (this.shootAnimDuration), then we swap to the next weapon
+     * animation image.
+     */
     private timeSinceLastShootImg: number;
 
+    /**
+     * How long one weapon animation frame lasts in seconds.
+     * It's a fraction of this.shootDuration
+     */
     private shootAnimDuration: number;
 
+    /**
+     * Is the muzzle flash currently going on?
+     * If yes, the renderer will render a bright flash.
+     */
     private muzzleFlashOngoing: boolean;
 
+    /**
+     * Color (#RRGGBB) of the gunshot flash color
+     */
     private muzzleFlashColor: string;
 
-    private shootAudio: HTMLAudioElement;
+    /**
+     * 
+     * @param {string} imgPath - Path to the idle weapon image
+     * @param {string[]} - shootImgPaths Array of paths to the weapon images for the shooting animations (can be of any length > 0)
+     * @param {width} width - Width in px of the weapon images
+     * @param {height} height - Height in px of the weapon images
+     * @param {boolean} semiAutomatic - Is non automatic eg. pistol, revolver, etc
+     * @param {number} shootDuration - How long a shot lasts in second
+     * @param {string} muzzFlashCol - Color of the muzzle flash (#RRGGBB)
+     * @param testingImage2DClass - Mocking class of Image2D for testing purposes
+     */
+    constructor(
+        private imgPath: string, 
+        shootImgPaths: string[], 
+        width: number, 
+        height: number, 
+        semiAutomatic: boolean, 
+        shootDuration?: number,
+        muzzFlashCol?: string, 
+        testingImage2DClass?: any, 
+        ) {
 
-    constructor(private imgPath: string, shootImgPaths: string[], width: number, height: number, shootSoundEffect?: string, muzzFlashCol?: string, testingImage2DClass?: any, testingAudioClass?: any) {
-        /*width *= Weapon.WEAPON_ZOOM;
-        height *= Weapon.WEAPON_ZOOM;*/
         this.idleImage = testingImage2DClass ? new testingImage2DClass(imgPath, width, height) : new Image2D(imgPath, width, height);
         this.weaponState = WeaponState.IDLE;
         this.shootImages = new Array<Image2D>(shootImgPaths.length);
@@ -42,7 +128,6 @@ export class Weapon {
         }
         // How long one shoot animation sprite's displayed for.
         // Example for 1s with 2 images: would mean that each image gets 0.5s of time.
-        this.shootAnimDuration = Weapon.SHOOT_ANIM_DURATION / this.shootImages.length;
         this.currentShootImage = 0;
         this.timeSinceLastShootImg = 0;
         this.muzzleFlashOngoing = false;
@@ -51,37 +136,62 @@ export class Weapon {
         } else {
             this.muzzleFlashColor = Weapon.DEFAULT_MUZZLE_FLASH_COLOR;
         }
-        if(shootSoundEffect) {
-            this.shootAudio = testingAudioClass ? new testingAudioClass(shootSoundEffect) : new Audio(shootSoundEffect);
-            this.shootAudio.volume = 0.5;
+
+        this.semiAutomatic = semiAutomatic;
+
+        // Setup shoot duration (weapon timeout)
+        if(shootDuration){
+            this.shootDuration = shootDuration;
+        } else {
+            this.shootDuration = Weapon.DEFAULT_SHOOT_DURATION;
         }
+        this.shootAnimDuration = this.shootDuration / this.shootImages.length;
+
     }
 
+    /**
+     * Getter for muzzle flash color
+     */
     public get getMuzzleFlashColor(): string {
         return this.muzzleFlashColor;
     }
 
-    public get getCurrentImage2D() {
+    /**
+      * Getter for current image of the weapon. Note: this method considers the
+      * animations!
+      */
+    public get getCurrentImage2D(): Image2D {
         if(this.weaponState == WeaponState.SHOOTING) {
             return this.shootImages[this.currentShootImage];
         }
         return this.idleImage;
     }
 
+    /**
+     * @returns whether or not the muzzle flash should be animated or not
+     */
     public get isMuzzleFlashOngoing(): boolean {
         return this.muzzleFlashOngoing;
     }
 
+    /**
+     * - Set weapon state to SHOOT if not already shooting
+     * - Play shooting sound
+     * - Enable muzzle flash
+     */
     public shoot(): void {
         if(this.weaponState == WeaponState.IDLE){
-            if(this.shootAudio) {
-                (<HTMLAudioElement>this.shootAudio.cloneNode()).play();
-            }
+            Sound.get.play(SoundType.SHOOT, 0.5);
             this.weaponState = WeaponState.SHOOTING;
             this.muzzleFlashOngoing = true;
         }
     }
 
+    /**
+     * Timekeeping method to cycle the weapon shoot animation and set muzzle
+     * flash status.
+     * @param {number} time - Time passed in seconds (probably taken from the gameloop)
+     */
     public update(time: number): void {
         if(this.weaponState == WeaponState.SHOOTING) {
             this.timeSinceLastShootImg += time;
@@ -89,7 +199,6 @@ export class Weapon {
                 if(this.currentShootImage == (this.shootImages.length - 1)) {
                     this.weaponState = WeaponState.IDLE;
                     this.currentShootImage = 0;
-                    this.shootAudio.pause();
                 } else {
                     ++this.currentShootImage;
                     this.muzzleFlashOngoing = false;
@@ -97,5 +206,19 @@ export class Weapon {
                 this.timeSinceLastShootImg = 0;
             }
         }
+    }
+
+    /**
+     * Get the state the weapon's in right now
+     */
+    public get getWeaponState(): WeaponState {
+        return this.weaponState;
+    }
+
+    /**
+     * @returns true if this weapon is semi auto
+     */
+    public get isSemiautomatic(): boolean {
+        return this.semiAutomatic;
     }
 }

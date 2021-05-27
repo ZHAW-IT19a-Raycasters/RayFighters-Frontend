@@ -3,6 +3,33 @@
   src: url("assets/fonts/ARCADECLASSIC.TTF");
 }
 
+@media screen and (min-width: 320px) {
+  html {
+    font-size: calc(8px + 6 * ((100vw - 320px) / 680));
+  }
+}
+@media screen and (min-width: 1000px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+th, td {
+  padding: 1em;
+}
+
+.centered {
+  text-align: center;
+}
+
+.main-logo {
+  width: 300px !important;
+}
+
 #overlay-effect {
   background: repeating-linear-gradient(
     transparent,
@@ -45,14 +72,23 @@ body {
 
   /* Background */
   background-image: url("img/RaycasterLogo1.png");
-  background-size: cover;
-  background-position-y: 20%;
+  background-position: top center;
 
+  /* Text */
   letter-spacing: 0.1em;
-  font-family: ArcadeClassic;
+  font-family: ArcadeClassic, 'Courier New', Courier, monospace;
   color: #fff;
   text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
   animation: textflicker 0.5s infinite;
+}
+
+#gameControls {
+  font-family: ArcadeClassic, 'Courier New', Courier, monospace;
+  color: #fff;
+  text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
+  animation: textflicker 0.5s infinite;
+  position:fixed;
+  z-index: 10;
 }
 
 .videocontainer {
@@ -105,23 +141,16 @@ body {
   }
 }
 
+@media screen and (max-device-width: 768px) {
+  #video {
+    display: none;
+  }
+}
+
 img {
   height: 100%;
   width: 100%;
   object-fit: contain;
-}
-
-#fps-container {
-  position: fixed;
-  overflow: hidden;
-  left: 30px;
-  top: 30px;
-  padding: 5px;
-
-  font-family: ArcadeClassic;
-  font-size: x-large;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
 }
 
 #debug-window {
@@ -133,6 +162,12 @@ img {
 
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
+}
+
+#alert-container {
+  display: flex;
+  background-color: black;
+  position:fixed;
 }
 
 canvas#game-canvas {

@@ -1,0 +1,895 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Map2D | raycaster-game</title>
+	<meta name="description" content="Documentation for raycaster-game">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">raycaster-game</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">raycaster-game</a>
+				</li>
+				<li>
+					<a href="../modules/maps_map2d.html">maps/map2d</a>
+				</li>
+				<li>
+					<a href="maps_map2d.map2d.html">Map2D</a>
+				</li>
+			</ul>
+			<h1>Class Map2D</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Map class contains the map elements and the skybox. Has the ability to do
+						raycasting on itself.</p>
+					</div>
+					<p>Consult the Map Wiki: <a href="https://github.zhaw.ch/raycasters/docs/wiki/Map" class="external">https://github.zhaw.ch/raycasters/docs/wiki/Map</a></p>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">Map2D</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="maps_map2d.map2d.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#ceilinggradient" class="tsd-kind-icon">ceiling<wbr>Gradient</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#floorgradient" class="tsd-kind-icon">floor<wbr>Gradient</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#fog" class="tsd-kind-icon">fog</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#map" class="tsd-kind-icon">map</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#mapname" class="tsd-kind-icon">map<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#mapsize" class="tsd-kind-icon">map<wbr>Size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#raycaster" class="tsd-kind-icon">raycaster</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#skybox" class="tsd-kind-icon">sky<wbr>Box</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#walltextures" class="tsd-kind-icon">wall<wbr>Textures</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="maps_map2d.map2d.html#skybox_height" class="tsd-kind-icon">SKYBOX_<wbr>HEIGHT</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="maps_map2d.map2d.html#skybox_width" class="tsd-kind-icon">SKYBOX_<wbr>WIDTH</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="maps_map2d.map2d.html#getceilinggradient" class="tsd-kind-icon">get<wbr>Ceiling<wbr>Gradient</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="maps_map2d.map2d.html#getelementcount" class="tsd-kind-icon">get<wbr>Element<wbr>Count</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="maps_map2d.map2d.html#getelements" class="tsd-kind-icon">get<wbr>Elements</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="maps_map2d.map2d.html#getfloorgradient" class="tsd-kind-icon">get<wbr>Floor<wbr>Gradient</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="maps_map2d.map2d.html#getfog" class="tsd-kind-icon">get<wbr>Fog</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="maps_map2d.map2d.html#getmapname" class="tsd-kind-icon">get<wbr>Map<wbr>Name</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="maps_map2d.map2d.html#getsize" class="tsd-kind-icon">get<wbr>Size</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="maps_map2d.map2d.html#getskybox" class="tsd-kind-icon">get<wbr>Sky<wbr>Box</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="maps_map2d.map2d.html#getelementbyposition" class="tsd-kind-icon">get<wbr>Element<wbr>ByPosition</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="maps_map2d.map2d.html#initialize" class="tsd-kind-icon">initialize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="maps_map2d.map2d.html#parsemapdata" class="tsd-kind-icon">parse<wbr>Map<wbr>Data</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="maps_map2d.map2d.html#raycast" class="tsd-kind-icon">ray<wbr>Cast</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="maps_map2d.map2d.html#readmap" class="tsd-kind-icon">read<wbr>Map</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="maps_map2d.map2d.html#setelement" class="tsd-kind-icon">set<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="maps_map2d.map2d.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Map2D<span class="tsd-signature-symbol">(</span>size<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="maps_map2d.map2d.html" class="tsd-signature-type" data-tsd-kind="Class">Map2D</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L62">maps/map2d.ts:62</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> size: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Size refers to the height and width of the map
+										(it&#39;s square)</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="maps_map2d.map2d.html" class="tsd-signature-type" data-tsd-kind="Class">Map2D</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="ceilinggradient" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> ceiling<wbr>Gradient</h3>
+					<div class="tsd-signature tsd-kind-icon">ceiling<wbr>Gradient<span class="tsd-signature-symbol">:</span> <a href="rendering_renderer.colorgradient.html" class="tsd-signature-type" data-tsd-kind="Class">ColorGradient</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L41">maps/map2d.ts:41</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Gradient for the ceiling</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="floorgradient" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> floor<wbr>Gradient</h3>
+					<div class="tsd-signature tsd-kind-icon">floor<wbr>Gradient<span class="tsd-signature-symbol">:</span> <a href="rendering_renderer.colorgradient.html" class="tsd-signature-type" data-tsd-kind="Class">ColorGradient</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L46">maps/map2d.ts:46</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Gradient for the floor</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="fog" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> fog</h3>
+					<div class="tsd-signature tsd-kind-icon">fog<span class="tsd-signature-symbol">:</span> <a href="rendering_fog.fog.html" class="tsd-signature-type" data-tsd-kind="Class">Fog</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L62">maps/map2d.ts:62</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Fog instance to set fogging properties. Remember that each map can have
+							different fogging distances and colors.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="map" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> map</h3>
+					<div class="tsd-signature tsd-kind-icon">map<span class="tsd-signature-symbol">:</span> <a href="maps_map2d.mapelement.html" class="tsd-signature-type" data-tsd-kind="Class">MapElement</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L21">maps/map2d.ts:21</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An array describing the map (whether a cell has a wall or
+							not): wall = 1, floor = 0</p>
+						</div>
+						<p>Note that the world is basically 2D, but saved as 1D in the array.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="mapname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> map<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">map<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L31">maps/map2d.ts:31</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Map data according to wiki, see <a href="https://github.zhaw.ch/raycasters/docs/wiki/Map">https://github.zhaw.ch/raycasters/docs/wiki/Map</a></p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="mapsize" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> map<wbr>Size</h3>
+					<div class="tsd-signature tsd-kind-icon">map<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L51">maps/map2d.ts:51</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Mapsize (side length)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="raycaster" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> raycaster</h3>
+					<div class="tsd-signature tsd-kind-icon">raycaster<span class="tsd-signature-symbol">:</span> <a href="rendering_raycaster.raycaster.html" class="tsd-signature-type" data-tsd-kind="Class">Raycaster</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L26">maps/map2d.ts:26</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>To shoot rays and find out where they hit on (this) map.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="skybox" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> sky<wbr>Box</h3>
+					<div class="tsd-signature tsd-kind-icon">sky<wbr>Box<span class="tsd-signature-symbol">:</span> <a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L36">maps/map2d.ts:36</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Skybox image</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="walltextures" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> wall<wbr>Textures</h3>
+					<div class="tsd-signature tsd-kind-icon">wall<wbr>Textures<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L56">maps/map2d.ts:56</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Map of wall textures. Example entry:
+							&#39;2&#39; -&gt; Image2D(&quot;brick_wall.png&quot;)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="skybox_height" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> SKYBOX_<wbr>HEIGHT</h3>
+					<div class="tsd-signature tsd-kind-icon">SKYBOX_<wbr>HEIGHT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1440</span><span class="tsd-signature-symbol"> = 1440</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L14">maps/map2d.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="skybox_width" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> SKYBOX_<wbr>WIDTH</h3>
+					<div class="tsd-signature tsd-kind-icon">SKYBOX_<wbr>WIDTH<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">3512</span><span class="tsd-signature-symbol"> = 3512</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L13">maps/map2d.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getceilinggradient" class="tsd-anchor"></a>
+					<h3>get<wbr>Ceiling<wbr>Gradient</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getCeilingGradient<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rendering_renderer.colorgradient.html" class="tsd-signature-type" data-tsd-kind="Class">ColorGradient</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L288">maps/map2d.ts:288</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for ceil gradient</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="rendering_renderer.colorgradient.html" class="tsd-signature-type" data-tsd-kind="Class">ColorGradient</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getelementcount" class="tsd-anchor"></a>
+					<h3>get<wbr>Element<wbr>Count</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getElementCount<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L254">maps/map2d.ts:254</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get all map element counts (square of side with of the map)</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getelements" class="tsd-anchor"></a>
+					<h3>get<wbr>Elements</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getElements<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="maps_map2d.mapelement.html" class="tsd-signature-type" data-tsd-kind="Class">MapElement</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L247">maps/map2d.ts:247</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get all map elements</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="maps_map2d.mapelement.html" class="tsd-signature-type" data-tsd-kind="Class">MapElement</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getfloorgradient" class="tsd-anchor"></a>
+					<h3>get<wbr>Floor<wbr>Gradient</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getFloorGradient<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rendering_renderer.colorgradient.html" class="tsd-signature-type" data-tsd-kind="Class">ColorGradient</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L295">maps/map2d.ts:295</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for floor gradient</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="rendering_renderer.colorgradient.html" class="tsd-signature-type" data-tsd-kind="Class">ColorGradient</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getfog" class="tsd-anchor"></a>
+					<h3>get<wbr>Fog</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getFog<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rendering_fog.fog.html" class="tsd-signature-type" data-tsd-kind="Class">Fog</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L302">maps/map2d.ts:302</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for fog instance</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="rendering_fog.fog.html" class="tsd-signature-type" data-tsd-kind="Class">Fog</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getmapname" class="tsd-anchor"></a>
+					<h3>get<wbr>Map<wbr>Name</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getMapName<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L309">maps/map2d.ts:309</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for map name</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getsize" class="tsd-anchor"></a>
+					<h3>get<wbr>Size</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getSize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L274">maps/map2d.ts:274</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for map size</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="getskybox" class="tsd-anchor"></a>
+					<h3>get<wbr>Sky<wbr>Box</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> getSkyBox<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L281">maps/map2d.ts:281</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Getter for skybox</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="rendering_renderer.image2d.html" class="tsd-signature-type" data-tsd-kind="Class">Image2D</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getelementbyposition" class="tsd-anchor"></a>
+					<h3>get<wbr>Element<wbr>ByPosition</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Element<wbr>ByPosition<span class="tsd-signature-symbol">(</span>pos<span class="tsd-signature-symbol">: </span><a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="maps_map2d.mapelement.html" class="tsd-signature-type" data-tsd-kind="Class">MapElement</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L84">maps/map2d.ts:84</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Queries the element of a map at clamped coordinate (x,y), could be wall,
+									floor, etc..</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>pos: <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Position at which we want to get the map element</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="maps_map2d.mapelement.html" class="tsd-signature-type" data-tsd-kind="Class">MapElement</a></h4>
+							<p>The ELEMENT of map at (x,y) ONLY if it&#39;s inside the map, othertype MapElementType.NONE (!)</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="initialize" class="tsd-anchor"></a>
+					<h3>initialize</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">initialize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L192">maps/map2d.ts:192</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Fill map with floors</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="parsemapdata" class="tsd-anchor"></a>
+					<h3>parse<wbr>Map<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">parse<wbr>Map<wbr>Data<span class="tsd-signature-symbol">(</span>filename<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, readFromFile<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L124">maps/map2d.ts:124</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Load and parse map file according to our map definition.
+										Don&#39;t edit this method unless you know the map syntax:
+									<a href="https://github.zhaw.ch/raycasters/docs/wiki/Map#example">https://github.zhaw.ch/raycasters/docs/wiki/Map#example</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>filename: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Filepath to string</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> readFromFile: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Testing callback for reading file</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="raycast" class="tsd-anchor"></a>
+					<h3>ray<wbr>Cast</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">ray<wbr>Cast<span class="tsd-signature-symbol">(</span>origin<span class="tsd-signature-symbol">: </span><a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a>, angle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, range<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rendering_raycaster.step.html" class="tsd-signature-type" data-tsd-kind="Class">Step</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L206">maps/map2d.ts:206</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Cast a ray from an origin point in a certain direction with a range cutoff.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>origin: <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Origin position. The player&#39;s standing position.</p>
+									</div>
+								</li>
+								<li>
+									<h5>angle: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Ray shooting angle in radians. The player&#39;s direction.</p>
+									</div>
+								</li>
+								<li>
+									<h5>range: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Maximum drawing distance. 1 unit = 1 MapElement.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="rendering_raycaster.step.html" class="tsd-signature-type" data-tsd-kind="Class">Step</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>Array of steps composing the ray casted.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="readmap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> read<wbr>Map</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Map<span class="tsd-signature-symbol">(</span>filename<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, readFromFile<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L100">maps/map2d.ts:100</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Asynchronous method to read the map file.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>filename: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Name of map file</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> readFromFile: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>callback for testing</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>map data file (see wiki for syntax)</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setelement" class="tsd-anchor"></a>
+					<h3>set<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Element<span class="tsd-signature-symbol">(</span>pos<span class="tsd-signature-symbol">: </span><a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a>, newElem<span class="tsd-signature-symbol">: </span><a href="maps_map2d.mapelement.html" class="tsd-signature-type" data-tsd-kind="Class">MapElement</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L264">maps/map2d.ts:264</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Overwrite mapelement at position in this map.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>pos: <a href="common_vec2d.vec2d.html" class="tsd-signature-type" data-tsd-kind="Class">Vec2D</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Position of map element</p>
+									</div>
+								</li>
+								<li>
+									<h5>newElem: <a href="maps_map2d.mapelement.html" class="tsd-signature-type" data-tsd-kind="Class">MapElement</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>New map element</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tostring" class="tsd-anchor"></a>
+					<h3>to<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.zhaw.ch/raycasters/game/blob/c4cec1a/src/maps/map2d.ts#L224">maps/map2d.ts:224</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Probably best used for debugging on the console.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>String representation of the map.</p>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/maps_map2d.html">maps/map2d</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/maps_map2d.mapelementtype.html" class="tsd-kind-icon">Map<wbr>Element<wbr>Type</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="maps_map2d.map2d.html" class="tsd-kind-icon">Map2D</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#ceilinggradient" class="tsd-kind-icon">ceiling<wbr>Gradient</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#floorgradient" class="tsd-kind-icon">floor<wbr>Gradient</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#fog" class="tsd-kind-icon">fog</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#map" class="tsd-kind-icon">map</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#mapname" class="tsd-kind-icon">map<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#mapsize" class="tsd-kind-icon">map<wbr>Size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#raycaster" class="tsd-kind-icon">raycaster</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#skybox" class="tsd-kind-icon">sky<wbr>Box</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#walltextures" class="tsd-kind-icon">wall<wbr>Textures</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="maps_map2d.map2d.html#skybox_height" class="tsd-kind-icon">SKYBOX_<wbr>HEIGHT</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="maps_map2d.map2d.html#skybox_width" class="tsd-kind-icon">SKYBOX_<wbr>WIDTH</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#getceilinggradient" class="tsd-kind-icon">get<wbr>Ceiling<wbr>Gradient</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#getelementcount" class="tsd-kind-icon">get<wbr>Element<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#getelements" class="tsd-kind-icon">get<wbr>Elements</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#getfloorgradient" class="tsd-kind-icon">get<wbr>Floor<wbr>Gradient</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#getfog" class="tsd-kind-icon">get<wbr>Fog</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#getmapname" class="tsd-kind-icon">get<wbr>Map<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#getsize" class="tsd-kind-icon">get<wbr>Size</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#getskybox" class="tsd-kind-icon">get<wbr>Sky<wbr>Box</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#getelementbyposition" class="tsd-kind-icon">get<wbr>Element<wbr>ByPosition</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#initialize" class="tsd-kind-icon">initialize</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#parsemapdata" class="tsd-kind-icon">parse<wbr>Map<wbr>Data</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#raycast" class="tsd-kind-icon">ray<wbr>Cast</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="maps_map2d.map2d.html#readmap" class="tsd-kind-icon">read<wbr>Map</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#setelement" class="tsd-kind-icon">set<wbr>Element</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="maps_map2d.map2d.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="maps_map2d.mapelement.html" class="tsd-kind-icon">Map<wbr>Element</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
