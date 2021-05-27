@@ -6,7 +6,7 @@ The official client of the retro inspired first person shooter **RayFighters: Th
 
 ## Screenshot
 
-![in-game screenshots](/screenshot.png)
+![in-game teaser](/teaser.gif)
 
 ## Quickstart Development
 
