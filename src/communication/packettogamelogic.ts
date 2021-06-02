@@ -61,6 +61,7 @@ export class PacketToGameLogic {
         switch (pkt.opCode) {
             case OpCode.SERVER_PLAYERDEATH:
                 this.playerDeath(pkt.killerID, pkt.victimID);
+                this.updateRanking();
                 break;
             case OpCode.SERVER_DISCONNECT:
                 this.gameHUD.showTicket("Server has disconnected!");
@@ -75,20 +76,25 @@ export class PacketToGameLogic {
             case OpCode.SERVER_YOUARECALLED:
                 this.player.getPlayerInfo.userID = pkt.userID;
                 this.gameHUD.updatePlayerInfo(this.player.getPlayerInfo);
+                this.updateRanking();
                 break;
             case OpCode.SERVER_PLAYERJOINED:
                 this.addEnemy(pkt.userID, new PlayerInfo({ userID: pkt.userID, userName: pkt.name, killCount: 0, deathCount: 0 }))
                 this.gameHUD.showTicket(`${StringHelper.truncateString(pkt.name, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has joined`);
+                this.updateRanking();
                 break;
             case OpCode.SERVER_PLAYERLEFT:
                 this.gameHUD.showTicket(`${StringHelper.truncateString(this.enemyMap.get(pkt.userID).getPlayerInfo.getUserName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH)} has left`);
                 this.removeEnemy(pkt.userID);
+                this.updateRanking();
                 break;
             case OpCode.SERVER_SENDALLPLAYERINFO:
                 this.synchronizeEnemyList(pkt.playerInfoList);
+                this.updateRanking();
                 break;
             case OpCode.SERVER_SENDALLPLAYERKD:
                 this.synchronizeEnemyList(pkt.playerKillDeathList);
+                this.updateRanking();
                 break;
             case OpCode.SERVER_TELEPORT:
                 this.teleport(pkt);
@@ -261,9 +267,19 @@ export class PacketToGameLogic {
     }
 
     /**
+     * Updates the Ranking of all players
+     */
+     private updateRanking() {
+        let ranking = this.getEnemies;
+        ranking.push(this.player);
+        ranking.sort((a, b) => (b.getPlayerInfo.killCount-b.getPlayerInfo.deathCount) - (a.getPlayerInfo.killCount-a.getPlayerInfo.deathCount));
+        this.gameHUD.updateScoreboard(ranking, ranking.indexOf(this.player) + 1);
+    }
+
+    /**
      * Getter for enemies currently occupying the map according to the server
      */
-    public get getEnemies(): Enemy[] {
+    public get getEnemies(): any[] {
         return Array.from(this.enemyMap.values());
     }
 

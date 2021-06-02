@@ -1,6 +1,7 @@
 import { StringHelper } from "../common/stringhelper";
 import { PlayerInfo } from "../communication/playerinfo";
 import { playSoundEffect } from "../index";
+import { Player } from "../player/player";
 
 /**
  * The GameHUD is a class for displaying heads up information on the screen
@@ -22,6 +23,7 @@ export class GameHUD {
     private mapName: HTMLElement;
     private respawnCon: HTMLElement;
     private scoreboard: HTMLElement;
+    private playerRanking: HTMLElement;
     private settings: HTMLElement;
     private socketStatus: HTMLElement;
     private fps: HTMLElement;
@@ -31,7 +33,7 @@ export class GameHUD {
     /***
      * Initialize all Hud HTMLElements
      */
-    public initializeHud(map: string, player: PlayerInfo) {
+    public initializeHud(map: string) {
         this.tickerCon = document.querySelector("#ticker-container");
         this.timer = document.querySelector("#timer");
         this.playerName = document.querySelector("#playerName");
@@ -40,6 +42,7 @@ export class GameHUD {
         this.mapName = document.querySelector("#mapName");
         this.respawnCon = document.querySelector("#respawn-container");
         this.scoreboard = document.querySelector("#scoreboard-container");
+        this.playerRanking = document.querySelector("#playerRanking");
         this.settings = document.querySelector("#settings-container");
         this.socketStatus = document.querySelector("#socket-status");
         this.fps = document.querySelector("#fps-container");
@@ -59,12 +62,6 @@ export class GameHUD {
             item.addEventListener("click", (event) => {
                 playSoundEffect("./assets/audio/menuEnter_1.mp3");
             });
-        });
-
-        document.querySelector("#audio-setting").addEventListener("change", function (event) {
-            event.preventDefault();
-            // Todo: Change Audio Volume
-            console.log(this.value);
         });
 
         document.querySelector("#redirectbtn").addEventListener("click", function (event) {
@@ -165,12 +162,16 @@ export class GameHUD {
 
     /**
      * 
-     * @param {PlayerInfo[]} ranking - Array of {@link PlayerInfo}
+     * @param {Player[]} ranking - Array of {@link Player}
+     * @param {number} playerRank - Rank of own Player
      */
-    public updateScoreboard(ranking: Array<PlayerInfo>): void {
+    public updateScoreboard(ranking: Array<Player>, playerRank: number): void {
         const table: HTMLElement = this.scoreboard.querySelector("tbody");
         table.textContent = '';
         for (let index = 0; index < ranking.length; index++) {
+
+            if(index == 10) break;
+            
             var row = document.createElement("tr");
 
             const cellRank = document.createElement("td");
@@ -179,22 +180,25 @@ export class GameHUD {
             row.appendChild(cellRank);
 
             const cellPlayerName = document.createElement("td");
-            const cellPlayerNameText = document.createTextNode(ranking[index].getTruncatedUserName);
+            const cellPlayerNameText = document.createTextNode(ranking[index].getPlayerInfo.getTruncatedUserName);
             cellPlayerName.appendChild(cellPlayerNameText);
             row.appendChild(cellPlayerName);
 
             const cellKills = document.createElement("td");
-            const cellKillsText = document.createTextNode(ranking[index].killCount.toString());
+            const killCount = typeof ranking[index].getPlayerInfo.killCount === 'undefined' ? "0" : ranking[index].getPlayerInfo.killCount.toString();
+            const cellKillsText = document.createTextNode(killCount);
             cellKills.appendChild(cellKillsText);
             row.appendChild(cellKills);
 
             const cellDeaths = document.createElement("td");
-            const cellDeathsText = document.createTextNode(ranking[index].deathCount.toString());
+            const deathCount = typeof ranking[index].getPlayerInfo.deathCount === 'undefined' ? "0" : ranking[index].getPlayerInfo.deathCount.toString();
+            const cellDeathsText = document.createTextNode(deathCount);
             cellDeaths.appendChild(cellDeathsText);
             row.appendChild(cellDeaths);
 
             table.appendChild(row);
         }
+        this.playerRanking.innerHTML = playerRank.toString();
     }
 
     /**
