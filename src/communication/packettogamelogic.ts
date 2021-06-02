@@ -176,12 +176,14 @@ export class PacketToGameLogic {
     private playerDeath(killerID: number, victimID: number) {
         let killerName = "";
         let victimName = "";
+        const playerID = this.player.getPlayerInfo.userID
 
         // Has player been defeated?
-        if (victimID === this.player.getPlayerInfo.userID) {
+        if (victimID === playerID) {
             // Kill player
             this.player.setDead(true);
             this.player.getPlayerInfo.deathCount++;
+            this.enemyMap.get(killerID).getPlayerInfo.killCount++;
 
             // Update HUD
             this.gameHUD.displayRespawn(true);
@@ -193,21 +195,27 @@ export class PacketToGameLogic {
             victimName = this.player.getPlayerInfo.getUserName;
             victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
             
-        } else {
-            // Fallback to prevent crash if victim isn't present in client-internal enemy map
-            if (!this.enemyMap.has(victimID) || this.enemyMap.get(victimID).getPlayerInfo == undefined) {
+        } 
+        
+        // Has an enemy defeated another enemy?
+        else if (victimID !== playerID && killerID !== playerID) {
+            // Fallback to prevent crash if victim or killer isn't present in client-internal enemy map
+            if (!this.enemyMap.has(victimID) || this.enemyMap.get(victimID).getPlayerInfo == undefined) /* ||
+            !this.enemyMap.has(killerID) || this.enemyMap.get(killerID).getPlayerInfo == undefined)*/ {
                 console.error("Tried to get id " + victimID + "but was not present in enemy map!");
                 return;
             }
 
-            // Has an enemy defeated another enemy?
-            // Kill enemy
-            this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
-
-            // Prepare ticket on screen. 
+            // Prepare killer and victim info. 
             const killerInfo = this.enemyMap.get(killerID);
             const victimInfo = this.enemyMap.get(victimID);
 
+            // Has an enemy defeated another enemy?
+            // Kill enemy
+            victimInfo.getPlayerInfo.isDead = true;
+            victimInfo.getPlayerInfo.deathCount++;
+            killerInfo.getPlayerInfo.killCount++;
+            
             // Failsafe. Prevents crash for undefined victim & killer ID and prepares the ticket message
             if(killerInfo && victimInfo) {
                 killerName = killerInfo.getPlayerInfo.getUserName;
@@ -215,13 +223,16 @@ export class PacketToGameLogic {
                 victimName = victimInfo.getPlayerInfo.getUserName;
                 victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
             }
-            
         }
         
         // Has player killed an enemy?
-        if (killerID === this.player.getPlayerInfo.userID) {
+        else if (killerID === this.player.getPlayerInfo.userID) {
             // Increment player kill count
             this.player.getPlayerInfo.killCount++;
+            this.enemyMap.get(victimID).getPlayerInfo.deathCount++;
+
+            // kill enemy
+            this.enemyMap.get(victimID).getPlayerInfo.isDead = true;
 
             // Update HUD
             this.gameHUD.updatePlayerInfo(this.player.getPlayerInfo);
