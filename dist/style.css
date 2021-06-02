@@ -14,20 +14,48 @@
   }
 }
 
+body {
+  /* Disable scrolling */
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+
+  /* Disable select, copy + paste */
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  /* Background */
+  background-image: url("img/RaycasterLogo1.png");
+  background-position: top center;
+
+  /* Text */
+  letter-spacing: 0.1em;
+  font-family: ArcadeClassic, 'Courier New', Courier, monospace;
+  color: #fff;
+  text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
+  animation: textflicker 0.5s infinite;
+}
+
 [hidden] {
   display: none !important;
 }
 
-th, td {
+th {
   padding: 1em;
 }
 
-.centered {
-  text-align: center;
+td {
+  padding: 0.2em 1em;
 }
 
-.main-logo {
-  width: 300px !important;
+img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
 #overlay-effect {
@@ -56,32 +84,6 @@ th, td {
   width: 300%;
 }
 
-body {
-  /* Disable scrolling */
-  margin: 0;
-  height: 100%;
-  overflow: hidden;
-  position: fixed;
-
-  /* Disable select, copy + paste */
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  /* Background */
-  background-image: url("img/RaycasterLogo1.png");
-  background-position: top center;
-
-  /* Text */
-  letter-spacing: 0.1em;
-  font-family: ArcadeClassic, 'Courier New', Courier, monospace;
-  color: #fff;
-  text-shadow: 0.06rem 0 0.06rem #ea36af, -0.125rem 0 0.06rem #75fa69;
-  animation: textflicker 0.5s infinite;
-}
-
 #gameControls {
   font-family: ArcadeClassic, 'Courier New', Courier, monospace;
   color: #fff;
@@ -106,6 +108,15 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
+}
+
+.centered {
+  text-align: center;
+}
+
+.main-logo {
+  width: 300px !important;
+
 }
 
 .grow {
@@ -145,12 +156,6 @@ body {
   #video {
     display: none;
   }
-}
-
-img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
 }
 
 #debug-window {

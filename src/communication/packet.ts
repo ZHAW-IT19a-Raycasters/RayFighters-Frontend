@@ -25,7 +25,7 @@ export class Packet {
     public playerInfoList?: PlayerInfo[];
     public playerKillDeathList?: PlayerInfo[];
     public mapID: number;
-    public time: BigInt;
+    public time: bigint;
 
     constructor
         (
@@ -56,7 +56,7 @@ export class Packet {
                 playerInfoList?: PlayerInfo[],
                 playerKillDeathList?: PlayerInfo[],
                 mapID?: number,
-                time?: BigInt
+                time?: bigint
             }
         ) {
         this.opCode = opCode;
