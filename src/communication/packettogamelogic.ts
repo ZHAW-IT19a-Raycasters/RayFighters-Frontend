@@ -194,7 +194,6 @@ export class PacketToGameLogic {
             killerName = StringHelper.truncateString(killerName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
             victimName = this.player.getPlayerInfo.getUserName;
             victimName = StringHelper.truncateString(victimName, PlayerInfo.TRUNCATED_NAME_MAX_LENGTH);
-            
         } 
         
         // Has an enemy defeated another enemy?

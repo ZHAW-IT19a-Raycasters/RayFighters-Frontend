@@ -24,7 +24,6 @@ export class GameHUD {
     private respawnCon: HTMLElement;
     private scoreboard: HTMLElement;
     private playerRanking: HTMLElement;
-    private settings: HTMLElement;
     private socketStatus: HTMLElement;
     private fps: HTMLElement;
     private debug: HTMLElement;
@@ -43,7 +42,6 @@ export class GameHUD {
         this.respawnCon = document.querySelector("#respawn-container");
         this.scoreboard = document.querySelector("#scoreboard-container");
         this.playerRanking = document.querySelector("#playerRanking");
-        this.settings = document.querySelector("#settings-container");
         this.socketStatus = document.querySelector("#socket-status");
         this.fps = document.querySelector("#fps-container");
         this.debug = document.querySelector("#debug-container");
@@ -62,11 +60,6 @@ export class GameHUD {
             item.addEventListener("click", (event) => {
                 playSoundEffect("./assets/audio/menuEnter_1.mp3");
             });
-        });
-
-        document.querySelector("#redirectbtn").addEventListener("click", function (event) {
-            event.preventDefault();
-            location.reload();
         });
     }
 
@@ -115,8 +108,8 @@ export class GameHUD {
      * Time left until end of round
      * @param {BigInt} time - UNIX timestamp
      */
-    public setTimer(time: BigInt): void {
-        const timeBI = BigInt(time);
+    public setTimer(time: bigint): void {
+        const timeBI = time;
         this.timerValue = Number(timeBI / GameHUD.SEC_TO_NANOSEC_FACTOR);
     }
 
@@ -145,7 +138,6 @@ export class GameHUD {
      * @param {boolean} isDead 
      */
     public displayRespawn(isDead: boolean): void {
-        this.settings.hidden = true;
         this.scoreboard.hidden = true;
 
         if (isDead) {
@@ -204,16 +196,15 @@ export class GameHUD {
     /**
      * Show/Hide Scoreboard
      */
-    public toggleScoreboard(): void {
-        this.settings.hidden = true;
-        this.scoreboard.hidden = this.scoreboard.hidden ? false : true;
+    public toggleScoreboard(state: boolean): void {
+        this.scoreboard.hidden = state;
     }
 
     /**
      * Show/Hide FPS information
      */
-    public toggleFPS(): void {
-        if (this.fps.style.visibility == "hidden") {
+    public toggleFPS(state: boolean): void {
+        if (state) {
             this.fps.style.transition = "margin 0.5s ease-in-out";
             this.fps.style.visibility = "visible";
             this.fps.style.margin = "0px";
@@ -221,23 +212,6 @@ export class GameHUD {
             this.fps.style.transition = "margin 0.5s ease-in-out, visibility 0s ease-in-out 0.5s";
             this.fps.style.margin = "-5em 0px 0px 0px";
             this.fps.style.visibility = "hidden";
-        }
-    }
-
-    /**
-     *  Toggle scoreboard
-     */
-    public toggleSettings(): void {
-        this.scoreboard.hidden = true;
-        if (this.settings.hidden) {
-            this.settings.hidden = false;
-            document.exitPointerLock();
-        } else {
-            this.settings.hidden = true;
-            if(document.body.requestPointerLock) {
-                // Not mobile
-                document.body.requestPointerLock();
-            }
         }
     }
 

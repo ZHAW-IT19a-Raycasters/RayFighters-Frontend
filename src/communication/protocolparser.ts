@@ -120,7 +120,7 @@ export class ProtocolParser {
      * @param {number} startIndex - starting index from byte array message.
      * @returns a fully assembled BigInt (64 bit) number.
      */
-    private u8ArraytoBigInt(byteData: Uint8Array, startIndex: number): BigInt {
+    private u8ArraytoBigInt(byteData: Uint8Array, startIndex: number): bigint {
         const zero = BigInt(0);
         const one = BigInt(1);
         const n256 = BigInt(256);
