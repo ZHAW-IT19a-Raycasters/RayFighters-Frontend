@@ -134,7 +134,7 @@ export class Game {
     this.setupPlayer();
     this.packetToGameLogic = new PacketToGameLogic(this.player, this.gameHUD); // Map ID is gotten here, can be undefined!!
     this.initializeRoom(this.checkMap());
-    this.gameHUD.initializeHud(this.room.getMap.getMapName, this.player.getPlayerInfo);
+    this.gameHUD.initializeHud(this.room.getMap.getMapName);
 
     // Initialize renderer.
     if (typeof process === 'undefined') {
@@ -207,7 +207,7 @@ export class Game {
       
     game.initializeRenderer();
     game.getGameHUD.showTicket('Loading map...');
-    game.gameHUD.initializeHud(game.room.getMap.getMapName, game.player.getPlayerInfo);
+    game.gameHUD.initializeHud(game.room.getMap.getMapName);
   }
 
   /**

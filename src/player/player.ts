@@ -240,17 +240,9 @@ export class Player {
       this.weapon.update(seconds);
     }
 
-    if (controls.states.get(KeyCodes.SCOREBOARD)) {
-      this.gameHUD.toggleScoreboard();
-    }
+    this.gameHUD.toggleScoreboard(!controls.states.get(KeyCodes.SCOREBOARD));
 
-    if (controls.states.get(KeyCodes.SETTINGS)) {
-      this.gameHUD.toggleSettings();
-    }
-
-    if (controls.states.get(KeyCodes.FPS)) {
-      this.gameHUD.toggleFPS();
-    }
+    this.gameHUD.toggleFPS(controls.states.get(KeyCodes.FPS));
   }
 
   /**
