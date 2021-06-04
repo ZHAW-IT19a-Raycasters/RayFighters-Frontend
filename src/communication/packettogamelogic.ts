@@ -282,7 +282,7 @@ export class PacketToGameLogic {
      private updateRanking() {
         let ranking = this.getEnemies;
         ranking.push(this.player);
-        ranking.sort((a, b) => (b.getPlayerInfo.killCount-b.getPlayerInfo.deathCount) - (a.getPlayerInfo.killCount-a.getPlayerInfo.deathCount));
+        ranking.sort((a, b) => (b.getPlayerInfo.killCount) - (a.getPlayerInfo.killCount));
         this.gameHUD.updateScoreboard(ranking, ranking.indexOf(this.player) + 1);
     }
 
