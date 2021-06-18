@@ -8,6 +8,24 @@ The official client of the retro inspired first person shooter **RayFighters: Th
 
 ![in-game teaser](/teaser.gif)
 
+### Features
+
+Just some of the features:
+
+- Fast paced first person shooter
+- Play on desktop and mobile
+- Instantly jump into a live game through the browser
+- A welcoming landing page
+- Set your own nick name and play with friends
+- High performance [server](https://github.zhaw.ch/raycasters/server) for dedicated multiplayer
+- Retro raycasting graphics and rad feel: 90's vibes!
+- Fitting HUD with scoreboard
+- Custom maps: Create your own!
+- Dynamic map changes every 5 minutes
+- Mouse aiming for accuracy
+- Dynamic resolution scaling for optimal performance
+- Sound Engine
+
 ## Quickstart Development
 
 Make sure you have Node and NPM installed.
@@ -15,7 +33,7 @@ Make sure you have Node and NPM installed.
 1. Install dependencies: `npm install`
 2. start dev server: `npm run server`
 
-The dev server will now serve the landing page. To join a game a local server instance must be running. [Instructions](https://github.zhaw.ch/raycasters/server)
+The dev server will now serve the landing page. To join a game a local server instance must be running. Here are the [Instructions](https://github.zhaw.ch/raycasters/docs/wiki/Server#development) for running the server.
 
 Please look at the [full documentation](https://github.zhaw.ch/raycasters/docs/wiki) for the rest.
 
